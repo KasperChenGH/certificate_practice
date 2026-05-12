@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e3a5f">
+<title>金融證照練習</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --accent: #1e3a5f;
+    --accent-soft: #2a4d7c;
+    --good: #1f8a3e;
+    --bad: #c63838;
+    --border: #d2d2d7;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "PingFang TC", "Noto Sans CJK TC", sans-serif;
+    background: var(--bg); color: var(--text);
+    font-size: 16px; line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+  .app { max-width: 720px; margin: 0 auto; padding: 16px 16px 48px; }
+  .hidden { display: none !important; }
+  h1 { font-size: 22px; margin: 12px 0 16px; font-weight: 700; }
+  h2 { font-size: 18px; margin: 12px 0 8px; font-weight: 600; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px; margin-bottom: 12px;
+  }
+  .btn {
+    display: block; width: 100%;
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 16px; font-size: 17px; font-weight: 600; margin-bottom: 12px;
+    cursor: pointer; transition: background 0.15s;
+    text-align: center; font-family: inherit;
+  }
+  .btn:active { background: var(--accent-soft); }
+  .btn.secondary { background: #e8e8ed; color: var(--text); }
+  .btn.secondary:active { background: #d2d2d7; }
+  .btn.review { background: #b8551c; }
+  .btn.review:active { background: #9a4717; }
+  .btn-row { display: flex; gap: 8px; }
+  .btn-row .btn { flex: 1; }
+  .meta { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .progress-wrap {
+    position: sticky; top: 0; background: var(--bg); padding: 8px 0 4px;
+    z-index: 10;
+  }
+  .progress-bar {
+    height: 4px; background: #e0e0e5; border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--accent); transition: width 0.2s;
+  }
+  .progress-label { font-size: 13px; color: var(--muted); margin-top: 4px;
+    display: flex; justify-content: space-between; }
+  .question { font-size: 16px; font-weight: 600; margin-bottom: 14px; line-height: 1.55; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 14px; cursor: pointer; display: flex; align-items: flex-start;
+    gap: 10px; font-size: 15px; transition: background 0.1s, border-color 0.1s;
+  }
+  .option:active { background: #eef0f4; }
+  .option.selected { border-color: var(--accent); background: #eaf0f9; }
+  .option.correct { border-color: var(--good); background: #e6f4ea; }
+  .option.wrong { border-color: var(--bad); background: #fbeaea; }
+  .option .letter {
+    font-weight: 700; min-width: 22px; color: var(--accent);
+  }
+  .option.correct .letter { color: var(--good); }
+  .option.wrong .letter { color: var(--bad); }
+  .nav { display: flex; gap: 8px; margin-top: 16px; }
+  .nav .btn { margin-bottom: 0; }
+  .result-summary {
+    text-align: center; padding: 20px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;
+  }
+  .result-summary .big { font-size: 36px; font-weight: 700; margin: 8px 0; }
+  .result-summary .pct { color: var(--accent); }
+  .result-q {
+    border-left: 4px solid var(--bad);
+    padding: 12px 14px; background: var(--card);
+    margin-bottom: 10px; border-radius: 4px 10px 10px 4px;
+  }
+  .result-q .stem { font-weight: 600; margin-bottom: 8px; }
+  .result-q .answer-line { color: var(--good); font-size: 14px; margin-top: 6px; }
+  .result-q .wrong-line { color: var(--bad); font-size: 14px; }
+  .result-q .origin { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .review-q { border-left-color: var(--accent); }
+  .empty-state {
+    text-align: center; color: var(--muted); padding: 40px 16px;
+  }
+  .stat-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .stat {
+    flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 6px; text-align: center;
+  }
+  .stat .num { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; }
+  .topic-meta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 400; }
+  .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e; --card: #2c2c2e; --text: #f5f5f7; --muted: #98989d;
+      --accent: #6ea1d8; --accent-soft: #87b6e6; --border: #3a3a3c;
+    }
+    .option.selected { background: #1e3550; }
+    .option.correct { background: #1e3a26; }
+    .option.wrong { background: #3a1e1e; }
+    .btn.secondary { background: #3a3a3c; color: var(--text); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HOME -->
+  <div id="page-home">
+    <h1>金融證照練習</h1>
+    <div class="stat-row">
+      <div class="stat"><div class="num" id="stat-attempts">0</div><div class="lbl">總作答數</div></div>
+      <div class="stat"><div class="num" id="stat-accuracy">—</div><div class="lbl">整體正確率</div></div>
+      <div class="stat"><div class="num" id="stat-wrong-pool">0</div><div class="lbl">常錯題庫</div></div>
+    </div>
+
+    <h2>選擇測驗類別</h2>
+    <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
+    <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
+    <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
+
+    <button class="btn review" id="btn-review">常錯題複習</button>
+    <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
+
+    <p class="footer-note">作答紀錄存於本機瀏覽器（localStorage），不會上傳。</p>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="page-quiz" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label">
+        <span id="quiz-label">—</span>
+        <span id="quiz-counter">—</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="question" id="q-stem"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+    <div class="nav">
+      <button class="btn secondary" id="btn-prev">上一題</button>
+      <button class="btn" id="btn-next">下一題</button>
+    </div>
+    <button class="btn secondary" id="btn-abort">放棄並回首頁</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="page-results" class="hidden">
+    <div class="result-summary">
+      <div>本次得分</div>
+      <div class="big"><span class="pct" id="result-score">0</span> / 100</div>
+      <div class="meta" id="result-detail">—</div>
+    </div>
+    <h2 id="result-heading">答錯題目</h2>
+    <div id="result-list"></div>
+    <button class="btn" id="btn-home">回首頁</button>
+  </div>
+
+  <!-- REVIEW (often-wrong) -->
+  <div id="page-review" class="hidden">
+    <h1>常錯題複習</h1>
+    <p class="meta" id="review-meta">—</p>
+    <div id="review-list"></div>
+    <button class="btn" id="btn-review-home">回首頁</button>
+  </div>
+
+</div>
+
+<script>
+const TOPIC_NAMES = {
+  futures: '期貨商業務員',
+  securities: '證券商高級業務員',
+  finance_ethics: '金融市場常識與職業道德',
+};
+const QUIZ_SIZE = 100;
+const RECENT_WINDOW = 10;   // last N attempts per question
+const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
+const WRONG_RATIO = 0.5;    // ≥50% wrong over recent attempts
+
+let DATA = null;            // {topic: [{id, stem, options, answer, origin, topic}]}
+let STATE = null;           // current quiz state
+
+// ------- localStorage history -------
+// Schema: { [questionId]: { attempts: [true|false], ... last RECENT_WINDOW kept } }
+const LS_KEY = 'quiz_history_v1';
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveHistory(h) {
+  localStorage.setItem(LS_KEY, JSON.stringify(h));
+}
+function recordAttempt(qid, correct) {
+  const h = loadHistory();
+  const rec = h[qid] || { attempts: [] };
+  rec.attempts.push(correct);
+  if (rec.attempts.length > RECENT_WINDOW) {
+    rec.attempts = rec.attempts.slice(-RECENT_WINDOW);
+  }
+  h[qid] = rec;
+  saveHistory(h);
+}
+function isOftenWrong(qid) {
+  const h = loadHistory();
+  const rec = h[qid];
+  if (!rec || rec.attempts.length < MIN_ATTEMPTS) return false;
+  const wrong = rec.attempts.filter(x => !x).length;
+  return wrong / rec.attempts.length >= WRONG_RATIO;
+}
+function overallStats() {
+  const h = loadHistory();
+  let total = 0, correct = 0, wrongPool = 0;
+  for (const qid in h) {
+    const r = h[qid];
+    total += r.attempts.length;
+    correct += r.attempts.filter(x=>x).length;
+    if (isOftenWrong(qid)) wrongPool++;
+  }
+  return { total, correct, wrongPool };
+}
+
+// ------- helpers -------
+function shuffle(a) {
+  a = a.slice();
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function el(id) { return document.getElementById(id); }
+function show(pageId) {
+  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review')
+    .forEach(p => p.classList.add('hidden'));
+  el(pageId).classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+
+// ------- home -------
+function renderHome() {
+  const s = overallStats();
+  el('stat-attempts').textContent = s.total;
+  el('stat-accuracy').textContent = s.total ? (Math.round(100 * s.correct / s.total) + '%') : '—';
+  el('stat-wrong-pool').textContent = s.wrongPool;
+  for (const t of Object.keys(TOPIC_NAMES)) {
+    if (DATA && DATA[t]) {
+      el('meta-'+t).textContent = `${DATA[t].length} 題`;
+    }
+  }
+}
+
+// ------- quiz -------
+function startQuiz(topic) {
+  const pool = DATA[topic] || [];
+  if (pool.length < QUIZ_SIZE) {
+    alert(`此題庫只有 ${pool.length} 題，少於 ${QUIZ_SIZE} 題。`);
+    return;
+  }
+  const picked = shuffle(pool).slice(0, QUIZ_SIZE);
+  STATE = {
+    topic,
+    questions: picked,
+    answers: new Array(QUIZ_SIZE).fill(null),  // 'A'/'B'/'C'/'D' or null
+    idx: 0,
+    submitted: false,
+  };
+  el('quiz-label').textContent = TOPIC_NAMES[topic];
+  renderQuiz();
+  show('page-quiz');
+}
+function renderQuiz() {
+  const q = STATE.questions[STATE.idx];
+  el('q-stem').textContent = `${STATE.idx+1}. ${q.stem}`;
+  const oc = el('q-options');
+  oc.innerHTML = '';
+  for (const letter of ['A','B','C','D']) {
+    const div = document.createElement('div');
+    div.className = 'option';
+    if (STATE.answers[STATE.idx] === letter) div.classList.add('selected');
+    div.innerHTML = `<span class="letter">(${letter})</span><span>${escapeHtml(q.options[letter] || '')}</span>`;
+    div.onclick = () => {
+      STATE.answers[STATE.idx] = letter;
+      renderQuiz();
+    };
+    oc.appendChild(div);
+  }
+  el('progress-fill').style.width = ((STATE.idx+1)/QUIZ_SIZE * 100) + '%';
+  el('quiz-counter').textContent = `${STATE.idx+1} / ${QUIZ_SIZE}`;
+  el('btn-prev').disabled = STATE.idx === 0;
+  el('btn-prev').style.opacity = STATE.idx === 0 ? 0.4 : 1;
+  el('btn-next').textContent = STATE.idx === QUIZ_SIZE-1 ? '交卷' : '下一題';
+}
+function nextQ() {
+  if (STATE.idx === QUIZ_SIZE-1) {
+    submitQuiz();
+  } else {
+    STATE.idx++;
+    renderQuiz();
+  }
+}
+function prevQ() {
+  if (STATE.idx > 0) { STATE.idx--; renderQuiz(); }
+}
+
+function submitQuiz() {
+  // Confirm if any unanswered
+  const unanswered = STATE.answers.filter(a => a === null).length;
+  if (unanswered > 0) {
+    if (!confirm(`還有 ${unanswered} 題未作答，確定交卷？（未作答視為錯誤）`)) return;
+  }
+  // Score & record
+  let correct = 0;
+  const wrongList = [];
+  for (let i = 0; i < QUIZ_SIZE; i++) {
+    const q = STATE.questions[i];
+    const sel = STATE.answers[i];
+    const isCorrect = sel === q.answer;
+    recordAttempt(q.id, isCorrect);
+    if (isCorrect) correct++;
+    else wrongList.push({ q, sel });
+  }
+  renderResults(correct, wrongList);
+  show('page-results');
+}
+
+function renderResults(correct, wrongList) {
+  el('result-score').textContent = correct;
+  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　錯誤 ${100-correct} 題`;
+  const list = el('result-list');
+  list.innerHTML = '';
+  if (wrongList.length === 0) {
+    list.innerHTML = '<div class="empty-state">全對！👏</div>';
+    el('result-heading').textContent = '答錯題目';
+    return;
+  }
+  el('result-heading').textContent = `答錯題目（${wrongList.length}）`;
+  wrongList.forEach((item, i) => {
+    list.appendChild(buildResultEntry(i+1, item.q, item.sel));
+  });
+}
+
+function buildResultEntry(num, q, sel) {
+  const div = document.createElement('div');
+  div.className = 'result-q';
+  const stem = document.createElement('div');
+  stem.className = 'stem';
+  stem.textContent = `${num}. ${q.stem}`;
+  div.appendChild(stem);
+  for (const letter of ['A','B','C','D']) {
+    const line = document.createElement('div');
+    line.style.fontSize = '14px';
+    line.style.padding = '2px 0';
+    const isAns = letter === q.answer;
+    const isSel = letter === sel;
+    let marker = '　';
+    if (isAns) marker = '✓';
+    if (isSel && !isAns) marker = '✗';
+    line.innerHTML = `<span style="color:${isAns?'var(--good)':isSel?'var(--bad)':'var(--muted)'};font-weight:${isAns||isSel?'600':'400'}">${marker} (${letter}) ${escapeHtml(q.options[letter] || '')}</span>`;
+    div.appendChild(line);
+  }
+  const ans = document.createElement('div');
+  ans.className = 'answer-line';
+  ans.textContent = `正解：(${q.answer})`;
+  div.appendChild(ans);
+  if (sel) {
+    const w = document.createElement('div');
+    w.className = 'wrong-line';
+    w.textContent = `你的答案：(${sel})`;
+    div.appendChild(w);
+  } else {
+    const w = document.createElement('div');
+    w.className = 'wrong-line';
+    w.textContent = '（未作答）';
+    div.appendChild(w);
+  }
+  if (q.origin) {
+    const o = document.createElement('div');
+    o.className = 'origin';
+    o.textContent = `來源：${q.origin}`;
+    div.appendChild(o);
+  }
+  return div;
+}
+
+// ------- review (often-wrong) -------
+function showReview() {
+  const list = [];
+  for (const t of Object.keys(DATA)) {
+    for (const q of DATA[t]) {
+      if (isOftenWrong(q.id)) list.push(q);
+    }
+  }
+  el('review-meta').textContent = `${list.length} 題（最近 ${RECENT_WINDOW} 次作答中答錯率 ≥ 50%、且至少作答 ${MIN_ATTEMPTS} 次）`;
+  const cont = el('review-list');
+  cont.innerHTML = '';
+  if (list.length === 0) {
+    cont.innerHTML = '<div class="empty-state">目前還沒有常錯題。<br>多做幾次測驗就會累積。</div>';
+  } else {
+    list.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'result-q review-q';
+      const h = loadHistory()[q.id];
+      const ratio = `${h.attempts.filter(x=>!x).length}/${h.attempts.length}`;
+      const stem = document.createElement('div');
+      stem.className = 'stem';
+      stem.textContent = `${i+1}. ${q.stem}`;
+      div.appendChild(stem);
+      for (const letter of ['A','B','C','D']) {
+        const line = document.createElement('div');
+        line.style.fontSize = '14px';
+        line.style.padding = '2px 0';
+        const isAns = letter === q.answer;
+        line.innerHTML = `<span style="color:${isAns?'var(--good)':'var(--muted)'};font-weight:${isAns?'600':'400'}">${isAns?'✓':'　'} (${letter}) ${escapeHtml(q.options[letter] || '')}</span>`;
+        div.appendChild(line);
+      }
+      const meta = document.createElement('div');
+      meta.className = 'origin';
+      meta.textContent = `正解：(${q.answer})　近期錯誤 ${ratio}　${q.origin || ''}`;
+      div.appendChild(meta);
+      cont.appendChild(div);
+    });
+  }
+  show('page-review');
+}
+
+// ------- escape -------
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+// ------- bootstrap -------
+async function boot() {
+  try {
+    const r = await fetch('questions.json');
+    DATA = await r.json();
+  } catch (e) {
+    document.body.innerHTML = '<div class="app"><h1>載入失敗</h1><p>無法讀取題庫檔（questions.json）。</p></div>';
+    return;
+  }
+  // Wire buttons
+  document.querySelectorAll('[data-topic]').forEach(b => {
+    b.onclick = () => startQuiz(b.dataset.topic);
+  });
+  el('btn-review').onclick = showReview;
+  el('btn-clear').onclick = () => {
+    if (confirm('確定清除所有作答紀錄？此動作無法復原。')) {
+      localStorage.removeItem(LS_KEY);
+      renderHome();
+    }
+  };
+  el('btn-prev').onclick = prevQ;
+  el('btn-next').onclick = nextQ;
+  el('btn-abort').onclick = () => {
+    if (confirm('放棄本次測驗？已作答的紀錄不會儲存。')) {
+      show('page-home');
+      renderHome();
+    }
+  };
+  el('btn-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-review-home').onclick = () => { show('page-home'); renderHome(); };
+  renderHome();
+  show('page-home');
+}
+boot();
+</script>
+</body>
+</html>
