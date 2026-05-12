@@ -152,6 +152,15 @@
       <div class="stat"><div class="num" id="stat-wrong-pool">0</div><div class="lbl">常錯題庫</div></div>
     </div>
 
+    <div id="resume-banner" class="hidden card" style="border-left:4px solid var(--accent);margin-bottom:12px;">
+      <div style="font-weight:600;margin-bottom:4px;">繼續上次測驗</div>
+      <div class="meta" id="resume-meta">—</div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button class="btn" id="btn-resume" style="margin-bottom:0">繼續作答</button>
+        <button class="btn secondary" id="btn-discard" style="margin-bottom:0">捨棄</button>
+      </div>
+    </div>
+
     <h2>選擇測驗類別</h2>
     <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
     <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
@@ -222,6 +231,7 @@ let STATE = null;           // current quiz state
 // ------- localStorage history -------
 // Schema: { [questionId]: { attempts: [true|false], ... last RECENT_WINDOW kept } }
 const LS_KEY = 'quiz_history_v1';
+const LS_QUIZ_KEY = 'quiz_state_v1';
 function loadHistory() {
   try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
   catch { return {}; }
@@ -258,6 +268,36 @@ function overallStats() {
   return { total, correct, wrongPool };
 }
 
+// ------- quiz state persistence -------
+function saveQuizState() {
+  if (!STATE) return;
+  localStorage.setItem(LS_QUIZ_KEY, JSON.stringify({
+    topic: STATE.topic,
+    questionIds: STATE.questions.map(q => q.id),
+    answers: STATE.answers,
+    idx: STATE.idx,
+  }));
+}
+function clearQuizState() {
+  localStorage.removeItem(LS_QUIZ_KEY);
+}
+function loadSavedQuiz() {
+  try { return JSON.parse(localStorage.getItem(LS_QUIZ_KEY) || 'null'); }
+  catch { return null; }
+}
+function resumeQuiz(saved) {
+  const pool = DATA[saved.topic];
+  if (!pool) return;
+  const byId = {};
+  for (const q of pool) byId[q.id] = q;
+  const questions = saved.questionIds.map(id => byId[id]).filter(Boolean);
+  if (questions.length !== saved.questionIds.length) { clearQuizState(); return; }
+  STATE = { topic: saved.topic, questions, answers: saved.answers, idx: saved.idx, submitted: false };
+  el('quiz-label').textContent = TOPIC_NAMES[saved.topic];
+  renderQuiz();
+  show('page-quiz');
+}
+
 // ------- helpers -------
 function shuffle(a) {
   a = a.slice();
@@ -285,6 +325,15 @@ function renderHome() {
     if (DATA && DATA[t]) {
       el('meta-'+t).textContent = `${DATA[t].length} 題`;
     }
+  }
+  const saved = loadSavedQuiz();
+  const banner = el('resume-banner');
+  if (saved && DATA && DATA[saved.topic]) {
+    const answered = saved.answers.filter(a => a !== null).length;
+    el('resume-meta').textContent = `${TOPIC_NAMES[saved.topic]}　已作答 ${answered} / ${QUIZ_SIZE} 題`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
   }
 }
 
@@ -328,6 +377,7 @@ function renderQuiz() {
         STATE.answers[STATE.idx] = letter;
         // Record this attempt immediately (so the wrong-pool stays accurate even if user aborts)
         recordAttempt(q.id, letter === q.answer);
+        saveQuizState();
         renderQuiz();
       };
     }
@@ -373,11 +423,12 @@ function nextQ() {
     submitQuiz();
   } else {
     STATE.idx++;
+    saveQuizState();
     renderQuiz();
   }
 }
 function prevQ() {
-  if (STATE.idx > 0) { STATE.idx--; renderQuiz(); }
+  if (STATE.idx > 0) { STATE.idx--; saveQuizState(); renderQuiz(); }
 }
 
 function submitQuiz() {
@@ -391,6 +442,7 @@ function submitQuiz() {
   for (let i = 0; i < QUIZ_SIZE; i++) {
     if (STATE.answers[i] === STATE.questions[i].answer) correct++;
   }
+  clearQuizState();
   el('result-score').textContent = correct;
   el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${100-correct} 題`;
   show('page-results');
@@ -468,12 +520,15 @@ async function boot() {
   el('btn-next').onclick = nextQ;
   el('btn-abort').onclick = () => {
     if (confirm('放棄本次測驗並回首頁？')) {
+      clearQuizState();
       show('page-home');
       renderHome();
     }
   };
   el('btn-home').onclick = () => { show('page-home'); renderHome(); };
   el('btn-review-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-resume').onclick = () => { const s = loadSavedQuiz(); if (s) resumeQuiz(s); };
+  el('btn-discard').onclick = () => { clearQuizState(); el('resume-banner').classList.add('hidden'); };
   renderHome();
   show('page-home');
 }
