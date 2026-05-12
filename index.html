@@ -190,7 +190,8 @@
       <button class="btn" id="btn-next">下一題</button>
     </div>
     <div class="abort-row">
-      <button class="btn secondary" id="btn-abort">放棄並回首頁</button>
+      <button class="btn secondary" id="btn-save-home">儲存並回到首頁</button>
+      <button class="btn secondary" id="btn-abort" style="margin-top:8px;color:var(--bad);">放棄並回首頁</button>
     </div>
   </div>
 
@@ -518,8 +519,13 @@ async function boot() {
   };
   el('btn-prev').onclick = prevQ;
   el('btn-next').onclick = nextQ;
+  el('btn-save-home').onclick = () => {
+    saveQuizState();
+    show('page-home');
+    renderHome();
+  };
   el('btn-abort').onclick = () => {
-    if (confirm('放棄本次測驗並回首頁？')) {
+    if (confirm('放棄本次測驗並回首頁？（進度將清除）')) {
       clearQuizState();
       show('page-home');
       renderHome();
