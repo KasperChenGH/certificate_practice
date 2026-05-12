@@ -41,8 +41,36 @@ Don't open `index.html` directly — `fetch('questions.json')` needs an HTTP ori
 
 ## Files
 
-- `index.html` — UI + quiz/review logic (~18 KB)
-- `questions.json` — combined question bank for all three exams (~820 KB, UTF-8)
+```
+.
+├── index.html         UI + quiz/review logic (~18 KB)
+├── questions.json     combined question bank for all three exams (~820 KB, UTF-8)
+├── sources/           source PDFs used to generate questions.json (~6.5 MB)
+│   ├── futures_exam_dedup_answers.pdf
+│   ├── sfi_金融市場常識-113.pdf
+│   ├── sfi_職業道德-113.pdf
+│   └── sec/
+│       ├── 115Q1_投資學_試題.pdf
+│       ├── 115Q1_答案.pdf
+│       ├── 114Q3_投資學_試題.pdf
+│       └── 114Q3_答案.pdf
+└── scripts/
+    ├── build.py                 orchestrator — regenerates questions.json
+    ├── parse_bank.py            parses the SFI 金融市場常識 / 職業道德 banks
+    └── parse_sec.py             parses 證券高業 試題 + 答案 PDFs
+```
+
+## Rebuilding `questions.json`
+
+When SFI publishes a new exam session, drop the new PDFs into `sources/sec/` and re-run:
+
+```bash
+pip install pymupdf
+python scripts/build.py
+```
+
+This re-parses every source PDF, deduplicates, and overwrites `questions.json`. The
+script is deterministic — running it on unchanged inputs produces an identical file.
 
 ## Data sources
 

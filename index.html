@@ -78,6 +78,20 @@
   .option.wrong .letter { color: var(--bad); }
   .nav { display: flex; gap: 8px; margin-top: 16px; }
   .nav .btn { margin-bottom: 0; }
+  .abort-row { margin-top: 36px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .abort-row .btn { margin-bottom: 0; }
+  .feedback {
+    margin-top: 14px; padding: 10px 12px; border-radius: 8px;
+    font-size: 14px; line-height: 1.5;
+  }
+  .feedback.correct { background: #e6f4ea; color: var(--good); border-left: 4px solid var(--good); }
+  .feedback.wrong { background: #fbeaea; color: var(--bad); border-left: 4px solid var(--bad); }
+  .feedback .answer-text { color: var(--text); font-weight: 600; margin-top: 4px; }
+  @media (prefers-color-scheme: dark) {
+    .feedback.correct { background: #1e3a26; }
+    .feedback.wrong { background: #3a1e1e; }
+  }
+  .option.locked { cursor: default; }
   .result-summary {
     text-align: center; padding: 20px; background: var(--card);
     border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;
@@ -158,7 +172,9 @@
       <button class="btn secondary" id="btn-prev">上一題</button>
       <button class="btn" id="btn-next">下一題</button>
     </div>
-    <button class="btn secondary" id="btn-abort">放棄並回首頁</button>
+    <div class="abort-row">
+      <button class="btn secondary" id="btn-abort">放棄並回首頁</button>
+    </div>
   </div>
 
   <!-- RESULTS -->
@@ -168,8 +184,6 @@
       <div class="big"><span class="pct" id="result-score">0</span> / 100</div>
       <div class="meta" id="result-detail">—</div>
     </div>
-    <h2 id="result-heading">答錯題目</h2>
-    <div id="result-list"></div>
     <button class="btn" id="btn-home">回首頁</button>
   </div>
 
@@ -287,19 +301,43 @@ function startQuiz(topic) {
 }
 function renderQuiz() {
   const q = STATE.questions[STATE.idx];
+  const sel = STATE.answers[STATE.idx];
+  const locked = sel !== null;  // already answered → show feedback, no more clicks
   el('q-stem').textContent = `${STATE.idx+1}. ${q.stem}`;
   const oc = el('q-options');
   oc.innerHTML = '';
   for (const letter of ['A','B','C','D']) {
     const div = document.createElement('div');
     div.className = 'option';
-    if (STATE.answers[STATE.idx] === letter) div.classList.add('selected');
+    if (locked) {
+      div.classList.add('locked');
+      if (letter === q.answer) div.classList.add('correct');
+      else if (letter === sel) div.classList.add('wrong');
+    }
     div.innerHTML = `<span class="letter">(${letter})</span><span>${escapeHtml(q.options[letter] || '')}</span>`;
-    div.onclick = () => {
-      STATE.answers[STATE.idx] = letter;
-      renderQuiz();
-    };
+    if (!locked) {
+      div.onclick = () => {
+        STATE.answers[STATE.idx] = letter;
+        // Record this attempt immediately (so the wrong-pool stays accurate even if user aborts)
+        recordAttempt(q.id, letter === q.answer);
+        renderQuiz();
+      };
+    }
     oc.appendChild(div);
+  }
+  // Feedback block under options
+  const existing = document.querySelector('.feedback');
+  if (existing) existing.remove();
+  if (locked) {
+    const fb = document.createElement('div');
+    const ok = sel === q.answer;
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+    if (ok) {
+      fb.innerHTML = `✓ 答對了`;
+    } else {
+      fb.innerHTML = `✗ 答錯了<div class="answer-text">正解：(${q.answer}) ${escapeHtml(q.options[q.answer] || '')}</div>`;
+    }
+    el('q-options').parentElement.appendChild(fb);
   }
   el('progress-fill').style.width = ((STATE.idx+1)/QUIZ_SIZE * 100) + '%';
   el('quiz-counter').textContent = `${STATE.idx+1} / ${QUIZ_SIZE}`;
@@ -320,83 +358,19 @@ function prevQ() {
 }
 
 function submitQuiz() {
-  // Confirm if any unanswered
+  // Inline feedback was already shown after each answer; just compute & show score.
+  // (Attempts are already recorded immediately on selection — see renderQuiz.)
   const unanswered = STATE.answers.filter(a => a === null).length;
   if (unanswered > 0) {
     if (!confirm(`還有 ${unanswered} 題未作答，確定交卷？（未作答視為錯誤）`)) return;
   }
-  // Score & record
   let correct = 0;
-  const wrongList = [];
   for (let i = 0; i < QUIZ_SIZE; i++) {
-    const q = STATE.questions[i];
-    const sel = STATE.answers[i];
-    const isCorrect = sel === q.answer;
-    recordAttempt(q.id, isCorrect);
-    if (isCorrect) correct++;
-    else wrongList.push({ q, sel });
+    if (STATE.answers[i] === STATE.questions[i].answer) correct++;
   }
-  renderResults(correct, wrongList);
-  show('page-results');
-}
-
-function renderResults(correct, wrongList) {
   el('result-score').textContent = correct;
-  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　錯誤 ${100-correct} 題`;
-  const list = el('result-list');
-  list.innerHTML = '';
-  if (wrongList.length === 0) {
-    list.innerHTML = '<div class="empty-state">全對！👏</div>';
-    el('result-heading').textContent = '答錯題目';
-    return;
-  }
-  el('result-heading').textContent = `答錯題目（${wrongList.length}）`;
-  wrongList.forEach((item, i) => {
-    list.appendChild(buildResultEntry(i+1, item.q, item.sel));
-  });
-}
-
-function buildResultEntry(num, q, sel) {
-  const div = document.createElement('div');
-  div.className = 'result-q';
-  const stem = document.createElement('div');
-  stem.className = 'stem';
-  stem.textContent = `${num}. ${q.stem}`;
-  div.appendChild(stem);
-  for (const letter of ['A','B','C','D']) {
-    const line = document.createElement('div');
-    line.style.fontSize = '14px';
-    line.style.padding = '2px 0';
-    const isAns = letter === q.answer;
-    const isSel = letter === sel;
-    let marker = '　';
-    if (isAns) marker = '✓';
-    if (isSel && !isAns) marker = '✗';
-    line.innerHTML = `<span style="color:${isAns?'var(--good)':isSel?'var(--bad)':'var(--muted)'};font-weight:${isAns||isSel?'600':'400'}">${marker} (${letter}) ${escapeHtml(q.options[letter] || '')}</span>`;
-    div.appendChild(line);
-  }
-  const ans = document.createElement('div');
-  ans.className = 'answer-line';
-  ans.textContent = `正解：(${q.answer})`;
-  div.appendChild(ans);
-  if (sel) {
-    const w = document.createElement('div');
-    w.className = 'wrong-line';
-    w.textContent = `你的答案：(${sel})`;
-    div.appendChild(w);
-  } else {
-    const w = document.createElement('div');
-    w.className = 'wrong-line';
-    w.textContent = '（未作答）';
-    div.appendChild(w);
-  }
-  if (q.origin) {
-    const o = document.createElement('div');
-    o.className = 'origin';
-    o.textContent = `來源：${q.origin}`;
-    div.appendChild(o);
-  }
-  return div;
+  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${100-correct} 題`;
+  show('page-results');
 }
 
 // ------- review (often-wrong) -------
@@ -470,7 +444,7 @@ async function boot() {
   el('btn-prev').onclick = prevQ;
   el('btn-next').onclick = nextQ;
   el('btn-abort').onclick = () => {
-    if (confirm('放棄本次測驗？已作答的紀錄不會儲存。')) {
+    if (confirm('放棄本次測驗並回首頁？')) {
       show('page-home');
       renderHome();
     }
