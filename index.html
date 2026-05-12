@@ -87,9 +87,17 @@
   .feedback.correct { background: #e6f4ea; color: var(--good); border-left: 4px solid var(--good); }
   .feedback.wrong { background: #fbeaea; color: var(--bad); border-left: 4px solid var(--bad); }
   .feedback .answer-text { color: var(--text); font-weight: 600; margin-top: 4px; }
+  .expl-block { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.12); }
+  .expl-title { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .expl-item { font-size: 13px; line-height: 1.55; margin-bottom: 8px; color: var(--text); display: flex; gap: 6px; }
+  .expl-item:last-child { margin-bottom: 0; }
+  .expl-item .expl-letter { font-weight: 700; min-width: 26px; flex-shrink: 0; }
+  .expl-item.expl-correct .expl-letter { color: var(--good); }
+  .expl-item.expl-sel-wrong .expl-letter { color: var(--bad); }
   @media (prefers-color-scheme: dark) {
     .feedback.correct { background: #1e3a26; }
     .feedback.wrong { background: #3a1e1e; }
+    .expl-block { border-top-color: rgba(255,255,255,0.1); }
   }
   .option.locked { cursor: default; }
   .result-summary {
@@ -336,6 +344,21 @@ function renderQuiz() {
       fb.innerHTML = `✓ 答對了`;
     } else {
       fb.innerHTML = `✗ 答錯了<div class="answer-text">正解：(${q.answer}) ${escapeHtml(q.options[q.answer] || '')}</div>`;
+    }
+    if (q.explanations) {
+      const block = document.createElement('div');
+      block.className = 'expl-block';
+      block.innerHTML = '<div class="expl-title">解析</div>';
+      for (const letter of ['A','B','C','D']) {
+        const expl = q.explanations[letter];
+        if (!expl) continue;
+        const item = document.createElement('div');
+        item.className = 'expl-item' +
+          (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
+        item.innerHTML = `<span class="expl-letter">(${letter})</span><span>${escapeHtml(expl)}</span>`;
+        block.appendChild(item);
+      }
+      fb.appendChild(block);
     }
     el('q-options').parentElement.appendChild(fb);
   }
