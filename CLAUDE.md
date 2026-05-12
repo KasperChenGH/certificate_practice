@@ -70,15 +70,21 @@ _expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.p
 
 | Page       | Behaviour |
 |-----------|-----------|
-| Home      | Stats card (total attempts / accuracy / wrong-pool size). Pick topic → start 100-question quiz. |
-| Quiz      | Tap option → immediate locked feedback. Correct option goes green, wrong selection goes red. 解析 block shows per-option explanation for all 4 choices. Navigate with 上一題 / 下一題. Last question becomes 交卷. |
+| Home      | Stats card (total attempts / accuracy / wrong-pool size). Resume banner shown if a saved quiz exists. Pick topic → start 100-question quiz. |
+| Quiz      | Tap option → immediate locked feedback. Correct option goes green, wrong selection goes red. 解析 block shows per-option explanation for all 4 choices. Navigate with 上一題 / 下一題. Last question becomes 交卷. Bottom has 儲存並回到首頁 (saves progress, returns home) and 放棄並回首頁 (clears progress after confirm). |
 | Results   | Score out of 100, topic name, wrong count. 回首頁 button. |
 | Review    | 常錯題複習 — lists questions wrong ≥ 50% of last 10 attempts (min 3 attempts). Shows all options + correct answer + error ratio. |
 
 ## localStorage
 
-Key: `quiz_history_v1`. Schema: `{ [questionId]: { attempts: [true|false, ...] } }` (last 10 kept).
-Cleared via 清除作答紀錄 button on home page.
+| Key | Schema | Purpose |
+|-----|--------|---------|
+| `quiz_history_v1` | `{ [questionId]: { attempts: [true\|false, ...] } }` (last 10 kept) | Per-question attempt history; drives stats and often-wrong detection. Cleared via 清除作答紀錄. |
+| `quiz_state_v1` | `{ topic, questionIds[], answers[], idx }` | In-progress quiz snapshot. Saved after every answer and navigation. Cleared on submit or 放棄. |
+
+## Quiz resume flow
+
+State is auto-saved after every answer and navigation tap. To explicitly pause: tap **儲存並回到首頁** — goes home without touching state. On next visit a banner shows "繼續上次測驗 — [topic] 已作答 X / 100 題" with **繼續作答** and **捨棄** buttons.
 
 ## Constants (top of index.html `<script>`)
 
@@ -97,6 +103,7 @@ const WRONG_RATIO = 0.5;    // threshold: ≥50% wrong → often wrong
 4. UI refinements: abort button spacing, inline per-question correct-answer feedback, score-only results page.
 5. LLM-generated per-option explanations (Traditional Chinese) for all 2009 questions via parallel subagents; merged into questions.json.
 6. Updated quiz UI to display 解析 explanation block after every answered question.
+7. Quiz state persistence: auto-saved to localStorage after every answer/navigation; resume banner on home page; 儲存並回到首頁 button for explicit mid-quiz pause.
 
 ## Deployment
 
