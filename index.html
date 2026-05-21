@@ -235,6 +235,7 @@
     <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
     <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
 
+    <button class="btn" id="btn-study">Options Pricing Theory<div class="topic-meta">Self-study lessons</div></button>
     <button class="btn review" id="btn-review">常錯題複習</button>
     <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
 
@@ -280,6 +281,36 @@
     <p class="meta" id="review-meta">—</p>
     <div id="review-list"></div>
     <button class="btn" id="btn-review-home">回首頁</button>
+  </div>
+
+  <!-- STUDY: chapter list -->
+  <div id="page-study-list" class="hidden study">
+    <h1 id="study-title">—</h1>
+    <p class="meta" id="study-subtitle">—</p>
+    <div id="study-resume-banner" class="hidden card" style="border-left:4px solid var(--accent);margin-bottom:12px;">
+      <div style="font-weight:600;margin-bottom:4px;">Resume</div>
+      <div class="meta" id="study-resume-meta">—</div>
+      <button class="btn" id="btn-study-resume" style="margin-top:10px;margin-bottom:0;">Continue</button>
+    </div>
+    <div id="study-chapter-list"></div>
+    <button class="btn secondary" id="btn-study-home" style="margin-top:16px;">← Home</button>
+  </div>
+
+  <!-- STUDY: chapter view -->
+  <div id="page-study-chapter" class="hidden study">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="study-progress-fill"></div></div>
+      <div class="progress-label">
+        <span id="study-chapter-label">—</span>
+        <span id="study-chapter-counter">—</span>
+      </div>
+    </div>
+    <button class="btn secondary" id="btn-study-back" style="margin-bottom:12px;">← Chapters</button>
+    <div id="study-chapter-content" class="card"></div>
+    <div class="nav">
+      <button class="btn secondary" id="btn-study-prev">← Previous</button>
+      <button class="btn" id="btn-study-next">Next →</button>
+    </div>
   </div>
 
 </div>
