@@ -416,7 +416,21 @@ function preprocessStudyMarkdown(src) {
       } else if (kind === 'where') {
         out.push(`<div class="where">`);
         out.push(`<div class="where-label">where</div>`);
+        out.push(`<ul>`);
         stack.push({ kind: 'where' });
+      }
+      continue;
+    }
+
+    // Inside a where block: convert "- text" to <li>
+    if (stack.length && stack[stack.length - 1].kind === 'where') {
+      const li = line.match(/^-\s+(.*)/);
+      if (li) {
+        out.push(`<li>${li[1]}</li>`);
+      } else if (line.trim() === '') {
+        // skip blank lines inside where
+      } else {
+        out.push(line);
       }
       continue;
     }
@@ -438,6 +452,7 @@ function preprocessStudyMarkdown(src) {
       } else if (top.kind === 'solution') {
         out.push(`</div>`); // close .solution
       } else if (top.kind === 'where') {
+        out.push(`</ul>`);
         out.push(`</div>`); // close .where
       }
       continue;
