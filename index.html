@@ -358,6 +358,107 @@ function markChapterVisited(idx) {
   if (!s.visited.includes(idx)) s.visited.push(idx);
   saveStudyState(s);
 }
+// Preprocess study markdown: convert ::: problem [tag] / ::: solution / ::: where blocks
+// into HTML wrappers. Runs BEFORE marked.parse so inner markdown is still processed normally.
+// Block syntax:
+//   ::: problem [Derivation]      <- opens a problem block, tag inside [...]
+//   ...statement markdown...
+//   ::: solution                  <- nested solution block
+//   ...solution markdown...
+//   :::                           <- closes solution
+//   :::                           <- closes problem
+//   ::: where                     <- standalone block; body is a markdown list
+//   - $X$ — description
+//   :::
+function preprocessStudyMarkdown(src) {
+  const lines = src.split(/\r?\n/);
+  const out = [];
+  const stack = [];        // top of stack = current open block tag
+  let inFence = false;     // true while inside a ``` code fence
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Track fenced code blocks — ::: lines inside code fences are literal
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      out.push(line);
+      continue;
+    }
+    if (inFence) {
+      out.push(line);
+      continue;
+    }
+
+    // Block opener: ::: problem [...]  or  ::: solution  or  ::: where
+    const open = line.match(/^:::\s+(problem|solution|where)(?:\s*\[([^\]]*)\])?\s*$/);
+    if (open) {
+      const kind = open[1];
+      const tag = open[2] || '';
+      if (kind === 'problem') {
+        const safeTag = escapeStudyAttr(tag);
+        out.push(`<div class="problem">`);
+        out.push(`<div class="ptag">${safeTag}</div>`);
+        out.push(`<div class="problem-stmt">`);
+        stack.push({ kind: 'problem', hasSolution: false });
+      } else if (kind === 'solution') {
+        const top = stack[stack.length - 1];
+        if (!top || top.kind !== 'problem') {
+          console.warn('::: solution outside of ::: problem at line', i + 1);
+          out.push(line);
+          continue;
+        }
+        top.hasSolution = true;
+        out.push(`</div>`); // close problem-stmt
+        out.push(`<button class="reveal-btn" type="button">Show solution</button>`);
+        out.push(`<div class="solution">`);
+        stack.push({ kind: 'solution' });
+      } else if (kind === 'where') {
+        out.push(`<div class="where">`);
+        out.push(`<div class="where-label">where</div>`);
+        stack.push({ kind: 'where' });
+      }
+      continue;
+    }
+
+    // Block closer: bare :::
+    if (/^:::\s*$/.test(line)) {
+      const top = stack.pop();
+      if (!top) {
+        console.warn('Unmatched ::: at line', i + 1);
+        out.push(line);
+        continue;
+      }
+      if (top.kind === 'problem') {
+        // If no nested solution was opened, close problem-stmt too
+        if (!top.hasSolution) {
+          out.push(`</div>`); // close problem-stmt
+        }
+        out.push(`</div>`); // close .problem
+      } else if (top.kind === 'solution') {
+        out.push(`</div>`); // close .solution
+      } else if (top.kind === 'where') {
+        out.push(`</div>`); // close .where
+      }
+      continue;
+    }
+
+    out.push(line);
+  }
+
+  // Warn on unclosed blocks
+  while (stack.length) {
+    console.warn('Unclosed study block:', stack.pop().kind);
+  }
+
+  return out.join('\n');
+}
+
+function escapeStudyAttr(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
 function recordAttempt(qid, correct) {
   const h = loadHistory();
   const rec = h[qid] || { attempts: [] };
