@@ -142,6 +142,71 @@
     .option.wrong { background: #3a1e1e; }
     .btn.secondary { background: #3a3a3c; color: var(--text); }
   }
+
+  /* ===== Study section (Options Pricing Theory) ===== */
+  .study h1 { font-size: 24px; margin: 8px 0 16px; }
+  .study h2 { font-size: 19px; margin: 24px 0 8px; color: var(--accent); }
+  .study h3 { font-size: 16px; margin: 16px 0 6px; }
+  .study p, .study li { font-size: 15px; line-height: 1.65; }
+
+  .study .thm, .study .defn, .study .proof, .study .remark {
+    border-left: 4px solid var(--accent);
+    padding: 10px 14px; margin: 14px 0;
+    background: var(--card); border-radius: 4px 10px 10px 4px;
+  }
+  .study .thm::before { content: "Theorem"; font-weight: 700; color: var(--accent);
+                        display: block; font-size: 12px; letter-spacing: 0.5px; }
+  .study .defn::before { content: "Definition"; font-weight: 700; color: var(--accent);
+                         display: block; font-size: 12px; letter-spacing: 0.5px; }
+  .study .proof::before { content: "Proof"; font-weight: 700; color: var(--accent);
+                          display: block; font-size: 12px; letter-spacing: 0.5px; }
+  .study .remark { border-left-color: var(--muted); }
+  .study .remark::before { content: "Remark"; font-weight: 700; color: var(--muted);
+                           display: block; font-size: 12px; letter-spacing: 0.5px; }
+
+  .study .where {
+    background: rgba(30, 58, 95, 0.04);
+    border-left: 3px solid var(--accent);
+    padding: 8px 12px 8px 14px; margin: 6px 0 14px;
+    border-radius: 0 6px 6px 0;
+  }
+  .study .where .where-label {
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .study .where ul { margin: 0; padding-left: 18px; }
+  .study .where li { font-size: 14px; line-height: 1.55; margin-bottom: 2px; color: var(--text); }
+  .study .where li .katex { font-size: 1em; }
+
+  .study .problem { background: var(--card); border: 1px solid var(--border);
+                    border-radius: 10px; padding: 14px; margin: 14px 0; }
+  .study .problem .ptag { display: inline-block; font-size: 11px; font-weight: 700;
+                          color: var(--accent); letter-spacing: 0.5px;
+                          text-transform: uppercase; margin-bottom: 6px; }
+  .study .problem .solution { display: none; margin-top: 12px; padding-top: 12px;
+                              border-top: 1px solid var(--border); }
+  .study .problem.revealed .solution { display: block; }
+  .study .reveal-btn { background: transparent; color: var(--accent);
+                       border: 1px solid var(--accent); border-radius: 8px;
+                       padding: 8px 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .study .reveal-btn:active { background: rgba(30,58,95,0.08); }
+
+  .study .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+
+  .study-chapter-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 8px; cursor: pointer; font-size: 15px;
+  }
+  .study-chapter-row:active { background: #eef0f4; }
+  .study-chapter-row .num { color: var(--muted); font-weight: 600; min-width: 28px; }
+  .study-chapter-row .visited { color: var(--good); font-size: 16px; }
+
+  @media (prefers-color-scheme: dark) {
+    .study .where { background: rgba(110, 161, 216, 0.08); }
+    .study-chapter-row:active { background: #2a2a2c; }
+  }
 </style>
 </head>
 <body>
