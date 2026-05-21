@@ -862,6 +862,23 @@ async function boot() {
   el('btn-review-home').onclick = () => { show('page-home'); renderHome(); };
   el('btn-resume').onclick = () => { const s = loadSavedQuiz(); if (s) resumeQuiz(s); };
   el('btn-discard').onclick = () => { clearQuizState(); el('resume-banner').classList.add('hidden'); };
+
+  // Study section wiring
+  el('btn-study').onclick = openStudySection;
+  el('btn-study-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-study-back').onclick = () => { renderStudyList(); show('page-study-list'); };
+  el('btn-study-resume').onclick = () => {
+    const s = loadStudyState();
+    if (s.lastChapter !== null) openChapter(s.lastChapter);
+  };
+  el('btn-study-prev').onclick = () => {
+    const i = parseInt(el('btn-study-prev').dataset.idx, 10);
+    if (!isNaN(i) && i >= 0) openChapter(i);
+  };
+  el('btn-study-next').onclick = () => {
+    const i = parseInt(el('btn-study-next').dataset.idx, 10);
+    if (!isNaN(i) && STUDY_INDEX && i < STUDY_INDEX.chapters.length) openChapter(i);
+  };
   renderHome();
   show('page-home');
 }
