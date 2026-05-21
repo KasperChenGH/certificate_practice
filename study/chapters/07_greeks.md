@@ -1,4 +1,4 @@
-# Chapter 7 --- The Greeks
+# Chapter 7 — The Greeks
 
 In Chapter 6 we learned the Black-Scholes formula: given a stock price, strike, time to expiry, risk-free rate, and volatility, we can compute the fair price of a European option. But a price alone is not enough. Traders need to know **how that price changes** when market conditions shift. The *Greeks* answer exactly this question. Each Greek measures the sensitivity of the option price to one input variable, holding all others fixed.
 
@@ -7,11 +7,11 @@ Throughout this chapter we use a single **running example**:
 $$S = 100, \quad K = 100, \quad T = 0.25, \quad r = 0.05, \quad \sigma = 0.20$$
 
 ::: where
-- $S$ --- current stock price
-- $K$ --- strike price
-- $T$ --- time to expiry in years (here 3 months)
-- $r$ --- continuously compounded risk-free rate (annualized)
-- $\sigma$ --- volatility of the underlying (annualized)
+- $S$ — current stock price
+- $K$ — strike price
+- $T$ — time to expiry in years (here 3 months)
+- $r$ — continuously compounded risk-free rate (annualized)
+- $\sigma$ — volatility of the underlying (annualized)
 :::
 
 First we compute the quantities every Greek depends on:
@@ -21,7 +21,7 @@ $$d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma\sqrt{T}} = \frac{\ln(1) + (0.
 $$d_2 = d_1 - \sigma\sqrt{T} = 0.175 - 0.10 = 0.075$$
 
 ::: where
-- $d_1, d_2$ --- standardized log-moneyness measures from the Black-Scholes formula
+- $d_1, d_2$ — standardized log-moneyness measures from the Black-Scholes formula
 :::
 
 We also need the standard normal PDF evaluated at $d_1$:
@@ -29,13 +29,13 @@ We also need the standard normal PDF evaluated at $d_1$:
 $$\varphi(d_1) = \frac{1}{\sqrt{2\pi}} e^{-d_1^2/2} = \frac{1}{\sqrt{2\pi}} e^{-0.175^2/2} = \frac{1}{2.5066} \times e^{-0.01531} \approx 0.3989 \times 0.9848 \approx 0.3928$$
 
 ::: where
-- $\varphi(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$ --- standard normal probability density function (PDF)
+- $\varphi(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$ — standard normal probability density function (PDF)
 :::
 
 And the CDF values: $N(d_1) = N(0.175) \approx 0.5694$ and $N(d_2) = N(0.075) \approx 0.5299$.
 
 ::: where
-- $N(x)$ --- cumulative distribution function (CDF) of the standard normal distribution
+- $N(x)$ — cumulative distribution function (CDF) of the standard normal distribution
 :::
 
 ---
@@ -47,17 +47,17 @@ And the CDF values: $N(d_1) = N(0.175) \approx 0.5694$ and $N(d_2) = N(0.075) \a
 $$\Delta_C = N(d_1), \qquad \Delta_P = N(d_1) - 1$$
 
 ::: where
-- $\Delta_C$ --- delta of a European call
-- $\Delta_P$ --- delta of a European put
-- $N(d_1)$ --- CDF of the standard normal evaluated at $d_1$
+- $\Delta_C$ — delta of a European call
+- $\Delta_P$ — delta of a European put
+- $N(d_1)$ — CDF of the standard normal evaluated at $d_1$
 :::
 
-**Intuition.** If $\Delta_C = 0.57$, then when the stock rises by \$1, the call price rises by about \$0.57. Delta tells you the option's *effective stock exposure*. A call with $\Delta = 0.57$ behaves like holding 0.57 shares --- at least for small moves.
+**Intuition.** If $\Delta_C = 0.57$, then when the stock rises by \$1, the call price rises by about \$0.57. Delta tells you the option's *effective stock exposure*. A call with $\Delta = 0.57$ behaves like holding 0.57 shares — at least for small moves.
 
 **Key properties:**
 - Call delta is always between 0 and 1. Put delta is always between $-1$ and 0.
 - An at-the-money (ATM) call has $\Delta \approx 0.5$; a deep in-the-money (ITM) call has $\Delta \to 1$; a deep out-of-the-money (OTM) call has $\Delta \to 0$.
-- Delta also roughly equals the probability (under the risk-neutral measure) that the option finishes in the money --- a useful mental shortcut.
+- Delta also roughly equals the probability (under the risk-neutral measure) that the option finishes in the money — a useful mental shortcut.
 
 **Hedge ratio.** To *delta-hedge* a long call position, you short $\Delta$ shares of stock per option. This makes your portfolio insensitive to small stock moves. If you own 100 calls with $\Delta = 0.57$, you short $100 \times 0.57 = 57$ shares.
 
@@ -78,20 +78,20 @@ The ATM call delta is about 0.57: a \$1 stock move changes the call value by rou
 $$\Gamma = \frac{\varphi(d_1)}{S \sigma \sqrt{T}}$$
 
 ::: where
-- $\Gamma$ --- gamma, the rate of change of delta with respect to stock price
-- $\varphi(d_1)$ --- standard normal PDF evaluated at $d_1$
-- $S$ --- current stock price
-- $\sigma$ --- volatility (annualized)
-- $T$ --- time to expiry in years
+- $\Gamma$ — gamma, the rate of change of delta with respect to stock price
+- $\varphi(d_1)$ — standard normal PDF evaluated at $d_1$
+- $S$ — current stock price
+- $\sigma$ — volatility (annualized)
+- $T$ — time to expiry in years
 :::
 
-**Intuition.** Gamma is the *curvature* of the option price curve. A high gamma means delta changes rapidly --- the option's payoff is very nonlinear. A straight line (like a stock) has zero gamma; a curved payoff (like an option near the strike) has high gamma.
+**Intuition.** Gamma is the *curvature* of the option price curve. A high gamma means delta changes rapidly — the option's payoff is very nonlinear. A straight line (like a stock) has zero gamma; a curved payoff (like an option near the strike) has high gamma.
 
 **Key properties:**
 - Gamma is the same for calls and puts (with the same $S, K, T, r, \sigma$).
 - Gamma is highest for ATM options and near-expiry options. Deep ITM and deep OTM options have low gamma because their deltas are already near their extreme values.
-- Long options always have positive gamma. This means you *benefit* from big moves in either direction --- your delta automatically adjusts in your favor.
-- Short options have negative gamma --- big moves hurt you.
+- Long options always have positive gamma. This means you *benefit* from big moves in either direction — your delta automatically adjusts in your favor.
+- Short options have negative gamma — big moves hurt you.
 
 **Worked example.**
 
@@ -107,25 +107,25 @@ This means if the stock moves from \$100 to \$101, the call delta changes from a
 
 $$\Theta_C = -\frac{S \varphi(d_1) \sigma}{2\sqrt{T}} - r K e^{-rT} N(d_2)$$
 
-$$\Theta_P = -\frac{S \varphi(d_1) \sigma}{2\sqrt{T}} + r K e^{-rT} N(1 - d_2)$$
+$$\Theta_P = -\frac{S \varphi(d_1) \sigma}{2\sqrt{T}} + r K e^{-rT} N(-d_2)$$
 
 ::: where
-- $\Theta_C$ --- theta of a European call (change in call price per year of time passing)
-- $\Theta_P$ --- theta of a European put
-- $S$ --- current stock price
-- $\varphi(d_1)$ --- standard normal PDF evaluated at $d_1$
-- $\sigma$ --- volatility (annualized)
-- $T$ --- time to expiry in years
-- $r$ --- risk-free rate (annualized, continuously compounded)
-- $K$ --- strike price
-- $N(d_2)$ --- CDF of the standard normal evaluated at $d_2$
+- $\Theta_C$ — theta of a European call (change in call price per year of time passing)
+- $\Theta_P$ — theta of a European put
+- $S$ — current stock price
+- $\varphi(d_1)$ — standard normal PDF evaluated at $d_1$
+- $\sigma$ — volatility (annualized)
+- $T$ — time to expiry in years
+- $r$ — risk-free rate (annualized, continuously compounded)
+- $K$ — strike price
+- $N(d_2)$ — CDF of the standard normal evaluated at $d_2$
 :::
 
 **Intuition.** Options are wasting assets. Every day that passes without a stock move, the option loses a bit of value because there is less time for a favorable move to occur. Theta quantifies this bleed. You can think of it as the "daily rental cost" of holding an option.
 
 **Key properties:**
 - Theta is usually negative for long calls and long puts (you lose value each day).
-- Time decay accelerates as expiry approaches --- theta is most negative for ATM, near-expiry options.
+- Time decay accelerates as expiry approaches — theta is most negative for ATM, near-expiry options.
 - The relationship between theta and gamma is deep: positive gamma costs negative theta. We will explore this in Chapter 8.
 
 **Worked example.** Computing the annualized theta for the call:
@@ -151,10 +151,10 @@ The ATM call loses about **\$0.029 per day** (roughly 3 cents) to time decay.
 $$\nu = S \varphi(d_1) \sqrt{T}$$
 
 ::: where
-- $\nu$ --- vega, sensitivity of option price to changes in implied volatility
-- $S$ --- current stock price
-- $\varphi(d_1)$ --- standard normal PDF evaluated at $d_1$
-- $T$ --- time to expiry in years
+- $\nu$ — vega, sensitivity of option price to changes in implied volatility
+- $S$ — current stock price
+- $\varphi(d_1)$ — standard normal PDF evaluated at $d_1$
+- $T$ — time to expiry in years
 :::
 
 **Intuition.** Higher volatility means bigger expected moves, which makes options more valuable (both calls and puts). Vega tells you how much you gain or lose when the market's volatility expectation shifts. If $\nu = 19.64$, then a 1-percentage-point increase in implied vol (say from 20% to 21%) raises the option price by about \$0.1964.
@@ -163,7 +163,7 @@ $$\nu = S \varphi(d_1) \sqrt{T}$$
 - Vega is always positive for long options (both calls and puts). Higher vol = more expensive options.
 - Vega is the same for calls and puts with the same parameters.
 - Vega is highest for ATM, longer-dated options. Near-expiry ATM options have high gamma but low vega; longer-dated ATM options have the reverse.
-- Technically, "vega" is not a Greek letter --- but it is universally called a "Greek" in practice.
+- Technically, "vega" is not a Greek letter — but it is universally called a "Greek" in practice.
 
 **Worked example.**
 
@@ -180,15 +180,15 @@ If implied vol rises from 20% to 21% (a change of 0.01), the option price increa
 $$\rho_C = K T e^{-rT} N(d_2), \qquad \rho_P = -K T e^{-rT} N(-d_2)$$
 
 ::: where
-- $\rho_C$ --- rho of a European call
-- $\rho_P$ --- rho of a European put
-- $K$ --- strike price
-- $T$ --- time to expiry in years
-- $r$ --- risk-free rate (annualized, continuously compounded)
-- $N(d_2)$ --- CDF of the standard normal evaluated at $d_2$
+- $\rho_C$ — rho of a European call
+- $\rho_P$ — rho of a European put
+- $K$ — strike price
+- $T$ — time to expiry in years
+- $r$ — risk-free rate (annualized, continuously compounded)
+- $N(d_2)$ — CDF of the standard normal evaluated at $d_2$
 :::
 
-**Intuition.** A higher interest rate reduces the present value of the strike you pay at expiry, making calls more valuable (you effectively pay less in today's dollars) and puts less valuable. For most short-dated equity options, rho is the smallest Greek --- interest rates don't move much day to day. It matters more for long-dated options (LEAPS) or in environments with volatile rates.
+**Intuition.** A higher interest rate reduces the present value of the strike you pay at expiry, making calls more valuable (you effectively pay less in today's dollars) and puts less valuable. For most short-dated equity options, rho is the smallest Greek — interest rates don't move much day to day. It matters more for long-dated options (LEAPS) or in environments with volatile rates.
 
 **Worked example.**
 
@@ -212,7 +212,7 @@ Collecting all results for our ATM call ($S=100, K=100, T=0.25, r=0.05, \sigma=0
 
 **Practical takeaways:**
 - **Delta** tells you your directional exposure.
-- **Gamma** tells you how that exposure changes --- it's the source of option "convexity."
+- **Gamma** tells you how that exposure changes — it's the source of option "convexity."
 - **Theta** is the cost of holding that convexity.
 - **Vega** is your exposure to changes in market fear/uncertainty.
 - **Rho** usually matters least, except for long-dated options.
