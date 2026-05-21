@@ -1,313 +1,210 @@
-# Chapter 4 — No-Arbitrage and Replication
+# Chapter 4 — No-Arbitrage Pricing
 
-## Goals
+## 4.1 The No-Arbitrage Principle
 
-- Set up the continuous-time market model (riskless bond and risky stock).
-- Define self-financing trading strategies and arbitrage.
-- State the First Fundamental Theorem of Asset Pricing (FTAP).
-- Construct the risk-neutral measure $\mathbb{Q}$ for the Black-Scholes market using Girsanov's theorem (Ch. 3).
-- State the risk-neutral pricing principle and show how it prices attainable European claims.
+The most powerful idea in financial pricing is deceptively simple: **you cannot make risk-free profit from nothing.** If a strategy requires zero upfront investment and has no chance of losing money, then it cannot have any chance of making money either. If it did, every rational trader would pile in, and prices would adjust until the opportunity vanished.
 
-## Prerequisites
+This has a direct consequence for pricing:
 
-- **Ch. 1** — notation: probability space $(\Omega, \mathcal{F}, \mathbb{P})$, filtration $\{\mathcal{F}_t\}$, adapted processes, conditional expectation.
-- **Ch. 3** — stochastic calculus: Itô's formula, geometric Brownian motion (GBM), Girsanov's theorem (change of measure, Radon-Nikodym derivative, new Brownian motion under $\mathbb{Q}$).
+> **Law of One Price.** If two portfolios produce the exact same payoff in every possible future state of the world, they must have the same price today.
 
----
+If Portfolio A cost less than Portfolio B but paid the same thing tomorrow, you could buy A, sell B, pocket the difference, and face zero risk. That is an arbitrage — and we assume the market eliminates it.
 
-## Market model
+Think of it like two vending machines side by side, both dispensing the same can of soda. If one charges \$1.00 and the other \$0.80, everyone buys from the cheaper one until prices equalize.
 
-We work on a filtered probability space $(\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{0 \le t \le T}, \mathbb{P})$ satisfying the usual conditions, over a fixed horizon $T > 0$.
 
-**Riskless bond.** The bond price process $B_t$ evolves deterministically:
+## 4.2 Replication
 
-$$B_0 = 1, \qquad dB_t = r\, B_t\, dt, \qquad \text{so} \qquad B_t = e^{rt}.$$
+The law of one price gives us a pricing method: **replication.** If we can build a portfolio of simpler instruments (stocks, bonds) that exactly copies the payoff of an option, then the option's fair price equals the cost of that replicating portfolio.
 
-::: where
-- $r \ge 0$ is the constant continuously-compounded risk-free interest rate.
-- $B_t$ is $\mathcal{F}_t$-adapted (in fact deterministic).
-:::
+This is the logic behind virtually every option pricing formula. We never need to guess how likely the stock is to go up or down. We just need to find the recipe — how many shares of stock and how much borrowing reproduces the option's payoff — and then read off the cost.
 
-**Risky stock.** Under the real-world measure $\mathbb{P}$, the stock price follows geometric Brownian motion:
 
-$$dS_t = \mu\, S_t\, dt + \sigma\, S_t\, dW_t, \qquad S_0 > 0.$$
+## 4.3 The Risk-Neutral Idea
+
+When you price an option by replication, something remarkable happens: **the stock's expected return $\mu$ drops out of the formula.** Two traders who completely disagree on where the stock is heading will still agree on the option price, because the price is pinned down by hedging, not by a directional bet.
+
+This leads to a convenient shortcut called **risk-neutral pricing:**
+
+> In a hypothetical "risk-neutral world," every asset earns the risk-free rate $r$ on average. The option price equals the **discounted expected payoff**, where the expectation is computed in this risk-neutral world.
+
+$$V_0 = e^{-rT}\, \mathbb{E}^Q\!\big[\text{payoff at time } T\big]$$
 
 ::: where
-- $\mu \in \mathbb{R}$ is the constant drift (expected return per unit time).
-- $\sigma > 0$ is the constant volatility.
-- $W_t$ is a standard Brownian motion on $(\Omega, \mathcal{F}, \mathbb{P})$, generating $\{\mathcal{F}_t\}$.
+- $V_0$ — the option's price today
+- $r$ — the continuously compounded risk-free interest rate (annualized)
+- $T$ — time to expiration (in years)
+- $e^{-rT}$ — the discount factor, converting a future dollar back to today
+- $\mathbb{E}^Q[\cdot]$ — the expected value computed under risk-neutral probabilities (not real-world probabilities)
 :::
 
-Both $B_t$ and $S_t$ are adapted to the filtration $\{\mathcal{F}_t\}$. The filtration represents the information available to investors at each time.
+**Why does this work?** Because the option seller can delta-hedge — continuously adjusting a stock position to offset the option's risk. Once the directional risk is hedged away, the remaining portfolio is risk-free and must earn rate $r$. So the option's value is determined as if the world were risk-neutral.
 
----
+**Key insight:** $\mu$ (the stock's real-world expected return) never appears in option pricing formulas. Only $\sigma$ (volatility) matters, because that is what the hedger cannot eliminate.
 
-## Portfolio and self-financing
 
-### Definition
+## 4.4 One-Period Binomial Model
 
-A *portfolio* is a pair of $\{\mathcal{F}_t\}$-adapted processes $(\phi_t, \psi_t)$, where $\phi_t$ is the number of shares of stock held at time $t$ and $\psi_t$ is the number of units of bond held at time $t$. The *portfolio value* is:
+Let us make this concrete with the simplest possible model.
 
-$$V_t = \phi_t\, S_t + \psi_t\, B_t.$$
+**Setup.** A stock trades at $S_0$ today. Over one period, it either goes **up** by factor $u$ to $uS_0$, or **down** by factor $d$ to $dS_0$. A risk-free bond earns gross return $R = e^{r\Delta t}$ per period.
+
+We want to price a European call with strike $K$ and one period to expiry.
+
+### Step 1 — Risk-neutral probabilities
+
+We find the probability $p$ that makes the stock's expected return equal to the risk-free rate:
+
+$$p = \frac{R - d}{u - d}$$
 
 ::: where
-- $\phi_t$ — units of stock (may be negative, allowing short-selling).
-- $\psi_t$ — units of bond (may be negative, allowing borrowing).
-- $V_t$ — total wealth at time $t$.
+- $p$ — the risk-neutral probability of the "up" move
+- $R$ — the gross risk-free return over one period, $R = e^{r\Delta t}$
+- $u$ — the up factor ($u > 1$)
+- $d$ — the down factor ($d < 1$)
+- $r$ — the risk-free rate (annualized, continuously compounded)
+- $\Delta t$ — the length of one period in years
 :::
 
-### Definition (self-financing)
+For this to make sense, we need $d < R < u$; otherwise there would be an arbitrage between the stock and the bond.
 
-A portfolio $(\phi_t, \psi_t)$ is *self-financing* if changes in portfolio value arise only from changes in asset prices — not from external cash flows:
+### Step 2 — Option payoffs
 
-$$dV_t = \phi_t\, dS_t + \psi_t\, dB_t.$$
+At expiry, the call pays:
+
+- **Up state:** $C_u = \max(uS_0 - K,\; 0)$
+- **Down state:** $C_d = \max(dS_0 - K,\; 0)$
+
+### Step 3 — Discounted expected payoff
+
+$$C_0 = \frac{1}{R}\big[p\, C_u + (1 - p)\, C_d\big]$$
 
 ::: where
-- $dS_t$ — instantaneous change in stock price.
-- $dB_t = r B_t\, dt$ — instantaneous change in bond price.
-- The absence of additional terms means no cash is injected or withdrawn.
+- $C_0$ — today's call price
+- $C_u$ — the call's payoff in the up state
+- $C_d$ — the call's payoff in the down state
+- $p$ — the risk-neutral probability of the up move
+- $R$ — the gross risk-free return, $R = e^{r \Delta t}$
 :::
 
-### Remark
+### Worked Example
 
-The self-financing condition rules out external cash injections or withdrawals: any rebalancing of the portfolio — shifting wealth between stock and bond — must be financed internally by selling one asset to buy another. This is the natural constraint for a *trading strategy* that operates without outside funding.
+Suppose $S_0 = 100$, $u = 1.10$, $d = 0.95$, $R = 1.02$, and $K = 100$.
 
----
+**Risk-neutral probability:**
 
-## Arbitrage
+$$p = \frac{1.02 - 0.95}{1.10 - 0.95} = \frac{0.07}{0.15} = 0.4667$$
 
-### Definition
+**Payoffs:**
 
-An *arbitrage* is a self-financing portfolio $(\phi_t, \psi_t)$ with initial value $V_0 = 0$ such that:
+- Up: $C_u = \max(110 - 100, 0) = 10$
+- Down: $C_d = \max(95 - 100, 0) = 0$
 
-$$V_T \ge 0 \quad \mathbb{P}\text{-a.s.}, \qquad \text{and} \qquad \mathbb{P}(V_T > 0) > 0.$$
+**Call price:**
+
+$$C_0 = \frac{1}{1.02}\big[0.4667 \times 10 + 0.5333 \times 0\big] = \frac{4.667}{1.02} = 4.575$$
+
+### Step 4 — Verify with the replicating portfolio
+
+We can independently confirm this by building a portfolio of $\Delta$ shares of stock and $B$ dollars in the bond that matches the option payoff in both states:
+
+$$\Delta = \frac{C_u - C_d}{(u - d)\,S_0} = \frac{10 - 0}{(1.10 - 0.95)\times 100} = \frac{10}{15} = 0.6667$$
+
+$$B = \frac{1}{R}\,\frac{u\, C_d - d\, C_u}{u - d} = \frac{1}{1.02}\,\frac{1.10 \times 0 - 0.95 \times 10}{0.15} = \frac{-9.5}{0.153} = -62.09$$
 
 ::: where
-- $V_0 = 0$ — the strategy requires zero initial investment.
-- $V_T \ge 0$ a.s. — there is no risk of loss.
-- $\mathbb{P}(V_T > 0) > 0$ — there is a strictly positive probability of profit.
+- $\Delta$ — number of shares in the replicating portfolio (the hedge ratio)
+- $B$ — dollar amount invested in the risk-free bond (negative means borrowing)
 :::
 
-### Remark
+Portfolio cost today: $\Delta \times S_0 + B = 0.6667 \times 100 + (-62.09) = 4.58$. This matches our risk-neutral price (small rounding aside), confirming no-arbitrage consistency.
 
-An arbitrage is a *free lunch*: starting with nothing, the investor is guaranteed not to lose money and has a genuine chance of making a profit. In liquid, well-functioning markets, such opportunities are eliminated near-instantaneously by the actions of rational traders. The assumption of *no arbitrage* (NA) is the foundational no-free-lunch hypothesis of modern mathematical finance.
 
----
+## 4.5 Multi-Period Binomial Trees
 
-## Risk-neutral measure
+The one-period model extends naturally. At each node, the stock branches into an up and a down move. We work **backwards** from expiry:
 
-### Definition
+1. Compute option payoffs at all terminal nodes.
+2. At each earlier node, apply the one-period formula: $V = \frac{1}{R}[p\,V_u + (1-p)\,V_d]$.
+3. Roll back to time zero.
 
-A probability measure $\mathbb{Q}$ on $(\Omega, \mathcal{F}_T)$ is called an *equivalent martingale measure* (EMM), or *risk-neutral measure*, if:
+With $n$ periods, the terminal stock prices form a **recombining tree** — an up followed by a down gives the same price as a down followed by an up ($udS = duS$). This keeps the tree manageable: $n+1$ terminal nodes instead of $2^n$.
 
-1. **Equivalence:** $\mathbb{Q} \sim \mathbb{P}$ on $\mathcal{F}_T$ — they are mutually absolutely continuous (same null sets).
-2. **Martingale property:** The discounted stock price $\tilde{S}_t = e^{-rt} S_t$ is a $\mathbb{Q}$-martingale.
+**Connection to Black-Scholes.** As we increase the number of steps $n$ and shrink $\Delta t$ so that the tree's volatility matches $\sigma$, the binomial price converges to the Black-Scholes formula. The discrete hedging strategy becomes continuous delta hedging. This is one of the most elegant limit results in finance — the simple coin-flip model, repeated fast enough, reproduces the continuous-time answer.
 
-::: where
-- $\mathbb{Q} \sim \mathbb{P}$ means $\mathbb{Q}(A) = 0 \iff \mathbb{P}(A) = 0$ for all $A \in \mathcal{F}_T$.
-- $\tilde{S}_t = e^{-rt} S_t$ is the stock price denominated in units of the bond (discounted).
-- $\mathbb{Q}$-martingale means $\mathbb{E}^{\mathbb{Q}}[\tilde{S}_t \mid \mathcal{F}_s] = \tilde{S}_s$ for all $0 \le s \le t \le T$.
-:::
 
-### Remark
+## 4.6 Why It All Works — Delta Hedging
 
-The equivalence condition is not merely technical: if $\mathbb{Q}$ were only absolutely continuous with respect to $\mathbb{P}$ (one-way), then $\mathbb{Q}$ could assign zero probability to events that $\mathbb{P}$ considers possible — effectively ignoring scenarios the market deems realistic. Equivalence ensures both measures agree on which events are genuinely possible. The martingale property means that, under $\mathbb{Q}$, discounted asset prices have no expected drift — investors are compensated only the risk-free rate.
+The deep reason no-arbitrage pricing works is **dynamic hedging.** The option seller does not simply sell and hope. At each instant (or each step in the tree), the seller holds $\Delta$ shares of stock, perfectly offsetting the option's sensitivity to stock moves. Because the directional risk is hedged away:
 
----
+- The portfolio earns the risk-free rate.
+- The option's fair value is determined by $\sigma$, not $\mu$.
+- Two traders with opposite views on the market direction agree on the option price.
 
-## First Fundamental Theorem of Asset Pricing
+Hedging is never perfect in practice — volatility changes, stocks jump, and trading is discrete — but the no-arbitrage framework gives us the theoretical benchmark that all real-world pricing is built upon.
 
-### Theorem (FTAP, stated)
-
-In the Black-Scholes market (and more generally under mild technical conditions), the following are equivalent:
-
-1. The market admits *no arbitrage*.
-2. There exists an *equivalent martingale measure* $\mathbb{Q} \sim \mathbb{P}$.
-
-For the general semimartingale setting, the precise statement (No Free Lunch with Vanishing Risk $\iff$ existence of EMM) is due to Delbaen and Schachermayer (1994).
-
-### Remark
-
-We will not prove the FTAP in full generality here. Instead, we will *construct* the EMM explicitly for the Black-Scholes market using Girsanov's theorem (Ch. 3). This construction simultaneously establishes the existence direction of the FTAP and gives us the concrete tool needed for option pricing. The key insight is that eliminating the drift of $\tilde{S}_t$ under a new measure is precisely what Girsanov achieves.
-
----
-
-## Construction of $\mathbb{Q}$ for the BSM market
-
-To make $\tilde{S}_t = e^{-rt} S_t$ a martingale, we need to remove its drift. Under $\mathbb{P}$, applying Itô's formula to $\tilde{S}_t = e^{-rt} S_t$:
-
-$$d\tilde{S}_t = (\mu - r)\tilde{S}_t\, dt + \sigma\tilde{S}_t\, dW_t.$$
-
-The drift $(\mu - r)$ must be killed. Girsanov's theorem achieves this by shifting the Brownian motion.
-
-**Market price of risk.** Define:
-
-$$\theta = \frac{\mu - r}{\sigma}.$$
-
-::: where
-- $\theta$ is called the *market price of risk* (or Sharpe ratio of the stock): the excess return per unit of volatility.
-- $\mu - r$ is the excess return above the risk-free rate.
-- $\sigma > 0$ is the volatility (assumed non-zero, so $\theta$ is well-defined).
-:::
-
-**Girsanov change of measure.** Define the Radon-Nikodym derivative:
-
-$$Z_T = \frac{d\mathbb{Q}}{d\mathbb{P}}\bigg|_{\mathcal{F}_T} = \exp\!\left(-\theta W_T - \tfrac{1}{2}\theta^2 T\right).$$
-
-Since $\theta$ is constant, the Novikov condition $\mathbb{E}^{\mathbb{P}}[\exp(\tfrac{1}{2}\theta^2 T)] < \infty$ is satisfied, so $Z_T$ is a valid Radon-Nikodym derivative ($\mathbb{E}^{\mathbb{P}}[Z_T] = 1$). By Girsanov's theorem,
-
-$$\tilde{W}_t = W_t + \theta\, t$$
-
-is a standard Brownian motion under $\mathbb{Q}$.
-
-::: where
-- $Z_T > 0$ a.s. under $\mathbb{P}$, guaranteeing $\mathbb{Q} \sim \mathbb{P}$.
-- $\tilde{W}_t$ is $\mathbb{Q}$-Brownian motion; it replaces $W_t$ in all subsequent calculations under $\mathbb{Q}$.
-- The exponent $-\theta W_T - \tfrac{1}{2}\theta^2 T$ is the Doléans-Dade exponential of the process $-\theta W_t$.
-:::
-
-### Theorem
-
-Under $\mathbb{Q}$, the stock price satisfies:
-
-$$dS_t = r\, S_t\, dt + \sigma\, S_t\, d\tilde{W}_t.$$
-
-::: where
-- The drift changes from $\mu$ (under $\mathbb{P}$) to $r$ (under $\mathbb{Q}$): the risk-neutral drift equals the risk-free rate.
-- $\tilde{W}_t$ is standard Brownian motion under $\mathbb{Q}$.
-- Volatility $\sigma$ is unchanged by the measure change — a key feature of Girsanov.
-:::
-
-### Proof
-
-Substitute $dW_t = d\tilde{W}_t - \theta\, dt$ into the $\mathbb{P}$-SDE for $S_t$:
-
-$$dS_t = \mu\, S_t\, dt + \sigma\, S_t\, dW_t = \mu\, S_t\, dt + \sigma\, S_t\,(d\tilde{W}_t - \theta\, dt) = (\mu - \sigma\theta)\, S_t\, dt + \sigma\, S_t\, d\tilde{W}_t.$$
-
-Since $\sigma\theta = \sigma \cdot \dfrac{\mu - r}{\sigma} = \mu - r$, the drift becomes:
-
-$$\mu - \sigma\theta = \mu - (\mu - r) = r. \qquad \square$$
-
-### Corollary
-
-The discounted stock price $\tilde{S}_t = e^{-rt} S_t$ satisfies:
-
-$$d\tilde{S}_t = \sigma\, \tilde{S}_t\, d\tilde{W}_t.$$
-
-It is driftless under $\mathbb{Q}$, hence a $\mathbb{Q}$-martingale, confirming that $\mathbb{Q}$ is an EMM.
-
-### Proof
-
-Apply Itô's formula to $f(t, S) = e^{-rt} S$. The partial derivatives are $\partial_t f = -r e^{-rt} S$, $\partial_S f = e^{-rt}$, $\partial_{SS} f = 0$. Therefore:
-
-$$d\tilde{S}_t = \partial_t f\, dt + \partial_S f\, dS_t + \tfrac{1}{2}\partial_{SS} f\,(dS_t)^2 = -r e^{-rt} S_t\, dt + e^{-rt}\, dS_t.$$
-
-Substituting the $\mathbb{Q}$-SDE $dS_t = r S_t\, dt + \sigma S_t\, d\tilde{W}_t$:
-
-$$d\tilde{S}_t = -r\tilde{S}_t\, dt + e^{-rt}(r S_t\, dt + \sigma S_t\, d\tilde{W}_t) = -r\tilde{S}_t\, dt + r\tilde{S}_t\, dt + \sigma\tilde{S}_t\, d\tilde{W}_t = \sigma\tilde{S}_t\, d\tilde{W}_t.$$
-
-::: where
-- The $dt$ terms cancel exactly: $-r\tilde{S}_t\, dt + r\tilde{S}_t\, dt = 0$.
-- The result $d\tilde{S}_t = \sigma \tilde{S}_t\, d\tilde{W}_t$ has no drift term — $\tilde{S}_t$ is a local martingale under $\mathbb{Q}$.
-- Since the diffusion coefficient $\sigma \tilde{S}_t$ is square-integrable on $[0, T]$ (as $\tilde{S}_t$ is log-normal with bounded moments), $\tilde{S}_t$ is a true $\mathbb{Q}$-martingale. $\square$
-:::
-
----
-
-## Risk-neutral pricing principle
-
-### Theorem (Pricing)
-
-Any attainable European claim with payoff $f(S_T)$ at time $T$ has time-$t$ value:
-
-$$V_t = e^{-r(T - t)}\, \mathbb{E}^{\mathbb{Q}}\!\big[f(S_T) \,\big|\, \mathcal{F}_t\big].$$
-
-::: where
-- $f(S_T)$ — the payoff function (e.g., $(S_T - K)^+$ for a European call).
-- $e^{-r(T-t)}$ — discount factor from $T$ back to $t$ at the risk-free rate.
-- $\mathbb{E}^{\mathbb{Q}}[\,\cdot\, | \mathcal{F}_t]$ — conditional expectation under $\mathbb{Q}$ given information at time $t$.
-- "Attainable" means the claim can be replicated by a self-financing portfolio.
-:::
-
-### Justification (sketch)
-
-Suppose $(\phi_t, \psi_t)$ is a self-financing replicating portfolio with $V_T = f(S_T)$ a.s. The discounted portfolio value $\tilde{V}_t = e^{-rt} V_t$ satisfies, by the self-financing condition and Itô:
-
-$$d\tilde{V}_t = \phi_t\, d\tilde{S}_t = \phi_t \cdot \sigma \tilde{S}_t\, d\tilde{W}_t.$$
-
-This is a stochastic integral with respect to $\tilde{W}_t$ — it has no drift and is therefore a local $\mathbb{Q}$-martingale. Under suitable integrability conditions it is a true $\mathbb{Q}$-martingale, so:
-
-$$\tilde{V}_t = \mathbb{E}^{\mathbb{Q}}[\tilde{V}_T \mid \mathcal{F}_t] = e^{-rT}\,\mathbb{E}^{\mathbb{Q}}[f(S_T) \mid \mathcal{F}_t].$$
-
-Multiplying both sides by $e^{rt}$ gives $V_t = e^{-r(T-t)}\,\mathbb{E}^{\mathbb{Q}}[f(S_T) \mid \mathcal{F}_t]$. Full justification — including the connection to the Feynman-Kac representation — is deferred to Ch. 8.
-
-### Remark
-
-This is the central engine of option pricing theory. The price of any attainable derivative is the discounted expected payoff under the risk-neutral measure $\mathbb{Q}$ — not the real-world measure $\mathbb{P}$. Crucially, $\mu$ (the real-world drift) does not appear in the pricing formula: under $\mathbb{Q}$, all assets grow at the risk-free rate $r$. The measure $\mathbb{Q}$ encodes the market's collective risk preferences into $\theta = (\mu - r)/\sigma$, and once $\mathbb{Q}$ is fixed, pricing reduces to computing a conditional expectation. In Ch. 8 we apply this to derive the Black-Scholes formula.
-
----
 
 ## Practice
+
 ::: problem [Conceptual]
-**Problem 4.1 [Conceptual].** Why must the equivalent martingale measure be *equivalent* to (not merely absolutely continuous with respect to) $\mathbb{P}$? What goes wrong if it's only absolutely continuous?
+**Problem 4.1.** Explain in two or three sentences why the stock's expected return $\mu$ does not appear in the binomial option pricing formula. What feature of the pricing method makes $\mu$ irrelevant?
 
 ::: solution
-**Solution.** Mutual absolute continuity ($\mathbb{Q} \sim \mathbb{P}$) means $\mathbb{Q}$ and $\mathbb{P}$ share exactly the same null sets: an event is $\mathbb{Q}$-impossible if and only if it is $\mathbb{P}$-impossible. If $\mathbb{Q}$ were only absolutely continuous with respect to $\mathbb{P}$ (i.e., $\mathbb{Q} \ll \mathbb{P}$ but not $\mathbb{P} \ll \mathbb{Q}$), two problems arise:
-
-1. **$\mathbb{Q}$ ignores $\mathbb{P}$-possible events.** There could be events $A$ with $\mathbb{P}(A) > 0$ but $\mathbb{Q}(A) = 0$. The pricing measure would effectively declare certain realistic market scenarios impossible, potentially mispricing claims whose payoffs depend on those scenarios.
-
-2. **Arbitrage may survive.** The equivalence of measures is what ensures that a $\mathbb{Q}$-admissible strategy cannot exploit $\mathbb{P}$-possible events for free profit. One-way absolute continuity breaks this symmetry and can permit strategies that are "safe" under $\mathbb{Q}$ but profitable under $\mathbb{P}$.
-
-Conversely, without $\mathbb{P} \ll \mathbb{Q}$, $\mathbb{Q}$ might assign positive probability to events $\mathbb{P}$ considers impossible (e.g., negative stock prices), which would invalidate the model's financial interpretation. Equivalence ensures both measures agree on what is genuinely possible in the market.
+**Solution.** The binomial price is derived by replication: we construct a portfolio of stock and bonds that matches the option's payoff in every state. Because the replicating portfolio works regardless of whether the up or down state occurs, the real-world probabilities (which depend on $\mu$) cancel out. Only the volatility $\sigma$ (encoded in $u$ and $d$) and the risk-free rate $r$ survive.
 :::
 :::
-
----
-
-::: problem [Derivation]
-**Problem 4.2 [Derivation].** Use Itô's formula to show $d\tilde{S}_t = \sigma\tilde{S}_t\, d\tilde{W}_t$ under $\mathbb{Q}$, confirming $\tilde{S}_t$ is a $\mathbb{Q}$-martingale.
-
-::: solution
-**Solution.** Let $\tilde{S}_t = e^{-rt} S_t$. Apply Itô's formula to $f(t, x) = e^{-rt} x$:
-
-$$\partial_t f = -r e^{-rt} x, \qquad \partial_x f = e^{-rt}, \qquad \partial_{xx} f = 0.$$
-
-By Itô's formula:
-
-$$d\tilde{S}_t = \partial_t f\, dt + \partial_x f\, dS_t + \tfrac{1}{2}\partial_{xx} f\,(dS_t)^2 = -r e^{-rt} S_t\, dt + e^{-rt}\, dS_t.$$
-
-Under $\mathbb{Q}$, the stock satisfies $dS_t = r S_t\, dt + \sigma S_t\, d\tilde{W}_t$. Substituting:
-
-$$d\tilde{S}_t = -r e^{-rt} S_t\, dt + e^{-rt}(r S_t\, dt + \sigma S_t\, d\tilde{W}_t).$$
-
-Collecting $dt$ terms: $-r e^{-rt} S_t\, dt + r e^{-rt} S_t\, dt = 0$. Therefore:
-
-$$d\tilde{S}_t = e^{-rt} \cdot \sigma S_t\, d\tilde{W}_t = \sigma \tilde{S}_t\, d\tilde{W}_t.$$
-
-This SDE has no drift term — $\tilde{S}_t$ is a local $\mathbb{Q}$-martingale. Since $\tilde{S}_t = S_0 \exp((\sigma \tilde{W}_t - \tfrac{1}{2}\sigma^2 t))$ under $\mathbb{Q}$ (log-normal with finite second moments), the stochastic integral $\int_0^t \sigma \tilde{S}_s\, d\tilde{W}_s$ is square-integrable on $[0, T]$. Hence $\tilde{S}_t$ is a true $\mathbb{Q}$-martingale, confirming $\mathbb{Q}$ is an EMM. $\square$
-:::
-:::
-
----
 
 ::: problem [Computation]
-**Problem 4.3 [Computation].** Suppose $r = 0.05$, $\mu = 0.10$, $\sigma = 0.20$. Compute the market price of risk $\theta$ and the Radon-Nikodym derivative $Z_T = d\mathbb{Q}/d\mathbb{P}$ for $T = 1$, evaluated at $W_1 = 0$.
+**Problem 4.2.** A stock trades at $S_0 = 50$. Over one period it goes up by factor $u = 1.20$ or down by factor $d = 0.90$. The gross risk-free return is $R = 1.04$. Price a European put with strike $K = 55$ using risk-neutral pricing. Verify by constructing the replicating portfolio.
 
 ::: solution
-**Solution.** *Step 1: Market price of risk.*
+**Solution.**
 
-$$\theta = \frac{\mu - r}{\sigma} = \frac{0.10 - 0.05}{0.20} = \frac{0.05}{0.20} = 0.25.$$
+**Risk-neutral probability:**
 
-*Step 2: Radon-Nikodym derivative.*
+$$p = \frac{R - d}{u - d} = \frac{1.04 - 0.90}{1.20 - 0.90} = \frac{0.14}{0.30} = 0.4667$$
 
-$$Z_T = \exp\!\left(-\theta W_T - \tfrac{1}{2}\theta^2 T\right).$$
+**Payoffs:**
 
-*Step 3: Evaluate at $W_1 = 0$, $T = 1$.*
+- Up: $P_u = \max(55 - 60, 0) = 0$
+- Down: $P_d = \max(55 - 45, 0) = 10$
 
-$$Z_1 = \exp\!\left(-0.25 \cdot 0 - \tfrac{1}{2} \cdot (0.25)^2 \cdot 1\right) = \exp\!\left(0 - \tfrac{1}{2} \cdot 0.0625\right) = \exp(-0.03125).$$
+**Put price:**
 
-Computing: $\exp(-0.03125) \approx 0.9692$.
+$$P_0 = \frac{1}{1.04}\big[0.4667 \times 0 + 0.5333 \times 10\big] = \frac{5.333}{1.04} = 5.128$$
 
-*Interpretation.* At $W_1 = 0$ (a "typical" path), the change-of-measure weight is close to 1, meaning paths near the mean are roughly equally likely under both $\mathbb{P}$ and $\mathbb{Q}$. The slight discount ($0.9692 < 1$) reflects that $\mathbb{Q}$ down-weights the real-world drift advantage: since $\mu > r$, paths that performed well under $\mathbb{P}$ are given slightly lower $\mathbb{Q}$-weight, shifting probability mass toward the risk-neutral growth rate.
+**Replicating portfolio:**
+
+$$\Delta = \frac{P_u - P_d}{(u - d)\,S_0} = \frac{0 - 10}{0.30 \times 50} = \frac{-10}{15} = -0.6667$$
+
+$$B = \frac{1}{R}\,\frac{u\,P_d - d\,P_u}{u - d} = \frac{1}{1.04}\,\frac{1.20 \times 10 - 0.90 \times 0}{0.30} = \frac{12}{0.312} = 38.46$$
+
+Portfolio cost: $-0.6667 \times 50 + 38.46 = -33.33 + 38.46 = 5.13$. This matches the risk-neutral price (up to rounding), confirming consistency.
+:::
+:::
+
+::: problem [Derivation]
+**Problem 4.3.** In the one-period binomial model, show that the risk-neutral probability $p = (R - d)/(u - d)$ is the unique value of $p$ such that $\mathbb{E}^Q[S_1] = R\,S_0$, i.e., the stock's expected gross return under $p$ equals the risk-free return.
+
+::: solution
+**Solution.**
+
+Under probability $p$, the expected future stock price is:
+
+$$\mathbb{E}^Q[S_1] = p\,(uS_0) + (1 - p)\,(dS_0) = S_0\big[pu + (1-p)d\big]$$
+
+Setting this equal to $R\,S_0$ (the stock must earn the risk-free rate in the risk-neutral world):
+
+$$S_0\big[pu + (1-p)d\big] = R\,S_0$$
+
+Dividing both sides by $S_0$:
+
+$$pu + d - pd = R$$
+
+$$p(u - d) = R - d$$
+
+$$p = \frac{R - d}{u - d}$$
+
+This is the unique solution because $u \neq d$, so the denominator is nonzero. The condition $d < R < u$ guarantees $0 < p < 1$, confirming it is a valid probability.
 :::
 :::

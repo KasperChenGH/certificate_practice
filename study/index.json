@@ -1,18 +1,17 @@
 {
   "title": "Options Pricing Theory",
-  "subtitle": "A self-contained graduate treatment of European options.",
+  "subtitle": "An intuitive introduction to European options pricing.",
   "chapters": [
-    { "file": "01_preface.md",             "title": "Preface and Notation" },
-    { "file": "02_probability.md",         "title": "Probability Review" },
-    { "file": "03_stochastic_calculus.md", "title": "Stochastic Calculus" },
-    { "file": "04_no_arbitrage.md",        "title": "No-Arbitrage and Replication" },
-    { "file": "05_european_payoffs.md",    "title": "European Option Payoffs" },
-    { "file": "06_bsm_pde.md",             "title": "The Black-Scholes PDE" },
-    { "file": "07_solving_pde.md",         "title": "Solving the PDE" },
-    { "file": "08_risk_neutral.md",        "title": "Risk-Neutral Derivation" },
-    { "file": "09_greeks.md",              "title": "The Greeks" },
-    { "file": "10_implied_vol.md",         "title": "Implied Volatility" },
-    { "file": "11_iv_surface.md",          "title": "The IV Surface" },
-    { "file": "12_surface_models.md",      "title": "Surface Models" }
+    { "file": "01_stock_prices.md",         "title": "How Stock Prices Move" },
+    { "file": "02_european_payoffs.md",      "title": "European Option Payoffs" },
+    { "file": "03_put_call_parity.md",       "title": "Put-Call Parity" },
+    { "file": "04_no_arbitrage.md",          "title": "No-Arbitrage Pricing" },
+    { "file": "05_bsm_formula.md",           "title": "The Black-Scholes Formula" },
+    { "file": "06_where_bsm_comes_from.md",  "title": "Where BSM Comes From" },
+    { "file": "07_greeks.md",                "title": "The Greeks" },
+    { "file": "08_greek_relationships.md",   "title": "Greek Relationships" },
+    { "file": "09_implied_vol.md",           "title": "Implied Volatility" },
+    { "file": "10_iv_surface.md",            "title": "The IV Surface" },
+    { "file": "11_surface_models.md",        "title": "Surface Models" }
   ]
 }
