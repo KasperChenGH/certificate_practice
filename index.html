@@ -807,8 +807,8 @@ async function openChapter(idx) {
     });
   }
 
-  // Update state
-  markChapterVisited(idx);
+  // Update state (swallow QuotaExceededError etc. so nav still updates)
+  try { markChapterVisited(idx); } catch (e) { console.warn('Failed to save study state:', e); }
 
   // Update header / nav
   el('study-chapter-label').textContent = `Ch. ${idx + 1} — ${ch.title}`;
