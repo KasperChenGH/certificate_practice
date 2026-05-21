@@ -410,19 +410,6 @@ function preprocessStudyMarkdown(src) {
       continue;
     }
 
-    // Inside a where block: convert "- text" to <li>
-    if (stack.length && stack[stack.length - 1].kind === 'where') {
-      const li = line.match(/^-\s+(.*)/);
-      if (li) {
-        out.push(`<li>${li[1]}</li>`);
-      } else if (line.trim() === '') {
-        // skip blank lines inside where
-      } else {
-        out.push(line);
-      }
-      continue;
-    }
-
     // Block closer: bare :::
     if (/^:::\s*$/.test(line)) {
       const top = stack.pop();
@@ -440,6 +427,19 @@ function preprocessStudyMarkdown(src) {
         out.push(`</div>`);
       } else if (top.kind === 'where') {
         out.push(`</ul>`);
+      }
+      continue;
+    }
+
+    // Inside a where block: convert "- text" to <li>
+    if (stack.length && stack[stack.length - 1].kind === 'where') {
+      const li = line.match(/^-\s+(.*)/);
+      if (li) {
+        out.push(`<li>${li[1]}</li>`);
+      } else if (line.trim() === '') {
+        // skip blank lines inside where
+      } else {
+        out.push(line);
       }
       continue;
     }

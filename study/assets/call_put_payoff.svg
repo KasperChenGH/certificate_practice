@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250" font-family="Arial, sans-serif">
+  <!-- Axes -->
+  <line x1="40" y1="200" x2="380" y2="200" stroke="#555" stroke-width="1.5"/>
+  <line x1="40" y1="200" x2="40" y2="20" stroke="#555" stroke-width="1.5"/>
+
+  <!-- Axis labels -->
+  <text x="210" y="240" text-anchor="middle" fill="#555" font-size="12">S&#x2009;(stock price at expiry)</text>
+  <text x="15" y="110" text-anchor="middle" fill="#555" font-size="12" transform="rotate(-90,15,110)">Payoff</text>
+
+  <!-- X-axis tick labels -->
+  <text x="40" y="215" text-anchor="middle" fill="#555" font-size="10">0</text>
+  <text x="210" y="215" text-anchor="middle" fill="#555" font-size="10">100</text>
+  <text x="380" y="215" text-anchor="middle" fill="#555" font-size="10">200</text>
+
+  <!-- Y-axis tick labels -->
+  <text x="33" y="204" text-anchor="end" fill="#555" font-size="10">0</text>
+  <text x="33" y="104" text-anchor="end" fill="#555" font-size="10">100</text>
+
+  <!-- Grid line at payoff=100 -->
+  <line x1="40" y1="100" x2="380" y2="100" stroke="#ddd" stroke-width="0.5"/>
+
+  <!-- Dashed vertical line at K=100 -->
+  <line x1="210" y1="20" x2="210" y2="200" stroke="#555" stroke-width="1" stroke-dasharray="5,4"/>
+  <text x="214" y="30" fill="#555" font-size="10">K=100</text>
+
+  <!-- Call payoff (blue): flat at 0 for S<K, then rises -->
+  <path d="M40,200 L210,200 L380,30" fill="none" stroke="#6ea1d8" stroke-width="2.5"/>
+  <!-- Call fill area -->
+  <path d="M210,200 L380,30 L380,200 Z" fill="#6ea1d8" fill-opacity="0.2"/>
+
+  <!-- Put payoff (red): falls linearly for S<K, then flat at 0 -->
+  <path d="M40,100 L210,200 L380,200" fill="none" stroke="#e57373" stroke-width="2.5"/>
+  <!-- Put fill area -->
+  <path d="M40,100 L210,200 L40,200 Z" fill="#e57373" fill-opacity="0.2"/>
+
+  <!-- Labels -->
+  <text x="310" y="85" fill="#6ea1d8" font-size="13" font-weight="bold">Call</text>
+  <text x="90" y="135" fill="#e57373" font-size="13" font-weight="bold">Put</text>
+</svg>

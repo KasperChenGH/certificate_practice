@@ -34,6 +34,8 @@ We write $X \sim \mathcal{N}(\mu, \sigma^2)$. The special case $\mu = 0$, $\sigm
 
 Think of $\sigma$ as the "typical" deviation from the average. A $3\sigma$ event is extreme — it happens about 3 times in 1,000.
 
+![Normal distribution bell curve](../assets/normal_dist.svg)
+
 ---
 
 ## Log-Returns vs Simple Returns

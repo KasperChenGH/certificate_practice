@@ -58,6 +58,8 @@ $$\Delta_C = N(d_1), \qquad \Delta_P = N(d_1) - 1$$
 - An at-the-money (ATM) call has $\Delta \approx 0.5$; a deep in-the-money (ITM) call has $\Delta \to 1$; a deep out-of-the-money (OTM) call has $\Delta \to 0$.
 - Delta also roughly equals the probability (under the risk-neutral measure) that the option finishes in the money — a useful mental shortcut.
 
+![Call delta vs stock price](../assets/delta_curve.svg)
+
 **Hedge ratio.** To *delta-hedge* a long call position, you short $\Delta$ shares of stock per option. This makes your portfolio insensitive to small stock moves. If you own 100 calls with $\Delta = 0.57$, you short $100 \times 0.57 = 57$ shares.
 
 **Worked example.**
