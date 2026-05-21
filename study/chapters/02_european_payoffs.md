@@ -17,11 +17,9 @@ At expiry, the payoff is
 $$C_T = \max(S_T - K,\; 0) = (S_T - K)^+$$
 
 ::: where
-- $C_T$ — call option payoff at expiry
+- $C_T$ — call payoff at expiry
 - $S_T$ — stock price at expiry
-- $K$ — strike price (the pre-agreed purchase price)
-- $\max(\cdot, 0)$ — takes the larger of the two arguments
-- $(\cdot)^+$ — shorthand for $\max(\cdot, 0)$
+- $K$ — strike price
 :::
 
 **How to think about it:**
@@ -42,9 +40,7 @@ At expiry, the payoff is
 $$P_T = \max(K - S_T,\; 0) = (K - S_T)^+$$
 
 ::: where
-- $P_T$ — put option payoff at expiry
-- $K$ — strike price (the pre-agreed selling price)
-- $S_T$ — stock price at expiry
+- $P_T$ — put payoff at expiry
 :::
 
 **Examples:**
@@ -129,12 +125,10 @@ Even without a pricing model, we can establish bounds using a simple principle: 
 $$\max(S - Ke^{-rT},\; 0) \le C \le S$$
 
 ::: where
-- $C$ — European call price today
+- $C$ — call price today
 - $S$ — current stock price
-- $K$ — strike price
-- $r$ — risk-free interest rate (continuously compounded, annualized)
+- $r$ — risk-free rate
 - $T$ — time to expiry in years
-- $e^{-rT}$ — the discount factor (present value of $1 received at time $T$)
 :::
 
 **Upper bound** ($C \le S$): A call gives you the right to buy the stock, so it can never be worth more than the stock itself. If $C > S$, you could sell the call, buy the stock, and pocket the difference with no risk.
@@ -150,11 +144,7 @@ Portfolio B costs $S - Ke^{-rT}$. At expiry, Portfolio B is worth $S_T - K$, whi
 $$\max(Ke^{-rT} - S,\; 0) \le P \le Ke^{-rT}$$
 
 ::: where
-- $P$ — European put price today
-- $S$ — current stock price
-- $K$ — strike price
-- $r$ — risk-free interest rate (continuously compounded, annualized)
-- $T$ — time to expiry in years
+- $P$ — put price today
 :::
 
 **Upper bound** ($P \le Ke^{-rT}$): The most a put can ever pay is $K$ (when the stock goes to zero). The present value of that maximum payoff is $Ke^{-rT}$, so the put can't cost more than that.

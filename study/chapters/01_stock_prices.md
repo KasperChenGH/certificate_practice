@@ -17,11 +17,9 @@ A continuous random variable $X$ follows a normal distribution with mean $\mu$ a
 $$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\!\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$$
 
 ::: where
-- $f(x)$ — the probability density at point $x$
-- $\mu$ — the mean (center of the bell curve)
-- $\sigma$ — the standard deviation (width of the bell curve)
-- $\pi$ — the constant $\approx 3.14159$
-- $\exp(\cdot)$ — the exponential function $e^{(\cdot)}$
+- $f(x)$ — probability density function
+- $\mu$ — mean
+- $\sigma$ — standard deviation
 :::
 
 We write $X \sim \mathcal{N}(\mu, \sigma^2)$. The special case $\mu = 0$, $\sigma = 1$ is the **standard normal** $Z \sim \mathcal{N}(0,1)$.
@@ -47,7 +45,7 @@ The simple (or arithmetic) return from time $0$ to time $t$ is
 $$R = \frac{S_t - S_0}{S_0}$$
 
 ::: where
-- $R$ — simple return over the period
+- $R$ — simple return
 - $S_t$ — stock price at time $t$
 - $S_0$ — stock price at time $0$
 :::
@@ -59,10 +57,7 @@ The log-return (or continuously compounded return) is
 $$r = \ln\!\left(\frac{S_t}{S_0}\right)$$
 
 ::: where
-- $r$ — log-return over the period
-- $\ln(\cdot)$ — natural logarithm
-- $S_t$ — stock price at time $t$
-- $S_0$ — stock price at time $0$
+- $r$ — log-return
 :::
 
 **Why do we prefer log-returns?** One killer property: **they are additive over time.** If the log-return from Monday to Tuesday is $r_1$ and from Tuesday to Wednesday is $r_2$, then the log-return from Monday to Wednesday is simply $r_1 + r_2$. Simple returns don't add like this — you'd need to multiply $(1 + R_1)(1 + R_2) - 1$.
@@ -78,13 +73,9 @@ Finance's workhorse model says that the stock price at a future time $T$ is
 $$S_T = S_0 \exp\!\left(\left(\mu - \tfrac{1}{2}\sigma^2\right)T + \sigma\sqrt{T}\, Z\right), \quad Z \sim \mathcal{N}(0,1)$$
 
 ::: where
-- $S_T$ — stock price at future time $T$
-- $S_0$ — stock price today
-- $\mu$ — expected annualized return (drift)
-- $\sigma$ — annualized volatility (standard deviation of log-returns per year)
-- $T$ — time to the future date, measured in years
-- $Z$ — a standard normal random variable (the "random shock")
-- $\exp(\cdot)$ — the exponential function
+- $S_T$ — stock price at time $T$
+- $T$ — time in years
+- $Z$ — standard normal random variable
 :::
 
 Let's unpack each piece:
@@ -130,8 +121,7 @@ Volatility $\sigma$ is the annualized standard deviation of log-returns. Here's 
 $$\sigma_{\text{daily}} \approx \frac{\sigma}{\sqrt{252}} \approx \frac{0.20}{15.87} \approx 0.0126 = 1.26\%$$
 
 ::: where
-- $\sigma_{\text{daily}}$ — daily standard deviation of log-returns
-- $\sigma$ — annualized volatility
+- $\sigma_{\text{daily}}$ — daily volatility
 :::
 
 So a stock with $\sigma = 0.20$ typically moves about 1.3% per day.
@@ -152,10 +142,7 @@ The expected value of $S_T$ under this model is
 $$E[S_T] = S_0 e^{\mu T} = 100 \times e^{0.08 \times 1} = 100 \times 1.0833 = 108.33$$
 
 ::: where
-- $E[S_T]$ — expected (mean) stock price at time $T$
-- $S_0$ — current stock price ($100$)
-- $\mu$ — expected annual return ($0.08$)
-- $T$ — time in years ($1$)
+- $E[S_T]$ — expected stock price
 :::
 
 ### (b) Probability that $S_T > 120$
@@ -178,8 +165,7 @@ $$z = \frac{4.7875 - 4.6652}{0.20} = \frac{0.1223}{0.20} = 0.6116$$
 $$P(S_T > 120) = P(Z > 0.6116) = 1 - \Phi(0.6116) \approx 1 - 0.7296 = 0.2704$$
 
 ::: where
-- $\Phi(\cdot)$ — cumulative distribution function of the standard normal
-- $Z$ — standard normal random variable
+- $\Phi(\cdot)$ — standard normal CDF
 :::
 
 **Interpretation.** There is about a **27% chance** the stock finishes above $120 after one year.

@@ -7,14 +7,14 @@ The Black-Scholes-Merton formula for a European call requires five inputs:
 $$C = S\,N(d_1) - K e^{-rT}N(d_2)$$
 
 ::: where
-- $C$ — call option price
+- $C$ — call price
 - $S$ — current stock price
 - $K$ — strike price
-- $T$ — time to expiration (in years)
-- $r$ — risk-free interest rate (continuously compounded)
-- $N(x)$ — cumulative distribution function of the standard normal
+- $T$ — time to expiration
+- $r$ — risk-free rate
+- $N$ — standard normal CDF
 - $d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma\sqrt{T}}$, $\;d_2 = d_1 - \sigma\sqrt{T}$
-- $\sigma$ — volatility of the underlying
+- $\sigma$ — volatility of underlying
 :::
 
 Four of these inputs are directly observable: you can look up $S$ on a screen, $K$ and $T$ are written in the option contract, and $r$ comes from Treasury yields. The fifth input, $\sigma$, is not observable. It represents future volatility — how much the stock will bounce around between now and expiration — and nobody knows that in advance.
@@ -31,9 +31,8 @@ $$\text{BSM}(S, K, T, r, \sigma_{\text{IV}}) = C_{\text{market}}$$
 
 ::: where
 - $\sigma_{\text{IV}}$ — implied volatility
-- $C_{\text{market}}$ — observed market price of the call option
-- $\text{BSM}(\cdot)$ — Black-Scholes-Merton pricing function
-- $S, K, T, r$ — the four observable inputs
+- $C_{\text{market}}$ — observed market call price
+- $\text{BSM}$ — BSM pricing function
 :::
 
 In words: implied volatility is the market's answer to the question "what constant volatility would make BSM agree with the price people are actually paying?"
@@ -61,11 +60,9 @@ We want to find the root of $f(\sigma) = \text{BSM}(\sigma) - C_{\text{market}} 
 $$\sigma_{n+1} = \sigma_n - \frac{f(\sigma_n)}{f'(\sigma_n)} = \sigma_n - \frac{\text{BSM}(\sigma_n) - C_{\text{market}}}{\nu(\sigma_n)}$$
 
 ::: where
-- $\sigma_n$ — volatility estimate at iteration $n$
-- $\text{BSM}(\sigma_n)$ — BSM call price evaluated at $\sigma = \sigma_n$
-- $C_{\text{market}}$ — observed market price
-- $\nu(\sigma_n) = S\sqrt{T}\,\varphi(d_1)$ — vega, the derivative of BSM price with respect to $\sigma$
-- $\varphi(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$ — standard normal PDF
+- $\sigma_n$ — IV estimate at iteration $n$
+- $\nu$ — vega (BSM sensitivity to $\sigma$)
+- $\varphi$ — standard normal PDF
 :::
 
 The key insight is that the derivative $f'(\sigma)$ is just vega, which we already know how to compute. Because vega is always positive and BSM is smooth, Newton-Raphson converges very quickly — typically **2 to 4 iterations** to machine precision.
@@ -137,8 +134,7 @@ $$\text{VRP} = \sigma_{\text{IV}} - \sigma_{\text{realized}}$$
 
 ::: where
 - $\text{VRP}$ — volatility risk premium
-- $\sigma_{\text{IV}}$ — implied volatility (forward-looking)
-- $\sigma_{\text{realized}}$ — realized volatility over the corresponding period
+- $\sigma_{\text{realized}}$ — realized volatility
 :::
 
 Why does this premium exist? Option sellers bear the risk of large, sudden moves. They demand compensation — just as insurance companies charge premiums above expected losses. Option buyers (hedgers) willingly overpay because they value the protection.

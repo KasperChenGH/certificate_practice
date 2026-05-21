@@ -7,13 +7,12 @@ Put-call parity is one of the most important relationships in options pricing. F
 $$C - P = S - Ke^{-rT}$$
 
 ::: where
-- $C$ — European call price today
-- $P$ — European put price today
+- $C$ — call price today
+- $P$ — put price today
 - $S$ — current stock price
-- $K$ — strike price (same for both options)
-- $r$ — risk-free interest rate (continuously compounded, annualized)
-- $T$ — time to expiry in years (same for both options)
-- $e^{-rT}$ — discount factor (present value of $1 received at time $T$)
+- $K$ — strike price
+- $r$ — risk-free rate
+- $T$ — time to expiry in years
 :::
 
 **What it says in words:** The difference between a call and a put (same strike, same expiry) equals the difference between the stock price and the present value of the strike. In other words, owning a call and shorting a put is economically equivalent to holding a **forward contract** on the stock at price $K$.
@@ -80,27 +79,9 @@ Put-call parity is a single equation with four unknowns. Given any three, solve 
 
 $$C = P + S - Ke^{-rT}$$
 
-::: where
-- $C$ — European call price
-- $P$ — European put price
-- $S$ — current stock price
-- $K$ — strike price
-- $r$ — risk-free rate
-- $T$ — time to expiry
-:::
-
 **Solve for the put:**
 
 $$P = C - S + Ke^{-rT}$$
-
-::: where
-- $P$ — European put price
-- $C$ — European call price
-- $S$ — current stock price
-- $K$ — strike price
-- $r$ — risk-free rate
-- $T$ — time to expiry
-:::
 
 **Solve for the stock price** (useful as a consistency check):
 
@@ -109,15 +90,6 @@ $$S = C - P + Ke^{-rT}$$
 You can even back out the implied interest rate if you know $C$, $P$, $S$, $K$, and $T$:
 
 $$e^{-rT} = \frac{S - C + P}{K} \implies r = -\frac{1}{T}\ln\!\left(\frac{S - C + P}{K}\right)$$
-
-::: where
-- $r$ — implied risk-free rate
-- $T$ — time to expiry
-- $S$ — current stock price
-- $C$ — European call price
-- $P$ — European put price
-- $K$ — strike price
-:::
 
 ---
 
@@ -159,22 +131,9 @@ $$C = P + S - Ke^{-rT}$$
 
 $$Ke^{-rT} = 100 \times e^{-0.05 \times 0.5} = 100 \times e^{-0.025} = 100 \times 0.97531 = 97.53$$
 
-::: where
-- $K$ — strike price ($100$)
-- $r$ — risk-free rate ($0.05$)
-- $T$ — time to expiry ($0.5$ years)
-:::
-
 **Step 2.** Apply put-call parity:
 
 $$P = C - S + Ke^{-rT} = 8.00 - 100 + 97.53 = 5.53$$
-
-::: where
-- $P$ — European put price (what we're solving for)
-- $C$ — European call price ($8.00$)
-- $S$ — current stock price ($100$)
-- $Ke^{-rT}$ — present value of the strike ($97.53$)
-:::
 
 **Answer:** The put should be priced at $P = 5.53$.
 
@@ -189,13 +148,7 @@ If the stock pays known dividends during the life of the option, the stock price
 $$C - P = S - \text{PV}(\text{div}) - Ke^{-rT}$$
 
 ::: where
-- $C$ — European call price
-- $P$ — European put price
-- $S$ — current stock price
-- $\text{PV}(\text{div})$ — present value of all dividends paid during the option's life
-- $K$ — strike price
-- $r$ — risk-free rate
-- $T$ — time to expiry
+- $\text{PV}(\text{div})$ — present value of dividends
 :::
 
 **Why the adjustment?** The stock holder receives dividends; the call holder does not. So the stock is worth more than a pure forward claim by exactly the present value of those dividends. To keep the two portfolios equivalent, we must subtract the dividends from the stock side.
@@ -213,8 +166,7 @@ For a **continuous dividend yield** $q$ (common for index options), replace $S$ 
 $$C - P = Se^{-qT} - Ke^{-rT}$$
 
 ::: where
-- $q$ — continuous dividend yield (annualized)
-- $Se^{-qT}$ — stock price adjusted for dividends reinvested continuously
+- $q$ — continuous dividend yield
 :::
 
 ---

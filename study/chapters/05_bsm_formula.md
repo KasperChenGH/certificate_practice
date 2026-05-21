@@ -7,13 +7,13 @@ The Black-Scholes-Merton (BSM) formula gives the price of a European call option
 $$C = S_0\, N(d_1) - K\, e^{-rT}\, N(d_2)$$
 
 ::: where
-- $C$ — price of the European call option today
+- $C$ — European call price
 - $S_0$ — current stock price
 - $K$ — strike price
-- $r$ — continuously compounded risk-free interest rate (annualized)
-- $T$ — time to expiration (in years)
-- $N(x)$ — the standard normal CDF, i.e., the probability that a standard normal variable is less than $x$
-- $d_1, d_2$ — auxiliary quantities defined below
+- $r$ — risk-free rate (annualized)
+- $T$ — time to expiration (years)
+- $N(\cdot)$ — standard normal CDF
+- $d_1, d_2$ — defined below
 :::
 
 The quantities $d_1$ and $d_2$ are:
@@ -21,14 +21,7 @@ The quantities $d_1$ and $d_2$ are:
 $$d_1 = \frac{\ln(S_0 / K) + (r + \sigma^2 / 2)\, T}{\sigma \sqrt{T}}, \qquad d_2 = d_1 - \sigma \sqrt{T}$$
 
 ::: where
-- $d_1$ — a standardized measure of how far in-the-money the option is, adjusted for the stock's lognormal drift
-- $d_2$ — the same measure shifted down by one volatility unit; $N(d_2)$ is the risk-neutral probability that the call finishes in the money
-- $S_0$ — current stock price
-- $K$ — strike price
-- $r$ — risk-free rate (annualized, continuously compounded)
-- $\sigma$ — volatility of the stock's log-returns (annualized)
-- $T$ — time to expiration in years
-- $\ln(\cdot)$ — the natural logarithm
+- $\sigma$ — volatility of log-returns (annualized)
 :::
 
 
@@ -56,14 +49,7 @@ By put-call parity ($P = C - S_0 + K e^{-rT}$), the European put price is:
 $$P = K\, e^{-rT}\, N(-d_2) - S_0\, N(-d_1)$$
 
 ::: where
-- $P$ — price of the European put option today
-- $K$ — strike price
-- $S_0$ — current stock price
-- $r$ — risk-free rate (annualized, continuously compounded)
-- $T$ — time to expiration in years
-- $N(-d_2)$ — the risk-neutral probability that the put finishes in the money (i.e., $S_T < K$)
-- $N(-d_1)$ — the delta-adjusted probability for the stock position in the put hedge
-- $d_1, d_2$ — as defined in Section 5.1
+- $P$ — European put price
 :::
 
 The symmetry is clean: replace $N(d)$ with $N(-d)$ and swap the sign of the two terms.
@@ -186,9 +172,7 @@ $$C = S_0\, e^{-qT}\, N(d_1) - K\, e^{-rT}\, N(d_2)$$
 $$d_1 = \frac{\ln(S_0 / K) + (r - q + \sigma^2/2)\, T}{\sigma \sqrt{T}}, \qquad d_2 = d_1 - \sigma \sqrt{T}$$
 
 ::: where
-- $q$ — the continuous dividend yield (annualized)
-- $S_0 e^{-qT}$ — the dividend-adjusted stock price (the stock's present value after stripping out dividends you would miss by holding the option instead of the stock)
-- All other symbols as previously defined
+- $q$ — continuous dividend yield (annualized)
 :::
 
 The intuition: dividends reduce the effective stock price available to the call holder, because the call holder does not receive dividends. The put holder benefits, since dividends push the stock price down.

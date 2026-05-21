@@ -164,19 +164,9 @@
   .study .remark::before { content: "Remark"; font-weight: 700; color: var(--muted);
                            display: block; font-size: 12px; letter-spacing: 0.5px; }
 
-  .study .where {
-    background: rgba(30, 58, 95, 0.04);
-    border-left: 3px solid var(--accent);
-    padding: 8px 12px 8px 14px; margin: 6px 0 14px;
-    border-radius: 0 6px 6px 0;
-  }
-  .study .where .where-label {
-    font-size: 11px; font-weight: 700; color: var(--accent);
-    letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;
-  }
-  .study .where ul { margin: 0; padding-left: 18px; }
-  .study .where li { font-size: 14px; line-height: 1.55; margin-bottom: 2px; color: var(--text); }
-  .study .where li .katex { font-size: 1em; }
+  .study .symlist { margin: 4px 0 14px; padding-left: 20px; }
+  .study .symlist li { font-size: 14px; line-height: 1.55; margin-bottom: 2px; color: var(--text); list-style-type: disc; }
+  .study .symlist li .katex { font-size: 1em; }
 
   .study .problem { background: var(--card); border: 1px solid var(--border);
                     border-radius: 10px; padding: 14px; margin: 14px 0; }
@@ -414,9 +404,7 @@ function preprocessStudyMarkdown(src) {
         out.push(`<div class="solution">`);
         stack.push({ kind: 'solution' });
       } else if (kind === 'where') {
-        out.push(`<div class="where">`);
-        out.push(`<div class="where-label">where</div>`);
-        out.push(`<ul>`);
+        out.push(`<ul class="symlist">`);
         stack.push({ kind: 'where' });
       }
       continue;
@@ -444,16 +432,14 @@ function preprocessStudyMarkdown(src) {
         continue;
       }
       if (top.kind === 'problem') {
-        // If no nested solution was opened, close problem-stmt too
         if (!top.hasSolution) {
-          out.push(`</div>`); // close problem-stmt
+          out.push(`</div>`);
         }
-        out.push(`</div>`); // close .problem
+        out.push(`</div>`);
       } else if (top.kind === 'solution') {
-        out.push(`</div>`); // close .solution
+        out.push(`</div>`);
       } else if (top.kind === 'where') {
         out.push(`</ul>`);
-        out.push(`</div>`); // close .where
       }
       continue;
     }

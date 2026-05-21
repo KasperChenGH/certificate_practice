@@ -23,13 +23,13 @@ The Black-Scholes-Merton model says that any fairly-priced option $V$ must satis
 $$\Theta + \frac{1}{2}\sigma^2 S^2 \Gamma + rS\Delta - rV = 0$$
 
 ::: where
-- $\Theta$ — theta, the time decay of the option (in annualized terms)
-- $\sigma$ — volatility of the underlying (annualized)
-- $S$ — current stock price
-- $\Gamma$ — gamma, the second derivative of option price with respect to stock price
-- $r$ — risk-free interest rate (annualized, continuously compounded)
-- $\Delta$ — delta, the first derivative of option price with respect to stock price
-- $V$ — the option price (call or put)
+- $\Theta$ — theta (time decay, annualized)
+- $\sigma$ — volatility (annualized)
+- $S$ — stock price
+- $\Gamma$ — gamma
+- $r$ — risk-free rate
+- $\Delta$ — delta
+- $V$ — option price
 :::
 
 You do not need to derive this equation. What matters is the **interpretation**: the four terms must sum to zero. This means if you know any three Greeks (and the option price), you can solve for the fourth.
@@ -51,25 +51,9 @@ This is arguably the most important relationship in options trading. Consider a 
 
 $$\Theta + \frac{1}{2}\sigma^2 S^2 \Gamma = rV$$
 
-::: where
-- $\Theta$ — theta of the delta-neutral portfolio
-- $\sigma$ — implied volatility
-- $S$ — stock price
-- $\Gamma$ — gamma of the portfolio
-- $r$ — risk-free rate
-- $V$ — value of the portfolio
-:::
-
 For short-dated options the $rV$ term is small, so approximately:
 
 $$\Theta \approx -\frac{1}{2}\sigma^2 S^2 \Gamma$$
-
-::: where
-- $\Theta$ — theta (time decay per year)
-- $\sigma$ — volatility
-- $S$ — stock price
-- $\Gamma$ — gamma
-:::
 
 **The key insight:** positive gamma and negative theta are two sides of the same coin. You cannot have one without the other.
 
@@ -105,10 +89,8 @@ Your hedge is now stale — you are short 0.5694 shares but need to be short 0.6
 $$\text{P\&L} \approx \frac{1}{2}\Gamma (\Delta S)^2 + \Theta \cdot \Delta t$$
 
 ::: where
-- $\Gamma$ — gamma of the option
-- $\Delta S$ — stock price change over the interval
-- $\Theta$ — theta of the option (per unit time, matching the units of $\Delta t$)
-- $\Delta t$ — length of the time interval
+- $\Delta S$ — stock price change
+- $\Delta t$ — time interval length
 :::
 
 The two terms compete:
@@ -131,11 +113,9 @@ Put-call parity states:
 $$C - P = S - Ke^{-rT}$$
 
 ::: where
-- $C$ — European call price
-- $P$ — European put price
-- $S$ — current stock price
+- $C$ — call price
+- $P$ — put price
 - $K$ — strike price
-- $r$ — risk-free rate
 - $T$ — time to expiry
 :::
 
@@ -148,8 +128,8 @@ Differentiate with respect to $S$:
 $$\Delta_C - \Delta_P = 1$$
 
 ::: where
-- $\Delta_C$ — delta of the call
-- $\Delta_P$ — delta of the put
+- $\Delta_C$ — call delta
+- $\Delta_P$ — put delta
 :::
 
 **Why:** The right side $S - Ke^{-rT}$ has delta = 1 (the stock contributes +1, the bond contributes 0). So the call delta exceeds the put delta by exactly 1.
@@ -163,8 +143,8 @@ Differentiate delta with respect to $S$:
 $$\Gamma_C = \Gamma_P$$
 
 ::: where
-- $\Gamma_C$ — gamma of the call
-- $\Gamma_P$ — gamma of the put
+- $\Gamma_C$ — call gamma
+- $\Gamma_P$ — put gamma
 :::
 
 **Why:** The right side has constant delta (= 1), so its gamma is zero. Therefore call and put gammas must be equal.
@@ -176,8 +156,8 @@ Differentiate with respect to $\sigma$:
 $$\nu_C = \nu_P$$
 
 ::: where
-- $\nu_C$ — vega of the call
-- $\nu_P$ — vega of the put
+- $\nu_C$ — call vega
+- $\nu_P$ — put vega
 :::
 
 **Why:** The right side $S - Ke^{-rT}$ does not depend on volatility at all, so its vega is zero. Call and put vegas must be equal.
@@ -187,14 +167,6 @@ $$\nu_C = \nu_P$$
 Differentiate with respect to $T$ (with a sign change because theta is $-\partial V/\partial T'$ where $T' = T_{\text{expiry}} - t$, but applying the chain rule to put-call parity directly):
 
 $$\Theta_C - \Theta_P = -rKe^{-rT}$$
-
-::: where
-- $\Theta_C$ — theta of the call
-- $\Theta_P$ — theta of the put
-- $r$ — risk-free rate
-- $K$ — strike price
-- $T$ — time to expiry
-:::
 
 **Why:** The time derivative of $-Ke^{-rT}$ contributes $-rKe^{-rT}$, while the stock term $S$ contributes nothing.
 
@@ -207,11 +179,8 @@ Differentiate with respect to $r$:
 $$\rho_C - \rho_P = KTe^{-rT}$$
 
 ::: where
-- $\rho_C$ — rho of the call
-- $\rho_P$ — rho of the put
-- $K$ — strike price
-- $T$ — time to expiry
-- $r$ — risk-free rate
+- $\rho_C$ — call rho
+- $\rho_P$ — put rho
 :::
 
 **Why:** Differentiating $-Ke^{-rT}$ with respect to $r$ gives $KTe^{-rT}$.
@@ -227,8 +196,8 @@ Greeks are **additive** across positions. If your portfolio contains $n_i$ units
 $$\Delta_{\text{port}} = \sum_i n_i \Delta_i, \qquad \Gamma_{\text{port}} = \sum_i n_i \Gamma_i, \qquad \text{etc.}$$
 
 ::: where
-- $n_i$ — number of units of instrument $i$ (positive for long, negative for short)
-- $\Delta_i, \Gamma_i$ — delta and gamma of instrument $i$
+- $n_i$ — position size (signed)
+- $\Delta_i, \Gamma_i$ — per-instrument Greeks
 :::
 
 This additivity is what makes Greek-based risk management practical: you sum up the Greeks across hundreds of positions to get a single set of portfolio-level numbers.
@@ -295,9 +264,9 @@ $$\Theta_{\text{port}}^{\text{daily}} = 100 \times (-0.0287) + 100 \times (-0.01
 $$\nu_{\text{port}} = 100 \times 19.64 + 100 \times 19.64 = 3{,}928$$
 
 ::: where
-- $\Delta_{\text{port}}$ — portfolio delta (equivalent shares of stock exposure)
+- $\Delta_{\text{port}}$ — portfolio delta
 - $\Gamma_{\text{port}}$ — portfolio gamma
-- $\Theta_{\text{port}}^{\text{daily}}$ — portfolio theta per calendar day
+- $\Theta_{\text{port}}^{\text{daily}}$ — portfolio theta (daily)
 - $\nu_{\text{port}}$ — portfolio vega
 :::
 
@@ -310,9 +279,7 @@ Solving for the breakeven daily stock move:
 $$(\Delta S)_{\text{BE}} = \sqrt{\frac{2|\Theta_{\text{port}}^{\text{daily}}|}{\Gamma_{\text{port}}}} = \sqrt{\frac{2 \times 4.39}{7.86}} = \sqrt{1.117} \approx \$1.06$$
 
 ::: where
-- $(\Delta S)_{\text{BE}}$ — the daily stock move needed to break even
-- $|\Theta_{\text{port}}^{\text{daily}}|$ — absolute value of daily portfolio theta
-- $\Gamma_{\text{port}}$ — portfolio gamma
+- $(\Delta S)_{\text{BE}}$ — breakeven daily move
 :::
 
 The stock must move at least about **\$1.06 per day** (roughly 1.06% for a \$100 stock) for the straddle to break even on its time decay. If daily moves average more than this, the position profits; if less, it loses.

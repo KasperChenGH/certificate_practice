@@ -14,9 +14,8 @@ $$dS_t = rS_t\,dt + \sigma_{\text{loc}}(S_t, t)\,S_t\,dW_t$$
 
 ::: where
 - $S_t$ — stock price at time $t$
-- $r$ — risk-free rate
-- $\sigma_{\text{loc}}(S_t, t)$ — local volatility function (depends on price level and time)
-- $dW_t$ — increment of a standard Brownian motion
+- $\sigma_{\text{loc}}(S_t, t)$ — local volatility function
+- $dW_t$ — Brownian motion increment
 :::
 
 Bruno Dupire showed in 1994 that if you know the prices of European options for all strikes and expiries, you can uniquely extract $\sigma_{\text{loc}}(S, t)$. The formula involves derivatives of option prices with respect to strike and expiry — essentially, the local volatility is pinned down by the shape of the IV surface.
@@ -40,14 +39,12 @@ $$dS_t = rS_t\,dt + \sqrt{v_t}\,S_t\,dW_1$$
 $$dv_t = \kappa(\theta - v_t)\,dt + \xi\sqrt{v_t}\,dW_2$$
 
 ::: where
-- $S_t$ — stock price at time $t$
-- $v_t$ — instantaneous variance at time $t$ (so volatility is $\sqrt{v_t}$)
-- $r$ — risk-free rate
-- $\kappa$ — mean-reversion speed (how fast variance returns to its long-run level)
-- $\theta$ — long-run variance (the level $v_t$ reverts to)
-- $\xi$ — vol of vol (volatility of the variance process)
-- $dW_1, dW_2$ — correlated Brownian motions with $\text{Corr}(dW_1, dW_2) = \rho\,dt$
-- $\rho$ — correlation between stock returns and variance changes
+- $v_t$ — instantaneous variance
+- $\kappa$ — mean-reversion speed
+- $\theta$ — long-run variance level
+- $\xi$ — vol of vol
+- $dW_1, dW_2$ — correlated Brownian motions ($\rho$)
+- $\rho$ — stock-variance correlation
 :::
 
 **The five parameters and what they control:**
@@ -79,12 +76,11 @@ $$dF_t = \alpha_t F_t^{\beta}\,dW_1$$
 $$d\alpha_t = \nu\,\alpha_t\,dW_2$$
 
 ::: where
-- $F_t$ — forward price of the underlying
-- $\alpha_t$ — stochastic volatility level (initial value $\alpha_0 = \alpha$)
-- $\beta$ — backbone parameter ($0 \leq \beta \leq 1$), controls how volatility scales with the forward price
+- $F_t$ — forward price
+- $\alpha_t$ — stochastic volatility level
+- $\beta$ — backbone parameter ($0 \leq \beta \leq 1$)
 - $\nu$ — vol of vol
-- $dW_1, dW_2$ — correlated Brownian motions with correlation $\rho$
-- $\rho$ — correlation between forward price and volatility
+- $\rho$ — forward-volatility correlation
 :::
 
 The key feature of SABR is Hagan's **approximate closed-form formula** for implied volatility as a function of strike. Given the four parameters $(\alpha, \beta, \rho, \nu)$, you can directly compute $\sigma_{\text{IV}}(K)$ without solving any PDE or running a simulation.
@@ -112,13 +108,13 @@ The SVI parameterization expresses total implied variance as a function of log-m
 $$w(k) = a + b\left(\rho(k - m) + \sqrt{(k - m)^2 + \sigma^2}\right)$$
 
 ::: where
-- $w(k) = \sigma_{\text{IV}}^2(k) \cdot T$ — total implied variance
-- $k = \ln(K / F)$ — log-moneyness (where $F$ is the forward price)
+- $w(k)$ — total implied variance
+- $k$ — log-moneyness
 - $a$ — overall variance level
-- $b$ — slope control (must be $\geq 0$)
-- $\rho$ — rotation parameter ($-1 < \rho < 1$), controls skew
-- $m$ — translation (shifts the curve left/right)
-- $\sigma$ — smoothness parameter (must be $> 0$), controls curvature at the vertex
+- $b$ — slope ($\geq 0$)
+- $\rho$ — skew rotation ($-1 < \rho < 1$)
+- $m$ — horizontal translation
+- $\sigma$ — vertex curvature ($> 0$)
 :::
 
 The five parameters have a natural geometric interpretation. The curve is a translated, rotated hyperbola. The parameter $\rho$ tilts it (generating skew), $\sigma$ controls how rounded the vertex is (smile curvature), and $m$ shifts the center.

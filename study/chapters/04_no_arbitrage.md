@@ -31,11 +31,10 @@ This leads to a convenient shortcut called **risk-neutral pricing:**
 $$V_0 = e^{-rT}\, \mathbb{E}^Q\!\big[\text{payoff at time } T\big]$$
 
 ::: where
-- $V_0$ — the option's price today
-- $r$ — the continuously compounded risk-free interest rate (annualized)
-- $T$ — time to expiration (in years)
-- $e^{-rT}$ — the discount factor, converting a future dollar back to today
-- $\mathbb{E}^Q[\cdot]$ — the expected value computed under risk-neutral probabilities (not real-world probabilities)
+- $V_0$ — option price today
+- $r$ — risk-free rate
+- $T$ — time to expiry in years
+- $\mathbb{E}^Q[\cdot]$ — risk-neutral expectation
 :::
 
 **Why does this work?** Because the option seller can delta-hedge — continuously adjusting a stock position to offset the option's risk. Once the directional risk is hedged away, the remaining portfolio is risk-free and must earn rate $r$. So the option's value is determined as if the world were risk-neutral.
@@ -58,12 +57,11 @@ We find the probability $p$ that makes the stock's expected return equal to the 
 $$p = \frac{R - d}{u - d}$$
 
 ::: where
-- $p$ — the risk-neutral probability of the "up" move
-- $R$ — the gross risk-free return over one period, $R = e^{r\Delta t}$
-- $u$ — the up factor ($u > 1$)
-- $d$ — the down factor ($d < 1$)
-- $r$ — the risk-free rate (annualized, continuously compounded)
-- $\Delta t$ — the length of one period in years
+- $p$ — risk-neutral up probability
+- $R$ — gross risk-free return per period
+- $u$ — up factor
+- $d$ — down factor
+- $\Delta t$ — period length in years
 :::
 
 For this to make sense, we need $d < R < u$; otherwise there would be an arbitrage between the stock and the bond.
@@ -80,11 +78,9 @@ At expiry, the call pays:
 $$C_0 = \frac{1}{R}\big[p\, C_u + (1 - p)\, C_d\big]$$
 
 ::: where
-- $C_0$ — today's call price
-- $C_u$ — the call's payoff in the up state
-- $C_d$ — the call's payoff in the down state
-- $p$ — the risk-neutral probability of the up move
-- $R$ — the gross risk-free return, $R = e^{r \Delta t}$
+- $C_0$ — call price today
+- $C_u$ — call payoff in up state
+- $C_d$ — call payoff in down state
 :::
 
 ### Worked Example
@@ -113,8 +109,8 @@ $$\Delta = \frac{C_u - C_d}{(u - d)\,S_0} = \frac{10 - 0}{(1.10 - 0.95)\times 10
 $$B = \frac{1}{R}\,\frac{u\, C_d - d\, C_u}{u - d} = \frac{1}{1.02}\,\frac{1.10 \times 0 - 0.95 \times 10}{0.15} = \frac{-9.5}{0.153} = -62.09$$
 
 ::: where
-- $\Delta$ — number of shares in the replicating portfolio (the hedge ratio)
-- $B$ — dollar amount invested in the risk-free bond (negative means borrowing)
+- $\Delta$ — hedge ratio (shares held)
+- $B$ — bond position (negative = borrowing)
 :::
 
 Portfolio cost today: $\Delta \times S_0 + B = 0.6667 \times 100 + (-62.09) = 4.58$. This matches our risk-neutral price (small rounding aside), confirming no-arbitrage consistency.

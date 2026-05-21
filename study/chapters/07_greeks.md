@@ -7,11 +7,11 @@ Throughout this chapter we use a single **running example**:
 $$S = 100, \quad K = 100, \quad T = 0.25, \quad r = 0.05, \quad \sigma = 0.20$$
 
 ::: where
-- $S$ — current stock price
+- $S$ — stock price
 - $K$ — strike price
-- $T$ — time to expiry in years (here 3 months)
-- $r$ — continuously compounded risk-free rate (annualized)
-- $\sigma$ — volatility of the underlying (annualized)
+- $T$ — time to expiry (years)
+- $r$ — risk-free rate (annualized)
+- $\sigma$ — volatility (annualized)
 :::
 
 First we compute the quantities every Greek depends on:
@@ -21,7 +21,7 @@ $$d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma\sqrt{T}} = \frac{\ln(1) + (0.
 $$d_2 = d_1 - \sigma\sqrt{T} = 0.175 - 0.10 = 0.075$$
 
 ::: where
-- $d_1, d_2$ — standardized log-moneyness measures from the Black-Scholes formula
+- $d_1, d_2$ — standardized log-moneyness measures
 :::
 
 We also need the standard normal PDF evaluated at $d_1$:
@@ -29,13 +29,13 @@ We also need the standard normal PDF evaluated at $d_1$:
 $$\varphi(d_1) = \frac{1}{\sqrt{2\pi}} e^{-d_1^2/2} = \frac{1}{\sqrt{2\pi}} e^{-0.175^2/2} = \frac{1}{2.5066} \times e^{-0.01531} \approx 0.3989 \times 0.9848 \approx 0.3928$$
 
 ::: where
-- $\varphi(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$ — standard normal probability density function (PDF)
+- $\varphi(\cdot)$ — standard normal PDF
 :::
 
 And the CDF values: $N(d_1) = N(0.175) \approx 0.5694$ and $N(d_2) = N(0.075) \approx 0.5299$.
 
 ::: where
-- $N(x)$ — cumulative distribution function (CDF) of the standard normal distribution
+- $N(\cdot)$ — standard normal CDF
 :::
 
 ---
@@ -47,9 +47,8 @@ And the CDF values: $N(d_1) = N(0.175) \approx 0.5694$ and $N(d_2) = N(0.075) \a
 $$\Delta_C = N(d_1), \qquad \Delta_P = N(d_1) - 1$$
 
 ::: where
-- $\Delta_C$ — delta of a European call
-- $\Delta_P$ — delta of a European put
-- $N(d_1)$ — CDF of the standard normal evaluated at $d_1$
+- $\Delta_C$ — call delta
+- $\Delta_P$ — put delta
 :::
 
 **Intuition.** If $\Delta_C = 0.57$, then when the stock rises by \$1, the call price rises by about \$0.57. Delta tells you the option's *effective stock exposure*. A call with $\Delta = 0.57$ behaves like holding 0.57 shares — at least for small moves.
@@ -78,11 +77,7 @@ The ATM call delta is about 0.57: a \$1 stock move changes the call value by rou
 $$\Gamma = \frac{\varphi(d_1)}{S \sigma \sqrt{T}}$$
 
 ::: where
-- $\Gamma$ — gamma, the rate of change of delta with respect to stock price
-- $\varphi(d_1)$ — standard normal PDF evaluated at $d_1$
-- $S$ — current stock price
-- $\sigma$ — volatility (annualized)
-- $T$ — time to expiry in years
+- $\Gamma$ — gamma (rate of delta change)
 :::
 
 **Intuition.** Gamma is the *curvature* of the option price curve. A high gamma means delta changes rapidly — the option's payoff is very nonlinear. A straight line (like a stock) has zero gamma; a curved payoff (like an option near the strike) has high gamma.
@@ -110,15 +105,8 @@ $$\Theta_C = -\frac{S \varphi(d_1) \sigma}{2\sqrt{T}} - r K e^{-rT} N(d_2)$$
 $$\Theta_P = -\frac{S \varphi(d_1) \sigma}{2\sqrt{T}} + r K e^{-rT} N(-d_2)$$
 
 ::: where
-- $\Theta_C$ — theta of a European call (change in call price per year of time passing)
-- $\Theta_P$ — theta of a European put
-- $S$ — current stock price
-- $\varphi(d_1)$ — standard normal PDF evaluated at $d_1$
-- $\sigma$ — volatility (annualized)
-- $T$ — time to expiry in years
-- $r$ — risk-free rate (annualized, continuously compounded)
-- $K$ — strike price
-- $N(d_2)$ — CDF of the standard normal evaluated at $d_2$
+- $\Theta_C$ — call theta (per year)
+- $\Theta_P$ — put theta (per year)
 :::
 
 **Intuition.** Options are wasting assets. Every day that passes without a stock move, the option loses a bit of value because there is less time for a favorable move to occur. Theta quantifies this bleed. You can think of it as the "daily rental cost" of holding an option.
@@ -151,10 +139,7 @@ The ATM call loses about **\$0.029 per day** (roughly 3 cents) to time decay.
 $$\nu = S \varphi(d_1) \sqrt{T}$$
 
 ::: where
-- $\nu$ — vega, sensitivity of option price to changes in implied volatility
-- $S$ — current stock price
-- $\varphi(d_1)$ — standard normal PDF evaluated at $d_1$
-- $T$ — time to expiry in years
+- $\nu$ — vega (vol sensitivity)
 :::
 
 **Intuition.** Higher volatility means bigger expected moves, which makes options more valuable (both calls and puts). Vega tells you how much you gain or lose when the market's volatility expectation shifts. If $\nu = 19.64$, then a 1-percentage-point increase in implied vol (say from 20% to 21%) raises the option price by about \$0.1964.
@@ -180,12 +165,8 @@ If implied vol rises from 20% to 21% (a change of 0.01), the option price increa
 $$\rho_C = K T e^{-rT} N(d_2), \qquad \rho_P = -K T e^{-rT} N(-d_2)$$
 
 ::: where
-- $\rho_C$ — rho of a European call
-- $\rho_P$ — rho of a European put
-- $K$ — strike price
-- $T$ — time to expiry in years
-- $r$ — risk-free rate (annualized, continuously compounded)
-- $N(d_2)$ — CDF of the standard normal evaluated at $d_2$
+- $\rho_C$ — call rho
+- $\rho_P$ — put rho
 :::
 
 **Intuition.** A higher interest rate reduces the present value of the strike you pay at expiry, making calls more valuable (you effectively pay less in today's dollars) and puts less valuable. For most short-dated equity options, rho is the smallest Greek — interest rates don't move much day to day. It matters more for long-dated options (LEAPS) or in environments with volatile rates.

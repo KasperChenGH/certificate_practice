@@ -21,10 +21,10 @@ The combined portfolio is:
 $$\Pi = V - \Delta\, S$$
 
 ::: where
-- $\Pi$ — value of the hedged portfolio
-- $V$ — value of the option, $V = V(S, t)$
-- $\Delta$ — the option's delta, $\Delta = \partial V / \partial S$
-- $S$ — current stock price
+- $\Pi$ — hedged portfolio value
+- $V$ — option price, $V(S,t)$
+- $\Delta$ — option delta, $\partial V/\partial S$
+- $S$ — stock price
 :::
 
 **Why does this work?** If the stock moves by a small amount $dS$, the option moves by approximately $\Delta\, dS$ (that is the definition of delta). But we are short $\Delta$ shares, so the stock position also moves by $-\Delta\, dS$. The two effects cancel:
@@ -41,13 +41,8 @@ Since the hedged portfolio is risk-free, it must earn the risk-free rate. Workin
 $$\frac{\partial V}{\partial t} + \frac{1}{2}\,\sigma^2\, S^2\, \frac{\partial^2 V}{\partial S^2} + r\, S\, \frac{\partial V}{\partial S} - r\, V = 0$$
 
 ::: where
-- $V = V(S, t)$ — the option price as a function of stock price $S$ and time $t$
-- $\partial V / \partial t$ — the rate of change of option price with respect to time (theta)
-- $\partial^2 V / \partial S^2$ — the second derivative of option price with respect to stock price (gamma)
-- $\partial V / \partial S$ — the first derivative of option price with respect to stock price (delta)
-- $\sigma$ — volatility of the stock (annualized)
-- $r$ — continuously compounded risk-free rate
-- $S$ — stock price
+- $\sigma$ — stock volatility (annualized)
+- $r$ — risk-free rate
 :::
 
 This equation holds for **any** European derivative on the stock, not just calls and puts. The payoff at expiry determines which specific solution you get.
@@ -112,12 +107,8 @@ If the stock hits zero, it stays at zero (under the lognormal model, zero is an 
 $$V(S, t) \;\to\; S - K\,e^{-r(T - t)} \quad \text{as } S \to \infty$$
 
 ::: where
-- $V(S, t)$ — call option price
-- $S$ — stock price
 - $K$ — strike price
-- $r$ — risk-free rate
 - $T - t$ — time remaining to expiry
-- $e^{-r(T-t)}$ — discount factor for the remaining time
 :::
 
 When the stock is enormously high, exercise is virtually certain. The call behaves like a forward contract: you will receive $S$ and pay $K$ at time $T$. The present value of that is $S - Ke^{-r(T-t)}$. (The stock term is already $S$ because you could buy the stock today and hold it.)
@@ -130,25 +121,13 @@ Here is a beautiful fact: solving the Black-Scholes PDE with the call's boundary
 $$V(S, t) = e^{-r(T-t)}\, \mathbb{E}^Q\!\big[\max(S_T - K,\, 0)\big]$$
 
 ::: where
-- $V(S, t)$ — the call price at time $t$ when the stock is at $S$
-- $e^{-r(T-t)}$ — the discount factor from expiry back to time $t$
-- $\mathbb{E}^Q[\cdot]$ — the expected value under the risk-neutral measure $Q$, in which the stock grows at rate $r$ (not $\mu$)
-- $S_T$ — the stock price at expiry
-- $K$ — the strike price
+- $\mathbb{E}^Q[\cdot]$ — expectation under risk-neutral measure
+- $S_T$ — stock price at expiry
 :::
 
 Under the risk-neutral measure, the stock price at expiry is log-normally distributed:
 
 $$\ln S_T \sim \mathcal{N}\!\Big(\ln S + (r - \sigma^2/2)(T-t),\;\; \sigma^2(T-t)\Big)$$
-
-::: where
-- $\ln S_T$ — log of the stock price at expiry (normally distributed in this model)
-- $S$ — current stock price
-- $r$ — risk-free rate
-- $\sigma$ — volatility
-- $T - t$ — time remaining
-- $\mathcal{N}(\mu, \sigma^2)$ — a normal distribution with the given mean and variance
-:::
 
 This connects everything back to the binomial tree in Chapter 4. In the tree, we computed the discounted expected payoff using risk-neutral probabilities. In continuous time, we do the same — the "probabilities" are determined by the log-normal distribution with drift $r$. The PDE and the expectation are two sides of the same coin.
 

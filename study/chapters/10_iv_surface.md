@@ -46,10 +46,7 @@ $$k = \ln\!\left(\frac{K}{F}\right)$$
 ::: where
 - $k$ — log-moneyness
 - $K$ — strike price
-- $F = S\,e^{rT}$ — forward price of the underlying
-- $S$ — current spot price
-- $r$ — risk-free rate
-- $T$ — time to expiration
+- $F = S\,e^{rT}$ — forward price
 :::
 
 - **Delta:** express strikes as the BSM delta (e.g., "25-delta put" means the put whose BSM delta is $-0.25$). This is standard in FX markets.
@@ -73,9 +70,7 @@ Combine the strike dimension and the expiry dimension. The implied volatility su
 $$\sigma_{\text{IV}}(K, T)$$
 
 ::: where
-- $\sigma_{\text{IV}}(K, T)$ — implied volatility for a given strike and expiry
-- $K$ — strike price
-- $T$ — time to expiration
+- $\sigma_{\text{IV}}(K, T)$ — IV as function of strike and expiry
 :::
 
 Visualize this as a 3D surface (strike on one horizontal axis, expiry on the other, IV on the vertical axis) or as a 2D heatmap. The surface is the complete summary of how the market prices options. Every model, every trade, every risk calculation ultimately references this surface.
@@ -103,7 +98,6 @@ $$\Delta_{\text{BS}} = N(d_1)$$
 
 ::: where
 - $\Delta_{\text{BS}}$ — Black-Scholes delta
-- $N(d_1)$ — CDF of the standard normal evaluated at $d_1$
 - $d_1 = \frac{\ln(S/K) + (r + \sigma_{\text{IV}}^2/2)T}{\sigma_{\text{IV}}\sqrt{T}}$
 :::
 
@@ -113,9 +107,8 @@ $$\Delta_{\text{adj}} = \Delta_{\text{BS}} + \nu \cdot \frac{\partial \sigma_{\t
 
 ::: where
 - $\Delta_{\text{adj}}$ — skew-adjusted delta
-- $\Delta_{\text{BS}}$ — Black-Scholes delta (holding IV fixed)
-- $\nu$ — vega of the option
-- $\frac{\partial \sigma_{\text{IV}}}{\partial S}$ — sensitivity of implied volatility to the spot price (from the skew)
+- $\nu$ — vega
+- $\frac{\partial \sigma_{\text{IV}}}{\partial S}$ — IV sensitivity to spot
 :::
 
 For equity index options with negative skew, $\frac{\partial \sigma_{\text{IV}}}{\partial S} < 0$ (IV rises when spot falls). This makes the adjusted delta of a call **smaller** than the BSM delta, and the adjusted delta of a put **more negative**. Ignoring this correction leads to systematic hedging errors.
@@ -131,8 +124,7 @@ The **total implied variance** $w(T) = \sigma_{\text{IV}}^2(K, T) \cdot T$ must 
 $$\sigma_{\text{IV}}^2(K, T_2) \cdot T_2 \geq \sigma_{\text{IV}}^2(K, T_1) \cdot T_1 \quad \text{for } T_2 > T_1$$
 
 ::: where
-- $\sigma_{\text{IV}}(K, T_i)$ — implied volatility at strike $K$, expiry $T_i$
-- $T_1, T_2$ — two expiration dates with $T_2 > T_1$
+- $T_1, T_2$ — two expiries with $T_2 > T_1$
 :::
 
 If this is violated, the **forward variance** between $T_1$ and $T_2$ would be negative, which is impossible (variance cannot be negative). In trading terms, you could construct a calendar spread arbitrage: sell the shorter-dated option and buy the longer-dated one for a risk-free profit.
@@ -147,7 +139,6 @@ $$C(K_1) - 2C(K_2) + C(K_3) \geq 0$$
 
 ::: where
 - $C(K_i)$ — call price at strike $K_i$
-- $K_2 = (K_1 + K_3)/2$ — middle strike
 :::
 
 Violations of either constraint signal data errors or mispricings that would be quickly exploited.
