@@ -61,7 +61,7 @@ Portfolio B also pays $\max(S_T, K)$ at expiry.
 
 Both portfolios pay exactly $\max(S_T, K)$ in every possible scenario.
 
-![Put-call parity: both portfolios have identical payoffs](../assets/put_call_parity.svg)
+![Put-call parity: both portfolios have identical payoffs](study/assets/put_call_parity.svg)
 
 By the no-arbitrage principle, they must cost the same today:
 

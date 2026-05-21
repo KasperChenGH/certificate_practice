@@ -41,7 +41,7 @@ The formula $C = S_0 N(d_1) - K e^{-rT} N(d_2)$ has two terms. Think of it as "w
 - When the option is deep in the money ($S_0 \gg K$), both $N(d_1)$ and $N(d_2)$ approach 1, and $C \to S_0 - K e^{-rT}$ (intrinsic value).
 - When the option is far out of the money ($S_0 \ll K$), both approach 0, and $C \to 0$.
 
-![BSM call price vs intrinsic value](../assets/bsm_price_curve.svg)
+![BSM call price vs intrinsic value](study/assets/bsm_price_curve.svg)
 
 
 ## 5.3 The Put Formula

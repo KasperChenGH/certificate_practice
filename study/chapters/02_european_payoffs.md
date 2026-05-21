@@ -50,7 +50,7 @@ $$P_T = \max(K - S_T,\; 0) = (K - S_T)^+$$
 
 **The payoff diagram** is the mirror image of the call's hockey stick. For stock prices above $K$, the payoff is flat at zero. Below $K$, the payoff rises linearly as the stock price falls. The maximum possible payoff is $K$ (when the stock goes to zero).
 
-![Call and put payoff diagrams](../assets/call_put_payoff.svg)
+![Call and put payoff diagrams](study/assets/call_put_payoff.svg)
 
 ---
 

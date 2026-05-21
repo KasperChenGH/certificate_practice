@@ -32,7 +32,7 @@ Three forces drive the equity skew:
 
 3. **Fat left tails.** Empirically, large negative returns occur more often than BSM predicts. The market knows this and prices it in. OTM puts need higher IV to account for the extra probability of crashes.
 
-![Volatility smile vs equity skew](../assets/vol_smile_skew.svg)
+![Volatility smile vs equity skew](study/assets/vol_smile_skew.svg)
 
 ## Moneyness: Choosing the Right x-Axis
 
