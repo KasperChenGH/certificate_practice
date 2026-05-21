@@ -1,12 +1,13 @@
 # 金融證照練習 / Taiwan Finance Cert Practice
 
-Mobile-friendly web quiz for three Taiwan finance certifications:
+Mobile-friendly web quiz for three Taiwan finance certifications, plus a graduate-level Options Pricing Theory study section:
 
 - 期貨商業務員 — 592 questions
 - 證券商高級業務員 — 297 questions
 - 金融市場常識與職業道德 — 1,120 questions
+- **Options Pricing Theory** — 12-chapter self-contained European options textbook (Itô calculus → BSM PDE → Greeks → IV surface), rendered in-browser with KaTeX
 
-Each test draws exactly **100 random questions** from the chosen bank.
+Each quiz draws exactly **100 random questions** from the chosen bank.
 Wrong-answer history is kept per-device in `localStorage` (no backend, no account).
 
 ## Live demo
@@ -34,10 +35,11 @@ Don't open `index.html` directly — `fetch('questions.json')` needs an HTTP ori
 
 | Page | What it does |
 |---|---|
-| Home | Stats card (total attempts / accuracy / wrong-pool size). Pick a topic to start a 100-question quiz, or open the "常錯題複習" review page. |
+| Home | Stats card (total attempts / accuracy / wrong-pool size). Pick a topic to start a 100-question quiz, or open the "常錯題複習" review page, or enter the study section. |
 | Quiz | Tap an option, navigate with **上一題 / 下一題**. Final question's button becomes **交卷**. Mid-quiz abort returns to Home (current quiz is discarded). |
 | Results | Score out of 100. Lists each question you missed with the correct answer and your selection. **回首頁** to return. |
 | Review (常錯題) | Lists every question you've gotten wrong on ≥ 50% of your **last 10** attempts, gated by a minimum of 3 attempts. |
+| Study (Options Pricing) | Chapter list with visited tracking. Each chapter renders markdown + KaTeX math with theorem/proof/where blocks. Practice problems reveal solutions on tap. |
 
 ## Files
 
