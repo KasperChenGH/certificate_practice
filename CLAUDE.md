@@ -116,11 +116,25 @@ A 4th content area: in-browser self-study lessons on European options theory.
 English UI scoped to this section; the existing 3 quiz buttons stay Chinese.
 
 **Pipeline:** markdown chapter file → custom `:::` preprocessor → `marked.parse` → KaTeX
-`renderMathInElement`. All loaded from CDN (`marked@12`, `katex@0.16.9`). Fallback:
-if a CDN is unavailable, the chapter renders as raw markdown in a `<pre>` block.
+`renderMathInElement`. All loaded from CDN (`marked@12`, `katex@0.16.9`). Fallback: if
+`marked` fails to load, the chapter renders as escaped raw text inside a `<pre>` block;
+if only KaTeX fails, markdown still renders but math displays as raw `$...$` delimiters.
 
 **Content:** `study/chapters/01_preface.md` … `study/chapters/12_surface_models.md`,
 indexed by `study/index.json`. Edit a chapter, refresh the page — no build step.
+
+`study/index.json` schema:
+
+```json
+{
+  "title": "Options Pricing Theory",
+  "subtitle": "…",
+  "chapters": [
+    { "file": "01_preface.md", "title": "Preface and Notation" },
+    …
+  ]
+}
+```
 
 **Markdown conventions specific to study chapters:**
 
