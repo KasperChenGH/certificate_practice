@@ -17,21 +17,23 @@ $$dS_t = r S_t\, dt + \sigma_{\text{loc}}(S_t, t)\, S_t\, d\tilde W_t$$
 
 under the risk-neutral measure $\mathbb{Q}$ prices every vanilla call at exactly its market price. The model has one source of randomness, so it is still complete, and the local-vol surface acts as a non-parametric fit to the entire smile surface simultaneously.
 
-where:
+::: where
 - $S_t$ — spot price at time $t$
 - $r$ — continuously compounded risk-free rate
 - $\sigma_{\text{loc}}(S_t, t)$ — local volatility, a deterministic function of spot and time
 - $\tilde W_t$ — standard Brownian motion under $\mathbb{Q}$
+:::
 
 The local-vol function can be backed out directly from observed call prices via the **Dupire formula** (stated without proof):
 
 $$\sigma_{\text{loc}}^2(K, T) = \frac{\partial C/\partial T + r K\, \partial C/\partial K}{\tfrac{1}{2} K^2\, \partial^2 C/\partial K^2}$$
 
-where:
+::: where
 - $C(K, T)$ — market price of a European call with strike $K$ and expiry $T$
 - $\partial C/\partial T$ — calendar spread sensitivity (time derivative of the call surface)
 - $\partial C/\partial K$ — delta sensitivity with respect to strike
 - $\partial^2 C/\partial K^2$ — convexity of the call surface in strike (proportional to the risk-neutral density)
+:::
 
 **Remark.** Local volatility fits today's surface exactly by construction. However, it suffers from poor forward dynamics — the *forward skew problem*: as the spot evolves, the future smile implied by the model tends to flatten unrealistically. Empirically, skews tend to persist with roughly stable shapes over time; only stochastic-volatility or jump-diffusion models can reproduce this behaviour. Local vol over-fits the static snapshot at the cost of forward-looking realism.
 
@@ -43,20 +45,22 @@ The model is governed by two coupled SDEs under $\mathbb{Q}$:
 
 $$dS_t = r S_t\, dt + \sqrt{v_t}\, S_t\, dW_t^1$$
 
-where:
+::: where
 - $S_t$ — spot price
 - $r$ — risk-free rate
 - $v_t$ — instantaneous variance (so instantaneous volatility is $\sqrt{v_t}$)
 - $W_t^1$ — first standard Brownian motion under $\mathbb{Q}$
+:::
 
 $$dv_t = \kappa(\theta - v_t)\, dt + \xi\, \sqrt{v_t}\, dW_t^2$$
 
-where:
+::: where
 - $v_t$ — instantaneous variance
 - $\kappa$ — speed of mean reversion; how fast $v_t$ is pulled back toward $\theta$
 - $\theta$ — long-run (unconditional) variance; the level $v_t$ reverts to
 - $\xi$ — volatility-of-volatility (vol-of-vol); controls the dispersion of $v_t$
 - $W_t^2$ — second standard Brownian motion under $\mathbb{Q}$
+:::
 
 The two Brownian motions satisfy $\langle dW^1, dW^2 \rangle = \rho\, dt$, so correlation $\rho$ couples spot moves to variance moves — negative $\rho$ produces a downward skew consistent with equity markets.
 
@@ -78,18 +82,20 @@ Under the forward measure, the two coupled SDEs are:
 
 $$dF_t = \alpha_t\, F_t^\beta\, dW_t^1$$
 
-where:
+::: where
 - $F_t$ — forward price at time $t$
 - $\alpha_t$ — stochastic volatility process (has units of vol when $\beta = 1$)
 - $\beta$ — CEV exponent; determines how vol scales with the forward level
 - $W_t^1$ — first standard Brownian motion
+:::
 
 $$d\alpha_t = \nu\, \alpha_t\, dW_t^2$$
 
-where:
+::: where
 - $\alpha_t$ — stochastic volatility; evolves as a driftless geometric Brownian motion
 - $\nu$ — volatility-of-volatility; controls how much $\alpha_t$ itself fluctuates
 - $W_t^2$ — second standard Brownian motion
+:::
 
 The two Brownian motions satisfy $\langle dW^1, dW^2 \rangle = \rho\, dt$.
 
@@ -112,7 +118,7 @@ $$w(k) = a + b\, \big[\rho\, (k - m) + \sqrt{(k - m)^2 + \sigma^2}\,\big]$$
 
 where $w = \sigma_{\text{IV}}^2(K, T) \cdot T$ is the total implied variance and $k = \ln(K/F)$ is the log-moneyness.
 
-where:
+::: where
 - $w(k)$ — total implied variance at log-moneyness $k$; equals $\sigma_{\text{IV}}^2 \cdot T$
 - $k = \ln(K/F)$ — log-moneyness; $k < 0$ for OTM puts, $k > 0$ for OTM calls
 - $a$ — overall variance level (vertical shift of the smile)
@@ -120,6 +126,7 @@ where:
 - $\rho$ — tilt parameter; $\rho < 0$ tilts the smile so the left wing rises more steeply (equity skew)
 - $m$ — horizontal shift of the smile center in log-moneyness space
 - $\sigma$ — curvature parameter; larger $\sigma$ gives a rounder bottom to the smile
+:::
 
 | Symbol | Meaning |
 |--------|---------|
@@ -145,18 +152,21 @@ Each model targets a different point on the trade-off between fit quality, tract
 Local vol fits perfectly but is widely regarded as a poor dynamic model; Heston and SABR trade exact fit for realistic future dynamics; SVI sacrifices dynamics entirely to achieve a simple, robust fit to today's smile. In practice, combinations are used — for example, calibrating a Heston model to the surface and using SVI as an interpolation tool between modeled strikes.
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 12.1 [Conceptual].** Why does local volatility produce poor forward dynamics, even though it fits today's surface exactly?
 
+::: solution
 **Solution.** Local volatility encodes today's surface entirely into a deterministic function $\sigma_{\text{loc}}(S, t)$. As time evolves and the spot moves, the model's *future* skew — the IV surface as seen at a later date — is dictated entirely by this deterministic function. In practice, future skews observed under local vol tend to flatten out unrealistically: the model predicts that as the spot drifts, the smile will smooth away. Empirically, real skews tend to persist with similar shapes over time — a property that only stochastic-volatility or jump-diffusion models can capture, because they carry an independent source of randomness that regenerates the skew continuously. The deterministic function over-fits today's observed surface at the cost of future predictive realism. This is the *forward skew problem*: local vol matches today's prices perfectly but predicts unrealistic future smile dynamics.
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 12.2 [Computation].** For SVI with $a = 0.04$, $b = 0.4$, $\rho = -0.5$, $m = 0$, $\sigma = 0.1$, compute the total implied variance $w(k)$ and the implied volatility $\sigma_{\text{IV}}$ at $k = -0.1$, $k = 0$, and $k = 0.1$. (Use $T = 1$ to extract IV from $w = \sigma_{\text{IV}}^2 T$.)
 
-**Solution.**
-
-Recall $w(k) = 0.04 + 0.4\,[-0.5\,(k - 0) + \sqrt{(k - 0)^2 + 0.01}]$, i.e., $w(k) = 0.04 + 0.4\,[-0.5k + \sqrt{k^2 + 0.01}]$.
+::: solution
+**Solution.** Recall $w(k) = 0.04 + 0.4\,[-0.5\,(k - 0) + \sqrt{(k - 0)^2 + 0.01}]$, i.e., $w(k) = 0.04 + 0.4\,[-0.5k + \sqrt{k^2 + 0.01}]$.
 
 - $k = 0$:
 
@@ -181,3 +191,5 @@ $$= 0.04 + 0.4 \cdot 0.0914 \approx 0.04 + 0.0366 = 0.0766$$
 So $\sigma_{\text{IV}}(0.1) \approx \sqrt{0.0766} \approx 0.277$ (27.7%).
 
 The implied volatility is highest at OTM puts ($k = -0.1$, 34.1%), falls to ATM ($k = 0$, 28.3%), and is lowest at OTM calls ($k = +0.1$, 27.7%) — a downward-sloping equity-style skew, consistent with the negative tilt parameter $\rho = -0.5$.
+:::
+:::

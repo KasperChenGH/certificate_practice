@@ -288,17 +288,22 @@ This is precisely the closed-form call formula from Ch. 7. The PDE is satisfied 
 ---
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 9.1 [Conceptual].** Why is $\nu_C = \nu_P$ but $\Delta_C \neq \Delta_P$? What is the financial intuition?
 
+::: solution
 **Solution.** The equality $\nu_C = \nu_P$ follows algebraically from put-call parity: $C - P = S - Ke^{-r(T-t)}$. The right-hand side contains no $\sigma$, so differentiating with respect to $\sigma$ gives $\partial C/\partial\sigma - \partial P/\partial\sigma = 0$, hence $\nu_C = \nu_P$. Financially, both calls and puts are convex functions of $S_T$: a call payoff $(S_T - K)^+$ and a put payoff $(K - S_T)^+$ are each piecewise linear with a "kink." By Jensen's inequality, greater uncertainty in $S_T$ (higher $\sigma$) increases the expected value of any convex payoff. This benefit is symmetric for calls and puts — they are related by parity and share the same convexity structure. Vega captures this shared sensitivity to dispersion.
 
 Delta, however, measures directional sensitivity, not dispersion sensitivity. The call gains when $S$ rises ($\Delta_C = N(d_1) > 0$) and the put loses when $S$ rises ($\Delta_P = N(d_1) - 1 < 0$). The parity relationship gives $\Delta_C - \Delta_P = 1$ (the right-hand side $S - Ke^{-r(T-t)}$ has derivative 1 with respect to $S$). The convexity argument does not distinguish the direction of $S$ movements; the delta argument does.
+:::
+:::
 
 ---
 
+::: problem [Derivation]
 **Problem 9.2 [Derivation].** Prove the identity $S\varphi(d_1) = Ke^{-r(T-t)}\varphi(d_2)$.
 
+::: solution
 **Solution.** This is the content of the lemma in the section "The identity $S\varphi(d_1) = Ke^{-r(T-t)}\varphi(d_2)$" above. We reproduce the proof:
 
 Starting from $\varphi(d_1)/\varphi(d_2) = \exp(-\tfrac{1}{2}(d_1^2 - d_2^2))$, factor the exponent as $(d_1 - d_2)(d_1 + d_2)$. With $d_1 - d_2 = \sigma\sqrt{T-t}$ and $d_1 + d_2 = 2d_1 - \sigma\sqrt{T-t}$, substitute $d_1 = [\ln(S/K) + (r+\sigma^2/2)(T-t)]/[\sigma\sqrt{T-t}]$ to obtain $d_1 + d_2 = [2\ln(S/K) + 2r(T-t)]/[\sigma\sqrt{T-t}]$. Then $d_1^2 - d_2^2 = 2\ln(S/K) + 2r(T-t)$, so:
@@ -306,11 +311,15 @@ Starting from $\varphi(d_1)/\varphi(d_2) = \exp(-\tfrac{1}{2}(d_1^2 - d_2^2))$, 
 $$\frac{\varphi(d_1)}{\varphi(d_2)} = e^{-\ln(S/K) - r(T-t)} = \frac{K}{S}e^{-r(T-t)}.$$
 
 Rearranging: $S\varphi(d_1) = Ke^{-r(T-t)}\varphi(d_2)$. $\square$
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 9.3 [Computation].** ATM call: $S = K = 100$, $T - t = 0.25$, $r = 0.05$, $\sigma = 0.20$. Compute $\Delta$, $\Gamma$, $\Theta$ (per year), $\nu$ (per unit $\sigma$ change), and $\rho$.
 
+::: solution
 **Solution.** From Ch. 7 Problem 7.3, $d_1 = 0.175$ and $d_2 = 0.075$, and $\varphi(0.175) \approx 0.3927$. We also use $N(0.175) \approx 0.5694$, $N(0.075) \approx 0.5299$, and $e^{-0.05 \times 0.25} = e^{-0.0125} \approx 0.9876$.
 
 **Delta:**
@@ -364,3 +373,5 @@ Per 1% change in the interest rate (multiply by 0.01): $\rho_C \approx \$0.131$ 
 | $\Theta_C$ | $-S\varphi(d_1)\sigma/(2\sqrt{T-t}) - rKe^{-r(T-t)}N(d_2)$ | $-10.47$ per year |
 | $\nu$ | $S\varphi(d_1)\sqrt{T-t}$ | $19.64$ per unit $\sigma$ |
 | $\rho_C$ | $K(T-t)e^{-r(T-t)}N(d_2)$ | $13.08$ per unit $r$ |
+:::
+:::

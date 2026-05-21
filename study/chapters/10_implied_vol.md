@@ -20,13 +20,13 @@ Given a market-observed call price $C_{\text{mkt}}$, the **implied volatility** 
 
 $$\text{BSM}_C(S, K, T, r, \sigma_{\text{IV}}) = C_{\text{mkt}},$$
 
-where
-
+::: where
 | Symbol | Meaning |
 |---|---|
 | $\text{BSM}_C(S, K, T, r, \sigma)$ | Black-Scholes call price (Ch. 7) |
 | $C_{\text{mkt}}$ | Market-observed call price |
 | $\sigma_{\text{IV}}$ | Implied volatility — the unique solution |
+:::
 
 **Remark.** IV is what the market is *pricing in* — it is not a forecast of future stock moves in the statistical sense, but rather a measure of the volatility the market is incorporating into the current option price, including any risk premia demanded by option sellers.
 
@@ -54,8 +54,7 @@ $$\nu(\sigma) = S\, \varphi(d_1)\, \sqrt{T} > 0 \quad \text{for all } \sigma > 0
 
 since $\varphi(d_1) > 0$ everywhere. Therefore $\sigma \mapsto \text{BSM}_C(\sigma)$ is strictly increasing, and a strictly increasing function can attain each value at most once. Hence $\sigma_{\text{IV}}$ is unique. $\blacksquare$
 
-where
-
+::: where
 | Symbol | Meaning |
 |---|---|
 | $\nu(\sigma)$ | Vega: $\partial \text{BSM}_C / \partial \sigma = S \varphi(d_1) \sqrt{T}$ |
@@ -63,6 +62,7 @@ where
 | $d_1$ | $({\ln(S/K) + (r + \sigma^2/2)T})/(\sigma\sqrt{T})$ |
 | $\max(S - K e^{-rT}, 0)$ | Intrinsic lower bound (no-arb, Ch. 5) |
 | $S$ | Upper bound: call cannot exceed spot |
+:::
 
 **Remark.** Outside the no-arbitrage interval, no $\sigma_{\text{IV}} > 0$ exists — the market quote violates static no-arbitrage constraints. In practice this indicates either a transient quote error or a genuine (rare) free-money opportunity that arbitrageurs would close immediately.
 
@@ -76,14 +76,14 @@ so we seek $f(\sigma) = 0$. Because $f'(\sigma) = \nu(\sigma) > 0$, Newton's met
 
 $$\boxed{\sigma_{n+1} = \sigma_n - \frac{f(\sigma_n)}{\nu(\sigma_n)} = \sigma_n - \frac{\text{BSM}_C(\sigma_n) - C_{\text{mkt}}}{\nu(\sigma_n)}},$$
 
-where
-
+::: where
 | Symbol | Meaning |
 |---|---|
 | $\sigma_n$ | Current volatility iterate |
 | $\text{BSM}_C(\sigma_n)$ | Black-Scholes call price at $\sigma_n$ |
 | $C_{\text{mkt}}$ | Target market price |
 | $\nu(\sigma_n)$ | Vega at $\sigma_n$: $S \varphi(d_1(\sigma_n)) \sqrt{T}$ |
+:::
 
 **Convergence remark.** Vega is smooth and strictly positive on the entire no-arbitrage range. Near the root, Newton's method converges *quadratically* — the number of correct decimal places roughly doubles each iteration. In practice, a starting guess of $\sigma_0 \approx 0.30$ (30%) is a reasonable prior for equity options; this typically converges to six decimal-place accuracy in at most five iterations.
 
@@ -97,14 +97,14 @@ Two distinct notions of volatility arise in practice:
 
 $$\hat{\sigma}_{\text{RV}}^2 = \frac{1}{n-1} \sum_{i=1}^{n} (r_i - \bar{r})^2 \cdot 252,$$
 
-where
-
+::: where
 | Symbol | Meaning |
 |---|---|
 | $r_i = \ln(S_i / S_{i-1})$ | Daily log return on day $i$ |
 | $\bar{r} = \frac{1}{n}\sum_{i=1}^n r_i$ | Sample mean of log returns |
 | $252$ | Annualisation factor (trading days per year) |
 | $n$ | Window length in trading days |
+:::
 
 **Remark.** Empirically, IV typically *exceeds* RV on equity indices. This gap is the **volatility risk premium (VRP)** — compensation paid by option buyers to sellers for bearing the risk of large moves. Measured ex post:
 
@@ -113,18 +113,23 @@ $$\text{VRP} = \mathbb{E}\bigl[\text{IV}^2 - \text{RV}^2\bigr],$$
 where the expectation is taken over historical option-expiry windows and has been persistently positive on indices such as the S&P 500. Sellers of variance (e.g., via variance swaps) have historically harvested this premium as a systematic strategy.
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 10.1 [Conceptual].** Why is the function $\sigma \mapsto \text{BSM}_C(\sigma)$ strictly monotonic? What happens to $\text{BSM}_C$ as $\sigma \to 0^+$ and $\sigma \to \infty$?
 
+::: solution
 **Solution.** Strict monotonicity follows from $\nu = S \varphi(d_1) \sqrt{T} > 0$ for all $\sigma > 0$, $T > 0$, $S > 0$ — vega is strictly positive everywhere on the domain because the normal PDF $\varphi > 0$ everywhere. Therefore $\text{BSM}_C$ is differentiable with a strictly positive derivative, making it strictly increasing.
 
 - As $\sigma \to 0^+$: with zero volatility, $S_T = S_0 e^{rT}$ is deterministic, and the call converges to the discounted deterministic payoff: $C \to \max(S e^{rT} - K, 0)\, e^{-rT} = \max(S - K e^{-rT}, 0)$.
 - As $\sigma \to \infty$: $N(d_1) \to 1$ and $K e^{-rT} N(d_2) \to 0$, so $C \to S$. Intuitively, with infinite volatility the call nearly always ends up deep in-the-money; its value approaches the stock price itself.
+:::
+:::
 
 ---
 
+::: problem [Derivation]
 **Problem 10.2 [Derivation].** Derive the Newton-Raphson update formula starting from the first-order Taylor expansion of $\text{BSM}_C(\sigma)$ around the current iterate $\sigma_n$.
 
+::: solution
 **Solution.** Define $f(\sigma) = \text{BSM}_C(\sigma) - C_{\text{mkt}}$. First-order Taylor expansion around $\sigma_n$:
 
 $$f(\sigma) \approx f(\sigma_n) + f'(\sigma_n)(\sigma - \sigma_n).$$
@@ -134,11 +139,15 @@ Setting $f(\sigma) = 0$ and solving for $\sigma$:
 $$\sigma \approx \sigma_n - \frac{f(\sigma_n)}{f'(\sigma_n)} = \sigma_n - \frac{\text{BSM}_C(\sigma_n) - C_{\text{mkt}}}{\nu(\sigma_n)}.$$
 
 This is precisely the Newton iterate $\sigma_{n+1}$. The approximation becomes exact at the root, and because $f$ is smooth with $f' > 0$ near the root, successive iterates converge quadratically.
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 10.3 [Computation].** Market call price $C_{\text{mkt}} = \$4.61$ with $S = K = 100$, $T = 0.25$ years, $r = 0.05$. Starting from $\sigma_0 = 0.30$, perform two Newton-Raphson iterations. Report $\sigma_1$ and $\sigma_2$.
 
+::: solution
 **Solution.** All inputs are at-the-money ($S = K = 100$) with a 3-month expiry.
 
 **Iteration 1: $\sigma_0 = 0.30$.**
@@ -167,3 +176,5 @@ From Ch. 7 Problem 7.3, $C(0.20) \approx \$4.61$, exactly matching the target. T
 $$\sigma_2 \approx \sigma_1 - \frac{4.61 - 4.61}{\nu(\sigma_1)} \approx \mathbf{0.20}.$$
 
 **Result.** After one Newton step: $\sigma_1 \approx 0.20$; after two steps: $\sigma_2 \approx 0.20$ (converged). The true implied volatility is $\sigma_{\text{IV}} = 0.20$. This illustrates quadratic convergence — the iterate moved from 0.30 to essentially the exact answer in a single step.
+:::
+:::

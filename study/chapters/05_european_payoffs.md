@@ -260,15 +260,20 @@ All three follow immediately from put-call parity — no additional proof is req
 ---
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 5.1 [Conceptual].** Why is the call lower bound $S_0 - K e^{-rT}$ rather than $S_0 - K$?
 
+::: solution
 **Solution.** The strike $K$ is paid at expiration $T$, not at time 0. Today's value of "the obligation to pay $K$ at time $T$" is $K e^{-rT}$ — discounting at the continuously-compounded risk-free rate $r$ over horizon $T$. The lower bound $C \ge S_0 - K e^{-rT}$ corresponds exactly to the present value of a forward contract that pays $S_T - K$ at time $T$: its time-0 value is $S_0 - K e^{-rT}$ (by no-arbitrage — long stock, short $K$ in bonds). Using $S_0 - K$ instead would ignore time value of money: it would misprice the bond leg of the replicating portfolio and would not generally hold (for example, with $r > 0$ and $T$ large, $S_0 - K$ can be a tighter bound than is warranted, leading to apparent arbitrage that vanishes once discounting is accounted for correctly).
+:::
+:::
 
 ---
 
+::: problem [Derivation]
 **Problem 5.2 [Derivation].** Prove the put-call parity formula $C - P = S_0 - K e^{-rT}$ by explicit construction of the static replicating portfolio. Verify the payoff matches at $T$ and apply no-arbitrage at $t = 0$.
 
+::: solution
 **Solution.** We construct two portfolios with identical payoffs at $T$.
 
 **Portfolio A (long call, short put).**
@@ -287,11 +292,15 @@ All three follow immediately from put-call parity — no additional proof is req
 Portfolios A and B deliver $S_T - K$ in every state of the world at $T$. They have identical payoffs. By no-arbitrage, their time-0 values must be equal:
 
 $$C - P = S_0 - K e^{-rT}. \qquad \square$$
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 5.3 [Computation].** Suppose $S_0 = 50$, $K = 50$, $T = 0.5$, $r = 0.04$, $q = 0$. A European call trades in the market for $C = \$3.50$. What is the no-arbitrage price of the European put with the same strike and expiration?
 
+::: solution
 **Solution.** Apply put-call parity (no dividends):
 
 $$C - P = S_0 - K e^{-rT}.$$
@@ -309,3 +318,5 @@ Solve for $P$:
 $$P = C - 0.99 = 3.50 - 0.99 = \$2.51.$$
 
 The no-arbitrage put price is $P \approx \$2.51$. Any deviation from this price would allow a riskless profit via the static replication described in Problem 5.2.
+:::
+:::

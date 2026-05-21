@@ -248,9 +248,10 @@ This is the central engine of option pricing theory. The price of any attainable
 ---
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 4.1 [Conceptual].** Why must the equivalent martingale measure be *equivalent* to (not merely absolutely continuous with respect to) $\mathbb{P}$? What goes wrong if it's only absolutely continuous?
 
+::: solution
 **Solution.** Mutual absolute continuity ($\mathbb{Q} \sim \mathbb{P}$) means $\mathbb{Q}$ and $\mathbb{P}$ share exactly the same null sets: an event is $\mathbb{Q}$-impossible if and only if it is $\mathbb{P}$-impossible. If $\mathbb{Q}$ were only absolutely continuous with respect to $\mathbb{P}$ (i.e., $\mathbb{Q} \ll \mathbb{P}$ but not $\mathbb{P} \ll \mathbb{Q}$), two problems arise:
 
 1. **$\mathbb{Q}$ ignores $\mathbb{P}$-possible events.** There could be events $A$ with $\mathbb{P}(A) > 0$ but $\mathbb{Q}(A) = 0$. The pricing measure would effectively declare certain realistic market scenarios impossible, potentially mispricing claims whose payoffs depend on those scenarios.
@@ -258,11 +259,15 @@ This is the central engine of option pricing theory. The price of any attainable
 2. **Arbitrage may survive.** The equivalence of measures is what ensures that a $\mathbb{Q}$-admissible strategy cannot exploit $\mathbb{P}$-possible events for free profit. One-way absolute continuity breaks this symmetry and can permit strategies that are "safe" under $\mathbb{Q}$ but profitable under $\mathbb{P}$.
 
 Conversely, without $\mathbb{P} \ll \mathbb{Q}$, $\mathbb{Q}$ might assign positive probability to events $\mathbb{P}$ considers impossible (e.g., negative stock prices), which would invalidate the model's financial interpretation. Equivalence ensures both measures agree on what is genuinely possible in the market.
+:::
+:::
 
 ---
 
+::: problem [Derivation]
 **Problem 4.2 [Derivation].** Use Itô's formula to show $d\tilde{S}_t = \sigma\tilde{S}_t\, d\tilde{W}_t$ under $\mathbb{Q}$, confirming $\tilde{S}_t$ is a $\mathbb{Q}$-martingale.
 
+::: solution
 **Solution.** Let $\tilde{S}_t = e^{-rt} S_t$. Apply Itô's formula to $f(t, x) = e^{-rt} x$:
 
 $$\partial_t f = -r e^{-rt} x, \qquad \partial_x f = e^{-rt}, \qquad \partial_{xx} f = 0.$$
@@ -280,14 +285,16 @@ Collecting $dt$ terms: $-r e^{-rt} S_t\, dt + r e^{-rt} S_t\, dt = 0$. Therefore
 $$d\tilde{S}_t = e^{-rt} \cdot \sigma S_t\, d\tilde{W}_t = \sigma \tilde{S}_t\, d\tilde{W}_t.$$
 
 This SDE has no drift term — $\tilde{S}_t$ is a local $\mathbb{Q}$-martingale. Since $\tilde{S}_t = S_0 \exp((\sigma \tilde{W}_t - \tfrac{1}{2}\sigma^2 t))$ under $\mathbb{Q}$ (log-normal with finite second moments), the stochastic integral $\int_0^t \sigma \tilde{S}_s\, d\tilde{W}_s$ is square-integrable on $[0, T]$. Hence $\tilde{S}_t$ is a true $\mathbb{Q}$-martingale, confirming $\mathbb{Q}$ is an EMM. $\square$
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 4.3 [Computation].** Suppose $r = 0.05$, $\mu = 0.10$, $\sigma = 0.20$. Compute the market price of risk $\theta$ and the Radon-Nikodym derivative $Z_T = d\mathbb{Q}/d\mathbb{P}$ for $T = 1$, evaluated at $W_1 = 0$.
 
-**Solution.**
-
-*Step 1: Market price of risk.*
+::: solution
+**Solution.** *Step 1: Market price of risk.*
 
 $$\theta = \frac{\mu - r}{\sigma} = \frac{0.10 - 0.05}{0.20} = \frac{0.05}{0.20} = 0.25.$$
 
@@ -302,3 +309,5 @@ $$Z_1 = \exp\!\left(-0.25 \cdot 0 - \tfrac{1}{2} \cdot (0.25)^2 \cdot 1\right) =
 Computing: $\exp(-0.03125) \approx 0.9692$.
 
 *Interpretation.* At $W_1 = 0$ (a "typical" path), the change-of-measure weight is close to 1, meaning paths near the mean are roughly equally likely under both $\mathbb{P}$ and $\mathbb{Q}$. The slight discount ($0.9692 < 1$) reflects that $\mathbb{Q}$ down-weights the real-world drift advantage: since $\mu > r$, paths that performed well under $\mathbb{P}$ are given slightly lower $\mathbb{Q}$-weight, shifting probability mass toward the risk-neutral growth rate.
+:::
+:::

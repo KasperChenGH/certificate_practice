@@ -287,15 +287,20 @@ Intuition: the dividend reduces the effective growth rate of the stock under the
 ---
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 6.1 [Conceptual].** Explain in one paragraph why the real-world drift $\mu$ disappears from the Black-Scholes PDE while the volatility $\sigma$ does not. What is the financial intuition?
 
+::: solution
 **Solution.** The PDE is derived by choosing the hedge ratio $\phi_t = V_S$ to cancel the $dW_t$ term in the dynamics of the portfolio $\Pi_t = V(S_t, t) - \phi_t S_t$. This cancellation depends *only* on the diffusion coefficient of the stock (which is proportional to $\sigma$), not on the drift coefficient (which is proportional to $\mu$). Once the random component is cancelled, the residual dynamics of $\Pi_t$ is purely deterministic and must — by the no-arbitrage principle — grow at the instantaneous risk-free rate $r$. The drift $\mu$ enters the picture only via $V_S \cdot \mu S\, dt$ in Itô's expansion of $dV$, and is exactly offset by the matching term $-\phi_t \mu S\, dt = -V_S \mu S\, dt$ from the short stock leg. Financially: replication eliminates the holder's exposure to whether the stock goes up or down on average. The option price therefore depends on the *magnitude* of random fluctuations ($\sigma$) and the risk-free funding rate ($r$), but not on the directional bet ($\mu$). Two market participants who disagree about whether the stock is "going up" or "going down" must nonetheless agree on the option's price, because both can hedge to the same risk-free outcome at the same cost.
+:::
+:::
 
 ---
 
+::: problem [Derivation]
 **Problem 6.2 [Derivation].** *(The user's original example.)* Derive the Black-Scholes partial differential equation for a non-dividend-paying stock $S$ following $dS = \mu S\, dt + \sigma S\, dW$ under the real-world measure $\mathbb{P}$. State and justify the boundary conditions at $S = 0$ and as $S \to \infty$ for a European call.
 
+::: solution
 **Solution.** *(Self-contained; this reproduces the full derivation from the chapter body, intended to be readable without reference to the surrounding text.)*
 
 *Setup.* Work on a filtered probability space supporting a $\mathbb{P}$-Brownian motion $W$. The market contains a risk-free bond $B_t = e^{rt}$ with $dB_t = r B_t\, dt$ and a stock $S$ obeying
@@ -375,11 +380,15 @@ $$C(S, t) \sim S - K e^{-r(T-t)} \quad \text{as } S \to \infty.$$
 :::
 
 *Summary.* The Black-Scholes PDE with the call's terminal condition $C(S, T) = (S - K)^+$, boundary condition $C(0, t) = 0$, and asymptotic condition $C(S, t) \sim S - K e^{-r(T-t)}$ as $S \to \infty$ jointly determine the European call price uniquely. The closed-form solution is obtained in Ch. 7. $\square$
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 6.3 [Computation].** Modify the derivation to include a continuous dividend yield $q$. State the resulting partial differential equation.
 
+::: solution
 **Solution.** When the stock pays a continuous dividend yield $q$, the holder of one share receives dividend cash at rate $q S_t\, dt$. In the hedged portfolio $\Pi_t = V(S_t, t) - \phi_t S_t + \psi_t B_t$, the short stock position implies the *holder of the hedge* must *pay out* dividend cash at rate $q \phi_t S_t\, dt$. The self-financing condition becomes:
 
 $$d\Pi_t = dV - \phi_t\, dS_t - q \phi_t S_t\, dt + \psi_t\, dB_t.$$
@@ -425,3 +434,5 @@ $$\boxed{\,V_t + \tfrac{1}{2} \sigma^2 S^2 V_{SS} + (r - q) S V_S - r V = 0.\,}$
 $$C(S, t) \sim S e^{-q(T-t)} - K e^{-r(T-t)} \quad \text{as } S \to \infty,$$
 
 the value of a *dividend-adjusted* forward contract. $\square$
+:::
+:::

@@ -55,8 +55,7 @@ Several distinct mechanisms contribute to the persistent negative skew observed 
 
 $$\rho_{S_T}(K) = e^{rT} \frac{\partial^2 C(S_0, K, T)}{\partial K^2},$$
 
-where
-
+::: where
 | Symbol | Meaning |
 |---|---|
 | $C(S_0, K, T)$ | Time-0 call price with strike $K$ and expiry $T$ |
@@ -64,6 +63,7 @@ where
 | $r$ | Continuously compounded risk-free rate |
 | $T$ | Time to expiry |
 | $e^{rT}$ | Growth factor: converts discounted density back to un-discounted |
+:::
 
 **Proof.** Under risk-neutral measure $\mathbb{Q}$, the call price is the discounted expectation of its payoff:
 
@@ -146,30 +146,33 @@ Real markets sit between these two extremes: the surface partially shifts when s
 
 $$\Delta_{\text{adj}} = \Delta_{\text{BSM}} + \nu \cdot \frac{\partial \sigma_{\text{IV}}}{\partial S},$$
 
-where
-
+::: where
 | Symbol | Meaning |
 |---|---|
 | $\Delta_{\text{BSM}}$ | Standard BSM delta: $\partial C / \partial S$ holding $\sigma_{\text{IV}}$ fixed |
 | $\nu = \partial C / \partial \sigma$ | Vega: sensitivity of call price to a change in $\sigma$ |
 | $\partial \sigma_{\text{IV}} / \partial S$ | How the relevant IV changes as spot moves (regime-dependent) |
 | $\Delta_{\text{adj}}$ | Total delta accounting for the skew shift |
+:::
 
 Under sticky strike, $\partial \sigma_{\text{IV}} / \partial S = 0$ (IV at a fixed $K$ does not change with $S$), so $\Delta_{\text{adj}} = \Delta_{\text{BSM}}$. Under sticky delta, $\sigma_{\text{IV}}$ at a fixed moneyness does not change with $S$, but the IV relevant for a fixed-$K$ option does change as $K/S$ changes; this gives a non-zero correction. In practice, market makers estimate $\partial \sigma_{\text{IV}} / \partial S$ from the observed skew and use $\Delta_{\text{adj}}$ to set their hedge ratios.
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 11.1 [Conceptual].** Why does equity skew have OTM puts carrying higher IV than OTM calls? Give two distinct explanations.
 
-**Solution.**
-
-- *Crash protection demand*: institutional portfolios hold large long-stock positions. They hedge tail risk by buying OTM put options in quantity. This persistent, structural demand bids up OTM put prices above what a symmetric lognormal model would predict. Higher prices invert to higher IVs. OTM calls face no comparable structural buyer — indeed they face natural sellers (covered-call writers) — so their IVs are kept lower by supply pressure. The asymmetry in demand between the two wings is enough on its own to generate a persistent negative skew.
+::: solution
+**Solution.** - *Crash protection demand*: institutional portfolios hold large long-stock positions. They hedge tail risk by buying OTM put options in quantity. This persistent, structural demand bids up OTM put prices above what a symmetric lognormal model would predict. Higher prices invert to higher IVs. OTM calls face no comparable structural buyer — indeed they face natural sellers (covered-call writers) — so their IVs are kept lower by supply pressure. The asymmetry in demand between the two wings is enough on its own to generate a persistent negative skew.
 - *Leverage effect*: when a stock price falls, the firm's outstanding debt does not decline proportionally in the short run. The ratio of debt to equity therefore rises, increasing the firm's effective leverage. Higher leverage amplifies equity volatility — the equity is a more junior claim on a fixed asset base, making it riskier. Consequently, a falling spot is mechanically associated with rising realized volatility. The risk-neutral distribution must reflect this negative correlation between spot returns and future volatility, which fattens the left tail of the distribution relative to a lognormal and forces OTM put IVs higher.
+:::
+:::
 
 ---
 
+::: problem [Derivation]
 **Problem 11.2 [Derivation].** Prove the Breeden-Litzenberger formula.
 
+::: solution
 **Solution.** Under risk-neutral pricing with discount factor $e^{-rT}$:
 
 $$C(S_0, K, T) = e^{-rT} \int_K^{\infty} (s - K)\,\rho(s)\,ds,$$
@@ -189,11 +192,15 @@ $$\frac{\partial^2 C}{\partial K^2} = -e^{-rT} \cdot (-\rho(K)) = e^{-rT}\,\rho(
 $$\rho(K) = e^{rT}\,\frac{\partial^2 C}{\partial K^2}. \qquad \blacksquare$$
 
 Since $\rho(K) \ge 0$, we immediately obtain the butterfly constraint: $\partial^2 C / \partial K^2 \ge 0$ for all $K$.
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 11.3 [Computation].** Three call prices are observed at equally spaced strikes: $C(95) = 7.20$, $C(100) = 4.60$, $C(105) = 2.50$. Compute the finite-difference approximation to $\partial^2 C / \partial K^2$ at $K = 100$ and verify whether the butterfly arbitrage constraint holds.
 
+::: solution
 **Solution.** Use the central second-difference formula with step $h = 5$:
 
 $$\frac{\partial^2 C}{\partial K^2}\bigg|_{K=100} \approx \frac{C(95) - 2\,C(100) + C(105)}{h^2} = \frac{7.20 - 2(4.60) + 2.50}{5^2}.$$
@@ -207,3 +214,5 @@ Therefore:
 $$\frac{\partial^2 C}{\partial K^2}\bigg|_{K=100} \approx \frac{0.50}{25} = 0.02.$$
 
 The result is **positive** ($0.02 > 0$), so the butterfly arbitrage constraint $\partial^2 C / \partial K^2 \ge 0$ **holds** at $K = 100$. By Breeden-Litzenberger, this is equivalent to a positive risk-neutral density $\rho(100) = e^{rT} \cdot 0.02 > 0$, consistent with a valid probability model. Had the result been negative, one could construct a butterfly spread — long $C(95)$, short $2C(100)$, long $C(105)$ — at negative cost with a non-negative payoff, constituting a free arbitrage.
+:::
+:::

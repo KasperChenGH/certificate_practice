@@ -427,15 +427,20 @@ $$P(S, t) = K e^{-r(T - t)} N(-d_2) - S e^{-q(T - t)} N(-d_1).$$
 ---
 
 ## Practice
-
+::: problem [Conceptual]
 **Problem 7.1 [Conceptual].** Why does the transformation $V(S, t) = K\, u(x, \tau)$ remove the constant $K$ from the heat-equation form? What other transformations could you choose instead, and why is this the natural one?
 
+::: solution
 **Solution.** The value function $V$ has units of dollars and depends parametrically on the strike $K$, which is also a dollar amount. Dividing by $K$ makes $u = V/K$ *dimensionless* — a pure number in strike units. The BSM PDE is linear and homogeneous in $V$ (every term has $V$ to the first power), so scaling $V$ by an overall constant does not alter the structure of the PDE; it merely strips the constant from the equation. One could choose other scalings — for instance, $V/S$ would also be dimensionless — but $V/K$ is the *canonical* choice for three reasons. First, the strike $K$ is a fixed parameter while $S$ is the spatial variable; dividing by $S$ would introduce additional terms in the chain rule and complicate the change of variables. Second, the call payoff in strike units, $(S - K)^+/K = (S/K - 1)^+$, depends on the dimensionless quantity $S/K$ alone, which suggests immediately the further variable $x = \ln(S/K)$. The pair $(V/K, S/K)$ is the natural reduction of the problem to dimensionless form. Third, the boundary conditions in strike units become $u(0, \tau)$-style conditions — for example, $u(x, 0) = (e^x - 1)^+$, a function of $x$ alone, with no residual $K$-dependence — which is exactly what is needed to absorb $K$ into the variable $x$ rather than leaving it as a coefficient in the PDE.
+:::
+:::
 
 ---
 
+::: problem [Derivation]
 **Problem 7.2 [Derivation].** Verify by direct differentiation that the closed-form call formula $C(S, t) = S\, N(d_1) - K e^{-r(T - t)}\, N(d_2)$ satisfies the Black-Scholes PDE $C_t + \tfrac{1}{2}\sigma^2 S^2 C_{SS} + r S C_S - r C = 0$.
 
+::: solution
 **Solution.** We will need the auxiliary identity
 
 $$S\, \varphi(d_1) = K e^{-r(T - t)}\, \varphi(d_2), \qquad \varphi(z) = \tfrac{1}{\sqrt{2\pi}}\, e^{-z^2/2}.$$
@@ -497,14 +502,16 @@ Every term cancels in pairs:
 - $+ r S N(d_1)$ (from $r S C_S$) cancels $- r S N(d_1)$ (from $-rC$).
 
 Hence the PDE holds. $\square$
+:::
+:::
 
 ---
 
+::: problem [Computation]
 **Problem 7.3 [Computation].** Price an at-the-money European call on a non-dividend-paying stock: $S = K = 100$, $T - t = 0.25$ (three months), $r = 0.05$, $q = 0$, $\sigma = 0.20$. Compute $d_1$, $d_2$, $N(d_1)$, $N(d_2)$, and $C$ to two decimal places.
 
-**Solution.**
-
-*Step 1 — $d_1$.* With $\ln(S/K) = \ln 1 = 0$ and $r + \tfrac{1}{2}\sigma^2 = 0.05 + 0.02 = 0.07$:
+::: solution
+**Solution.** *Step 1 — $d_1$.* With $\ln(S/K) = \ln 1 = 0$ and $r + \tfrac{1}{2}\sigma^2 = 0.05 + 0.02 = 0.07$:
 
 $$d_1 = \frac{0 + 0.07 \cdot 0.25}{0.20 \cdot \sqrt{0.25}} = \frac{0.0175}{0.20 \cdot 0.5} = \frac{0.0175}{0.10} = 0.175.$$
 
@@ -529,3 +536,5 @@ Compute:
 **The ATM three-month call is worth approximately $\$4.61$.**
 
 A useful sanity check: for an at-the-money call, the Brenner-Subrahmanyam approximation gives $C \approx 0.4\, S\, \sigma\sqrt{T-t} = 0.4 \cdot 100 \cdot 0.10 = 4.00$. Our exact answer $4.61$ exceeds this because the approximation ignores the interest-rate contribution (the term $(r + \tfrac{1}{2}\sigma^2)(T-t)$ in $d_1$). Setting $r = 0$ in the formula gives $C \approx 3.99$, in close agreement with the approximation. $\square$
+:::
+:::
