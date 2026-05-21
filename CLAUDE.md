@@ -109,3 +109,53 @@ const WRONG_RATIO = 0.5;    // threshold: ≥50% wrong → often wrong
 
 Push `index.html` + `questions.json` to `main` branch — GitHub Pages deploys automatically.
 Do **not** commit `_expl_work/` (large intermediate files, not needed for the site).
+
+## Study section (Options Pricing Theory)
+
+A 4th content area: in-browser self-study lessons on European options theory.
+English UI scoped to this section; the existing 3 quiz buttons stay Chinese.
+
+**Pipeline:** markdown chapter file → custom `:::` preprocessor → `marked.parse` → KaTeX
+`renderMathInElement`. All loaded from CDN (`marked@12`, `katex@0.16.9`). Fallback: if
+`marked` fails to load, the chapter renders as escaped raw text inside a `<pre>` block;
+if only KaTeX fails, markdown still renders but math displays as raw `$...$` delimiters.
+
+**Content:** `study/chapters/01_preface.md` … `study/chapters/12_surface_models.md`,
+indexed by `study/index.json`. Edit a chapter, refresh the page — no build step.
+
+`study/index.json` schema:
+
+```json
+{
+  "title": "Options Pricing Theory",
+  "subtitle": "…",
+  "chapters": [
+    { "file": "01_preface.md", "title": "Preface and Notation" },
+    …
+  ]
+}
+```
+
+**Markdown conventions specific to study chapters:**
+
+- `::: problem [Tag]` … `::: solution` … `:::` … `:::` — practice problem with
+  click-to-reveal solution. `[Tag]` is a free-form label such as `Derivation`,
+  `Conceptual`, `Computation`.
+- `::: where` … `:::` — symbol-definition block. Body must be a markdown list of the
+  form `- $sym$ — description`. **Every non-trivial formula in the chapters must be
+  followed by a `where` block** that defines every symbol that appears in it (even
+  symbols defined earlier — restate them so the reader never has to scroll back).
+- All math uses standard `$inline$` and `$$display$$` delimiters.
+
+**localStorage:**
+
+| Key | Schema | Purpose |
+|-----|--------|---------|
+| `study_state_v1` | `{ lastChapter: number\|null, visited: number[] }` | Resume position + which chapters have been opened. |
+
+**Pages:**
+
+| Page | Behaviour |
+|------|-----------|
+| Study list | Title + subtitle from `study/index.json`. Optional Resume banner. Tappable rows for all 12 chapters; visited chapters show ✓. |
+| Study chapter | Sticky progress bar. Chapter content rendered from markdown. Previous/Next buttons (disabled at ends). Back link to chapter list. |
