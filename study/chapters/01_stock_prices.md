@@ -14,7 +14,7 @@ Take any liquid stock and compute its daily percentage changes over a year. Plot
 
 A continuous random variable $X$ follows a normal distribution with mean $\mu$ and standard deviation $\sigma$ if its probability density function (PDF) is
 
-$$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\!\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$$
+$$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$$
 
 ::: where
 - $f(x)$ — probability density function
@@ -56,7 +56,7 @@ $$R = \frac{S_t - S_0}{S_0}$$
 
 The log-return (or continuously compounded return) is
 
-$$r = \ln\!\left(\frac{S_t}{S_0}\right)$$
+$$r = \ln\left(\frac{S_t}{S_0}\right)$$
 
 ::: where
 - $r$ — log-return
@@ -72,7 +72,7 @@ Additivity makes the math clean: the sum of many small independent normal random
 
 Finance's workhorse model says that the stock price at a future time $T$ is
 
-$$S_T = S_0 \exp\!\left(\left(\mu - \tfrac{1}{2}\sigma^2\right)T + \sigma\sqrt{T}\, Z\right), \quad Z \sim \mathcal{N}(0,1)$$
+$$S_T = S_0 \exp\left(\left(\mu - \tfrac{1}{2}\sigma^2\right)T + \sigma\sqrt{T}\, Z\right), \quad Z \sim \mathcal{N}(0,1)$$
 
 ::: where
 - $S_T$ — stock price at time $T$
@@ -94,7 +94,7 @@ Let's unpack each piece:
 
 Taking $\ln$ of both sides:
 
-$$\ln\!\left(\frac{S_T}{S_0}\right) = \left(\mu - \tfrac{1}{2}\sigma^2\right)T + \sigma\sqrt{T}\, Z$$
+$$\ln\left(\frac{S_T}{S_0}\right) = \left(\mu - \tfrac{1}{2}\sigma^2\right)T + \sigma\sqrt{T}\, Z$$
 
 The log-return is **normally distributed** with mean $(\mu - \frac{1}{2}\sigma^2)T$ and standard deviation $\sigma\sqrt{T}$.
 
@@ -151,7 +151,7 @@ $$E[S_T] = S_0 e^{\mu T} = 100 \times e^{0.08 \times 1} = 100 \times 1.0833 = 10
 
 We need $P(S_T > 120)$. Start from the log-return:
 
-$$\ln S_T \sim \mathcal{N}\!\left(\ln S_0 + (\mu - \tfrac{1}{2}\sigma^2)T,\; \sigma^2 T\right)$$
+$$\ln S_T \sim \mathcal{N}\left(\ln S_0 + (\mu - \tfrac{1}{2}\sigma^2)T,\; \sigma^2 T\right)$$
 
 Plug in numbers:
 

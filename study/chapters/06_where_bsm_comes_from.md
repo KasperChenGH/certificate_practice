@@ -118,7 +118,7 @@ When the stock is enormously high, exercise is virtually certain. The call behav
 
 Here is a beautiful fact: solving the Black-Scholes PDE with the call's boundary conditions is **mathematically equivalent** to computing an expected value:
 
-$$V(S, t) = e^{-r(T-t)}\, \mathbb{E}^Q\!\big[\max(S_T - K,\, 0)\big]$$
+$$V(S, t) = e^{-r(T-t)}\, \mathbb{E}^Q\big[\max(S_T - K,\, 0)\big]$$
 
 ::: where
 - $\mathbb{E}^Q[\cdot]$ — expectation under risk-neutral measure
@@ -127,7 +127,7 @@ $$V(S, t) = e^{-r(T-t)}\, \mathbb{E}^Q\!\big[\max(S_T - K,\, 0)\big]$$
 
 Under the risk-neutral measure, the stock price at expiry is log-normally distributed:
 
-$$\ln S_T \sim \mathcal{N}\!\Big(\ln S + (r - \sigma^2/2)(T-t),\;\; \sigma^2(T-t)\Big)$$
+$$\ln S_T \sim \mathcal{N}\Big(\ln S + (r - \sigma^2/2)(T-t),\;\; \sigma^2(T-t)\Big)$$
 
 This connects everything back to the binomial tree in Chapter 4. In the tree, we computed the discounted expected payoff using risk-neutral probabilities. In continuous time, we do the same — the "probabilities" are determined by the log-normal distribution with drift $r$. The PDE and the expectation are two sides of the same coin.
 

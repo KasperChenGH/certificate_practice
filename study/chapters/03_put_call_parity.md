@@ -93,7 +93,7 @@ $$S = C - P + Ke^{-rT}$$
 
 You can even back out the implied interest rate if you know $C$, $P$, $S$, $K$, and $T$:
 
-$$e^{-rT} = \frac{S - C + P}{K} \implies r = -\frac{1}{T}\ln\!\left(\frac{S - C + P}{K}\right)$$
+$$e^{-rT} = \frac{S - C + P}{K} \implies r = -\frac{1}{T}\ln\left(\frac{S - C + P}{K}\right)$$
 
 ---
 

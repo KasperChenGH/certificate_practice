@@ -41,9 +41,9 @@ Plotting IV against raw strike $K$ is problematic: the curve shifts whenever the
 Common choices:
 
 - **Simple moneyness:** $K / S$ — quick and intuitive.
-- **Log-moneyness:** $k = \ln\!\left(\frac{K}{S\,e^{rT}}\right)$ — centers the axis at $k = 0$ for ATM forward.
+- **Log-moneyness:** $k = \ln\left(\frac{K}{S\,e^{rT}}\right)$ — centers the axis at $k = 0$ for ATM forward.
 
-$$k = \ln\!\left(\frac{K}{F}\right)$$
+$$k = \ln\left(\frac{K}{F}\right)$$
 
 ::: where
 - $k$ — log-moneyness

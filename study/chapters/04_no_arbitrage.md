@@ -28,7 +28,7 @@ This leads to a convenient shortcut called **risk-neutral pricing:**
 
 > In a hypothetical "risk-neutral world," every asset earns the risk-free rate $r$ on average. The option price equals the **discounted expected payoff**, where the expectation is computed in this risk-neutral world.
 
-$$V_0 = e^{-rT}\, \mathbb{E}^Q\!\big[\text{payoff at time } T\big]$$
+$$V_0 = e^{-rT}\, \mathbb{E}^Q\big[\text{payoff at time } T\big]$$
 
 ::: where
 - $V_0$ — option price today
