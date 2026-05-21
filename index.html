@@ -333,12 +333,30 @@ let STATE = null;           // current quiz state
 // Schema: { [questionId]: { attempts: [true|false], ... last RECENT_WINDOW kept } }
 const LS_KEY = 'quiz_history_v1';
 const LS_QUIZ_KEY = 'quiz_state_v1';
+const LS_STUDY_KEY = 'study_state_v1';
+let STUDY_INDEX = null;   // { title, subtitle, chapters: [{file, title}] } — loaded lazily on first study-section open
 function loadHistory() {
   try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
   catch { return {}; }
 }
 function saveHistory(h) {
   localStorage.setItem(LS_KEY, JSON.stringify(h));
+}
+function loadStudyState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(LS_STUDY_KEY) || '{}');
+    return { lastChapter: typeof s.lastChapter === 'number' ? s.lastChapter : null,
+             visited: Array.isArray(s.visited) ? s.visited : [] };
+  } catch { return { lastChapter: null, visited: [] }; }
+}
+function saveStudyState(state) {
+  localStorage.setItem(LS_STUDY_KEY, JSON.stringify(state));
+}
+function markChapterVisited(idx) {
+  const s = loadStudyState();
+  s.lastChapter = idx;
+  if (!s.visited.includes(idx)) s.visited.push(idx);
+  saveStudyState(s);
 }
 function recordAttempt(qid, correct) {
   const h = loadHistory();
@@ -410,7 +428,7 @@ function shuffle(a) {
 }
 function el(id) { return document.getElementById(id); }
 function show(pageId) {
-  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review')
+  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review,#page-study-list,#page-study-chapter')
     .forEach(p => p.classList.add('hidden'));
   el(pageId).classList.remove('hidden');
   window.scrollTo(0, 0);
