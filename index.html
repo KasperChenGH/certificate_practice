@@ -396,7 +396,7 @@ function preprocessStudyMarkdown(src) {
       const kind = open[1];
       const tag = open[2] || '';
       if (kind === 'problem') {
-        const safeTag = escapeStudyAttr(tag);
+        const safeTag = escapeHtml(tag);
         out.push(`<div class="problem">`);
         out.push(`<div class="ptag">${safeTag}</div>`);
         out.push(`<div class="problem-stmt">`);
@@ -454,11 +454,6 @@ function preprocessStudyMarkdown(src) {
   return out.join('\n');
 }
 
-function escapeStudyAttr(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[c]));
-}
 function recordAttempt(qid, correct) {
   const h = loadHistory();
   const rec = h[qid] || { attempts: [] };
