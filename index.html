@@ -711,6 +711,119 @@ function escapeHtml(s) {
   }[c]));
 }
 
+// ------- study section -------
+async function loadStudyIndex() {
+  if (STUDY_INDEX) return STUDY_INDEX;
+  const r = await fetch('study/index.json');
+  if (!r.ok) throw new Error('Failed to load study/index.json: ' + r.status);
+  STUDY_INDEX = await r.json();
+  return STUDY_INDEX;
+}
+
+async function openStudySection() {
+  try {
+    await loadStudyIndex();
+  } catch (e) {
+    alert('Failed to load study section: ' + e.message);
+    return;
+  }
+  renderStudyList();
+  show('page-study-list');
+}
+
+function renderStudyList() {
+  const idx = STUDY_INDEX;
+  el('study-title').textContent = idx.title;
+  el('study-subtitle').textContent = idx.subtitle;
+
+  const state = loadStudyState();
+  const banner = el('study-resume-banner');
+  if (state.lastChapter !== null && state.lastChapter >= 0 && state.lastChapter < idx.chapters.length) {
+    const ch = idx.chapters[state.lastChapter];
+    el('study-resume-meta').textContent = `Chapter ${state.lastChapter + 1} — ${ch.title}`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+
+  const list = el('study-chapter-list');
+  list.innerHTML = '';
+  idx.chapters.forEach((ch, i) => {
+    const row = document.createElement('div');
+    row.className = 'study-chapter-row';
+    const visited = state.visited.includes(i);
+    row.innerHTML =
+      `<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">
+         <span class="num">${i + 1}.</span>
+         <span style="flex:1;min-width:0;">${escapeHtml(ch.title)}</span>
+       </div>
+       <span class="visited">${visited ? '✓' : ''}</span>`;
+    row.onclick = () => openChapter(i);
+    list.appendChild(row);
+  });
+}
+
+async function openChapter(idx) {
+  const indexData = STUDY_INDEX;
+  if (!indexData || idx < 0 || idx >= indexData.chapters.length) return;
+  const ch = indexData.chapters[idx];
+
+  let raw;
+  try {
+    const r = await fetch('study/chapters/' + ch.file);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    raw = await r.text();
+  } catch (e) {
+    el('study-chapter-content').innerHTML =
+      `<p style="color:var(--bad)">Failed to load chapter: ${escapeHtml(e.message)}</p>`;
+    show('page-study-chapter');
+    return;
+  }
+
+  const container = el('study-chapter-content');
+
+  // Graceful fallback if CDN libs failed to load
+  if (typeof marked === 'undefined') {
+    container.innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit;font-size:14px">${escapeHtml(raw)}</pre>`;
+  } else {
+    const preprocessed = preprocessStudyMarkdown(raw);
+    container.innerHTML = marked.parse(preprocessed);
+    if (typeof renderMathInElement !== 'undefined') {
+      renderMathInElement(container, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$',  right: '$',  display: false }
+        ],
+        throwOnError: false,
+      });
+    }
+    // Wire reveal buttons
+    container.querySelectorAll('.problem .reveal-btn').forEach(btn => {
+      btn.onclick = () => {
+        const problem = btn.closest('.problem');
+        const revealed = problem.classList.toggle('revealed');
+        btn.textContent = revealed ? 'Hide solution' : 'Show solution';
+      };
+    });
+  }
+
+  // Update state
+  markChapterVisited(idx);
+
+  // Update header / nav
+  el('study-chapter-label').textContent = `Ch. ${idx + 1} — ${ch.title}`;
+  el('study-chapter-counter').textContent = `${idx + 1} / ${indexData.chapters.length}`;
+  el('study-progress-fill').style.width = `${((idx + 1) / indexData.chapters.length) * 100}%`;
+  el('btn-study-prev').disabled = idx === 0;
+  el('btn-study-prev').style.opacity = idx === 0 ? 0.4 : 1;
+  el('btn-study-next').disabled = idx === indexData.chapters.length - 1;
+  el('btn-study-next').style.opacity = idx === indexData.chapters.length - 1 ? 0.4 : 1;
+  el('btn-study-prev').dataset.idx = idx - 1;
+  el('btn-study-next').dataset.idx = idx + 1;
+
+  show('page-study-chapter');
+}
+
 // ------- bootstrap -------
 async function boot() {
   try {
