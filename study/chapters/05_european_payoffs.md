@@ -50,11 +50,21 @@ $$f_P(S_T) = (K - S_T)^+ = \max(K - S_T, 0).$$
 
 $$f_C(S_T^{(1)}) = (S_T^{(1)} - K)^+ \le (S_T^{(2)} - K)^+ = f_C(S_T^{(2)}).$$
 
+::: where
+- $f_C$ — call payoff function $S \mapsto (S - K)^+$
+- $S_T^{(1)}, S_T^{(2)}$ — two possible terminal stock prices with $S_T^{(1)} \le S_T^{(2)}$
+:::
+
 A higher terminal stock price can only increase — or leave unchanged — the call's payoff.
 
 **Put — non-increasing in $S_T$.** For $S_T^{(1)} \le S_T^{(2)}$:
 
 $$f_P(S_T^{(1)}) = (K - S_T^{(1)})^+ \ge (K - S_T^{(2)})^+ = f_P(S_T^{(2)}).$$
+
+::: where
+- $f_P$ — put payoff function $S \mapsto (K - S)^+$
+- $S_T^{(1)}, S_T^{(2)}$ — two possible terminal stock prices with $S_T^{(1)} \le S_T^{(2)}$
+:::
 
 A higher terminal stock price reduces the put's payoff.
 
@@ -71,6 +81,13 @@ Both payoffs are convex functions of $S_T$ (for fixed $K$) and of $K$ (for fixed
 **Proof of convexity of $f_C$ in $S_T$.** Let $\lambda \in [0,1]$ and $S_T^{(1)}, S_T^{(2)} \ge 0$. We must show:
 
 $$\bigl(\lambda S_T^{(1)} + (1-\lambda) S_T^{(2)} - K\bigr)^+ \le \lambda\,(S_T^{(1)} - K)^+ + (1-\lambda)\,(S_T^{(2)} - K)^+.$$
+
+::: where
+- $\lambda$ — convex combination weight, $\lambda \in [0, 1]$
+- $S_T^{(1)}, S_T^{(2)}$ — two possible terminal stock prices
+- $K$ — strike price
+- $(\cdot)^+$ — positive part, $\max(\cdot, 0)$
+:::
 
 Write $x_i = S_T^{(i)} - K$. The claim becomes $(\lambda x_1 + (1-\lambda)x_2)^+ \le \lambda x_1^+ + (1-\lambda) x_2^+$. Since $(\cdot)^+$ is a convex function of its argument — it equals $\max(x, 0)$, the maximum of two linear (hence convex) functions — this follows immediately from the definition of convexity:
 
@@ -118,6 +135,12 @@ At time $T$, the payoff of Portfolio A is:
 Portfolio A's payoff is always $\ge 0$ — it is non-negative in every scenario. By no-arbitrage, its time-0 value must be non-negative:
 
 $$C - S_0 + K e^{-rT} \ge 0 \implies C \ge S_0 - K e^{-rT}.$$
+
+::: where
+- $C$ — European call price at time $0$
+- $S_0$ — current stock price
+- $K e^{-rT}$ — present value of the strike payment due at $T$
+:::
 
 Since also $C \ge 0$ (the call cannot have negative value — the holder simply does not exercise if $S_T < K$), we obtain $C \ge \max(S_0 - K e^{-rT}, 0)$. $\square$
 
@@ -169,6 +192,13 @@ Construct two portfolios and compare their payoffs at time $T$:
 At time $T$, the payoff of Portfolio A is:
 
 $$(S_T - K)^+ - (K - S_T)^+ = \begin{cases} (S_T - K) - 0 = S_T - K & \text{if } S_T \ge K, \\ 0 - (K - S_T) = S_T - K & \text{if } S_T < K. \end{cases}$$
+
+::: where
+- $S_T$ — terminal stock price
+- $K$ — strike price
+- $(\cdot)^+$ — positive part
+- $A$ — payoff of portfolio "long call, short put" at time $T$
+:::
 
 In both cases, Portfolio A's payoff equals $S_T - K$.
 
