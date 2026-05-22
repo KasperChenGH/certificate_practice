@@ -24,8 +24,8 @@ $$C_T = \max(S_T - K,\; 0) = (S_T - K)^+$$
 
 **How to think about it:**
 
-- If $S_T = 130$ and $K = 100$: you exercise the call, buy the stock at $100, it's worth $130 in the market. Payoff = $30.
-- If $S_T = 85$ and $K = 100$: why buy at $100 when the market price is $85? You don't exercise. Payoff = $0.
+- If $S_T = 130$ and $K = 100$: you exercise the call, buy the stock at 100, it's worth 130 in the market. Payoff = 30.
+- If $S_T = 85$ and $K = 100$: why buy at 100 when the market price is 85? You don't exercise. Payoff = 0.
 
 **The payoff diagram** looks like a hockey stick lying on its side. For stock prices below $K$, the payoff is flat at zero — a horizontal line along the $x$-axis. At $S_T = K$, the line turns upward and rises at a 45-degree angle (slope of 1). The "kink" is at the strike.
 
@@ -45,8 +45,8 @@ $$P_T = \max(K - S_T,\; 0) = (K - S_T)^+$$
 
 **Examples:**
 
-- If $S_T = 85$ and $K = 100$: you exercise the put, sell the stock at $100 when it's only worth $85$. Payoff = $15.
-- If $S_T = 130$ and $K = 100$: no reason to sell at $100 when the market pays $130. Payoff = $0.
+- If $S_T = 85$ and $K = 100$: you exercise the put, sell the stock at 100 when it's only worth 85. Payoff = 15.
+- If $S_T = 130$ and $K = 100$: no reason to sell at 100 when the market pays 130. Payoff = 0.
 
 **The payoff diagram** is the mirror image of the call's hockey stick. For stock prices above $K$, the payoff is flat at zero. Below $K$, the payoff rises linearly as the stock price falls. The maximum possible payoff is $K$ (when the stock goes to zero).
 
@@ -91,7 +91,7 @@ $$\text{Option Price} = \text{Intrinsic Value} + \text{Time Value}$$
 - Intrinsic value $= 105 - 100 = 5.00$
 - Time value $= 8.50 - 5.00 = 3.50$
 
-The $3.50 of time value reflects the chance that the stock moves even further above $100 before expiry. As expiry approaches with nothing else changing, time value decays toward zero — this is called **time decay** or **theta decay**.
+The 3.50 of time value reflects the chance that the stock moves even further above 100 before expiry. As expiry approaches with nothing else changing, time value decays toward zero — this is called **time decay** or **theta decay**.
 
 An OTM option has zero intrinsic value; its entire price is time value.
 
@@ -214,19 +214,19 @@ The lower bound for the call is:
 
 $$C \ge \max(S - Ke^{-rT}, 0) = \max(80 - 75e^{-0.04}, 0) = \max(80 - 72.06, 0) = 7.94$$
 
-But the call is quoted at $3.00 < 7.94$. This violates the bound.
+But the call is quoted at 3.00, which is less than 7.94. This violates the bound.
 
 **Arbitrage trade:**
-1. Buy the call for $3.00.
-2. Short-sell the stock, receiving $80.00.
-3. Invest $Ke^{-rT} = 72.06$ in the risk-free bond (grows to $75.00$ at expiry).
+1. Buy the call for 3.00.
+2. Short-sell the stock, receiving 80.00.
+3. Invest $Ke^{-rT} = 72.06$ in the risk-free bond (grows to 75.00 at expiry).
 4. Pocket the remaining cash: $80.00 - 3.00 - 72.06 = 4.94$.
 
 At expiry:
-- If $S_T \ge 75$: exercise the call, buy stock at $75$, use it to close the short. Bond pays $75$. Net = $0 + 4.94$ profit locked in.
-- If $S_T < 75$: call expires worthless. Use the $75$ from the bond to buy stock in the market at $S_T < 75$ to close the short. You gain $75 - S_T > 0$, plus the $4.94$. Even better.
+- If $S_T \ge 75$: exercise the call, buy stock at 75, use it to close the short. Bond pays 75. Net = 0 + 4.94 profit locked in.
+- If $S_T < 75$: call expires worthless. Use the 75 from the bond to buy stock in the market at $S_T < 75$ to close the short. You gain $75 - S_T > 0$, plus 4.94. Even better.
 
-Either way, you make at least $4.94$ risk-free.
+Either way, you make at least 4.94 risk-free.
 :::
 :::
 

@@ -157,7 +157,7 @@ $$C - P = S - \text{PV}(\text{div}) - Ke^{-rT}$$
 
 **Why the adjustment?** The stock holder receives dividends; the call holder does not. So the stock is worth more than a pure forward claim by exactly the present value of those dividends. To keep the two portfolios equivalent, we must subtract the dividends from the stock side.
 
-**Example.** $S = 100$, $K = 100$, $r = 0.05$, $T = 1$, and the stock pays a single dividend of $2.00$ in 6 months.
+**Example.** $S = 100$, $K = 100$, $r = 0.05$, $T = 1$, and the stock pays a single dividend of 2.00 in 6 months.
 
 $$\text{PV}(\text{div}) = 2.00 \times e^{-0.05 \times 0.5} = 2.00 \times 0.9753 = 1.95$$
 

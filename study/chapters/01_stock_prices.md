@@ -170,7 +170,7 @@ $$P(S_T > 120) = P(Z > 0.6116) = 1 - \Phi(0.6116) \approx 1 - 0.7296 = 0.2704$$
 - $\Phi(\cdot)$ — standard normal CDF
 :::
 
-**Interpretation.** There is about a **27% chance** the stock finishes above $120 after one year.
+**Interpretation.** There is about a **27% chance** the stock finishes above 120 after one year.
 
 ---
 
@@ -197,7 +197,7 @@ $z = \frac{3.6889 - 3.9395}{0.2121} = \frac{-0.2506}{0.2121} = -1.1816$
 
 $P(Z < -1.1816) = \Phi(-1.1816) \approx 0.1187$.
 
-There is about an **11.9% chance** the stock falls below $40.
+There is about an **11.9% chance** the stock falls below 40.
 :::
 :::
 
