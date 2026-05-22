@@ -788,7 +788,15 @@ async function openChapter(idx) {
     container.innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit;font-size:14px">${escapeHtml(raw)}</pre>`;
   } else {
     const preprocessed = preprocessStudyMarkdown(raw);
-    container.innerHTML = marked.parse(preprocessed);
+    // Protect math blocks from marked.js (it strips backslashes from \; \, \! etc.)
+    const mathHeld = [];
+    const shielded = preprocessed.replace(/\$\$[\s\S]*?\$\$|\$[^$\n]+?\$/g, m => {
+      mathHeld.push(m);
+      return `%%MATH${mathHeld.length - 1}%%`;
+    });
+    let html = marked.parse(shielded);
+    html = html.replace(/%%MATH(\d+)%%/g, (_, i) => mathHeld[+i]);
+    container.innerHTML = html;
     if (typeof renderMathInElement !== 'undefined') {
       renderMathInElement(container, {
         delimiters: [
