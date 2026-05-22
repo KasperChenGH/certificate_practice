@@ -6,15 +6,15 @@ A **European option** can only be exercised at expiry — on the exact maturity 
 
 This course focuses exclusively on European options. The restriction to exercise only at expiry makes the math cleaner and the key ideas more transparent. Everything we build here extends naturally to American options later.
 
-**Important:** All payoff formulas in this chapter are from the **buyer's (long) perspective.** The buyer's payoff is always $\ge 0$ because they have the right but not the obligation — they simply don't exercise if it would lose money. The **seller (short)** has the opposite payoff: whatever the buyer gains, the seller loses. So a short call payoff is $-\max(S_T - K, 0)$ and a short put payoff is $-\max(K - S_T, 0)$, which can be negative.
-
 ---
 
 ## Call Option Payoff
 
-A European **call** gives you the right, but not the obligation, to **buy** the underlying stock at the strike price $K$ on date $T$.
+A European **call** gives the buyer the right, but not the obligation, to **buy** the underlying stock at the strike price $K$ on date $T$.
 
-At expiry, the payoff is
+### Long Call (Buyer)
+
+At expiry, the buyer's payoff is
 
 $$C_T = \max(S_T - K,\; 0) = (S_T - K)^+$$
 
@@ -29,15 +29,30 @@ $$C_T = \max(S_T - K,\; 0) = (S_T - K)^+$$
 - If $S_T = 130$ and $K = 100$: you exercise the call, buy the stock at 100, it's worth 130 in the market. Payoff = 30.
 - If $S_T = 85$ and $K = 100$: why buy at 100 when the market price is 85? You don't exercise. Payoff = 0.
 
-**The payoff diagram** looks like a hockey stick lying on its side. For stock prices below $K$, the payoff is flat at zero — a horizontal line along the $x$-axis. At $S_T = K$, the line turns upward and rises at a 45-degree angle (slope of 1). The "kink" is at the strike.
+The buyer's payoff is always $\ge 0$ — you have the right but not the obligation, so you simply don't exercise if it would lose money.
+
+### Short Call (Seller)
+
+The seller collects the premium upfront but takes on the obligation to deliver. Their payoff at expiry is the **negative** of the buyer's:
+
+$$\text{Short call payoff} = -\max(S_T - K,\; 0)$$
+
+- If $S_T = 130$ and $K = 100$: the buyer exercises, you must sell stock worth 130 for only 100. Payoff = $-30$.
+- If $S_T = 85$ and $K = 100$: the buyer doesn't exercise. Payoff = 0.
+
+The seller's payoff is always $\le 0$. Their profit comes from the premium they collected when selling the option (see Profit vs Payoff below).
+
+**The payoff diagram** for a long call looks like a hockey stick lying on its side — flat at zero below $K$, then rising at a 45-degree angle. The short call is the mirror image: flat at zero below $K$, then falling at 45 degrees.
 
 ---
 
 ## Put Option Payoff
 
-A European **put** gives you the right to **sell** the underlying stock at strike price $K$ on date $T$.
+A European **put** gives the buyer the right to **sell** the underlying stock at strike price $K$ on date $T$.
 
-At expiry, the payoff is
+### Long Put (Buyer)
+
+At expiry, the buyer's payoff is
 
 $$P_T = \max(K - S_T,\; 0) = (K - S_T)^+$$
 
@@ -45,12 +60,19 @@ $$P_T = \max(K - S_T,\; 0) = (K - S_T)^+$$
 - $P_T$ — put payoff at expiry
 :::
 
-**Examples:**
-
 - If $S_T = 85$ and $K = 100$: you exercise the put, sell the stock at 100 when it's only worth 85. Payoff = 15.
 - If $S_T = 130$ and $K = 100$: no reason to sell at 100 when the market pays 130. Payoff = 0.
 
-**The payoff diagram** is the mirror image of the call's hockey stick. For stock prices above $K$, the payoff is flat at zero. Below $K$, the payoff rises linearly as the stock price falls. The maximum possible payoff is $K$ (when the stock goes to zero).
+### Short Put (Seller)
+
+$$\text{Short put payoff} = -\max(K - S_T,\; 0)$$
+
+- If $S_T = 85$ and $K = 100$: the buyer exercises, you must buy stock worth 85 for 100. Payoff = $-15$.
+- If $S_T = 130$ and $K = 100$: the buyer doesn't exercise. Payoff = 0.
+
+The seller's maximum loss is $K$ (if the stock goes to zero). Their profit comes from the premium collected.
+
+**The payoff diagram** for a long put is the mirror image of the long call's hockey stick — flat at zero above $K$, rising linearly as the stock falls. The short put is flipped below the axis.
 
 ![Call and put payoff diagrams](study/assets/call_put_payoff.svg)
 
