@@ -6,6 +6,8 @@ A **European option** can only be exercised at expiry — on the exact maturity 
 
 This course focuses exclusively on European options. The restriction to exercise only at expiry makes the math cleaner and the key ideas more transparent. Everything we build here extends naturally to American options later.
 
+**Important:** All payoff formulas in this chapter are from the **buyer's (long) perspective.** The buyer's payoff is always $\ge 0$ because they have the right but not the obligation — they simply don't exercise if it would lose money. The **seller (short)** has the opposite payoff: whatever the buyer gains, the seller loses. So a short call payoff is $-\max(S_T - K, 0)$ and a short put payoff is $-\max(K - S_T, 0)$, which can be negative.
+
 ---
 
 ## Call Option Payoff
