@@ -155,7 +155,13 @@ We need $P(S_T > 120)$.
 
 $$S_T > 120 \quad \Longleftrightarrow \quad \ln S_T > \ln 120 = 4.7875$$
 
-**Step 2 — Identify the bell curve.** From the GBM model, $\ln S_T$ follows a normal distribution:
+**Step 2 — Identify the bell curve.** Start from GBM and take $\ln$ of both sides:
+
+$$S_T = S_0 \times \exp\left((\mu - \tfrac{1}{2}\sigma^2)T + \sigma\sqrt{T}\, Z\right)$$
+
+$$\ln S_T = \ln S_0 + (\mu - \tfrac{1}{2}\sigma^2)T + \sigma\sqrt{T}\, Z$$
+
+The $\times$ became $+$ because $\ln(A \times e^B) = \ln A + B$. Now the right side is just a constant plus a normal random variable, so:
 
 $$\ln S_T \sim \mathcal{N}\left(\ln S_0 + (\mu - \tfrac{1}{2}\sigma^2)T,\; \sigma^2 T\right)$$
 
