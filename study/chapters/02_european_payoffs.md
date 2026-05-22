@@ -146,6 +146,12 @@ For a long put with premium $P$, the breakeven is $K - P$.
 
 Even without a pricing model, we can establish bounds using a simple principle: **if a strategy costs nothing and sometimes pays off, everyone would do it — so it can't exist.** This is the no-arbitrage principle.
 
+**Why do we need bounds?** Before we have a full pricing model like Black-Scholes (Chapter 5), bounds tell us the range any option price *must* fall within. They are useful for:
+
+- **Sanity-checking quotes.** If someone offers you a call at a price outside these bounds, it's either mispriced or there's free money on the table (arbitrage).
+- **Building intuition.** The bounds show what drives option value at the extremes — how deep ITM or OTM an option is, and how interest rates and time affect the floor and ceiling.
+- **Interview/exam questions.** You'll often be asked to prove a price violates a bound and describe the arbitrage trade (see Problem 2.2 below).
+
 ### Call option bounds
 
 $$\max(S - Ke^{-rT},\; 0) \le C \le S$$
