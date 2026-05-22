@@ -149,28 +149,38 @@ $$E[S_T] = S_0 e^{\mu T} = 100 \times e^{0.08 \times 1} = 100 \times 1.0833 = 10
 
 ### (b) Probability that $S_T > 120$
 
-We need $P(S_T > 120)$. Start from the log-return:
+We need $P(S_T > 120)$.
+
+**Step 1 — Rewrite in log terms.** The stock price $S_T$ itself is not normally distributed, but $\ln S_T$ is. So we take the log of both sides to convert the question into one we can solve with a bell curve:
+
+$$S_T > 120 \quad \Longleftrightarrow \quad \ln S_T > \ln 120 = 4.7875$$
+
+**Step 2 — Identify the bell curve.** From the GBM model, $\ln S_T$ follows a normal distribution:
 
 $$\ln S_T \sim \mathcal{N}\left(\ln S_0 + (\mu - \tfrac{1}{2}\sigma^2)T,\; \sigma^2 T\right)$$
 
 Plug in numbers:
 
 - Mean of $\ln S_T$: $\ln 100 + (0.08 - 0.02)(1) = 4.6052 + 0.06 = 4.6652$
-- Std dev of $\ln S_T$: $\sigma\sqrt{T} = 0.20$
+- Std dev of $\ln S_T$: $\sigma\sqrt{T} = 0.20 \times \sqrt{1} = 0.20$
 
-We want $P(\ln S_T > \ln 120) = P(\ln S_T > 4.7875)$.
+So the bell curve for $\ln S_T$ is centered at 4.6652 with a width (std dev) of 0.20.
 
-Standardize:
+**Step 3 — Standardize.** Every bell curve has a different center and width, so we can't look up probabilities directly. We convert to the **standard** bell curve $\mathcal{N}(0,1)$ by asking: "How many standard deviations away from the center is our target value?"
 
-$$z = \frac{4.7875 - 4.6652}{0.20} = \frac{0.1223}{0.20} = 0.6116$$
+$$z = \frac{\text{target} - \text{mean}}{\text{std dev}} = \frac{4.7875 - 4.6652}{0.20} = \frac{0.1223}{0.20} = 0.6116$$
+
+This tells us 4.7875 sits **0.61 standard deviations above the center** of the bell curve.
+
+**Step 4 — Look up the probability.** Now we just need: what fraction of the standard bell curve sits to the right of $z = 0.6116$? Using a standard normal table (or calculator):
 
 $$P(S_T > 120) = P(Z > 0.6116) = 1 - \Phi(0.6116) \approx 1 - 0.7296 = 0.2704$$
 
 ::: where
-- $\Phi(\cdot)$ — standard normal CDF
+- $\Phi(\cdot)$ — standard normal CDF (the table that tells you how much of the bell curve is to the left of a given $z$-value)
 :::
 
-**Interpretation.** There is about a **27% chance** the stock finishes above 120 after one year.
+**Interpretation.** There is about a **27% chance** the stock finishes above 120 after one year. In other words, 27% of the bell curve's area lies to the right of our target.
 
 ---
 
