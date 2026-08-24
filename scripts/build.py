@@ -128,6 +128,19 @@ def build_finance_ethics() -> list[dict]:
     if tmp.exists(): tmp.unlink()
     return out
 
+# --- 4. CFA Level I FRA: hand-authored bank (not parsed from a PDF) ---------
+
+def build_cfa_fra() -> list[dict]:
+    """Load `sources/cfa_fra.json`, which is authored directly rather than parsed.
+
+    Regenerate/validate it with `python scripts/build_cfa.py`.
+    """
+    path = SRC / 'cfa_fra.json'
+    if not path.exists():
+        print('  !! sources/cfa_fra.json missing - skipping cfa_fra')
+        return []
+    return json.loads(path.read_text(encoding='utf-8'))
+
 # --- Dedup + assemble ------------------------------------------------------
 
 def _norm(s: str) -> str:
@@ -143,6 +156,29 @@ def dedup(qs: list[dict]) -> list[dict]:
         seen.setdefault(_fp(q), q)
     return list(seen.values())
 
+def carry_over_explanations(data: dict) -> None:
+    """Re-attach `explanations` from the existing questions.json.
+
+    The per-option explanations were generated once (see `_expl_work/`) and are not
+    reproducible from the source PDFs, so a rebuild must not drop them.
+    """
+    if not OUT.exists():
+        return
+    prev = json.loads(OUT.read_text(encoding='utf-8'))
+    by_fp = {}
+    for qs in prev.values():
+        for q in qs:
+            if q.get('explanations'):
+                by_fp[_fp(q)] = q['explanations']
+    kept = 0
+    for qs in data.values():
+        for q in qs:
+            if not q.get('explanations') and _fp(q) in by_fp:
+                q['explanations'] = by_fp[_fp(q)]
+                kept += 1
+    print(f'Carried over explanations for {kept} questions')
+
+
 def main():
     print('Building futures...')
     futures = dedup(build_futures())
@@ -156,11 +192,17 @@ def main():
     finance_ethics = dedup(build_finance_ethics())
     print(f'  -> {len(finance_ethics)} unique finance_ethics questions')
 
+    print('Loading cfa_fra...')
+    cfa_fra = build_cfa_fra()
+    print(f'  -> {len(cfa_fra)} cfa_fra questions')
+
     data = {
         'futures': futures,
         'securities': securities,
         'finance_ethics': finance_ethics,
+        'cfa_fra': cfa_fra,
     }
+    carry_over_explanations(data)
     OUT.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
     sz = OUT.stat().st_size
     print(f'\nWrote {OUT} ({sz} bytes, {sz/1024:.1f} KB)')

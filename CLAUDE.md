@@ -17,8 +17,13 @@ Run locally: `python -m http.server 8000` then open `http://localhost:8000`.
 | `futures`         | 期貨商業務員               | 592   |
 | `securities`      | 證券商高級業務員            | 297   |
 | `finance_ethics`  | 金融市場常識與職業道德       | 1120  |
+| `cfa_fra`         | CFA Level I — Financial Reporting & Analysis | 133 |
 
 Each quiz draws exactly 100 random questions from the chosen bank.
+
+The three Taiwan banks are 4-choice (A–D) and Traditional Chinese. `cfa_fra` follows the
+CFA exam's own 3-choice (A–C) format and is in English. `optionLetters(q)` in `index.html`
+derives the letters from the non-empty options, so both formats render from one code path.
 
 ## questions.json schema
 
@@ -50,8 +55,12 @@ Each quiz draws exactly 100 random questions from the chosen bank.
 - **期貨商業務員**: deduplicated PDF covering 112年第1次 → 114年第1次 (592 q after dedup)
 - **證券商高級業務員**: SFI past papers 114年第3次 + 115年第1次; 3 concatenated sub-papers per PDF (投資學 / 財務分析 / 法規)
 - **金融市場常識與職業道德**: SFI official 1,120-question bank effective 113年9月1日
+- **CFA Level I FRA**: hand-authored against the CFA Level I Financial Statement Analysis
+  curriculum — not parsed from any PDF. Canonical file: `sources/cfa_fra.json`.
 
 Source PDFs live in `sources/`. Rebuild script: `python scripts/build.py` (requires `pip install pymupdf`).
+`build.py` carries `explanations` over from the existing `questions.json`, so a rebuild does
+not drop the LLM-generated explanations (they are not reproducible from the source PDFs).
 
 ## Key files
 
@@ -62,7 +71,8 @@ scripts/
   build.py          Orchestrator — rebuilds questions.json from source PDFs
   parse_bank.py     Parses SFI 金融市場常識 / 職業道德 bank PDFs
   parse_sec.py      Parses 證券高業 試題 + 答案 PDFs (3 papers per session)
-sources/            Source PDFs (~6.5 MB)
+  build_cfa.py      Validates + assembles the hand-authored CFA bank into sources/cfa_fra.json
+sources/            Source PDFs (~6.5 MB) + cfa_fra.json
 _expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.py)
 ```
 
@@ -104,58 +114,11 @@ const WRONG_RATIO = 0.5;    // threshold: ≥50% wrong → often wrong
 5. LLM-generated per-option explanations (Traditional Chinese) for all 2009 questions via parallel subagents; merged into questions.json.
 6. Updated quiz UI to display 解析 explanation block after every answered question.
 7. Quiz state persistence: auto-saved to localStorage after every answer/navigation; resume banner on home page; 儲存並回到首頁 button for explicit mid-quiz pause.
+8. Added the CFA Level I FRA bank (133 hand-authored 3-choice questions with per-option
+   explanations) and removed the Options Pricing Theory study section, its markdown
+   pipeline, and the marked/KaTeX CDN dependencies.
 
 ## Deployment
 
 Push `index.html` + `questions.json` to `main` branch — GitHub Pages deploys automatically.
 Do **not** commit `_expl_work/` (large intermediate files, not needed for the site).
-
-## Study section (Options Pricing Theory)
-
-A 4th content area: in-browser self-study lessons on European options theory.
-English UI scoped to this section; the existing 3 quiz buttons stay Chinese.
-
-**Pipeline:** markdown chapter file → custom `:::` preprocessor → `marked.parse` → KaTeX
-`renderMathInElement`. All loaded from CDN (`marked@12`, `katex@0.16.9`). Fallback: if
-`marked` fails to load, the chapter renders as escaped raw text inside a `<pre>` block;
-if only KaTeX fails, markdown still renders but math displays as raw `$...$` delimiters.
-
-**Content:** `study/chapters/01_preface.md` … `study/chapters/12_surface_models.md`,
-indexed by `study/index.json`. Edit a chapter, refresh the page — no build step.
-
-`study/index.json` schema:
-
-```json
-{
-  "title": "Options Pricing Theory",
-  "subtitle": "…",
-  "chapters": [
-    { "file": "01_preface.md", "title": "Preface and Notation" },
-    …
-  ]
-}
-```
-
-**Markdown conventions specific to study chapters:**
-
-- `::: problem [Tag]` … `::: solution` … `:::` … `:::` — practice problem with
-  click-to-reveal solution. `[Tag]` is a free-form label such as `Derivation`,
-  `Conceptual`, `Computation`.
-- `::: where` … `:::` — symbol-definition block. Body must be a markdown list of the
-  form `- $sym$ — description`. **Every non-trivial formula in the chapters must be
-  followed by a `where` block** that defines every symbol that appears in it (even
-  symbols defined earlier — restate them so the reader never has to scroll back).
-- All math uses standard `$inline$` and `$$display$$` delimiters.
-
-**localStorage:**
-
-| Key | Schema | Purpose |
-|-----|--------|---------|
-| `study_state_v1` | `{ lastChapter: number\|null, visited: number[] }` | Resume position + which chapters have been opened. |
-
-**Pages:**
-
-| Page | Behaviour |
-|------|-----------|
-| Study list | Title + subtitle from `study/index.json`. Optional Resume banner. Tappable rows for all 12 chapters; visited chapters show ✓. |
-| Study chapter | Sticky progress bar. Chapter content rendered from markdown. Previous/Next buttons (disabled at ends). Back link to chapter list. |

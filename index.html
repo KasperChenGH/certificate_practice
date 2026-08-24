@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1e3a5f">
 <title>金融證照練習</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <style>
   :root {
     --bg: #f5f5f7;
@@ -143,60 +139,6 @@
     .btn.secondary { background: #3a3a3c; color: var(--text); }
   }
 
-  /* ===== Study section (Options Pricing Theory) ===== */
-  .study h1 { font-size: 24px; margin: 8px 0 16px; }
-  .study h2 { font-size: 19px; margin: 24px 0 8px; color: var(--accent); }
-  .study h3 { font-size: 16px; margin: 16px 0 6px; }
-  .study p, .study li { font-size: 15px; line-height: 1.65; }
-
-  .study .thm, .study .defn, .study .proof, .study .remark {
-    border-left: 4px solid var(--accent);
-    padding: 10px 14px; margin: 14px 0;
-    background: var(--card); border-radius: 4px 10px 10px 4px;
-  }
-  .study .thm::before { content: "Theorem"; font-weight: 700; color: var(--accent);
-                        display: block; font-size: 12px; letter-spacing: 0.5px; }
-  .study .defn::before { content: "Definition"; font-weight: 700; color: var(--accent);
-                         display: block; font-size: 12px; letter-spacing: 0.5px; }
-  .study .proof::before { content: "Proof"; font-weight: 700; color: var(--accent);
-                          display: block; font-size: 12px; letter-spacing: 0.5px; }
-  .study .remark { border-left-color: var(--muted); }
-  .study .remark::before { content: "Remark"; font-weight: 700; color: var(--muted);
-                           display: block; font-size: 12px; letter-spacing: 0.5px; }
-
-  .study .symlist { margin: 4px 0 14px; padding-left: 20px; }
-  .study .symlist li { font-size: 14px; line-height: 1.55; margin-bottom: 2px; color: var(--text); list-style-type: disc; }
-  .study .symlist li .katex { font-size: 1em; }
-
-  .study .problem { background: var(--card); border: 1px solid var(--border);
-                    border-radius: 10px; padding: 14px; margin: 14px 0; }
-  .study .problem .ptag { display: inline-block; font-size: 11px; font-weight: 700;
-                          color: var(--accent); letter-spacing: 0.5px;
-                          text-transform: uppercase; margin-bottom: 6px; }
-  .study .problem .solution { display: none; margin-top: 12px; padding-top: 12px;
-                              border-top: 1px solid var(--border); }
-  .study .problem.revealed .solution { display: block; }
-  .study .reveal-btn { background: transparent; color: var(--accent);
-                       border: 1px solid var(--accent); border-radius: 8px;
-                       padding: 8px 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
-  .study .reveal-btn:active { background: rgba(30,58,95,0.08); }
-
-  .study .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
-
-  .study-chapter-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px; background: var(--card);
-    border: 1px solid var(--border); border-radius: 10px;
-    margin-bottom: 8px; cursor: pointer; font-size: 15px;
-  }
-  .study-chapter-row:active { background: #eef0f4; }
-  .study-chapter-row .num { color: var(--muted); font-weight: 600; min-width: 28px; }
-  .study-chapter-row .visited { color: var(--good); font-size: 16px; }
-
-  @media (prefers-color-scheme: dark) {
-    .study .where { background: rgba(110, 161, 216, 0.08); }
-    .study-chapter-row:active { background: #2a2a2c; }
-  }
 </style>
 </head>
 <body>
@@ -224,8 +166,7 @@
     <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
     <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
     <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
-
-    <button class="btn" id="btn-study">Options Pricing Theory<div class="topic-meta">Self-study lessons</div></button>
+    <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
     <button class="btn review" id="btn-review">常錯題複習</button>
     <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
 
@@ -259,7 +200,7 @@
   <div id="page-results" class="hidden">
     <div class="result-summary">
       <div>本次得分</div>
-      <div class="big"><span class="pct" id="result-score">0</span> / 100</div>
+      <div class="big"><span class="pct" id="result-score">0</span> / <span id="result-total">100</span></div>
       <div class="meta" id="result-detail">—</div>
     </div>
     <button class="btn" id="btn-home">回首頁</button>
@@ -273,36 +214,6 @@
     <button class="btn" id="btn-review-home">回首頁</button>
   </div>
 
-  <!-- STUDY: chapter list -->
-  <div id="page-study-list" class="hidden study">
-    <h1 id="study-title">—</h1>
-    <p class="meta" id="study-subtitle">—</p>
-    <div id="study-resume-banner" class="hidden card" style="border-left:4px solid var(--accent);margin-bottom:12px;">
-      <div style="font-weight:600;margin-bottom:4px;">Resume</div>
-      <div class="meta" id="study-resume-meta">—</div>
-      <button class="btn" id="btn-study-resume" style="margin-top:10px;margin-bottom:0;">Continue</button>
-    </div>
-    <div id="study-chapter-list"></div>
-    <button class="btn secondary" id="btn-study-home" style="margin-top:16px;">← Home</button>
-  </div>
-
-  <!-- STUDY: chapter view -->
-  <div id="page-study-chapter" class="hidden study">
-    <div class="progress-wrap">
-      <div class="progress-bar"><div class="progress-fill" id="study-progress-fill"></div></div>
-      <div class="progress-label">
-        <span id="study-chapter-label">—</span>
-        <span id="study-chapter-counter">—</span>
-      </div>
-    </div>
-    <button class="btn secondary" id="btn-study-back" style="margin-bottom:12px;">← Chapters</button>
-    <div id="study-chapter-content" class="card"></div>
-    <div class="nav">
-      <button class="btn secondary" id="btn-study-prev">← Previous</button>
-      <button class="btn" id="btn-study-next">Next →</button>
-    </div>
-  </div>
-
 </div>
 
 <script>
@@ -310,6 +221,7 @@ const TOPIC_NAMES = {
   futures: '期貨商業務員',
   securities: '證券商高級業務員',
   finance_ethics: '金融市場常識與職業道德',
+  cfa_fra: 'CFA Level I — Financial Reporting & Analysis',
 };
 const QUIZ_SIZE = 100;
 const RECENT_WINDOW = 10;   // last N attempts per question
@@ -323,8 +235,6 @@ let STATE = null;           // current quiz state
 // Schema: { [questionId]: { attempts: [true|false], ... last RECENT_WINDOW kept } }
 const LS_KEY = 'quiz_history_v1';
 const LS_QUIZ_KEY = 'quiz_state_v1';
-const LS_STUDY_KEY = 'study_state_v1';
-let STUDY_INDEX = null;   // { title, subtitle, chapters: [{file, title}] } — loaded lazily on first study-section open
 function loadHistory() {
   try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
   catch { return {}; }
@@ -332,129 +242,6 @@ function loadHistory() {
 function saveHistory(h) {
   localStorage.setItem(LS_KEY, JSON.stringify(h));
 }
-function loadStudyState() {
-  try {
-    const s = JSON.parse(localStorage.getItem(LS_STUDY_KEY) || '{}');
-    return { lastChapter: typeof s.lastChapter === 'number' ? s.lastChapter : null,
-             visited: Array.isArray(s.visited) ? s.visited : [] };
-  } catch { return { lastChapter: null, visited: [] }; }
-}
-function saveStudyState(state) {
-  localStorage.setItem(LS_STUDY_KEY, JSON.stringify(state));
-}
-function markChapterVisited(idx) {
-  const s = loadStudyState();
-  s.lastChapter = idx;
-  if (!s.visited.includes(idx)) s.visited.push(idx);
-  saveStudyState(s);
-}
-// Preprocess study markdown: convert ::: problem [tag] / ::: solution / ::: where blocks
-// into HTML wrappers. Runs BEFORE marked.parse so inner markdown is still processed normally.
-// Block syntax:
-//   ::: problem [Derivation]      <- opens a problem block, tag inside [...]
-//   ...statement markdown...
-//   ::: solution                  <- nested solution block
-//   ...solution markdown...
-//   :::                           <- closes solution
-//   :::                           <- closes problem
-//   ::: where                     <- standalone block; body is a markdown list
-//   - $X$ — description
-//   :::
-function preprocessStudyMarkdown(src) {
-  const lines = src.split(/\r?\n/);
-  const out = [];
-  const stack = [];        // top of stack = current open block tag
-  let inFence = false;     // true while inside a ``` code fence
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    // Track fenced code blocks — ::: lines inside code fences are literal
-    if (/^\s*```/.test(line)) {
-      inFence = !inFence;
-      out.push(line);
-      continue;
-    }
-    if (inFence) {
-      out.push(line);
-      continue;
-    }
-
-    // Block opener: ::: problem [...]  or  ::: solution  or  ::: where
-    const open = line.match(/^:::\s+(problem|solution|where)(?:\s*\[([^\]]*)\])?\s*$/);
-    if (open) {
-      const kind = open[1];
-      const tag = open[2] || '';
-      if (kind === 'problem') {
-        const safeTag = escapeHtml(tag);
-        out.push(`<div class="problem">`);
-        out.push(`<div class="ptag">${safeTag}</div>`);
-        out.push(`<div class="problem-stmt">`);
-        stack.push({ kind: 'problem', hasSolution: false });
-      } else if (kind === 'solution') {
-        const top = stack[stack.length - 1];
-        if (!top || top.kind !== 'problem') {
-          console.warn('::: solution outside of ::: problem at line', i + 1);
-          out.push(line);
-          continue;
-        }
-        top.hasSolution = true;
-        out.push(`</div>`); // close problem-stmt
-        out.push(`<button class="reveal-btn" type="button">Show solution</button>`);
-        out.push(`<div class="solution">`);
-        stack.push({ kind: 'solution' });
-      } else if (kind === 'where') {
-        out.push(`<ul class="symlist">`);
-        stack.push({ kind: 'where' });
-      }
-      continue;
-    }
-
-    // Block closer: bare :::
-    if (/^:::\s*$/.test(line)) {
-      const top = stack.pop();
-      if (!top) {
-        console.warn('Unmatched ::: at line', i + 1);
-        out.push(line);
-        continue;
-      }
-      if (top.kind === 'problem') {
-        if (!top.hasSolution) {
-          out.push(`</div>`);
-        }
-        out.push(`</div>`);
-      } else if (top.kind === 'solution') {
-        out.push(`</div>`);
-      } else if (top.kind === 'where') {
-        out.push(`</ul>`);
-      }
-      continue;
-    }
-
-    // Inside a where block: convert "- text" to <li>
-    if (stack.length && stack[stack.length - 1].kind === 'where') {
-      const li = line.match(/^-\s+(.*)/);
-      if (li) {
-        out.push(`<li>${li[1]}</li>`);
-      } else if (line.trim() === '') {
-        // skip blank lines inside where
-      } else {
-        out.push(line);
-      }
-      continue;
-    }
-
-    out.push(line);
-  }
-
-  // Warn on unclosed blocks
-  while (stack.length) {
-    console.warn('Unclosed study block:', stack.pop().kind);
-  }
-
-  return out.join('\n');
-}
-
 function recordAttempt(qid, correct) {
   const h = loadHistory();
   const rec = h[qid] || { attempts: [] };
@@ -524,8 +311,12 @@ function shuffle(a) {
   return a;
 }
 function el(id) { return document.getElementById(id); }
+// Taiwan banks are 4-choice (A-D); the CFA bank follows the exam's 3-choice format (A-C).
+function optionLetters(q) {
+  return ['A','B','C','D'].filter(L => (q.options[L] || '').trim() !== '');
+}
 function show(pageId) {
-  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review,#page-study-list,#page-study-chapter')
+  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review')
     .forEach(p => p.classList.add('hidden'));
   el(pageId).classList.remove('hidden');
   window.scrollTo(0, 0);
@@ -579,7 +370,7 @@ function renderQuiz() {
   el('q-stem').textContent = `${STATE.idx+1}. ${q.stem}`;
   const oc = el('q-options');
   oc.innerHTML = '';
-  for (const letter of ['A','B','C','D']) {
+  for (const letter of optionLetters(q)) {
     const div = document.createElement('div');
     div.className = 'option';
     if (locked) {
@@ -615,7 +406,7 @@ function renderQuiz() {
       const block = document.createElement('div');
       block.className = 'expl-block';
       block.innerHTML = '<div class="expl-title">解析</div>';
-      for (const letter of ['A','B','C','D']) {
+      for (const letter of optionLetters(q)) {
         const expl = q.explanations[letter];
         if (!expl) continue;
         const item = document.createElement('div');
@@ -660,7 +451,8 @@ function submitQuiz() {
   }
   clearQuizState();
   el('result-score').textContent = correct;
-  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${100-correct} 題`;
+  el('result-total').textContent = QUIZ_SIZE;
+  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${QUIZ_SIZE-correct} 題`;
   show('page-results');
 }
 
@@ -687,7 +479,7 @@ function showReview() {
       stem.className = 'stem';
       stem.textContent = `${i+1}. ${q.stem}`;
       div.appendChild(stem);
-      for (const letter of ['A','B','C','D']) {
+      for (const letter of optionLetters(q)) {
         const line = document.createElement('div');
         line.style.fontSize = '14px';
         line.style.padding = '2px 0';
@@ -710,127 +502,6 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[c]));
-}
-
-// ------- study section -------
-async function loadStudyIndex() {
-  if (STUDY_INDEX) return STUDY_INDEX;
-  const r = await fetch('study/index.json');
-  if (!r.ok) throw new Error('Failed to load study/index.json: ' + r.status);
-  STUDY_INDEX = await r.json();
-  return STUDY_INDEX;
-}
-
-async function openStudySection() {
-  try {
-    await loadStudyIndex();
-  } catch (e) {
-    alert('Failed to load study section: ' + e.message);
-    return;
-  }
-  renderStudyList();
-  show('page-study-list');
-}
-
-function renderStudyList() {
-  const idx = STUDY_INDEX;
-  el('study-title').textContent = idx.title;
-  el('study-subtitle').textContent = idx.subtitle;
-
-  const state = loadStudyState();
-  const banner = el('study-resume-banner');
-  if (state.lastChapter !== null && state.lastChapter >= 0 && state.lastChapter < idx.chapters.length) {
-    const ch = idx.chapters[state.lastChapter];
-    el('study-resume-meta').textContent = `Chapter ${state.lastChapter + 1} — ${ch.title}`;
-    banner.classList.remove('hidden');
-  } else {
-    banner.classList.add('hidden');
-  }
-
-  const list = el('study-chapter-list');
-  list.innerHTML = '';
-  idx.chapters.forEach((ch, i) => {
-    const row = document.createElement('div');
-    row.className = 'study-chapter-row';
-    const visited = state.visited.includes(i);
-    row.innerHTML =
-      `<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">
-         <span class="num">${i + 1}.</span>
-         <span style="flex:1;min-width:0;">${escapeHtml(ch.title)}</span>
-       </div>
-       <span class="visited">${visited ? '✓' : ''}</span>`;
-    row.onclick = () => openChapter(i);
-    list.appendChild(row);
-  });
-}
-
-async function openChapter(idx) {
-  const indexData = STUDY_INDEX;
-  if (!indexData || idx < 0 || idx >= indexData.chapters.length) return;
-  const ch = indexData.chapters[idx];
-
-  let raw;
-  try {
-    const r = await fetch('study/chapters/' + ch.file);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    raw = await r.text();
-  } catch (e) {
-    el('study-chapter-content').innerHTML =
-      `<p style="color:var(--bad)">Failed to load chapter: ${escapeHtml(e.message)}</p>`;
-    show('page-study-chapter');
-    return;
-  }
-
-  const container = el('study-chapter-content');
-
-  // Graceful fallback if CDN libs failed to load
-  if (typeof marked === 'undefined') {
-    container.innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit;font-size:14px">${escapeHtml(raw)}</pre>`;
-  } else {
-    const preprocessed = preprocessStudyMarkdown(raw);
-    // Protect math blocks from marked.js (it strips backslashes from \; \, \! etc.)
-    const mathHeld = [];
-    const shielded = preprocessed.replace(/\$\$[\s\S]*?\$\$|\$[^$\n]+?\$/g, m => {
-      mathHeld.push(m);
-      return `%%MATH${mathHeld.length - 1}%%`;
-    });
-    let html = marked.parse(shielded);
-    html = html.replace(/%%MATH(\d+)%%/g, (_, i) => mathHeld[+i]);
-    container.innerHTML = html;
-    if (typeof renderMathInElement !== 'undefined') {
-      renderMathInElement(container, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$',  right: '$',  display: false }
-        ],
-        throwOnError: false,
-      });
-    }
-    // Wire reveal buttons
-    container.querySelectorAll('.problem .reveal-btn').forEach(btn => {
-      btn.onclick = () => {
-        const problem = btn.closest('.problem');
-        const revealed = problem.classList.toggle('revealed');
-        btn.textContent = revealed ? 'Hide solution' : 'Show solution';
-      };
-    });
-  }
-
-  // Update state (swallow QuotaExceededError etc. so nav still updates)
-  try { markChapterVisited(idx); } catch (e) { console.warn('Failed to save study state:', e); }
-
-  // Update header / nav
-  el('study-chapter-label').textContent = `Ch. ${idx + 1} — ${ch.title}`;
-  el('study-chapter-counter').textContent = `${idx + 1} / ${indexData.chapters.length}`;
-  el('study-progress-fill').style.width = `${((idx + 1) / indexData.chapters.length) * 100}%`;
-  el('btn-study-prev').disabled = idx === 0;
-  el('btn-study-prev').style.opacity = idx === 0 ? 0.4 : 1;
-  el('btn-study-next').disabled = idx === indexData.chapters.length - 1;
-  el('btn-study-next').style.opacity = idx === indexData.chapters.length - 1 ? 0.4 : 1;
-  el('btn-study-prev').dataset.idx = idx - 1;
-  el('btn-study-next').dataset.idx = idx + 1;
-
-  show('page-study-chapter');
 }
 
 // ------- bootstrap -------
@@ -871,23 +542,6 @@ async function boot() {
   el('btn-review-home').onclick = () => { show('page-home'); renderHome(); };
   el('btn-resume').onclick = () => { const s = loadSavedQuiz(); if (s) resumeQuiz(s); };
   el('btn-discard').onclick = () => { clearQuizState(); el('resume-banner').classList.add('hidden'); };
-
-  // Study section wiring
-  el('btn-study').onclick = openStudySection;
-  el('btn-study-home').onclick = () => { show('page-home'); renderHome(); };
-  el('btn-study-back').onclick = () => { renderStudyList(); show('page-study-list'); };
-  el('btn-study-resume').onclick = () => {
-    const s = loadStudyState();
-    if (s.lastChapter !== null) openChapter(s.lastChapter);
-  };
-  el('btn-study-prev').onclick = () => {
-    const i = parseInt(el('btn-study-prev').dataset.idx, 10);
-    if (!isNaN(i) && i >= 0) openChapter(i);
-  };
-  el('btn-study-next').onclick = () => {
-    const i = parseInt(el('btn-study-next').dataset.idx, 10);
-    if (!isNaN(i) && STUDY_INDEX && i < STUDY_INDEX.chapters.length) openChapter(i);
-  };
   renderHome();
   show('page-home');
 }

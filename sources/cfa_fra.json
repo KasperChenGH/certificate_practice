@@ -1,0 +1,2263 @@
+[
+ {
+  "id": "cfa_fra-1",
+  "topic": "cfa_fra",
+  "stem": "The primary role of financial statement analysis is best described as:",
+  "options": {
+   "A": "verifying that the financial statements are free from material misstatement.",
+   "B": "using financial reports to evaluate a company's past and prospective performance in order to support economic decisions.",
+   "C": "preparing financial statements in conformity with the applicable reporting framework."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Introduction to Financial Statement Analysis",
+  "explanations": {
+   "A": "Incorrect. Verifying that statements are free from material misstatement is the role of the external auditor, not the analyst.",
+   "B": "Correct. Analysis takes the reports as given and uses them, together with other information, to evaluate performance and support investment, credit, and other economic decisions.",
+   "C": "Incorrect. Preparation is management's responsibility; the analyst is a user of the output."
+  }
+ },
+ {
+  "id": "cfa_fra-2",
+  "topic": "cfa_fra",
+  "stem": "An audit report stating that the financial statements present fairly, in all material respects, the financial position of the company is best described as:",
+  "options": {
+   "A": "an unqualified (unmodified) opinion.",
+   "B": "a qualified opinion.",
+   "C": "an adverse opinion."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Introduction to Financial Statement Analysis",
+  "explanations": {
+   "A": "Correct. The clean, unmodified opinion uses exactly this 'present fairly, in all material respects' language.",
+   "B": "Incorrect. A qualified opinion contains an 'except for' paragraph describing a specific departure from the framework.",
+   "C": "Incorrect. An adverse opinion states that the statements do NOT present fairly and are not in conformity with the framework."
+  }
+ },
+ {
+  "id": "cfa_fra-3",
+  "topic": "cfa_fra",
+  "stem": "Which financial statement reports a company's financial position at a single point in time?",
+  "options": {
+   "A": "The statement of cash flows.",
+   "B": "The statement of comprehensive income.",
+   "C": "The balance sheet."
+  },
+  "answer": "C",
+  "origin": "CFA Level I | FRA | Introduction to Financial Statement Analysis",
+  "explanations": {
+   "A": "Incorrect. The statement of cash flows covers a period, reconciling opening and closing cash.",
+   "B": "Incorrect. Comprehensive income is a flow measure covering a reporting period.",
+   "C": "Correct. The balance sheet (statement of financial position) is a stock statement dated as of one instant, showing assets, liabilities, and equity."
+  }
+ },
+ {
+  "id": "cfa_fra-4",
+  "topic": "cfa_fra",
+  "stem": "Information about the accounting policies, methods, and estimates a company has chosen is most likely found in the:",
+  "options": {
+   "A": "notes to the financial statements.",
+   "B": "auditor's report.",
+   "C": "proxy statement."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Introduction to Financial Statement Analysis",
+  "explanations": {
+   "A": "Correct. The notes (footnotes) disclose the basis of preparation, policy elections, and key estimates, and are an integral part of the statements.",
+   "B": "Incorrect. The auditor's report gives an opinion on the statements; it does not enumerate accounting policies.",
+   "C": "Incorrect. Proxy statements deal with matters put to a shareholder vote, such as board elections and executive compensation."
+  }
+ },
+ {
+  "id": "cfa_fra-5",
+  "topic": "cfa_fra",
+  "stem": "In the financial statement analysis framework, the step that immediately follows 'collect input data' is best described as:",
+  "options": {
+   "A": "communicating conclusions and recommendations.",
+   "B": "processing the data into analytical tools such as ratios and common-size statements.",
+   "C": "articulating the purpose and context of the analysis."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Introduction to Financial Statement Analysis",
+  "explanations": {
+   "A": "Incorrect. Communication is the fifth step, after the data have been processed and interpreted.",
+   "B": "Correct. The sequence is: articulate purpose, collect data, process data, analyse and interpret, communicate, then follow up.",
+   "C": "Incorrect. Articulating purpose and context is the first step, which precedes data collection."
+  }
+ },
+ {
+  "id": "cfa_fra-6",
+  "topic": "cfa_fra",
+  "stem": "Management commentary (MD&A) is most likely:",
+  "options": {
+   "A": "audited to the same standard as the primary financial statements.",
+   "B": "unaudited, though the auditor reads it and considers whether it is materially inconsistent with the statements.",
+   "C": "prohibited from inclusion in an IFRS annual report."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Introduction to Financial Statement Analysis",
+  "explanations": {
+   "A": "Incorrect. MD&A is generally outside the scope of the audit opinion.",
+   "B": "Correct. It is unaudited; the auditor's responsibility is limited to reading it and considering material inconsistency with the audited statements.",
+   "C": "Incorrect. IFRS Practice Statement 1 encourages management commentary; it is not prohibited."
+  }
+ },
+ {
+  "id": "cfa_fra-7",
+  "topic": "cfa_fra",
+  "stem": "An analyst who wants the most timely indication of a deterioration in a company's receivables quality between annual reports should look first at:",
+  "options": {
+   "A": "the prior-year audit report.",
+   "B": "the interim (quarterly) financial statements.",
+   "C": "the articles of incorporation."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Introduction to Financial Statement Analysis",
+  "explanations": {
+   "A": "Incorrect. The prior-year audit report is stale and speaks to a period already closed.",
+   "B": "Correct. Interim statements, though usually unaudited and condensed, are the most frequent source of updated balance-sheet and income data.",
+   "C": "Incorrect. Articles of incorporation are a legal formation document and contain no performance data."
+  }
+ },
+ {
+  "id": "cfa_fra-8",
+  "topic": "cfa_fra",
+  "stem": "Under the IASB Conceptual Framework, the two fundamental qualitative characteristics of useful financial information are:",
+  "options": {
+   "A": "relevance and faithful representation.",
+   "B": "comparability and verifiability.",
+   "C": "timeliness and understandability."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Reporting Standards",
+  "explanations": {
+   "A": "Correct. Relevance and faithful representation are fundamental; information must be both to be decision-useful.",
+   "B": "Incorrect. Comparability and verifiability are enhancing characteristics; they increase usefulness but cannot substitute for the fundamental ones.",
+   "C": "Incorrect. Timeliness and understandability are also enhancing characteristics."
+  }
+ },
+ {
+  "id": "cfa_fra-9",
+  "topic": "cfa_fra",
+  "stem": "Two independent, knowledgeable observers reach consensus that a reported amount is a faithful depiction. This is best described as evidence of:",
+  "options": {
+   "A": "materiality.",
+   "B": "verifiability.",
+   "C": "neutrality."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Standards",
+  "explanations": {
+   "A": "Incorrect. Materiality is an entity-specific aspect of relevance: whether omitting the item would change a user's decision.",
+   "B": "Correct. Verifiability means different knowledgeable, independent observers could reach consensus that a depiction is faithful.",
+   "C": "Incorrect. Neutrality means free from bias in selection or presentation; it is a component of faithful representation, not the consensus test."
+  }
+ },
+ {
+  "id": "cfa_fra-10",
+  "topic": "cfa_fra",
+  "stem": "Which of the following is an underlying assumption of the IASB Conceptual Framework?",
+  "options": {
+   "A": "Conservatism.",
+   "B": "Going concern.",
+   "C": "Historical cost."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Standards",
+  "explanations": {
+   "A": "Incorrect. Deliberate understatement conflicts with neutrality and is not an underlying assumption.",
+   "B": "Correct. Financial statements are prepared on the assumption that the entity will continue in operation for the foreseeable future.",
+   "C": "Incorrect. Historical cost is one of several permitted measurement bases, not an assumption."
+  }
+ },
+ {
+  "id": "cfa_fra-11",
+  "topic": "cfa_fra",
+  "stem": "Which accounting treatment is permitted under IFRS but NOT under US GAAP?",
+  "options": {
+   "A": "Use of the last-in, first-out (LIFO) inventory cost formula.",
+   "B": "Upward revaluation of property, plant, and equipment.",
+   "C": "Reversal of a previously recognised goodwill impairment loss."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Standards",
+  "explanations": {
+   "A": "Incorrect. This is reversed: LIFO is permitted under US GAAP and prohibited under IFRS.",
+   "B": "Correct. IAS 16 permits the revaluation model, carrying PP&E at fair value; US GAAP requires historical cost less accumulated depreciation.",
+   "C": "Incorrect. Reversal of a goodwill impairment is prohibited under both frameworks."
+  }
+ },
+ {
+  "id": "cfa_fra-12",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS, reversal of a previously recognised inventory write-down is:",
+  "options": {
+   "A": "prohibited.",
+   "B": "permitted, but the new carrying amount may not exceed original cost.",
+   "C": "permitted without limit, up to fair value less costs to sell."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Standards",
+  "explanations": {
+   "A": "Incorrect. Prohibition of reversal is the US GAAP rule, not IFRS.",
+   "B": "Correct. IAS 2 requires reversal when net realisable value recovers, capped so the carrying amount never exceeds original cost.",
+   "C": "Incorrect. The cap is original cost, so the reversal cannot exceed the write-down previously taken."
+  }
+ },
+ {
+  "id": "cfa_fra-13",
+  "topic": "cfa_fra",
+  "stem": "A company capitalises development costs that meet specified technical and commercial feasibility criteria. This treatment is:",
+  "options": {
+   "A": "required under IFRS and generally prohibited under US GAAP.",
+   "B": "required under both IFRS and US GAAP.",
+   "C": "prohibited under IFRS and required under US GAAP."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Reporting Standards",
+  "explanations": {
+   "A": "Correct. IAS 38 requires capitalisation once the six feasibility criteria are met; US GAAP expenses R&D as incurred (with a narrow exception for certain software).",
+   "B": "Incorrect. US GAAP generally expenses both research and development costs as incurred.",
+   "C": "Incorrect. The frameworks are the other way round."
+  }
+ },
+ {
+  "id": "cfa_fra-14",
+  "topic": "cfa_fra",
+  "stem": "An analyst comparing an IFRS reporter with a US GAAP reporter should be most concerned that differences in accounting standards reduce:",
+  "options": {
+   "A": "relevance.",
+   "B": "comparability.",
+   "C": "timeliness."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Standards",
+  "explanations": {
+   "A": "Incorrect. Each set of statements can be relevant to its own users; the issue is cross-entity, not decision-relevance.",
+   "B": "Correct. Comparability is precisely the characteristic that allows users to identify similarities and differences between entities, and differing frameworks impair it.",
+   "C": "Incorrect. Timeliness concerns availability of information in time to influence decisions, which is unaffected by the framework choice."
+  }
+ },
+ {
+  "id": "cfa_fra-15",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS 15 / ASC 606, revenue from a contract with a customer is recognised when:",
+  "options": {
+   "A": "cash is collected from the customer.",
+   "B": "the contract is signed and the transaction price is fixed.",
+   "C": "the entity satisfies a performance obligation by transferring control of a good or service."
+  },
+  "answer": "C",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. Collection timing does not drive recognition under accrual accounting; collectibility only affects whether a contract exists.",
+   "B": "Incorrect. Signing a contract creates rights and obligations but does not transfer control.",
+   "C": "Correct. The core principle of the five-step model is recognition on transfer of control, in the amount to which the entity expects to be entitled."
+  }
+ },
+ {
+  "id": "cfa_fra-16",
+  "topic": "cfa_fra",
+  "stem": "A travel website books hotel rooms, collects USD 1,000 from the traveller, and remits USD 900 to the hotel. The website never controls the room before transfer. Revenue reported should be:",
+  "options": {
+   "A": "USD 100, because the website acts as an agent.",
+   "B": "USD 1,000, the gross amount billed to the customer.",
+   "C": "USD 900, the amount remitted to the hotel."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. An agent that does not obtain control of the specified good or service before transfer reports revenue net — here the USD 100 commission.",
+   "B": "Incorrect. Gross (principal) reporting requires the entity to control the good or service before it is transferred.",
+   "C": "Incorrect. USD 900 is the cost remitted to the principal, not the agent's revenue."
+  }
+ },
+ {
+  "id": "cfa_fra-17",
+  "topic": "cfa_fra",
+  "stem": "A company purchases equipment for USD 50,000 with an estimated salvage value of USD 5,000 and a five-year useful life. Using the double-declining balance method, depreciation expense in Year 2 is closest to:",
+  "options": {
+   "A": "USD 10,800.",
+   "B": "USD 12,000.",
+   "C": "USD 18,000."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. USD 10,800 applies the 40% rate to a base net of salvage value, which DDB does not do in the early years.",
+   "B": "Correct. The DDB rate is 2/5 = 40%. Year 1 = 40% x 50,000 = 20,000, leaving a carrying amount of 30,000; Year 2 = 40% x 30,000 = 12,000.",
+   "C": "Incorrect. USD 18,000 applies 40% to 45,000 (cost less salvage), mixing the straight-line base with the DDB rate."
+  }
+ },
+ {
+  "id": "cfa_fra-18",
+  "topic": "cfa_fra",
+  "stem": "A machine costing USD 120,000 with a USD 20,000 salvage value is expected to produce 200,000 units. If 30,000 units are produced in Year 1, units-of-production depreciation for that year is:",
+  "options": {
+   "A": "USD 15,000.",
+   "B": "USD 18,000.",
+   "C": "USD 20,000."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. Depreciable base = 120,000 - 20,000 = 100,000; rate = 100,000 / 200,000 = USD 0.50 per unit; 30,000 x 0.50 = USD 15,000.",
+   "B": "Incorrect. USD 18,000 uses the full USD 120,000 cost as the base without deducting salvage value.",
+   "C": "Incorrect. USD 20,000 is the salvage value, not a depreciation amount."
+  }
+ },
+ {
+  "id": "cfa_fra-19",
+  "topic": "cfa_fra",
+  "stem": "Net income is USD 2,000,000, preferred dividends declared are USD 200,000, 800,000 common shares were outstanding on 1 January, and 200,000 additional shares were issued on 1 October. Basic EPS is closest to:",
+  "options": {
+   "A": "USD 2.12.",
+   "B": "USD 2.25.",
+   "C": "USD 2.00."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. Weighted average shares = 800,000 + 200,000 x (3/12) = 850,000; income available to common = 2,000,000 - 200,000 = 1,800,000; EPS = 1,800,000 / 850,000 = USD 2.12.",
+   "B": "Incorrect. USD 2.25 divides by the beginning share count of 800,000 rather than the weighted average.",
+   "C": "Incorrect. USD 2.00 uses a simple average of beginning and ending shares (900,000) instead of time-weighting the October issue."
+  }
+ },
+ {
+  "id": "cfa_fra-20",
+  "topic": "cfa_fra",
+  "stem": "Income available to common shareholders is USD 1,800,000 and the weighted average share count is 850,000. The company also has 100,000 employee options with a USD 20 exercise price; the average market price for the year was USD 25. Diluted EPS is closest to:",
+  "options": {
+   "A": "USD 2.07.",
+   "B": "USD 1.89.",
+   "C": "USD 2.12."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. Treasury stock method: shares repurchasable = 100,000 x 20 / 25 = 80,000, so incremental shares = 20,000. Diluted EPS = 1,800,000 / 870,000 = USD 2.07.",
+   "B": "Incorrect. USD 1.89 adds all 100,000 option shares and ignores the assumed repurchase of 80,000 shares with the proceeds.",
+   "C": "Incorrect. USD 2.12 is basic EPS; the in-the-money options are dilutive and must be included."
+  }
+ },
+ {
+  "id": "cfa_fra-21",
+  "topic": "cfa_fra",
+  "stem": "A company reports net income of USD 5,000,000, has 1,000,000 common shares outstanding all year, and USD 10,000,000 of 5% convertible bonds convertible into 200,000 shares. The tax rate is 25%. Diluted EPS is closest to:",
+  "options": {
+   "A": "USD 4.48.",
+   "B": "USD 5.00.",
+   "C": "USD 4.17."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. If-converted method: add back after-tax interest of 10,000,000 x 5% x (1 - 0.25) = 375,000. Diluted EPS = 5,375,000 / 1,200,000 = USD 4.48, below basic EPS of 5.00, so the bonds are dilutive.",
+   "B": "Incorrect. USD 5.00 is basic EPS; the convertible is dilutive and must be reflected.",
+   "C": "Incorrect. USD 4.17 adds the 200,000 shares to the denominator but omits the after-tax interest add-back in the numerator."
+  }
+ },
+ {
+  "id": "cfa_fra-22",
+  "topic": "cfa_fra",
+  "stem": "A convertible security is excluded from the diluted EPS calculation when its inclusion would:",
+  "options": {
+   "A": "reduce EPS below basic EPS.",
+   "B": "increase EPS above basic EPS.",
+   "C": "leave EPS unchanged."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. A security that reduces EPS is dilutive and must be included.",
+   "B": "Correct. Antidilutive securities — those that would raise EPS — are excluded, so diluted EPS is never greater than basic EPS.",
+   "C": "Incorrect. A neutral effect does not trigger exclusion; the exclusion rule targets antidilution."
+  }
+ },
+ {
+  "id": "cfa_fra-23",
+  "topic": "cfa_fra",
+  "stem": "Which item is reported net of tax as a separate line below income from continuing operations?",
+  "options": {
+   "A": "A restructuring charge.",
+   "B": "Results of a discontinued operation.",
+   "C": "A gain on the sale of a machine used in operations."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. Restructuring charges are unusual but part of continuing operations and are reported pre-tax within operating results.",
+   "B": "Correct. A component disposed of or held for sale that represents a separate major line of business is presented net of tax, separately from continuing operations.",
+   "C": "Incorrect. Gains on disposal of individual operating assets are included in continuing operations."
+  }
+ },
+ {
+  "id": "cfa_fra-24",
+  "topic": "cfa_fra",
+  "stem": "Which of the following is reported in other comprehensive income rather than in net income?",
+  "options": {
+   "A": "Realised gains on the sale of equity investments held for trading.",
+   "B": "Foreign currency translation adjustments arising on consolidation of a foreign subsidiary.",
+   "C": "An impairment loss on goodwill."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. Trading (FVPL) gains, realised or unrealised, flow through profit or loss.",
+   "B": "Correct. Translation adjustments from translating a foreign operation into the presentation currency accumulate in OCI.",
+   "C": "Incorrect. Goodwill impairment is charged directly to profit or loss."
+  }
+ },
+ {
+  "id": "cfa_fra-25",
+  "topic": "cfa_fra",
+  "stem": "On a vertical common-size income statement, each line item is expressed as a percentage of:",
+  "options": {
+   "A": "total assets.",
+   "B": "revenue.",
+   "C": "net income."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. Scaling by total assets is used for the common-size balance sheet.",
+   "B": "Correct. Vertical common-size income statements divide every line by revenue, isolating margin structure from scale.",
+   "C": "Incorrect. Net income is itself a line on the statement and is too small and volatile to serve as a base."
+  }
+ },
+ {
+  "id": "cfa_fra-26",
+  "topic": "cfa_fra",
+  "stem": "A company changes the estimated useful life of a machine from 10 years to 7 years. This change is accounted for:",
+  "options": {
+   "A": "retrospectively, by restating prior-period statements.",
+   "B": "prospectively, in the current and future periods.",
+   "C": "as a prior-period adjustment to opening retained earnings."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. Retrospective restatement applies to changes in accounting principle, not estimates.",
+   "B": "Correct. A change in accounting estimate is applied prospectively; the remaining carrying amount is depreciated over the revised remaining life.",
+   "C": "Incorrect. Prior-period adjustments to opening retained earnings are used to correct errors."
+  }
+ },
+ {
+  "id": "cfa_fra-27",
+  "topic": "cfa_fra",
+  "stem": "A company reports revenue of USD 800 million, cost of sales of USD 520 million, SG&A of USD 150 million, interest expense of USD 30 million, and tax of USD 25 million. Its operating profit margin is closest to:",
+  "options": {
+   "A": "16.3%.",
+   "B": "12.5%.",
+   "C": "35.0%."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. Operating profit = 800 - 520 - 150 = USD 130 million; 130 / 800 = 16.3%. Interest and tax are below the operating line.",
+   "B": "Incorrect. 12.5% deducts interest as well (100 / 800), which produces a pre-tax, not operating, margin.",
+   "C": "Incorrect. 35.0% is the gross margin, (800 - 520) / 800."
+  }
+ },
+ {
+  "id": "cfa_fra-28",
+  "topic": "cfa_fra",
+  "stem": "Which of the following is classified as a current liability?",
+  "options": {
+   "A": "The portion of long-term debt due within twelve months of the reporting date.",
+   "B": "A deferred tax liability expected to reverse in five years.",
+   "C": "A bond payable maturing in three years with no sinking-fund requirement."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Correct. The current portion of long-term debt is expected to be settled within the operating cycle or twelve months and is reclassified as current.",
+   "B": "Incorrect. Deferred tax liabilities are presented as non-current under IFRS regardless of expected reversal timing.",
+   "C": "Incorrect. A bond maturing in three years is non-current until its final year."
+  }
+ },
+ {
+  "id": "cfa_fra-29",
+  "topic": "cfa_fra",
+  "stem": "An internally generated brand name is most likely:",
+  "options": {
+   "A": "capitalised at the cost of the advertising campaign that built it.",
+   "B": "not recognised as an asset on the balance sheet.",
+   "C": "recognised at fair value with annual impairment testing."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Incorrect. Advertising and promotional spending is expensed as incurred; it does not create a recognisable asset.",
+   "B": "Correct. IAS 38 explicitly prohibits recognition of internally generated brands, mastheads, customer lists, and similar items, because their cost cannot be reliably distinguished from the cost of developing the business as a whole.",
+   "C": "Incorrect. Fair value recognition of internally generated intangibles is not permitted; only intangibles acquired separately or in a business combination are recognised."
+  }
+ },
+ {
+  "id": "cfa_fra-30",
+  "topic": "cfa_fra",
+  "stem": "Goodwill arising from a business combination is best described as:",
+  "options": {
+   "A": "the excess of the purchase consideration over the fair value of identifiable net assets acquired.",
+   "B": "the excess of the fair value of identifiable net assets over the purchase consideration.",
+   "C": "the carrying amount of the acquiree's intangible assets at the acquisition date."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Correct. Goodwill is the residual: consideration transferred (plus any non-controlling interest) less the fair value of identifiable net assets acquired.",
+   "B": "Incorrect. That excess is a bargain purchase gain, recognised immediately in profit or loss.",
+   "C": "Incorrect. Identifiable intangibles of the acquiree are recognised separately at fair value and are not goodwill."
+  }
+ },
+ {
+  "id": "cfa_fra-31",
+  "topic": "cfa_fra",
+  "stem": "A debt security classified at fair value through other comprehensive income (FVOCI) reports:",
+  "options": {
+   "A": "unrealised gains and losses in profit or loss and interest income in OCI.",
+   "B": "unrealised gains and losses in OCI and interest income in profit or loss.",
+   "C": "both unrealised gains and losses and interest income in OCI."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Incorrect. This reverses the treatment; interest income always runs through profit or loss.",
+   "B": "Correct. The asset is carried at fair value with remeasurement in OCI, while interest income (using the effective interest method) and impairment go through profit or loss.",
+   "C": "Incorrect. Interest income is never presented in OCI."
+  }
+ },
+ {
+  "id": "cfa_fra-32",
+  "topic": "cfa_fra",
+  "stem": "Which of the following would increase a company's total assets AND total liabilities by the same amount?",
+  "options": {
+   "A": "Issuing common shares for cash.",
+   "B": "Purchasing inventory on account.",
+   "C": "Collecting cash from a customer on an existing receivable."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Incorrect. A share issue increases assets and equity, not liabilities.",
+   "B": "Correct. Inventory (asset) rises and accounts payable (liability) rises by the same amount.",
+   "C": "Incorrect. This is an asset reclassification: cash up, receivables down; totals are unchanged."
+  }
+ },
+ {
+  "id": "cfa_fra-33",
+  "topic": "cfa_fra",
+  "stem": "A company using the revaluation model records an increase in the fair value of land above its original cost. The increase is:",
+  "options": {
+   "A": "recognised in profit or loss.",
+   "B": "recognised in OCI and accumulated in a revaluation surplus in equity.",
+   "C": "not recognised until the land is sold."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Incorrect. An upward revaluation is taken to profit or loss only to the extent it reverses a previously recognised revaluation decrease charged to profit or loss.",
+   "B": "Correct. Under IAS 16, the revaluation gain is recognised in OCI and accumulated in equity as a revaluation surplus.",
+   "C": "Incorrect. Deferral until sale describes the historical-cost model, not the revaluation model."
+  }
+ },
+ {
+  "id": "cfa_fra-34",
+  "topic": "cfa_fra",
+  "stem": "On a common-size balance sheet, each item is expressed as a percentage of:",
+  "options": {
+   "A": "revenue.",
+   "B": "total assets.",
+   "C": "shareholders' equity."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Incorrect. Revenue is the base for the common-size income statement.",
+   "B": "Correct. Every balance-sheet line is divided by total assets, which shows composition and capital structure independent of company size.",
+   "C": "Incorrect. Scaling by equity would distort highly levered companies and is not the convention."
+  }
+ },
+ {
+  "id": "cfa_fra-35",
+  "topic": "cfa_fra",
+  "stem": "Treasury shares repurchased by a company are best described as:",
+  "options": {
+   "A": "an asset, measured at the repurchase price.",
+   "B": "a contra-equity account that reduces total shareholders' equity.",
+   "C": "a liability, because the shares may be reissued."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Incorrect. A company cannot hold an ownership interest in itself as an asset.",
+   "B": "Correct. Treasury stock is deducted from shareholders' equity; it reduces both equity and shares outstanding, and no gain or loss is recognised on reissue.",
+   "C": "Incorrect. There is no obligation to transfer resources, so no liability exists."
+  }
+ },
+ {
+  "id": "cfa_fra-36",
+  "topic": "cfa_fra",
+  "stem": "A company records USD 5 million of cash received in advance for services to be delivered next year. On the balance sheet this is reported as:",
+  "options": {
+   "A": "unearned (deferred) revenue, a liability.",
+   "B": "accrued revenue, an asset.",
+   "C": "an addition to retained earnings."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Correct. Cash received before the performance obligation is satisfied creates an obligation to deliver, recognised as a contract liability.",
+   "B": "Incorrect. Accrued revenue is the opposite case — revenue earned but not yet billed or collected.",
+   "C": "Incorrect. No revenue has been earned, so nothing flows to retained earnings yet."
+  }
+ },
+ {
+  "id": "cfa_fra-37",
+  "topic": "cfa_fra",
+  "stem": "Accumulated other comprehensive income is best described as:",
+  "options": {
+   "A": "a component of shareholders' equity.",
+   "B": "a component of net income for the period.",
+   "C": "a non-current liability."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Correct. AOCI is the cumulative balance of items recognised in OCI, presented within equity alongside retained earnings.",
+   "B": "Incorrect. By definition, OCI items bypass net income.",
+   "C": "Incorrect. AOCI carries no obligation to transfer resources."
+  }
+ },
+ {
+  "id": "cfa_fra-38",
+  "topic": "cfa_fra",
+  "stem": "Under US GAAP, dividends paid to common shareholders are classified in the statement of cash flows as:",
+  "options": {
+   "A": "an operating outflow.",
+   "B": "an investing outflow.",
+   "C": "a financing outflow."
+  },
+  "answer": "C",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Incorrect. US GAAP classifies interest paid as operating, but dividends paid are financing.",
+   "B": "Incorrect. Investing activities cover acquisition and disposal of long-term assets and investments.",
+   "C": "Correct. Under US GAAP, dividends paid are always a financing outflow. Under IFRS the company may classify them as operating or financing."
+  }
+ },
+ {
+  "id": "cfa_fra-39",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS, interest paid may be classified as:",
+  "options": {
+   "A": "operating or financing.",
+   "B": "operating only.",
+   "C": "investing or financing."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. IAS 7 permits interest paid to be presented as either an operating or a financing cash flow, applied consistently.",
+   "B": "Incorrect. Operating-only classification of interest paid is the US GAAP rule.",
+   "C": "Incorrect. Interest paid is never an investing item; investing covers long-term asset flows."
+  }
+ },
+ {
+  "id": "cfa_fra-40",
+  "topic": "cfa_fra",
+  "stem": "A company reports net income of USD 400,000, depreciation of USD 90,000, an increase in accounts receivable of USD 60,000, a decrease in inventory of USD 40,000, and a decrease in accounts payable of USD 30,000. Cash flow from operations is:",
+  "options": {
+   "A": "USD 440,000.",
+   "B": "USD 380,000.",
+   "C": "USD 620,000."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. 400,000 + 90,000 - 60,000 + 40,000 - 30,000 = USD 440,000. Asset increases are uses of cash; liability decreases are uses of cash.",
+   "B": "Incorrect. USD 380,000 gets the sign of the inventory decrease backwards.",
+   "C": "Incorrect. USD 620,000 treats every working-capital change as a source of cash."
+  }
+ },
+ {
+  "id": "cfa_fra-41",
+  "topic": "cfa_fra",
+  "stem": "Under the direct method, cash collected from customers equals revenue:",
+  "options": {
+   "A": "plus the increase in accounts receivable.",
+   "B": "minus the increase in accounts receivable.",
+   "C": "minus the increase in unearned revenue."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Incorrect. A rise in receivables means some revenue has not yet been collected, so it must be deducted.",
+   "B": "Correct. Cash collected = revenue - increase in receivables + increase in unearned revenue.",
+   "C": "Incorrect. An increase in unearned revenue is cash received ahead of revenue and is added, not subtracted."
+  }
+ },
+ {
+  "id": "cfa_fra-42",
+  "topic": "cfa_fra",
+  "stem": "Cost of goods sold is USD 500,000, inventory increased by USD 40,000, and accounts payable increased by USD 25,000. Cash paid to suppliers is:",
+  "options": {
+   "A": "USD 515,000.",
+   "B": "USD 565,000.",
+   "C": "USD 485,000."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. Purchases = COGS + increase in inventory = 540,000; cash paid = purchases - increase in payables = 540,000 - 25,000 = USD 515,000.",
+   "B": "Incorrect. USD 565,000 adds the payables increase instead of subtracting it.",
+   "C": "Incorrect. USD 485,000 subtracts the inventory build rather than adding it."
+  }
+ },
+ {
+  "id": "cfa_fra-43",
+  "topic": "cfa_fra",
+  "stem": "Which transaction is a non-cash item that must be disclosed but excluded from the body of the statement of cash flows?",
+  "options": {
+   "A": "Repayment of a bank loan.",
+   "B": "Acquisition of equipment by issuing common shares.",
+   "C": "Payment of accrued wages."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Incorrect. Loan repayment is a cash financing outflow.",
+   "B": "Correct. Exchanging shares for equipment changes assets and equity without any cash movement, so it is disclosed separately as a significant non-cash investing and financing activity.",
+   "C": "Incorrect. Paying wages is a cash operating outflow."
+  }
+ },
+ {
+  "id": "cfa_fra-44",
+  "topic": "cfa_fra",
+  "stem": "A company has CFO of USD 300 million, capital expenditure of USD 120 million, interest paid of USD 40 million (classified as operating), and a tax rate of 25%. Free cash flow to the firm (FCFF) is closest to:",
+  "options": {
+   "A": "USD 210 million.",
+   "B": "USD 180 million.",
+   "C": "USD 220 million."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. FCFF = CFO + interest x (1 - tax rate) - FCInv = 300 + 40 x 0.75 - 120 = USD 210 million.",
+   "B": "Incorrect. USD 180 million omits the after-tax interest add-back (300 - 120).",
+   "C": "Incorrect. USD 220 million adds back the full pre-tax interest of 40 without the tax adjustment."
+  }
+ },
+ {
+  "id": "cfa_fra-45",
+  "topic": "cfa_fra",
+  "stem": "Using the same facts (CFO USD 300 million, FCInv USD 120 million, interest paid USD 40 million classified as operating, tax rate 25%) and net borrowing of USD 50 million, free cash flow to equity (FCFE) is closest to:",
+  "options": {
+   "A": "USD 230 million.",
+   "B": "USD 210 million.",
+   "C": "USD 260 million."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. FCFE = CFO - FCInv + net borrowing = 300 - 120 + 50 = USD 230 million. Because interest paid is already deducted in CFO, no add-back is made.",
+   "B": "Incorrect. USD 210 million is FCFF, not FCFE.",
+   "C": "Incorrect. USD 260 million double-counts by also adding back after-tax interest."
+  }
+ },
+ {
+  "id": "cfa_fra-46",
+  "topic": "cfa_fra",
+  "stem": "A company sells equipment with a carrying amount of USD 80,000 for USD 95,000 cash. In an indirect-method statement of cash flows, the effect is:",
+  "options": {
+   "A": "a USD 95,000 investing inflow and a USD 15,000 deduction from net income in the operating section.",
+   "B": "a USD 15,000 investing inflow only.",
+   "C": "a USD 95,000 operating inflow."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. The full USD 95,000 proceeds are an investing inflow; the USD 15,000 gain already in net income must be removed from the operating section to avoid double counting.",
+   "B": "Incorrect. The investing inflow is the total cash received, not just the gain.",
+   "C": "Incorrect. Proceeds from disposal of a long-term asset are investing, not operating."
+  }
+ },
+ {
+  "id": "cfa_fra-47",
+  "topic": "cfa_fra",
+  "stem": "A firm consistently reports net income well above cash flow from operations. This pattern most likely warrants investigation of:",
+  "options": {
+   "A": "the quality of earnings, including receivables and revenue recognition.",
+   "B": "the firm's dividend policy.",
+   "C": "the firm's cost of debt."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. A persistent gap between accrual earnings and operating cash suggests aggressive revenue recognition, receivable build-up, or capitalisation of operating costs.",
+   "B": "Incorrect. Dividends are a financing decision and do not explain the accrual-versus-cash divergence.",
+   "C": "Incorrect. The cost of debt affects interest expense but not the systematic accrual gap."
+  }
+ },
+ {
+  "id": "cfa_fra-48",
+  "topic": "cfa_fra",
+  "stem": "A common-size statement of cash flows most commonly expresses each inflow and outflow as a percentage of:",
+  "options": {
+   "A": "total revenue.",
+   "B": "total assets.",
+   "C": "net income."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. The two conventional approaches are to scale by revenue, or to express each item as a percentage of total inflows or total outflows; revenue is the more common single base.",
+   "B": "Incorrect. Total assets is the base for the common-size balance sheet.",
+   "C": "Incorrect. Net income is volatile and can be negative, making it unusable as a scaling base."
+  }
+ },
+ {
+  "id": "cfa_fra-49",
+  "topic": "cfa_fra",
+  "stem": "Which of the following would be classified as an investing cash flow?",
+  "options": {
+   "A": "Cash paid to purchase a 20% equity stake in a supplier.",
+   "B": "Cash received from issuing commercial paper.",
+   "C": "Cash paid for raw material inventory."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. Purchases and sales of long-term assets and of investments in other entities are investing activities.",
+   "B": "Incorrect. Issuing commercial paper is a financing inflow.",
+   "C": "Incorrect. Inventory purchases are part of the operating cycle."
+  }
+ },
+ {
+  "id": "cfa_fra-50",
+  "topic": "cfa_fra",
+  "stem": "A company has a return on equity of 15%, a net profit margin of 5%, and total asset turnover of 1.5. Its financial leverage ratio (average assets / average equity) is closest to:",
+  "options": {
+   "A": "2.0.",
+   "B": "1.5.",
+   "C": "3.0."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Three-part DuPont: ROE = margin x turnover x leverage, so leverage = 0.15 / (0.05 x 1.5) = 0.15 / 0.075 = 2.0.",
+   "B": "Incorrect. 1.5 is the asset turnover already given, not the leverage multiplier.",
+   "C": "Incorrect. 3.0 would imply ROE of 22.5% at the given margin and turnover."
+  }
+ },
+ {
+  "id": "cfa_fra-51",
+  "topic": "cfa_fra",
+  "stem": "In the five-way DuPont decomposition, the ratio EBT / EBIT captures the effect of:",
+  "options": {
+   "A": "the tax burden.",
+   "B": "the interest burden.",
+   "C": "operating efficiency."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Incorrect. The tax burden is NI / EBT.",
+   "B": "Correct. EBT / EBIT measures how much of operating profit survives interest expense — the interest burden, which falls as leverage or borrowing costs rise.",
+   "C": "Incorrect. Operating efficiency is the EBIT margin, EBIT / revenue."
+  }
+ },
+ {
+  "id": "cfa_fra-52",
+  "topic": "cfa_fra",
+  "stem": "A company has cash of USD 40, short-term marketable securities of USD 20, receivables of USD 90, inventory of USD 110, and current liabilities of USD 150. Its quick ratio is closest to:",
+  "options": {
+   "A": "1.00.",
+   "B": "1.73.",
+   "C": "0.40."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Quick ratio = (40 + 20 + 90) / 150 = 150 / 150 = 1.00. Inventory is excluded.",
+   "B": "Incorrect. 1.73 is the current ratio, (40 + 20 + 90 + 110) / 150, which includes inventory.",
+   "C": "Incorrect. 0.40 is the cash ratio, (40 + 20) / 150."
+  }
+ },
+ {
+  "id": "cfa_fra-53",
+  "topic": "cfa_fra",
+  "stem": "Days of sales outstanding is 45, days of inventory on hand is 60, and days of payables outstanding is 30. The cash conversion cycle is:",
+  "options": {
+   "A": "75 days.",
+   "B": "135 days.",
+   "C": "15 days."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Cash conversion cycle = DSO + DOH - DPO = 45 + 60 - 30 = 75 days.",
+   "B": "Incorrect. 135 days adds payables days instead of subtracting them; that is the operating cycle plus DPO.",
+   "C": "Incorrect. 15 days subtracts DOH rather than adding it."
+  }
+ },
+ {
+  "id": "cfa_fra-54",
+  "topic": "cfa_fra",
+  "stem": "Cost of goods sold is USD 1,200,000 and average inventory is USD 200,000. Days of inventory on hand (365-day year) is closest to:",
+  "options": {
+   "A": "61 days.",
+   "B": "6 days.",
+   "C": "167 days."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Inventory turnover = 1,200,000 / 200,000 = 6.0; DOH = 365 / 6 = 60.8, or about 61 days.",
+   "B": "Incorrect. 6 is the turnover ratio itself, not a number of days.",
+   "C": "Incorrect. 167 days would correspond to a turnover of about 2.2."
+  }
+ },
+ {
+  "id": "cfa_fra-55",
+  "topic": "cfa_fra",
+  "stem": "EBIT is USD 480 million and interest expense is USD 80 million. The interest coverage ratio is:",
+  "options": {
+   "A": "6.0x.",
+   "B": "5.0x.",
+   "C": "0.17x."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Interest coverage = EBIT / interest expense = 480 / 80 = 6.0 times.",
+   "B": "Incorrect. 5.0x would result from using EBT (480 - 80 = 400) in the numerator.",
+   "C": "Incorrect. 0.17x inverts the ratio."
+  }
+ },
+ {
+  "id": "cfa_fra-56",
+  "topic": "cfa_fra",
+  "stem": "A company retains 60% of its earnings and earns a return on equity of 12%. Its sustainable growth rate is closest to:",
+  "options": {
+   "A": "7.2%.",
+   "B": "12.0%.",
+   "C": "4.8%."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. g = retention ratio x ROE = 0.60 x 0.12 = 7.2%.",
+   "B": "Incorrect. 12.0% is ROE itself, which is the growth rate only if all earnings are retained.",
+   "C": "Incorrect. 4.8% uses the payout ratio of 40% instead of the retention ratio."
+  }
+ },
+ {
+  "id": "cfa_fra-57",
+  "topic": "cfa_fra",
+  "stem": "Which ratio is most useful for assessing a company's ability to meet its long-term debt obligations?",
+  "options": {
+   "A": "The debt-to-EBITDA ratio.",
+   "B": "The quick ratio.",
+   "C": "The receivables turnover ratio."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Solvency ratios such as debt-to-EBITDA, debt-to-equity, and interest coverage measure the ability to service long-term obligations.",
+   "B": "Incorrect. The quick ratio is a liquidity measure, focused on near-term obligations.",
+   "C": "Incorrect. Receivables turnover is an activity ratio measuring collection efficiency."
+  }
+ },
+ {
+  "id": "cfa_fra-58",
+  "topic": "cfa_fra",
+  "stem": "An analyst observes that a company's gross margin is stable but its operating margin has fallen for three consecutive years. The most likely explanation is:",
+  "options": {
+   "A": "rising input costs.",
+   "B": "rising selling, general, and administrative expenses relative to revenue.",
+   "C": "an increase in the effective tax rate."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Incorrect. Rising input costs would compress the gross margin, which is stated to be stable.",
+   "B": "Correct. The gap between gross and operating margin is operating expense; a widening gap points to SG&A, R&D, or depreciation growing faster than revenue.",
+   "C": "Incorrect. Tax is below the operating line and cannot affect operating margin."
+  }
+ },
+ {
+  "id": "cfa_fra-59",
+  "topic": "cfa_fra",
+  "stem": "The defensive interval ratio measures:",
+  "options": {
+   "A": "the number of days a company can pay its daily cash expenditures from existing liquid assets without additional cash inflow.",
+   "B": "the number of times operating income covers fixed charges.",
+   "C": "the proportion of assets financed by debt."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. It equals (cash + short-term marketable investments + receivables) divided by average daily cash expenditures, expressed in days of survival.",
+   "B": "Incorrect. That is the fixed charge coverage ratio.",
+   "C": "Incorrect. That is the debt-to-assets ratio."
+  }
+ },
+ {
+  "id": "cfa_fra-60",
+  "topic": "cfa_fra",
+  "stem": "Segment disclosures are most useful to an analyst because they:",
+  "options": {
+   "A": "reconcile net income to cash flow from operations.",
+   "B": "reveal the profitability and asset intensity of individually material lines of business.",
+   "C": "replace the need for a common-size analysis."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Incorrect. That reconciliation is in the statement of cash flows.",
+   "B": "Correct. IFRS 8 / ASC 280 disclosures let the analyst compute segment margins, segment turnover, and segment ROA, exposing mix effects hidden in consolidated totals.",
+   "C": "Incorrect. Segment data complements common-size analysis rather than replacing it."
+  }
+ },
+ {
+  "id": "cfa_fra-61",
+  "topic": "cfa_fra",
+  "stem": "When comparing ratios across two companies, the most important adjustment an analyst should make first is to:",
+  "options": {
+   "A": "standardise for differences in accounting policies and fiscal year-ends.",
+   "B": "convert both sets of statements to the same currency at the spot rate.",
+   "C": "remove all non-cash items from both income statements."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Differences in inventory cost formulas, depreciation methods, capitalisation policies, and period ends make raw ratios non-comparable; normalising these comes first.",
+   "B": "Incorrect. Currency conversion may be needed but does not affect ratios, which are unit-free.",
+   "C": "Incorrect. Removing all non-cash items would discard depreciation and destroy the accrual measures being compared."
+  }
+ },
+ {
+  "id": "cfa_fra-62",
+  "topic": "cfa_fra",
+  "stem": "In a period of rising prices with stable or increasing inventory quantities, a company using LIFO rather than FIFO will report:",
+  "options": {
+   "A": "higher cost of goods sold and lower ending inventory.",
+   "B": "lower cost of goods sold and higher ending inventory.",
+   "C": "higher net income and higher taxes."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Correct. LIFO charges the newest, highest costs to COGS and leaves the oldest, lowest costs on the balance sheet.",
+   "B": "Incorrect. That describes FIFO in a rising-price environment.",
+   "C": "Incorrect. Higher COGS under LIFO means lower net income and lower taxes."
+  }
+ },
+ {
+  "id": "cfa_fra-63",
+  "topic": "cfa_fra",
+  "stem": "Beginning inventory is 100 units at USD 10. Purchases are 200 units at USD 12 and then 100 units at USD 14. If 250 units are sold, cost of goods sold under FIFO is:",
+  "options": {
+   "A": "USD 2,800.",
+   "B": "USD 3,200.",
+   "C": "USD 3,000."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Correct. FIFO charges the oldest costs first: 100 x 10 + 150 x 12 = 1,000 + 1,800 = USD 2,800.",
+   "B": "Incorrect. USD 3,200 is periodic LIFO: 100 x 14 + 150 x 12.",
+   "C": "Incorrect. USD 3,000 is the weighted average cost result: 250 x (4,800 / 400) = 250 x 12."
+  }
+ },
+ {
+  "id": "cfa_fra-64",
+  "topic": "cfa_fra",
+  "stem": "Using the same facts (100 units at USD 10, then 200 at USD 12, then 100 at USD 14; 250 units sold), ending inventory under the weighted average cost method is:",
+  "options": {
+   "A": "USD 1,800.",
+   "B": "USD 2,000.",
+   "C": "USD 1,600."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Correct. Total cost = 1,000 + 2,400 + 1,400 = USD 4,800 for 400 units, or USD 12 per unit; 150 units remain, so ending inventory = USD 1,800.",
+   "B": "Incorrect. USD 2,000 is the FIFO ending inventory: 50 x 12 + 100 x 14.",
+   "C": "Incorrect. USD 1,600 is the periodic LIFO ending inventory: 100 x 10 + 50 x 12."
+  }
+ },
+ {
+  "id": "cfa_fra-65",
+  "topic": "cfa_fra",
+  "stem": "A US GAAP company reports LIFO inventory of USD 800,000 and a LIFO reserve of USD 200,000. Inventory on a FIFO basis would be:",
+  "options": {
+   "A": "USD 600,000.",
+   "B": "USD 1,000,000.",
+   "C": "USD 800,000."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Incorrect. Subtracting the reserve moves in the wrong direction; LIFO inventory is the understated figure.",
+   "B": "Correct. FIFO inventory = LIFO inventory + LIFO reserve = 800,000 + 200,000 = USD 1,000,000.",
+   "C": "Incorrect. USD 800,000 is the unadjusted LIFO figure."
+  }
+ },
+ {
+  "id": "cfa_fra-66",
+  "topic": "cfa_fra",
+  "stem": "A company's LIFO reserve increased by USD 30,000 during the year while LIFO cost of goods sold was USD 900,000. Cost of goods sold on a FIFO basis would be:",
+  "options": {
+   "A": "USD 870,000.",
+   "B": "USD 930,000.",
+   "C": "USD 900,000."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Correct. FIFO COGS = LIFO COGS - increase in LIFO reserve = 900,000 - 30,000 = USD 870,000.",
+   "B": "Incorrect. Adding the change reverses the relationship; FIFO COGS is the lower figure when prices are rising.",
+   "C": "Incorrect. USD 900,000 ignores the reserve movement entirely."
+  }
+ },
+ {
+  "id": "cfa_fra-67",
+  "topic": "cfa_fra",
+  "stem": "To convert a LIFO reporter's shareholders' equity to a FIFO basis, an analyst should add:",
+  "options": {
+   "A": "the full LIFO reserve.",
+   "B": "the LIFO reserve multiplied by (1 - tax rate).",
+   "C": "the change in the LIFO reserve for the year."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Incorrect. Adding the full reserve to equity ignores the deferred tax liability that the higher inventory carrying amount creates.",
+   "B": "Correct. Equity increases by the after-tax reserve; the tax portion, reserve x tax rate, is added to deferred tax liabilities.",
+   "C": "Incorrect. The annual change is used to adjust cost of goods sold, not the cumulative equity balance."
+  }
+ },
+ {
+  "id": "cfa_fra-68",
+  "topic": "cfa_fra",
+  "stem": "A LIFO liquidation occurs when a company:",
+  "options": {
+   "A": "switches from LIFO to FIFO.",
+   "B": "sells more units than it purchases, drawing down older, low-cost LIFO layers.",
+   "C": "writes inventory down to net realisable value."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Incorrect. That is a change in accounting principle, not a liquidation.",
+   "B": "Correct. Selling into old layers charges outdated low costs to COGS, inflating gross profit with a non-sustainable gain that must be excluded from earnings-quality analysis.",
+   "C": "Incorrect. A write-down reduces inventory to NRV and is unrelated to layer depletion."
+  }
+ },
+ {
+  "id": "cfa_fra-69",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS, inventory is measured at:",
+  "options": {
+   "A": "the lower of cost and net realisable value.",
+   "B": "the lower of cost and market, where market is replacement cost bounded by a ceiling and a floor.",
+   "C": "fair value less costs to sell in all cases."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Correct. IAS 2 requires the lower of cost and NRV, where NRV is the estimated selling price less the estimated costs of completion and sale.",
+   "B": "Incorrect. The replacement-cost-with-collar test is the US GAAP rule for LIFO and retail-method inventories.",
+   "C": "Incorrect. Fair value less costs to sell applies only to specific cases such as certain commodity broker-trader inventories and biological produce."
+  }
+ },
+ {
+  "id": "cfa_fra-70",
+  "topic": "cfa_fra",
+  "stem": "Which of the following costs is expensed as incurred rather than capitalised into inventory?",
+  "options": {
+   "A": "Import duties and non-recoverable taxes on raw materials.",
+   "B": "Abnormal amounts of wasted material and labour.",
+   "C": "Conversion costs directly attributable to production."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Incorrect. Duties and non-recoverable taxes are part of the cost of purchase and are capitalised.",
+   "B": "Correct. Abnormal waste, most storage costs, administrative overhead, and selling costs are period expenses.",
+   "C": "Incorrect. Direct labour and a systematic allocation of production overhead are conversion costs, which are capitalised."
+  }
+ },
+ {
+  "id": "cfa_fra-71",
+  "topic": "cfa_fra",
+  "stem": "A company reports inventory turnover well below its industry peers together with rising days of inventory on hand. This most likely indicates:",
+  "options": {
+   "A": "efficient inventory management.",
+   "B": "obsolete or slow-moving inventory and a possible pending write-down.",
+   "C": "an aggressive LIFO liquidation."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Incorrect. Low turnover with lengthening holding periods is the opposite of efficient management.",
+   "B": "Correct. Inventory that is not moving raises the risk that its net realisable value has fallen below cost, foreshadowing a write-down and an earnings hit.",
+   "C": "Incorrect. A LIFO liquidation involves inventory quantities falling, which would raise turnover, not lower it."
+  }
+ },
+ {
+  "id": "cfa_fra-72",
+  "topic": "cfa_fra",
+  "stem": "Compared with a company that expenses a cost, a company that capitalises the same cost into inventory will initially report:",
+  "options": {
+   "A": "lower net income and lower assets.",
+   "B": "higher net income and higher assets.",
+   "C": "higher net income and lower assets."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Inventories",
+  "explanations": {
+   "A": "Incorrect. Capitalising defers the expense, so income is higher, not lower, in the period of the outlay.",
+   "B": "Correct. Capitalisation moves the cost from the income statement to the balance sheet, raising both current-period profit and total assets until the inventory is sold.",
+   "C": "Incorrect. Capitalisation raises assets; it cannot lower them."
+  }
+ },
+ {
+  "id": "cfa_fra-73",
+  "topic": "cfa_fra",
+  "stem": "Compared with expensing an expenditure, capitalising it will, in the year of the outlay, result in:",
+  "options": {
+   "A": "lower net income and lower cash flow from operations.",
+   "B": "higher net income and higher cash flow from operations.",
+   "C": "higher net income and lower cash flow from operations."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. Capitalising defers the expense, so net income is higher in the year of the outlay.",
+   "B": "Correct. The cost moves to the balance sheet, raising net income, and the cash outflow is reported as investing rather than operating, so CFO is higher (total cash flow is identical).",
+   "C": "Incorrect. CFO is higher, not lower, because the outflow is reclassified out of operating activities."
+  }
+ },
+ {
+  "id": "cfa_fra-74",
+  "topic": "cfa_fra",
+  "stem": "Relative to a company that expenses a cost, a company that capitalises the same cost will report, over the full life of the asset:",
+  "options": {
+   "A": "higher total net income.",
+   "B": "the same total net income, but a smoother earnings profile.",
+   "C": "lower total net income."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. Capitalisation shifts the timing of the expense; it does not change its total amount.",
+   "B": "Correct. Aggregate expense is identical over the asset's life; capitalisation front-loads income and back-loads depreciation, producing lower earnings variability.",
+   "C": "Incorrect. Total expense, and therefore total income, is unchanged."
+  }
+ },
+ {
+  "id": "cfa_fra-75",
+  "topic": "cfa_fra",
+  "stem": "Interest incurred on funds borrowed to construct a building for the company's own use is most likely:",
+  "options": {
+   "A": "expensed as incurred and reported in the operating section of the cash flow statement.",
+   "B": "capitalised as part of the cost of the building during the construction period.",
+   "C": "recorded as a reduction of shareholders' equity."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. Interest on general borrowings is expensed, but interest attributable to a qualifying asset under construction is capitalised.",
+   "B": "Correct. Both IFRS and US GAAP require capitalisation of borrowing costs directly attributable to acquiring or constructing a qualifying asset, ceasing when the asset is ready for use.",
+   "C": "Incorrect. Interest is never charged directly to equity."
+  }
+ },
+ {
+  "id": "cfa_fra-76",
+  "topic": "cfa_fra",
+  "stem": "Gross PP&E is USD 1,000,000, accumulated depreciation is USD 400,000, and annual depreciation expense is USD 100,000. The estimated average remaining useful life is closest to:",
+  "options": {
+   "A": "4 years.",
+   "B": "6 years.",
+   "C": "10 years."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. 4 years is the average age of the asset base, accumulated depreciation divided by annual depreciation.",
+   "B": "Correct. Remaining life = net PP&E / annual depreciation = (1,000,000 - 400,000) / 100,000 = 6 years.",
+   "C": "Incorrect. 10 years is the estimated total useful life, gross PP&E divided by annual depreciation."
+  }
+ },
+ {
+  "id": "cfa_fra-77",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS, an asset is impaired when its carrying amount exceeds its recoverable amount, defined as:",
+  "options": {
+   "A": "the higher of fair value less costs of disposal and value in use.",
+   "B": "the lower of fair value less costs of disposal and value in use.",
+   "C": "the undiscounted sum of expected future cash flows."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Correct. IAS 36 defines recoverable amount as the higher of the two measures, reflecting the better of selling or continuing to use the asset.",
+   "B": "Incorrect. Taking the lower would overstate impairment; the entity would rationally choose the more valuable option.",
+   "C": "Incorrect. The undiscounted cash-flow test is the US GAAP recoverability screen, not the IFRS measurement."
+  }
+ },
+ {
+  "id": "cfa_fra-78",
+  "topic": "cfa_fra",
+  "stem": "An asset has a carrying amount of USD 500,000, fair value less costs of disposal of USD 420,000, value in use of USD 450,000, and undiscounted expected future cash flows of USD 520,000. Under IFRS, the impairment loss is:",
+  "options": {
+   "A": "USD 0.",
+   "B": "USD 50,000.",
+   "C": "USD 80,000."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. USD 0 is the US GAAP answer, because undiscounted cash flows of 520,000 exceed the 500,000 carrying amount and the recoverability test is passed.",
+   "B": "Correct. Recoverable amount = max(420,000, 450,000) = 450,000; impairment = 500,000 - 450,000 = USD 50,000.",
+   "C": "Incorrect. USD 80,000 uses fair value less costs of disposal alone, ignoring the higher value in use."
+  }
+ },
+ {
+  "id": "cfa_fra-79",
+  "topic": "cfa_fra",
+  "stem": "Reversal of a previously recognised impairment loss on a held-and-used machine is:",
+  "options": {
+   "A": "permitted under IFRS but prohibited under US GAAP.",
+   "B": "prohibited under IFRS but permitted under US GAAP.",
+   "C": "prohibited under both frameworks."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Correct. IAS 36 requires reversal (capped at the carrying amount that would have existed absent impairment) when the estimates change; US GAAP prohibits reversal for assets held and used.",
+   "B": "Incorrect. This reverses the two frameworks.",
+   "C": "Incorrect. Universal prohibition applies to goodwill, not to other long-lived assets."
+  }
+ },
+ {
+  "id": "cfa_fra-80",
+  "topic": "cfa_fra",
+  "stem": "Lengthening the estimated useful life of a depreciable asset will, in the current period:",
+  "options": {
+   "A": "increase depreciation expense and decrease net income.",
+   "B": "decrease depreciation expense and increase net income.",
+   "C": "have no effect on reported earnings."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. Spreading the same depreciable base over more years lowers the annual charge.",
+   "B": "Correct. A longer life reduces annual depreciation, raising operating income, net income, and reported asset carrying amounts — a classic earnings-quality flag when it is unsupported.",
+   "C": "Incorrect. Depreciation is an income statement expense, so the estimate change is not neutral to earnings."
+  }
+ },
+ {
+  "id": "cfa_fra-81",
+  "topic": "cfa_fra",
+  "stem": "An intangible asset with an indefinite useful life is:",
+  "options": {
+   "A": "amortised over a maximum of ten years.",
+   "B": "not amortised but tested for impairment at least annually.",
+   "C": "written off immediately on acquisition."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. No arbitrary amortisation cap applies to indefinite-lived intangibles.",
+   "B": "Correct. Because there is no foreseeable limit to the period of expected cash inflows, no amortisation is recorded, but an annual impairment test is mandatory.",
+   "C": "Incorrect. Immediate write-off applies to internally generated intangibles that fail recognition criteria, not to acquired indefinite-lived assets."
+  }
+ },
+ {
+  "id": "cfa_fra-82",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS, investment property measured using the fair value model reports changes in fair value:",
+  "options": {
+   "A": "in profit or loss.",
+   "B": "in other comprehensive income.",
+   "C": "as a direct adjustment to retained earnings."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Correct. IAS 40's fair value model routes all fair value gains and losses through profit or loss, unlike the IAS 16 revaluation model for owner-occupied PP&E.",
+   "B": "Incorrect. OCI treatment applies to the revaluation surplus on PP&E under IAS 16, not to investment property.",
+   "C": "Incorrect. Direct equity adjustments are reserved for error corrections and specified transition items."
+  }
+ },
+ {
+  "id": "cfa_fra-83",
+  "topic": "cfa_fra",
+  "stem": "A company that capitalises a larger proportion of its expenditures than its peers will most likely report:",
+  "options": {
+   "A": "lower return on assets in the early years and more volatile earnings.",
+   "B": "higher return on assets in the early years and less volatile earnings.",
+   "C": "identical return on assets, because the effects offset."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. Capitalisation raises early-year income; the volatility effect also runs the other way, since depreciation is smooth while expensing is lumpy.",
+   "B": "Correct. In the early years net income rises faster than the asset base, lifting ROA, and spreading the cost over time smooths earnings.",
+   "C": "Incorrect. Both numerator and denominator change, but not in offsetting proportions."
+  }
+ },
+ {
+  "id": "cfa_fra-84",
+  "topic": "cfa_fra",
+  "stem": "A high ratio of accumulated depreciation to gross PP&E most likely suggests that a company:",
+  "options": {
+   "A": "has recently completed a major capital expenditure programme.",
+   "B": "has an ageing asset base and may face significant near-term replacement capital expenditure.",
+   "C": "uses a longer useful life than its competitors."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. A recent build-out would lower the ratio, since new assets carry little accumulated depreciation.",
+   "B": "Correct. The ratio approximates the fraction of asset life already consumed; a high value warns of an impending reinvestment cycle and cash-flow drag.",
+   "C": "Incorrect. Longer useful lives slow the accumulation of depreciation, producing a lower ratio."
+  }
+ },
+ {
+  "id": "cfa_fra-85",
+  "topic": "cfa_fra",
+  "stem": "A deferred tax liability most likely arises when:",
+  "options": {
+   "A": "the carrying amount of an asset exceeds its tax base.",
+   "B": "the carrying amount of an asset is less than its tax base.",
+   "C": "a permanent difference increases taxable income."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Correct. If book carrying value exceeds the tax base — typically because tax depreciation is faster — future taxable amounts exist, giving rise to a DTL.",
+   "B": "Incorrect. That relationship produces a deferred tax asset.",
+   "C": "Incorrect. Permanent differences never generate deferred tax; they only shift the effective tax rate."
+  }
+ },
+ {
+  "id": "cfa_fra-86",
+  "topic": "cfa_fra",
+  "stem": "An asset costing USD 100,000 is depreciated USD 40,000 for tax purposes and USD 25,000 for financial reporting in Year 1. At a 25% tax rate, the deferred tax liability recognised at the end of Year 1 is:",
+  "options": {
+   "A": "USD 3,750.",
+   "B": "USD 15,000.",
+   "C": "USD 6,250."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Correct. Carrying amount 75,000 exceeds tax base 60,000 by a taxable temporary difference of 15,000; DTL = 15,000 x 25% = USD 3,750.",
+   "B": "Incorrect. USD 15,000 is the temporary difference itself, before applying the tax rate.",
+   "C": "Incorrect. USD 6,250 applies the rate to the 25,000 book depreciation rather than to the difference."
+  }
+ },
+ {
+  "id": "cfa_fra-87",
+  "topic": "cfa_fra",
+  "stem": "Which of the following gives rise to a deferred tax asset?",
+  "options": {
+   "A": "Accelerated depreciation for tax purposes.",
+   "B": "A warranty provision recognised for accounting but deductible only when paid.",
+   "C": "Interest income on municipal bonds that is permanently tax-exempt."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Incorrect. Accelerated tax depreciation produces a deferred tax liability.",
+   "B": "Correct. The liability's carrying amount exceeds its tax base of zero, creating a future deductible amount and therefore a DTA.",
+   "C": "Incorrect. Permanently tax-exempt income is a permanent difference and creates no deferred tax."
+  }
+ },
+ {
+  "id": "cfa_fra-88",
+  "topic": "cfa_fra",
+  "stem": "Under US GAAP, a valuation allowance is recorded when:",
+  "options": {
+   "A": "it is more likely than not that some portion of a deferred tax asset will not be realised.",
+   "B": "a deferred tax liability is expected to reverse within one year.",
+   "C": "the statutory tax rate changes."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Correct. The DTA is recognised in full and then reduced by a valuation allowance to the amount more likely than not to be realised; IFRS achieves the same outcome by recognising the DTA only to the extent recovery is probable.",
+   "B": "Incorrect. Reversal timing affects classification and disclosure, not a valuation allowance.",
+   "C": "Incorrect. A rate change triggers remeasurement of deferred balances, not a valuation allowance."
+  }
+ },
+ {
+  "id": "cfa_fra-89",
+  "topic": "cfa_fra",
+  "stem": "A company carries a deferred tax liability of USD 240,000 measured at a 30% tax rate. Legislation reduces the rate to 25%. The immediate effect on the income statement is:",
+  "options": {
+   "A": "a deferred tax expense of USD 40,000.",
+   "B": "a deferred tax benefit of USD 40,000.",
+   "C": "no effect until the temporary difference reverses."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Incorrect. A rate cut reduces the future tax obligation, which is a benefit, not an expense.",
+   "B": "Correct. The underlying temporary difference is 240,000 / 0.30 = 800,000; remeasured at 25% the DTL becomes 200,000, and the USD 40,000 reduction is recognised immediately as a deferred tax benefit.",
+   "C": "Incorrect. Deferred balances are remeasured in the period the rate change is enacted."
+  }
+ },
+ {
+  "id": "cfa_fra-90",
+  "topic": "cfa_fra",
+  "stem": "Income tax expense reported on the income statement is best described as:",
+  "options": {
+   "A": "taxes currently payable to the tax authority.",
+   "B": "current tax expense plus the change in deferred tax liabilities less the change in deferred tax assets.",
+   "C": "pre-tax income multiplied by the statutory tax rate."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Incorrect. Taxes payable is the current portion only, and appears as a balance-sheet liability.",
+   "B": "Correct. Total tax expense combines the current charge with the net movement in deferred balances.",
+   "C": "Incorrect. Permanent differences, foreign rate mixes, and valuation allowances drive the effective rate away from the statutory rate."
+  }
+ },
+ {
+  "id": "cfa_fra-91",
+  "topic": "cfa_fra",
+  "stem": "A company's effective tax rate is persistently below the statutory rate, driven mainly by income earned in a low-tax foreign jurisdiction. An analyst forecasting future earnings should:",
+  "options": {
+   "A": "assume the statutory rate will apply going forward.",
+   "B": "assess whether the geographic mix of income is sustainable before extrapolating the low rate.",
+   "C": "treat the difference as a temporary difference that will reverse."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Incorrect. Mechanically applying the statutory rate ignores a genuine and possibly durable structural feature.",
+   "B": "Correct. A rate advantage from foreign income persists only while that mix and the relevant tax regimes persist; this is precisely what the tax-rate reconciliation disclosure is for.",
+   "C": "Incorrect. A geographic rate differential is a permanent difference, not a temporary one."
+  }
+ },
+ {
+  "id": "cfa_fra-92",
+  "topic": "cfa_fra",
+  "stem": "Pre-tax income is USD 500,000, current taxes payable are USD 100,000, and the deferred tax liability increased by USD 25,000 with no change in deferred tax assets. The effective tax rate is:",
+  "options": {
+   "A": "20%.",
+   "B": "25%.",
+   "C": "5%."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Incorrect. 20% uses only the current portion, 100,000 / 500,000.",
+   "B": "Correct. Total income tax expense = 100,000 + 25,000 = 125,000; effective rate = 125,000 / 500,000 = 25%.",
+   "C": "Incorrect. 5% is only the deferred component's share of pre-tax income."
+  }
+ },
+ {
+  "id": "cfa_fra-93",
+  "topic": "cfa_fra",
+  "stem": "The tax base of a liability is best described as:",
+  "options": {
+   "A": "its carrying amount less any amount that will be deductible for tax purposes in future periods.",
+   "B": "its carrying amount plus any future deductible amount.",
+   "C": "the amount at which it would be settled in an arm's-length transaction."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Taxes",
+  "explanations": {
+   "A": "Correct. For a liability, tax base = carrying amount - amounts deductible for tax in the future; for unearned revenue it is the carrying amount less any amount not taxable in the future.",
+   "B": "Incorrect. Adding the future deduction reverses the definition.",
+   "C": "Incorrect. That describes fair value, which is not the tax base."
+  }
+ },
+ {
+  "id": "cfa_fra-94",
+  "topic": "cfa_fra",
+  "stem": "A bond is issued at a discount. Over the life of the bond, the carrying amount of the liability and the reported interest expense will, respectively:",
+  "options": {
+   "A": "increase and increase.",
+   "B": "increase and decrease.",
+   "C": "decrease and increase."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Correct. Discount amortisation adds to the carrying amount each period, and because interest expense equals the constant market yield times a rising carrying amount, expense rises as well.",
+   "B": "Incorrect. Falling interest expense with a rising carrying amount is internally inconsistent under the effective interest method.",
+   "C": "Incorrect. A decreasing carrying amount describes a bond issued at a premium."
+  }
+ },
+ {
+  "id": "cfa_fra-95",
+  "topic": "cfa_fra",
+  "stem": "A company issues a three-year bond with a face value of USD 1,000,000 and a 5% annual coupon when the market yield is 6%. Interest expense in Year 1 under the effective interest method is closest to:",
+  "options": {
+   "A": "USD 50,000.",
+   "B": "USD 58,400.",
+   "C": "USD 60,000."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Incorrect. USD 50,000 is the cash coupon; under the effective interest method expense exceeds the coupon for a discount bond.",
+   "B": "Correct. Issue price = 50,000 x 2.6730 + 1,000,000 x 0.8396 = USD 973,270; Year 1 expense = 973,270 x 6% = USD 58,396.",
+   "C": "Incorrect. USD 60,000 applies the 6% yield to face value rather than to the carrying amount."
+  }
+ },
+ {
+  "id": "cfa_fra-96",
+  "topic": "cfa_fra",
+  "stem": "Using the same bond (issue price USD 973,270, 5% coupon on USD 1,000,000 face, 6% yield), the carrying amount at the end of Year 1 is closest to:",
+  "options": {
+   "A": "USD 981,700.",
+   "B": "USD 973,300.",
+   "C": "USD 1,000,000."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Correct. Carrying amount = 973,270 + (58,396 - 50,000) = 973,270 + 8,396 = USD 981,666.",
+   "B": "Incorrect. USD 973,300 is the original issue price, before any discount amortisation.",
+   "C": "Incorrect. The carrying amount reaches face value only at maturity."
+  }
+ },
+ {
+  "id": "cfa_fra-97",
+  "topic": "cfa_fra",
+  "stem": "For a bond issued at a premium, total interest expense recognised over the bond's life is:",
+  "options": {
+   "A": "greater than the total coupon payments.",
+   "B": "less than the total coupon payments.",
+   "C": "equal to the total coupon payments."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Incorrect. Expense exceeding coupons is the discount case.",
+   "B": "Correct. The premium received at issuance is amortised as a reduction of interest expense, so cumulative expense equals total coupons less the premium.",
+   "C": "Incorrect. Equality holds only for a bond issued exactly at par."
+  }
+ },
+ {
+  "id": "cfa_fra-98",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS 16, a lessee accounts for essentially all leases by:",
+  "options": {
+   "A": "recognising a right-of-use asset and a lease liability on the balance sheet.",
+   "B": "disclosing the future minimum payments in the notes only.",
+   "C": "classifying the lease as either operating or finance, with operating leases kept off balance sheet."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Correct. IFRS 16 uses a single lessee model: an ROU asset and lease liability are recognised (with short-term and low-value exemptions), producing amortisation plus interest rather than rent expense.",
+   "B": "Incorrect. Note-only disclosure is the superseded pre-IFRS 16 operating-lease treatment.",
+   "C": "Incorrect. US GAAP retains the operating/finance distinction for expense presentation, but even US GAAP operating leases are now on balance sheet."
+  }
+ },
+ {
+  "id": "cfa_fra-99",
+  "topic": "cfa_fra",
+  "stem": "Compared with a US GAAP operating lease, a finance lease of the same asset will most likely report:",
+  "options": {
+   "A": "higher cash flow from operations and higher total expense in the early years.",
+   "B": "lower cash flow from operations and lower total expense in the early years.",
+   "C": "identical cash flow from operations and identical expense in every year."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Correct. Under a finance lease the principal portion of the payment is a financing outflow, so CFO is higher; interest plus amortisation exceeds the straight-line operating lease expense in the early years.",
+   "B": "Incorrect. Both effects run the other way.",
+   "C": "Incorrect. Total cash flow is identical, but its classification and the expense profile differ."
+  }
+ },
+ {
+  "id": "cfa_fra-100",
+  "topic": "cfa_fra",
+  "stem": "The net pension liability reported on the balance sheet for a defined benefit plan is:",
+  "options": {
+   "A": "the projected benefit obligation less the fair value of plan assets.",
+   "B": "the accumulated benefit obligation less contributions made during the year.",
+   "C": "the total of contractual future benefit payments."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Correct. The funded status — the defined benefit obligation net of plan assets at fair value — is recognised directly on the balance sheet under both IFRS and US GAAP.",
+   "B": "Incorrect. Contributions affect plan assets but are not netted against the obligation in this way.",
+   "C": "Incorrect. Undiscounted future payments overstate the obligation; the obligation is a present value."
+  }
+ },
+ {
+  "id": "cfa_fra-101",
+  "topic": "cfa_fra",
+  "stem": "Under IFRS, actuarial gains and losses on a defined benefit pension plan (remeasurements) are:",
+  "options": {
+   "A": "recognised in profit or loss immediately.",
+   "B": "recognised in other comprehensive income and not subsequently reclassified to profit or loss.",
+   "C": "amortised into profit or loss using the corridor approach."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Incorrect. Only service cost and net interest on the net liability go through profit or loss under IAS 19.",
+   "B": "Correct. Remeasurements go to OCI and stay there; they are never recycled through profit or loss.",
+   "C": "Incorrect. The corridor approach was eliminated from IAS 19; a form of deferred amortisation survives only under US GAAP."
+  }
+ },
+ {
+  "id": "cfa_fra-102",
+  "topic": "cfa_fra",
+  "stem": "An increase in the discount rate used to measure a defined benefit obligation will most likely:",
+  "options": {
+   "A": "increase the obligation and increase the net pension liability.",
+   "B": "decrease the obligation and decrease the net pension liability.",
+   "C": "leave the obligation unchanged but increase service cost."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Incorrect. A higher discount rate reduces, not increases, the present value of future benefits.",
+   "B": "Correct. The obligation is a present value, so raising the discount rate lowers it and improves funded status — a common lever for flattering reported pension figures.",
+   "C": "Incorrect. Both the obligation and current service cost fall when the discount rate rises."
+  }
+ },
+ {
+  "id": "cfa_fra-103",
+  "topic": "cfa_fra",
+  "stem": "A debt covenant requiring the company to maintain a minimum interest coverage ratio is best described as:",
+  "options": {
+   "A": "an affirmative covenant.",
+   "B": "a negative covenant.",
+   "C": "a subordination clause."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Non-Current Liabilities",
+  "explanations": {
+   "A": "Correct. Affirmative covenants require the borrower to do something — maintain ratios, provide statements, keep insurance.",
+   "B": "Incorrect. Negative covenants restrict actions, such as prohibiting additional debt or asset sales.",
+   "C": "Incorrect. Subordination governs claim priority in liquidation, not ongoing financial performance."
+  }
+ },
+ {
+  "id": "cfa_fra-104",
+  "topic": "cfa_fra",
+  "stem": "On the quality spectrum, financial reports that are GAAP-compliant but reflect biased choices within the standards are best described as:",
+  "options": {
+   "A": "high quality and decision useful.",
+   "B": "lower quality, because the reporting is compliant but not neutral.",
+   "C": "fraudulent."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Incorrect. High-quality reporting requires both compliance and decision-useful, unbiased content.",
+   "B": "Correct. Compliance is a floor, not a guarantee; biased estimates and aggressive-but-permissible choices sit between high quality and outright non-compliance.",
+   "C": "Incorrect. Fraud involves fictitious transactions or deliberate non-compliance, which is further along the spectrum."
+  }
+ },
+ {
+  "id": "cfa_fra-105",
+  "topic": "cfa_fra",
+  "stem": "Receivables growing substantially faster than revenue, combined with a rising gap between net income and cash flow from operations, most likely signals:",
+  "options": {
+   "A": "conservative revenue recognition.",
+   "B": "aggressive revenue recognition or channel stuffing.",
+   "C": "an improvement in working capital management."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Incorrect. Conservative recognition would delay revenue and tend to shrink, not inflate, receivables relative to sales.",
+   "B": "Correct. Revenue booked without corresponding collections builds receivables and widens the accrual gap — the classic signature of premature recognition or loading the distribution channel.",
+   "C": "Incorrect. Better working capital management would shorten, not lengthen, the collection cycle."
+  }
+ },
+ {
+  "id": "cfa_fra-106",
+  "topic": "cfa_fra",
+  "stem": "The three conditions commonly present when low-quality financial reporting occurs are:",
+  "options": {
+   "A": "motivation, opportunity, and rationalisation.",
+   "B": "materiality, measurement, and disclosure.",
+   "C": "leverage, liquidity, and profitability."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Correct. Pressure or incentive to misreport, weak controls or vague standards that create the opportunity, and a self-justifying rationalisation together form the classic fraud triangle.",
+   "B": "Incorrect. These are accounting concepts, not behavioural conditions.",
+   "C": "Incorrect. These are financial characteristics that may create motivation but do not describe the full set of conditions."
+  }
+ },
+ {
+  "id": "cfa_fra-107",
+  "topic": "cfa_fra",
+  "stem": "A company reclassifies a recurring operating expense as a non-recurring restructuring charge. This is best described as:",
+  "options": {
+   "A": "a classification shift that inflates recurring operating earnings.",
+   "B": "a change in accounting estimate applied prospectively.",
+   "C": "a permanent difference affecting the effective tax rate."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Correct. Total net income is unchanged, but the earnings base analysts extrapolate is flattered — one of the most common and hardest-to-detect quality issues.",
+   "B": "Incorrect. No estimate has changed; only the label on the expense has.",
+   "C": "Incorrect. Tax treatment is unaffected by presentation within pre-tax income."
+  }
+ },
+ {
+  "id": "cfa_fra-108",
+  "topic": "cfa_fra",
+  "stem": "Which of the following would an analyst most likely view as a sign of conservative, high-quality accounting?",
+  "options": {
+   "A": "Lengthening the depreciable lives of core production assets.",
+   "B": "Recognising a warranty provision that has consistently proven adequate relative to actual claims.",
+   "C": "Capitalising a growing share of software development costs."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Incorrect. Longer lives reduce depreciation and inflate current earnings, an aggressive choice absent supporting evidence.",
+   "B": "Correct. Provisions that track actual outcomes indicate disciplined, unbiased estimation rather than a cookie-jar reserve or systematic understatement.",
+   "C": "Incorrect. A rising capitalisation rate defers costs and is an aggressive choice that requires scrutiny."
+  }
+ },
+ {
+  "id": "cfa_fra-109",
+  "topic": "cfa_fra",
+  "stem": "The Beneish M-score is best described as a model that:",
+  "options": {
+   "A": "estimates the probability that a company has manipulated its earnings.",
+   "B": "predicts the probability of bankruptcy within two years.",
+   "C": "measures the sustainable growth rate of a company."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Correct. The M-score combines eight variables — including days sales in receivables, gross margin, asset quality, and total accruals — into a probit-style manipulation score.",
+   "B": "Incorrect. Bankruptcy prediction is the purpose of the Altman Z-score.",
+   "C": "Incorrect. Sustainable growth is retention ratio times ROE, unrelated to the M-score."
+  }
+ },
+ {
+  "id": "cfa_fra-110",
+  "topic": "cfa_fra",
+  "stem": "In assessing the credit quality of a corporate borrower, an analyst would place the greatest weight on:",
+  "options": {
+   "A": "earnings per share growth.",
+   "B": "leverage and cash-flow-based coverage of fixed obligations.",
+   "C": "the price-to-book ratio."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Statement Analysis Applications",
+  "explanations": {
+   "A": "Incorrect. EPS is an equity-holder metric distorted by share count and does not measure debt service capacity.",
+   "B": "Correct. Credit analysis centres on scale, leverage, and whether recurring cash flow reliably covers interest and maturities across a cycle.",
+   "C": "Incorrect. Price-to-book is a market-based valuation multiple, not a measure of repayment capacity."
+  }
+ },
+ {
+  "id": "cfa_fra-111",
+  "topic": "cfa_fra",
+  "stem": "Before comparing two companies that use different inventory cost formulas, an analyst should:",
+  "options": {
+   "A": "restate the LIFO reporter's inventory and cost of goods sold onto a FIFO basis.",
+   "B": "ignore the difference, since it affects only the balance sheet.",
+   "C": "convert both companies' statements to a cash basis."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Statement Analysis Applications",
+  "explanations": {
+   "A": "Correct. The LIFO reserve disclosure allows a like-for-like restatement of inventory, COGS, equity, and the associated deferred tax, which is the standard comparability adjustment.",
+   "B": "Incorrect. The choice affects COGS, gross margin, net income, and taxes as well as inventory.",
+   "C": "Incorrect. Discarding accruals entirely destroys the very measures being compared."
+  }
+ },
+ {
+  "id": "cfa_fra-112",
+  "topic": "cfa_fra",
+  "stem": "When using screening ratios to build an equity portfolio, a key limitation an analyst must address is that:",
+  "options": {
+   "A": "ratios are not comparable across companies using different accounting policies.",
+   "B": "ratios cannot be computed from audited financial statements.",
+   "C": "ratios are always forward looking."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Statement Analysis Applications",
+  "explanations": {
+   "A": "Correct. Differences in cost formulas, capitalisation policy, depreciation methods, and reporting frameworks make unadjusted ratios non-comparable, which is why screens need normalisation.",
+   "B": "Incorrect. Audited statements are the standard input for ratio computation.",
+   "C": "Incorrect. Ratios computed from reported statements are backward looking; forecasting them is a separate step."
+  }
+ },
+ {
+  "id": "cfa_fra-113",
+  "topic": "cfa_fra",
+  "stem": "An analyst adjusting reported financial statements to forecast future performance should most appropriately:",
+  "options": {
+   "A": "remove items identified as non-recurring and reassess the sustainability of the remaining earnings base.",
+   "B": "use reported net income unadjusted, because it is audited.",
+   "C": "exclude all non-cash charges, including depreciation, from the forecast."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Statement Analysis Applications",
+  "explanations": {
+   "A": "Correct. Forecasting requires isolating the recurring, repeatable component of earnings and cash flow, which means scrutinising restructuring charges, gains on disposal, and one-off tax items.",
+   "B": "Incorrect. Audit assurance concerns fair presentation, not persistence of the reported figures.",
+   "C": "Incorrect. Depreciation proxies for the consumption of capacity and cannot simply be discarded from a going-concern forecast."
+  }
+ },
+ {
+  "id": "cfa_fra-114",
+  "topic": "cfa_fra",
+  "stem": "A construction company has a USD 10 million contract with total expected costs of USD 8 million and recognises revenue over time using an input (cost-to-cost) method. If USD 2 million of cost has been incurred to date, revenue recognised to date is:",
+  "options": {
+   "A": "USD 2.0 million.",
+   "B": "USD 2.5 million.",
+   "C": "USD 10.0 million."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. USD 2.0 million is the cost incurred, not the revenue; recognising cost as revenue would report zero profit.",
+   "B": "Correct. Progress = 2 / 8 = 25%; revenue = 25% x 10 million = USD 2.5 million, giving USD 0.5 million of profit to date.",
+   "C": "Incorrect. The full contract price is recognised only when the performance obligation is fully satisfied."
+  }
+ },
+ {
+  "id": "cfa_fra-115",
+  "topic": "cfa_fra",
+  "stem": "A company has an unconditional right to consideration for work already performed, but has not yet issued the invoice. This is recorded as:",
+  "options": {
+   "A": "a contract asset.",
+   "B": "a receivable.",
+   "C": "a contract liability."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Incorrect. A contract asset arises when the right to consideration is still conditional on something other than the passage of time.",
+   "B": "Correct. Once the right to consideration is unconditional, the balance is a receivable, regardless of whether an invoice has been issued.",
+   "C": "Incorrect. A contract liability arises when the customer pays before the entity performs."
+  }
+ },
+ {
+  "id": "cfa_fra-116",
+  "topic": "cfa_fra",
+  "stem": "Comprehensive income is USD 490 given net income of USD 500, a foreign currency translation gain of USD 30, and a revaluation surplus of USD 20. The unrealised loss on FVOCI debt securities must have been:",
+  "options": {
+   "A": "USD 60.",
+   "B": "USD 40.",
+   "C": "USD 10."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. 500 + 30 + 20 - X = 490, so X = USD 60.",
+   "B": "Incorrect. USD 40 would give comprehensive income of USD 510.",
+   "C": "Incorrect. USD 10 would give comprehensive income of USD 540."
+  }
+ },
+ {
+  "id": "cfa_fra-117",
+  "topic": "cfa_fra",
+  "stem": "Net income is USD 120, beginning total assets are USD 900, and ending total assets are USD 1,100. Return on assets computed on average assets is:",
+  "options": {
+   "A": "12.0%.",
+   "B": "13.3%.",
+   "C": "10.9%."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Average assets = (900 + 1,100) / 2 = 1,000; ROA = 120 / 1,000 = 12.0%.",
+   "B": "Incorrect. 13.3% uses beginning assets only.",
+   "C": "Incorrect. 10.9% uses ending assets only."
+  }
+ },
+ {
+  "id": "cfa_fra-118",
+  "topic": "cfa_fra",
+  "stem": "Revenue is USD 2,400 and average total assets are USD 1,600. Total asset turnover is:",
+  "options": {
+   "A": "1.5x.",
+   "B": "0.67x.",
+   "C": "2.4x."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. Total asset turnover = revenue / average total assets = 2,400 / 1,600 = 1.5 times.",
+   "B": "Incorrect. 0.67x inverts the ratio.",
+   "C": "Incorrect. 2.4x divides revenue by 1,000 rather than by average assets."
+  }
+ },
+ {
+  "id": "cfa_fra-119",
+  "topic": "cfa_fra",
+  "stem": "Two companies have identical operations, but one leases most of its productive assets under short-term arrangements while the other owns them. Relative to the owner, the lessee will most likely report:",
+  "options": {
+   "A": "higher total asset turnover and higher return on assets.",
+   "B": "lower total asset turnover and lower return on assets.",
+   "C": "identical asset turnover, since operations are identical."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. A smaller recognised asset base for the same revenue and similar profit raises both turnover and ROA — a comparability distortion the analyst must normalise before ranking the two.",
+   "B": "Incorrect. Fewer recognised assets raise, not lower, both ratios.",
+   "C": "Incorrect. Economic equivalence does not imply equivalent recognised asset bases."
+  }
+ },
+ {
+  "id": "cfa_fra-120",
+  "topic": "cfa_fra",
+  "stem": "A company acquires a 30% voting interest in an associate and exercises significant influence. Under the equity method, the investor reports:",
+  "options": {
+   "A": "30% of the investee's assets and liabilities on its balance sheet.",
+   "B": "a single-line investment account increased by its share of the investee's earnings and reduced by dividends received.",
+   "C": "the investment at fair value with changes in profit or loss."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Intercorporate Investments",
+  "explanations": {
+   "A": "Incorrect. Proportionate recognition of the investee's individual assets and liabilities is proportionate consolidation, which is generally not permitted.",
+   "B": "Correct. The equity method carries the investment at cost adjusted for the investor's share of post-acquisition profit or loss, less dividends received.",
+   "C": "Incorrect. Fair value through profit or loss applies where there is no significant influence, or under a specific fair value election."
+  }
+ },
+ {
+  "id": "cfa_fra-121",
+  "topic": "cfa_fra",
+  "stem": "Compared with consolidating a subsidiary, accounting for the same investee under the equity method will most likely result in:",
+  "options": {
+   "A": "the same net income but higher reported profit margins.",
+   "B": "higher net income and higher reported revenue.",
+   "C": "lower net income and lower total assets."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Intercorporate Investments",
+  "explanations": {
+   "A": "Correct. The equity method is a 'one-line consolidation': net income attributable to the parent is the same, but revenue, assets, and liabilities are all smaller, which mechanically raises margins, turnover, and ROA.",
+   "B": "Incorrect. Revenue is lower under the equity method, since the investee's sales are not aggregated.",
+   "C": "Incorrect. Net income to the parent is unchanged; only the gross-up of the balance sheet and income statement differs."
+  }
+ },
+ {
+  "id": "cfa_fra-122",
+  "topic": "cfa_fra",
+  "stem": "An analyst computing interest coverage for a company that capitalises a significant amount of interest should:",
+  "options": {
+   "A": "use reported interest expense only, since capitalised interest is not an expense.",
+   "B": "add capitalised interest to reported interest expense in the denominator.",
+   "C": "exclude interest entirely and use EBITDA-to-debt instead."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. Capitalised interest is still a cash obligation to lenders; excluding it flatters the coverage ratio.",
+   "B": "Correct. Total interest incurred, whether expensed or capitalised, is the economically relevant charge; analysts adjust both the denominator and, if appropriate, EBIT for the depreciation of capitalised interest.",
+   "C": "Incorrect. Substituting a different ratio does not resolve the misstatement of coverage."
+  }
+ },
+ {
+  "id": "cfa_fra-123",
+  "topic": "cfa_fra",
+  "stem": "Immediately after a company records a large impairment of its property, plant, and equipment, subsequent-year return on assets will most likely be:",
+  "options": {
+   "A": "lower, because the write-down reduced income.",
+   "B": "higher, because both the asset base and future depreciation are lower.",
+   "C": "unchanged, because impairment is a non-cash charge."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Long-Lived Assets",
+  "explanations": {
+   "A": "Incorrect. The income hit falls in the year of the write-down, not in subsequent years.",
+   "B": "Correct. A smaller carrying amount reduces the ROA denominator and lowers future depreciation, raising the numerator — which is why large write-downs are examined as a potential earnings-management device.",
+   "C": "Incorrect. Non-cash charges still change both reported income and the carrying amount of assets."
+  }
+ },
+ {
+  "id": "cfa_fra-124",
+  "topic": "cfa_fra",
+  "stem": "Cash flow from operations computed under the direct method compared with the indirect method will be:",
+  "options": {
+   "A": "identical in total, but presented with different line items.",
+   "B": "higher under the direct method.",
+   "C": "lower under the direct method because non-cash charges are excluded."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Correct. The two methods differ only in presentation of the operating section; the total, and the investing and financing sections, are the same.",
+   "B": "Incorrect. Presentation choice cannot change the amount of cash generated.",
+   "C": "Incorrect. Non-cash charges are excluded from operating cash flow under both methods."
+  }
+ },
+ {
+  "id": "cfa_fra-125",
+  "topic": "cfa_fra",
+  "stem": "An analyst notes that a company classifies interest paid as a financing activity under IFRS while its US GAAP peer classifies interest paid as operating. To compare CFO, the analyst should:",
+  "options": {
+   "A": "leave the figures as reported, since both are compliant.",
+   "B": "reclassify interest paid consistently across both companies before comparing.",
+   "C": "add interest paid back to both companies' CFO."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Statement of Cash Flows",
+  "explanations": {
+   "A": "Incorrect. Both presentations are permitted, but that is precisely why they are not comparable as reported.",
+   "B": "Correct. Comparability requires a single consistent convention; the analyst restates one company to match the other before computing CFO-based ratios.",
+   "C": "Incorrect. Adding interest back to the IFRS company would double-count, since it was never deducted from that company's CFO."
+  }
+ },
+ {
+  "id": "cfa_fra-126",
+  "topic": "cfa_fra",
+  "stem": "A high ratio of aggregate accruals to average net operating assets is most likely associated with:",
+  "options": {
+   "A": "higher earnings persistence and higher future returns.",
+   "B": "lower earnings persistence and a greater likelihood of future earnings disappointment.",
+   "C": "no measurable relationship to future performance."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Incorrect. The empirical accrual anomaly runs the other way: high-accrual firms underperform.",
+   "B": "Correct. Earnings composed largely of accruals rather than cash tend to mean-revert, so a high accruals ratio flags lower-quality, less persistent earnings.",
+   "C": "Incorrect. The accruals-to-NOA relation is one of the better documented cross-sectional regularities in the accounting literature."
+  }
+ },
+ {
+  "id": "cfa_fra-127",
+  "topic": "cfa_fra",
+  "stem": "A company reports a large 'other income' line that has grown to 20% of pre-tax profit with no accompanying disclosure of its composition. The analyst's most appropriate response is to:",
+  "options": {
+   "A": "treat the amount as recurring operating profit.",
+   "B": "exclude it from the sustainable earnings base pending an explanation, and note the disclosure deficiency.",
+   "C": "assume it represents interest income and reclassify it below the operating line."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Reporting Quality",
+  "explanations": {
+   "A": "Incorrect. Treating an unexplained residual as recurring is exactly the extrapolation error that low-quality disclosure invites.",
+   "B": "Correct. Unexplained and growing residual income lines should be stripped from the base case, and the poor disclosure itself is a governance signal.",
+   "C": "Incorrect. Guessing the composition substitutes assumption for evidence."
+  }
+ },
+ {
+  "id": "cfa_fra-128",
+  "topic": "cfa_fra",
+  "stem": "A company increases its allowance for doubtful accounts from 2% to 5% of receivables. In the current period, this will:",
+  "options": {
+   "A": "increase bad debt expense and reduce net receivables.",
+   "B": "decrease bad debt expense and increase net receivables.",
+   "C": "have no effect on the income statement."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Correct. Building the allowance requires a charge to bad debt expense, lowering income, and reduces the net carrying amount of receivables.",
+   "B": "Incorrect. Raising the allowance percentage cannot reduce the expense.",
+   "C": "Incorrect. The allowance is established through an income statement charge."
+  }
+ },
+ {
+  "id": "cfa_fra-129",
+  "topic": "cfa_fra",
+  "stem": "A company that has been steadily reducing its allowance for doubtful accounts as a percentage of receivables, while days sales outstanding lengthens, is most likely:",
+  "options": {
+   "A": "experiencing genuinely improving collection quality.",
+   "B": "using reserve releases to support reported earnings.",
+   "C": "applying conservative accounting."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Balance Sheet",
+  "explanations": {
+   "A": "Incorrect. Genuinely improving credit quality would normally shorten, not lengthen, the collection period.",
+   "B": "Correct. A shrinking reserve against a slower-paying book releases prior charges into income and is a well-known earnings-management pattern.",
+   "C": "Incorrect. Reducing reserves in the face of deteriorating collection metrics is aggressive, not conservative."
+  }
+ },
+ {
+  "id": "cfa_fra-130",
+  "topic": "cfa_fra",
+  "stem": "A company recognises warranty expense when products are sold rather than when repairs are performed. This treatment reflects:",
+  "options": {
+   "A": "the matching of expenses with the revenue they help generate.",
+   "B": "the cash basis of accounting.",
+   "C": "a departure from the applicable reporting framework."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Income Statement",
+  "explanations": {
+   "A": "Correct. Estimated future warranty costs are recognised in the period of sale so that the cost of honouring the promise is matched with the associated revenue.",
+   "B": "Incorrect. Cash-basis recognition would defer the expense to the period of repair payment.",
+   "C": "Incorrect. Accruing estimated warranty obligations is required, not a departure."
+  }
+ },
+ {
+  "id": "cfa_fra-131",
+  "topic": "cfa_fra",
+  "stem": "Which of the following changes would, all else equal, increase a company's return on equity without improving operating performance?",
+  "options": {
+   "A": "Repurchasing shares funded with new debt.",
+   "B": "Issuing new equity to repay debt.",
+   "C": "Reducing the effective tax rate through a one-off refund."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Analysis Techniques",
+  "explanations": {
+   "A": "Correct. A debt-funded buyback shrinks the equity base and raises the leverage multiplier in the DuPont decomposition, lifting ROE with no change in operating margins or asset turnover.",
+   "B": "Incorrect. Deleveraging with new equity raises the equity base and lowers ROE.",
+   "C": "Incorrect. A one-off refund lifts ROE for one period but is neither leverage nor a sustainable driver, and the question asks for a structural effect."
+  }
+ },
+ {
+  "id": "cfa_fra-132",
+  "topic": "cfa_fra",
+  "stem": "When an analyst adjusts a company's financial statements to reflect purchase obligations and other off-balance-sheet commitments disclosed only in the notes, the most likely effect is:",
+  "options": {
+   "A": "an increase in reported leverage and a decrease in coverage ratios.",
+   "B": "a decrease in reported leverage and an increase in coverage ratios.",
+   "C": "no change in either, since the commitments are already disclosed."
+  },
+  "answer": "A",
+  "origin": "CFA Level I | FRA | Financial Statement Analysis Applications",
+  "explanations": {
+   "A": "Correct. Capitalising the commitments adds both an asset and a liability, raising debt-to-equity and debt-to-assets, while the imputed financing charge reduces coverage.",
+   "B": "Incorrect. Adding obligations cannot reduce leverage.",
+   "C": "Incorrect. Note disclosure informs the analyst but does not put the obligation into the ratios."
+  }
+ },
+ {
+  "id": "cfa_fra-133",
+  "topic": "cfa_fra",
+  "stem": "The Altman Z-score is best described as a model that combines several accounting ratios to estimate:",
+  "options": {
+   "A": "the probability of earnings manipulation.",
+   "B": "the likelihood of bankruptcy.",
+   "C": "the intrinsic value of equity."
+  },
+  "answer": "B",
+  "origin": "CFA Level I | FRA | Financial Statement Analysis Applications",
+  "explanations": {
+   "A": "Incorrect. Manipulation probability is the object of the Beneish M-score.",
+   "B": "Correct. Altman's discriminant model weights working capital, retained earnings, EBIT, market value of equity, and sales, all scaled by assets, to classify firms by distress risk.",
+   "C": "Incorrect. The Z-score is a classification score, not a valuation model."
+  }
+ }
+]
