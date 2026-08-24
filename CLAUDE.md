@@ -14,12 +14,22 @@ Run locally: `python -m http.server 8000` then open `http://localhost:8000`.
 
 | Topic key         | Display name               | Count |
 |-------------------|---------------------------|-------|
-| `futures`         | 期貨商業務員               | 592   |
+| `futures`         | 期貨商業務員               | 691   |
 | `securities`      | 證券商高級業務員            | 297   |
-| `finance_ethics`  | 金融市場常識與職業道德       | 1120  |
+| `securities_rep`  | 證券商業務員                | 100   |
+| `sitca`           | 投信投顧業務員              | 97    |
 | `cfa_fra`         | CFA Level I — Financial Reporting & Analysis | 514 |
 
-Each quiz draws exactly 100 random questions from the chosen bank.
+**Retired:** `finance_ethics` (金融市場常識與職業道德, 1120 q) — exam passed, no longer
+published. `build_finance_ethics()`, `parse_bank.py`, and the source PDFs are kept; restore
+by calling it from `build.py`'s `main()` again.
+
+Each quiz draws up to 100 random questions — `quizSizeFor()` uses the whole pool when a bank
+is smaller (`sitca` has 97). Anything keyed off the quiz length reads `currentSize()`, never
+the `QUIZ_SIZE` constant.
+
+`overallStats()` counts only question IDs present in the loaded banks. History for a retired
+bank stays in localStorage and would otherwise inflate the totals forever.
 
 The three Taiwan banks are 4-choice (A–D) and Traditional Chinese. `cfa_fra` follows the
 CFA exam's own 3-choice (A–C) format and is in English. `optionLetters(q)` in `index.html`
@@ -55,6 +65,10 @@ derives the letters from the non-empty options, so both formats render from one 
 - **期貨商業務員**: deduplicated PDF covering 112年第1次 → 114年第1次 (592 q after dedup)
 - **證券商高級業務員**: SFI past papers 114年第3次 + 115年第1次; 3 concatenated sub-papers per PDF (投資學 / 財務分析 / 法規)
 - **金融市場常識與職業道德**: SFI official 1,120-question bank effective 113年9月1日
+- **期貨交易法規 / 證券商業務員 / 投信投顧**: single-subject SFI papers for 114年第3次 and
+  115年第1次, in `sources/papers/` — see the README there. Answer blocks are matched to
+  subjects **by printed label with coordinates**, never by position, because each answer PDF
+  covers every subject in that session's exam.
 - **CFA Level I FRA**: 514 questions hand-authored against the CFA Level I Financial Statement
   Analysis curriculum — not parsed from any PDF. Canonical file: `sources/cfa_fra.json`,
   assembled from batch files by `scripts/build_cfa.py`.
@@ -72,8 +86,9 @@ scripts/
   build.py          Orchestrator — rebuilds questions.json from source PDFs
   parse_bank.py     Parses SFI 金融市場常識 / 職業道德 bank PDFs
   parse_sec.py      Parses 證券高業 試題 + 答案 PDFs (3 papers per session)
+  parse_paper.py    Parses a single-subject paper; picks the answer block by subject label
   build_cfa.py      Validates + assembles the hand-authored CFA bank into sources/cfa_fra.json
-sources/            Source PDFs (~6.5 MB) + cfa_fra.json
+sources/            Source PDFs (~6.5 MB) + cfa_fra.json + papers/ (single-subject papers)
 _expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.py)
 ```
 
@@ -90,7 +105,7 @@ _expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.p
 
 | Key | Schema | Purpose |
 |-----|--------|---------|
-| `quiz_history_v1` | `{ [questionId]: { attempts: [true\|false, ...] } }` (last 10 kept) | Per-question attempt history; drives stats and often-wrong detection. Cleared via 清除作答紀錄. |
+| `quiz_history_v1` | `{ [questionId]: { attempts: [true\|false, ...] } }` (last 10 kept) | Per-question attempt history; drives stats and often-wrong detection. Entries for retired banks are ignored, not deleted. Cleared via 清除作答紀錄. |
 | `quiz_state_v1` | `{ topic, questionIds[], answers[], idx }` | In-progress quiz snapshot. Saved after every answer and navigation. Cleared on submit or 放棄. |
 
 ## Quiz resume flow
@@ -118,6 +133,14 @@ const WRONG_RATIO = 0.5;    // threshold: ≥50% wrong → often wrong
 8. Added the CFA Level I FRA bank (514 hand-authored 3-choice questions with per-option
    explanations) and removed the Options Pricing Theory study section, its markdown
    pipeline, and the marked/KaTeX CDN dependencies.
+9. Recovered six unused SFI papers from `期貨證照/_raw/probe/`: +99 futures questions and
+   two new banks (`securities_rep`, `sitca`). Retired `finance_ethics`. Quiz length became
+   per-bank; stats now ignore retired-bank history.
+
+**Known gap:** the 293 questions added in step 9 have no `explanations` (99 futures, 97
+securities_rep, 97 sitca). The 解析 block simply does not render for them. Writing Taiwan
+regulatory rationale from memory risks confidently wrong statutory specifics, so it was
+left undone rather than guessed.
 
 `build_cfa.py` also **rebalances the answer key**: hand-authored questions came out
 heavily skewed toward A, so each question's options are cyclically rotated (preserving

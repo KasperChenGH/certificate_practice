@@ -165,7 +165,8 @@
     <h2>選擇測驗類別</h2>
     <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
     <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
-    <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
+    <button class="btn" data-topic="securities_rep">證券商業務員<div class="topic-meta" id="meta-securities_rep">—</div></button>
+    <button class="btn" data-topic="sitca">投信投顧業務員<div class="topic-meta" id="meta-sitca">—</div></button>
     <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
     <button class="btn review" id="btn-review">常錯題複習</button>
     <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
@@ -220,15 +221,20 @@
 const TOPIC_NAMES = {
   futures: '期貨商業務員',
   securities: '證券商高級業務員',
-  finance_ethics: '金融市場常識與職業道德',
+  securities_rep: '證券商業務員',
+  sitca: '投信投顧業務員',
   cfa_fra: 'CFA Level I — Financial Reporting & Analysis',
 };
-const QUIZ_SIZE = 100;
+const QUIZ_SIZE = 100;      // target length; a smaller bank uses its whole pool
 const RECENT_WINDOW = 10;   // last N attempts per question
 const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
 const WRONG_RATIO = 0.5;    // ≥50% wrong over recent attempts
 
 let DATA = null;            // {topic: [{id, stem, options, answer, origin, topic}]}
+function quizSizeFor(topic) {
+  return Math.min(QUIZ_SIZE, (DATA && DATA[topic] ? DATA[topic].length : QUIZ_SIZE));
+}
+function currentSize() { return STATE ? STATE.questions.length : QUIZ_SIZE; }
 let STATE = null;           // current quiz state
 
 // ------- localStorage history -------
@@ -259,10 +265,20 @@ function isOftenWrong(qid) {
   const wrong = rec.attempts.filter(x => !x).length;
   return wrong / rec.attempts.length >= WRONG_RATIO;
 }
+// Question IDs currently published. History for retired banks (e.g. the 金融市場常識
+// bank, removed once passed) stays in localStorage and would otherwise keep inflating
+// the totals and the often-wrong count forever.
+function liveIds() {
+  const ids = new Set();
+  if (DATA) for (const t of Object.keys(DATA)) for (const q of DATA[t]) ids.add(q.id);
+  return ids;
+}
 function overallStats() {
   const h = loadHistory();
+  const live = liveIds();
   let total = 0, correct = 0, wrongPool = 0;
   for (const qid in h) {
+    if (!live.has(qid)) continue;
     const r = h[qid];
     total += r.attempts.length;
     correct += r.attempts.filter(x=>x).length;
@@ -334,10 +350,11 @@ function renderHome() {
     }
   }
   const saved = loadSavedQuiz();
+  if (saved && DATA && !DATA[saved.topic]) clearQuizState();
   const banner = el('resume-banner');
   if (saved && DATA && DATA[saved.topic]) {
     const answered = saved.answers.filter(a => a !== null).length;
-    el('resume-meta').textContent = `${TOPIC_NAMES[saved.topic]}　已作答 ${answered} / ${QUIZ_SIZE} 題`;
+    el('resume-meta').textContent = `${TOPIC_NAMES[saved.topic]}　已作答 ${answered} / ${saved.questionIds.length} 題`;
     banner.classList.remove('hidden');
   } else {
     banner.classList.add('hidden');
@@ -347,15 +364,13 @@ function renderHome() {
 // ------- quiz -------
 function startQuiz(topic) {
   const pool = DATA[topic] || [];
-  if (pool.length < QUIZ_SIZE) {
-    alert(`此題庫只有 ${pool.length} 題，少於 ${QUIZ_SIZE} 題。`);
-    return;
-  }
-  const picked = shuffle(pool).slice(0, QUIZ_SIZE);
+  if (!pool.length) { alert('此題庫目前沒有題目。'); return; }
+  const size = quizSizeFor(topic);
+  const picked = shuffle(pool).slice(0, size);
   STATE = {
     topic,
     questions: picked,
-    answers: new Array(QUIZ_SIZE).fill(null),  // 'A'/'B'/'C'/'D' or null
+    answers: new Array(size).fill(null),  // 'A'/'B'/'C'/'D' or null
     idx: 0,
     submitted: false,
   };
@@ -419,14 +434,14 @@ function renderQuiz() {
     }
     el('q-options').parentElement.appendChild(fb);
   }
-  el('progress-fill').style.width = ((STATE.idx+1)/QUIZ_SIZE * 100) + '%';
-  el('quiz-counter').textContent = `${STATE.idx+1} / ${QUIZ_SIZE}`;
+  el('progress-fill').style.width = ((STATE.idx+1)/currentSize() * 100) + '%';
+  el('quiz-counter').textContent = `${STATE.idx+1} / ${currentSize()}`;
   el('btn-prev').disabled = STATE.idx === 0;
   el('btn-prev').style.opacity = STATE.idx === 0 ? 0.4 : 1;
-  el('btn-next').textContent = STATE.idx === QUIZ_SIZE-1 ? '交卷' : '下一題';
+  el('btn-next').textContent = STATE.idx === currentSize()-1 ? '交卷' : '下一題';
 }
 function nextQ() {
-  if (STATE.idx === QUIZ_SIZE-1) {
+  if (STATE.idx === currentSize()-1) {
     submitQuiz();
   } else {
     STATE.idx++;
@@ -446,13 +461,13 @@ function submitQuiz() {
     if (!confirm(`還有 ${unanswered} 題未作答，確定交卷？（未作答視為錯誤）`)) return;
   }
   let correct = 0;
-  for (let i = 0; i < QUIZ_SIZE; i++) {
+  for (let i = 0; i < currentSize(); i++) {
     if (STATE.answers[i] === STATE.questions[i].answer) correct++;
   }
   clearQuizState();
   el('result-score').textContent = correct;
-  el('result-total').textContent = QUIZ_SIZE;
-  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${QUIZ_SIZE-correct} 題`;
+  el('result-total').textContent = currentSize();
+  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${currentSize()-correct} 題`;
   show('page-results');
 }
 

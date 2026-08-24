@@ -1,14 +1,16 @@
 # 金融證照練習 / Taiwan Finance Cert Practice
 
-Mobile-friendly web quiz for three Taiwan finance certifications plus CFA Level I Financial Reporting & Analysis:
+Mobile-friendly web quiz for four Taiwan finance certifications plus CFA Level I Financial Reporting & Analysis:
 
-- 期貨商業務員 — 592 questions
+- 期貨商業務員 — 691 questions
 - 證券商高級業務員 — 297 questions
-- 金融市場常識與職業道德 — 1,120 questions
+- 證券商業務員 — 100 questions
+- 投信投顧業務員 — 97 questions
 - **CFA Level I — Financial Reporting & Analysis** — 514 questions, English, in the CFA
   exam's own three-choice format, with a per-option explanation on every question
 
-Each quiz draws exactly **100 random questions** from the chosen bank.
+**1,699 questions in total.** Each quiz draws up to **100 random questions** from the chosen
+bank (a smaller bank uses its whole pool).
 Wrong-answer history is kept per-device in `localStorage` (no backend, no account).
 
 ## Live demo
@@ -46,12 +48,13 @@ Don't open `index.html` directly — `fetch('questions.json')` needs an HTTP ori
 ```
 .
 ├── index.html         UI + quiz/review logic (~20 KB)
-├── questions.json     combined question bank for all four topics (~1.6 MB, UTF-8)
+├── questions.json     combined question bank for all five topics (~1.2 MB, UTF-8)
 ├── sources/           inputs used to generate questions.json (~6.5 MB)
 │   ├── futures_exam_dedup_answers.pdf
 │   ├── sfi_金融市場常識-113.pdf
 │   ├── sfi_職業道德-113.pdf
 │   ├── cfa_fra.json             hand-authored CFA Level I FRA bank
+│   ├── papers/                  single-subject SFI papers (114Q3 + 115Q1) — see its README
 │   └── sec/
 │       ├── 115Q1_投資學_試題.pdf
 │       ├── 115Q1_答案.pdf
@@ -61,6 +64,7 @@ Don't open `index.html` directly — `fetch('questions.json')` needs an HTTP ori
     ├── build.py                 orchestrator — regenerates questions.json
     ├── parse_bank.py            parses the SFI 金融市場常識 / 職業道德 banks
     ├── parse_sec.py             parses 證券高業 試題 + 答案 PDFs
+    ├── parse_paper.py           parses a single-subject paper (answer block by subject label)
     └── build_cfa.py             validates + assembles sources/cfa_fra.json
 ```
 
@@ -88,7 +92,13 @@ rebuilds the bank from scratch and rebalances the answer key across A/B/C.
 All questions parsed from public material hosted by 證券暨期貨市場發展基金會 (SFI):
 - 期貨商業務員: existing deduplicated bank covering 112年第1次 → 114年第1次
 - 證券商高級業務員: SFI past papers 114年第3次 + 115年第1次 (all three sub-papers)
-- 金融市場常識與職業道德: SFI official 1,120-question bank (effective 113年9月1日)
+- 證券商業務員 / 投信投顧業務員 / 期貨交易法規: SFI past papers, 114年第3次 + 115年第1次
+
+The 金融市場常識與職業道德 bank has been retired from the site (exam passed); its parser and
+source PDFs remain in the repo.
+
+Questions from the 114Q3/115Q1 papers do not yet carry per-option explanations — the answer
+is still shown and highlighted, but the 解析 block does not render for them.
 
 The CFA Level I FRA questions are original, written against the published CFA Level I
 Financial Statement Analysis learning outcomes. They are practice material, not past papers,

@@ -27,6 +27,7 @@ def _load(name, path):
 
 parse_bank = _load('parse_bank', SCRIPTS / 'parse_bank.py')
 parse_sec = _load('parse_sec', SCRIPTS / 'parse_sec.py')
+parse_paper = _load('parse_paper', SCRIPTS / 'parse_paper.py')
 
 # --- 1. Futures: parse from the existing dedup answers PDF -----------------
 
@@ -78,6 +79,47 @@ def build_futures() -> list[dict]:
         })
     return questions
 
+# --- 1b. Single-subject papers (sources/papers/) ----------------------------
+
+PAPERS = SRC / 'papers'
+
+def _papers(topic: str, subject: str, sessions: list[tuple[str, str]]) -> list[dict]:
+    """Parse one subject across sessions. `sessions` is [(label, filename stem)]."""
+    out = []
+    for label, base in sessions:
+        qs = parse_paper.parse_paper(
+            str(PAPERS / f'{base}_試題.pdf'), str(PAPERS / f'{base}_答案.pdf'),
+            label, subject)
+        for q in qs:
+            out.append({
+                'id': f'{topic}-{base}-{q["qnum"]}',
+                'topic': topic,
+                'stem': q['stem'],
+                'options': q['options'],
+                'answer': q['answer'],
+                'origin': f'{label}｜{subject}｜第 {q["qnum"]} 題',
+            })
+    return out
+
+
+def build_futures_papers() -> list[dict]:
+    return _papers('futures', '期貨交易法規',
+                   [('115年第1次', '115Q1_期貨交易法規'),
+                    ('114年第3次', '114Q3_期貨交易法規')])
+
+
+def build_securities_rep() -> list[dict]:
+    return _papers('securities_rep', '證券交易相關法規與實務',
+                   [('115年第1次', '115Q1_證券商業務員'),
+                    ('114年第3次', '114Q3_證券商業務員')])
+
+
+def build_sitca() -> list[dict]:
+    return _papers('sitca', '投信投顧相關法規',
+                   [('115年第1次', '115Q1_投信投顧'),
+                    ('114年第3次', '114Q3_投信投顧')])
+
+
 # --- 2. Securities Senior: parse 試題 + 答案 PDFs ----------------------------
 
 def build_securities() -> list[dict]:
@@ -106,6 +148,11 @@ def build_securities() -> list[dict]:
 # --- 3. Finance + Ethics: parse two SFI bank PDFs ---------------------------
 
 def build_finance_ethics() -> list[dict]:
+    """Retired: 金融市場常識與職業道德 is no longer published to the site.
+
+    Kept, with its parser and source PDFs, so the bank can be restored by calling
+    this from main() again. Not referenced by the current build.
+    """
     out = []
     DIGIT2LETTER = {'1':'A','2':'B','3':'C','4':'D'}
     for path, cat in [(SRC/'sfi_金融市場常識-113.pdf', '金融市場常識'),
@@ -181,16 +228,20 @@ def carry_over_explanations(data: dict) -> None:
 
 def main():
     print('Building futures...')
-    futures = dedup(build_futures())
+    futures = dedup(build_futures() + build_futures_papers())
     print(f'  -> {len(futures)} unique futures questions')
 
     print('Building securities...')
     securities = dedup(build_securities())
     print(f'  -> {len(securities)} unique securities questions')
 
-    print('Building finance_ethics...')
-    finance_ethics = dedup(build_finance_ethics())
-    print(f'  -> {len(finance_ethics)} unique finance_ethics questions')
+    print('Building securities_rep...')
+    securities_rep = dedup(build_securities_rep())
+    print(f'  -> {len(securities_rep)} unique securities_rep questions')
+
+    print('Building sitca...')
+    sitca = dedup(build_sitca())
+    print(f'  -> {len(sitca)} unique sitca questions')
 
     print('Loading cfa_fra...')
     cfa_fra = build_cfa_fra()
@@ -199,7 +250,8 @@ def main():
     data = {
         'futures': futures,
         'securities': securities,
-        'finance_ethics': finance_ethics,
+        'securities_rep': securities_rep,
+        'sitca': sitca,
         'cfa_fra': cfa_fra,
     }
     carry_over_explanations(data)
