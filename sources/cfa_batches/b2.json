@@ -1,0 +1,332 @@
+[
+ {
+  "sub": "Balance Sheet",
+  "stem": "Which of the following is classified as a current liability?",
+  "options": {
+   "A": "The portion of long-term debt due within twelve months of the reporting date.",
+   "B": "A deferred tax liability expected to reverse in five years.",
+   "C": "A bond payable maturing in three years with no sinking-fund requirement."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The current portion of long-term debt is expected to be settled within the operating cycle or twelve months and is reclassified as current.",
+   "B": "Incorrect. Deferred tax liabilities are presented as non-current under IFRS regardless of expected reversal timing.",
+   "C": "Incorrect. A bond maturing in three years is non-current until its final year."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "An internally generated brand name is most likely:",
+  "options": {
+   "A": "capitalised at the cost of the advertising campaign that built it.",
+   "B": "not recognised as an asset on the balance sheet.",
+   "C": "recognised at fair value with annual impairment testing."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Advertising and promotional spending is expensed as incurred; it does not create a recognisable asset.",
+   "B": "Correct. IAS 38 explicitly prohibits recognition of internally generated brands, mastheads, customer lists, and similar items, because their cost cannot be reliably distinguished from the cost of developing the business as a whole.",
+   "C": "Incorrect. Fair value recognition of internally generated intangibles is not permitted; only intangibles acquired separately or in a business combination are recognised."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "Goodwill arising from a business combination is best described as:",
+  "options": {
+   "A": "the excess of the purchase consideration over the fair value of identifiable net assets acquired.",
+   "B": "the excess of the fair value of identifiable net assets over the purchase consideration.",
+   "C": "the carrying amount of the acquiree's intangible assets at the acquisition date."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Goodwill is the residual: consideration transferred (plus any non-controlling interest) less the fair value of identifiable net assets acquired.",
+   "B": "Incorrect. That excess is a bargain purchase gain, recognised immediately in profit or loss.",
+   "C": "Incorrect. Identifiable intangibles of the acquiree are recognised separately at fair value and are not goodwill."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "A debt security classified at fair value through other comprehensive income (FVOCI) reports:",
+  "options": {
+   "A": "unrealised gains and losses in profit or loss and interest income in OCI.",
+   "B": "unrealised gains and losses in OCI and interest income in profit or loss.",
+   "C": "both unrealised gains and losses and interest income in OCI."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. This reverses the treatment; interest income always runs through profit or loss.",
+   "B": "Correct. The asset is carried at fair value with remeasurement in OCI, while interest income (using the effective interest method) and impairment go through profit or loss.",
+   "C": "Incorrect. Interest income is never presented in OCI."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "Which of the following would increase a company's total assets AND total liabilities by the same amount?",
+  "options": {
+   "A": "Issuing common shares for cash.",
+   "B": "Purchasing inventory on account.",
+   "C": "Collecting cash from a customer on an existing receivable."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. A share issue increases assets and equity, not liabilities.",
+   "B": "Correct. Inventory (asset) rises and accounts payable (liability) rises by the same amount.",
+   "C": "Incorrect. This is an asset reclassification: cash up, receivables down; totals are unchanged."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "A company using the revaluation model records an increase in the fair value of land above its original cost. The increase is:",
+  "options": {
+   "A": "recognised in profit or loss.",
+   "B": "recognised in OCI and accumulated in a revaluation surplus in equity.",
+   "C": "not recognised until the land is sold."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. An upward revaluation is taken to profit or loss only to the extent it reverses a previously recognised revaluation decrease charged to profit or loss.",
+   "B": "Correct. Under IAS 16, the revaluation gain is recognised in OCI and accumulated in equity as a revaluation surplus.",
+   "C": "Incorrect. Deferral until sale describes the historical-cost model, not the revaluation model."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "On a common-size balance sheet, each item is expressed as a percentage of:",
+  "options": {
+   "A": "revenue.",
+   "B": "total assets.",
+   "C": "shareholders' equity."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Revenue is the base for the common-size income statement.",
+   "B": "Correct. Every balance-sheet line is divided by total assets, which shows composition and capital structure independent of company size.",
+   "C": "Incorrect. Scaling by equity would distort highly levered companies and is not the convention."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "Treasury shares repurchased by a company are best described as:",
+  "options": {
+   "A": "an asset, measured at the repurchase price.",
+   "B": "a contra-equity account that reduces total shareholders' equity.",
+   "C": "a liability, because the shares may be reissued."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. A company cannot hold an ownership interest in itself as an asset.",
+   "B": "Correct. Treasury stock is deducted from shareholders' equity; it reduces both equity and shares outstanding, and no gain or loss is recognised on reissue.",
+   "C": "Incorrect. There is no obligation to transfer resources, so no liability exists."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "A company records USD 5 million of cash received in advance for services to be delivered next year. On the balance sheet this is reported as:",
+  "options": {
+   "A": "unearned (deferred) revenue, a liability.",
+   "B": "accrued revenue, an asset.",
+   "C": "an addition to retained earnings."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Cash received before the performance obligation is satisfied creates an obligation to deliver, recognised as a contract liability.",
+   "B": "Incorrect. Accrued revenue is the opposite case — revenue earned but not yet billed or collected.",
+   "C": "Incorrect. No revenue has been earned, so nothing flows to retained earnings yet."
+  }
+ },
+ {
+  "sub": "Balance Sheet",
+  "stem": "Accumulated other comprehensive income is best described as:",
+  "options": {
+   "A": "a component of shareholders' equity.",
+   "B": "a component of net income for the period.",
+   "C": "a non-current liability."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. AOCI is the cumulative balance of items recognised in OCI, presented within equity alongside retained earnings.",
+   "B": "Incorrect. By definition, OCI items bypass net income.",
+   "C": "Incorrect. AOCI carries no obligation to transfer resources."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "Under US GAAP, dividends paid to common shareholders are classified in the statement of cash flows as:",
+  "options": {
+   "A": "an operating outflow.",
+   "B": "an investing outflow.",
+   "C": "a financing outflow."
+  },
+  "answer": "C",
+  "explanations": {
+   "A": "Incorrect. US GAAP classifies interest paid as operating, but dividends paid are financing.",
+   "B": "Incorrect. Investing activities cover acquisition and disposal of long-term assets and investments.",
+   "C": "Correct. Under US GAAP, dividends paid are always a financing outflow. Under IFRS the company may classify them as operating or financing."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "Under IFRS, interest paid may be classified as:",
+  "options": {
+   "A": "operating or financing.",
+   "B": "operating only.",
+   "C": "investing or financing."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. IAS 7 permits interest paid to be presented as either an operating or a financing cash flow, applied consistently.",
+   "B": "Incorrect. Operating-only classification of interest paid is the US GAAP rule.",
+   "C": "Incorrect. Interest paid is never an investing item; investing covers long-term asset flows."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "A company reports net income of USD 400,000, depreciation of USD 90,000, an increase in accounts receivable of USD 60,000, a decrease in inventory of USD 40,000, and a decrease in accounts payable of USD 30,000. Cash flow from operations is:",
+  "options": {
+   "A": "USD 440,000.",
+   "B": "USD 380,000.",
+   "C": "USD 620,000."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. 400,000 + 90,000 - 60,000 + 40,000 - 30,000 = USD 440,000. Asset increases are uses of cash; liability decreases are uses of cash.",
+   "B": "Incorrect. USD 380,000 gets the sign of the inventory decrease backwards.",
+   "C": "Incorrect. USD 620,000 treats every working-capital change as a source of cash."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "Under the direct method, cash collected from customers equals revenue:",
+  "options": {
+   "A": "plus the increase in accounts receivable.",
+   "B": "minus the increase in accounts receivable.",
+   "C": "minus the increase in unearned revenue."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. A rise in receivables means some revenue has not yet been collected, so it must be deducted.",
+   "B": "Correct. Cash collected = revenue - increase in receivables + increase in unearned revenue.",
+   "C": "Incorrect. An increase in unearned revenue is cash received ahead of revenue and is added, not subtracted."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "Cost of goods sold is USD 500,000, inventory increased by USD 40,000, and accounts payable increased by USD 25,000. Cash paid to suppliers is:",
+  "options": {
+   "A": "USD 515,000.",
+   "B": "USD 565,000.",
+   "C": "USD 485,000."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Purchases = COGS + increase in inventory = 540,000; cash paid = purchases - increase in payables = 540,000 - 25,000 = USD 515,000.",
+   "B": "Incorrect. USD 565,000 adds the payables increase instead of subtracting it.",
+   "C": "Incorrect. USD 485,000 subtracts the inventory build rather than adding it."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "Which transaction is a non-cash item that must be disclosed but excluded from the body of the statement of cash flows?",
+  "options": {
+   "A": "Repayment of a bank loan.",
+   "B": "Acquisition of equipment by issuing common shares.",
+   "C": "Payment of accrued wages."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Loan repayment is a cash financing outflow.",
+   "B": "Correct. Exchanging shares for equipment changes assets and equity without any cash movement, so it is disclosed separately as a significant non-cash investing and financing activity.",
+   "C": "Incorrect. Paying wages is a cash operating outflow."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "A company has CFO of USD 300 million, capital expenditure of USD 120 million, interest paid of USD 40 million (classified as operating), and a tax rate of 25%. Free cash flow to the firm (FCFF) is closest to:",
+  "options": {
+   "A": "USD 210 million.",
+   "B": "USD 180 million.",
+   "C": "USD 220 million."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. FCFF = CFO + interest x (1 - tax rate) - FCInv = 300 + 40 x 0.75 - 120 = USD 210 million.",
+   "B": "Incorrect. USD 180 million omits the after-tax interest add-back (300 - 120).",
+   "C": "Incorrect. USD 220 million adds back the full pre-tax interest of 40 without the tax adjustment."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "A company has CFO of USD 300 million, capital expenditure of USD 120 million, interest paid of USD 40 million (classified as operating), net borrowing of USD 50 million, and a 25% tax rate. Free cash flow to equity (FCFE) is closest to:",
+  "options": {
+   "A": "USD 230 million.",
+   "B": "USD 210 million.",
+   "C": "USD 260 million."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. FCFE = CFO - FCInv + net borrowing = 300 - 120 + 50 = USD 230 million. Because interest paid is already deducted in CFO, no add-back is made.",
+   "B": "Incorrect. USD 210 million is FCFF, not FCFE.",
+   "C": "Incorrect. USD 260 million double-counts by also adding back after-tax interest."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "A company sells equipment with a carrying amount of USD 80,000 for USD 95,000 cash. In an indirect-method statement of cash flows, the effect is:",
+  "options": {
+   "A": "a USD 95,000 investing inflow and a USD 15,000 deduction from net income in the operating section.",
+   "B": "a USD 15,000 investing inflow only.",
+   "C": "a USD 95,000 operating inflow."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The full USD 95,000 proceeds are an investing inflow; the USD 15,000 gain already in net income must be removed from the operating section to avoid double counting.",
+   "B": "Incorrect. The investing inflow is the total cash received, not just the gain.",
+   "C": "Incorrect. Proceeds from disposal of a long-term asset are investing, not operating."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "A firm consistently reports net income well above cash flow from operations. This pattern most likely warrants investigation of:",
+  "options": {
+   "A": "the quality of earnings, including receivables and revenue recognition.",
+   "B": "the firm's dividend policy.",
+   "C": "the firm's cost of debt."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. A persistent gap between accrual earnings and operating cash suggests aggressive revenue recognition, receivable build-up, or capitalisation of operating costs.",
+   "B": "Incorrect. Dividends are a financing decision and do not explain the accrual-versus-cash divergence.",
+   "C": "Incorrect. The cost of debt affects interest expense but not the systematic accrual gap."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "A common-size statement of cash flows most commonly expresses each inflow and outflow as a percentage of:",
+  "options": {
+   "A": "total revenue.",
+   "B": "total assets.",
+   "C": "net income."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The two conventional approaches are to scale by revenue, or to express each item as a percentage of total inflows or total outflows; revenue is the more common single base.",
+   "B": "Incorrect. Total assets is the base for the common-size balance sheet.",
+   "C": "Incorrect. Net income is volatile and can be negative, making it unusable as a scaling base."
+  }
+ },
+ {
+  "sub": "Statement of Cash Flows",
+  "stem": "Which of the following would be classified as an investing cash flow?",
+  "options": {
+   "A": "Cash paid to purchase a 20% equity stake in a supplier.",
+   "B": "Cash received from issuing commercial paper.",
+   "C": "Cash paid for raw material inventory."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Purchases and sales of long-term assets and of investments in other entities are investing activities.",
+   "B": "Incorrect. Issuing commercial paper is a financing inflow.",
+   "C": "Incorrect. Inventory purchases are part of the operating cycle."
+  }
+ }
+]

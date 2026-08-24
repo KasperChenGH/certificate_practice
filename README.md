@@ -5,7 +5,7 @@ Mobile-friendly web quiz for three Taiwan finance certifications plus CFA Level 
 - 期貨商業務員 — 592 questions
 - 證券商高級業務員 — 297 questions
 - 金融市場常識與職業道德 — 1,120 questions
-- **CFA Level I — Financial Reporting & Analysis** — 133 questions, English, in the CFA
+- **CFA Level I — Financial Reporting & Analysis** — 514 questions, English, in the CFA
   exam's own three-choice format, with a per-option explanation on every question
 
 Each quiz draws exactly **100 random questions** from the chosen bank.
@@ -80,7 +80,8 @@ existing `questions.json` rather than dropping them.
 
 To edit or extend the CFA bank, change `sources/cfa_fra.json` and run
 `python scripts/build_cfa.py` to re-validate it (unique stems, a valid answer key, and an
-explanation for every option), then re-run `build.py`.
+explanation for every option), then re-run `build.py`. Passing batch files as arguments
+rebuilds the bank from scratch and rebalances the answer key across A/B/C.
 
 ## Data sources
 
@@ -97,3 +98,11 @@ and are not affiliated with or endorsed by CFA Institute.
 
 - Question history is keyed by question ID and stored in your browser only. Clearing browser data resets it.
 - The "Often wrong" threshold (10-attempt window, 3-attempt minimum, 50% miss rate) is constants near the top of `index.html` — feel free to tune.
+
+The authoring batches behind `sources/cfa_fra.json` are kept in `sources/cfa_batches/`, so
+the bank can be rebuilt end to end:
+
+```bash
+python scripts/build_cfa.py sources/cfa_batches/b*.json
+python scripts/build.py
+```

@@ -1,0 +1,302 @@
+[
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "A bond is issued at a discount. Over the life of the bond, the carrying amount of the liability and the reported interest expense will, respectively:",
+  "options": {
+   "A": "increase and increase.",
+   "B": "increase and decrease.",
+   "C": "decrease and increase."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Discount amortisation adds to the carrying amount each period, and because interest expense equals the constant market yield times a rising carrying amount, expense rises as well.",
+   "B": "Incorrect. Falling interest expense with a rising carrying amount is internally inconsistent under the effective interest method.",
+   "C": "Incorrect. A decreasing carrying amount describes a bond issued at a premium."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "A company issues a three-year bond with a face value of USD 1,000,000 and a 5% annual coupon when the market yield is 6%. Interest expense in Year 1 under the effective interest method is closest to:",
+  "options": {
+   "A": "USD 50,000.",
+   "B": "USD 58,400.",
+   "C": "USD 60,000."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. USD 50,000 is the cash coupon; under the effective interest method expense exceeds the coupon for a discount bond.",
+   "B": "Correct. Issue price = 50,000 x 2.6730 + 1,000,000 x 0.8396 = USD 973,270; Year 1 expense = 973,270 x 6% = USD 58,396.",
+   "C": "Incorrect. USD 60,000 applies the 6% yield to face value rather than to the carrying amount."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "A three-year bond with a USD 1,000,000 face value and a 5% annual coupon is issued at USD 973,270 to yield 6%. Its carrying amount at the end of Year 1 is closest to:",
+  "options": {
+   "A": "USD 981,700.",
+   "B": "USD 973,300.",
+   "C": "USD 1,000,000."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Carrying amount = 973,270 + (58,396 - 50,000) = 973,270 + 8,396 = USD 981,666.",
+   "B": "Incorrect. USD 973,300 is the original issue price, before any discount amortisation.",
+   "C": "Incorrect. The carrying amount reaches face value only at maturity."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "For a bond issued at a premium, total interest expense recognised over the bond's life is:",
+  "options": {
+   "A": "greater than the total coupon payments.",
+   "B": "less than the total coupon payments.",
+   "C": "equal to the total coupon payments."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Expense exceeding coupons is the discount case.",
+   "B": "Correct. The premium received at issuance is amortised as a reduction of interest expense, so cumulative expense equals total coupons less the premium.",
+   "C": "Incorrect. Equality holds only for a bond issued exactly at par."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "Under IFRS 16, a lessee accounts for essentially all leases by:",
+  "options": {
+   "A": "recognising a right-of-use asset and a lease liability on the balance sheet.",
+   "B": "disclosing the future minimum payments in the notes only.",
+   "C": "classifying the lease as either operating or finance, with operating leases kept off balance sheet."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. IFRS 16 uses a single lessee model: an ROU asset and lease liability are recognised (with short-term and low-value exemptions), producing amortisation plus interest rather than rent expense.",
+   "B": "Incorrect. Note-only disclosure is the superseded pre-IFRS 16 operating-lease treatment.",
+   "C": "Incorrect. US GAAP retains the operating/finance distinction for expense presentation, but even US GAAP operating leases are now on balance sheet."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "Compared with a US GAAP operating lease, a finance lease of the same asset will most likely report:",
+  "options": {
+   "A": "higher cash flow from operations and higher total expense in the early years.",
+   "B": "lower cash flow from operations and lower total expense in the early years.",
+   "C": "identical cash flow from operations and identical expense in every year."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Under a finance lease the principal portion of the payment is a financing outflow, so CFO is higher; interest plus amortisation exceeds the straight-line operating lease expense in the early years.",
+   "B": "Incorrect. Both effects run the other way.",
+   "C": "Incorrect. Total cash flow is identical, but its classification and the expense profile differ."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "The net pension liability reported on the balance sheet for a defined benefit plan is:",
+  "options": {
+   "A": "the projected benefit obligation less the fair value of plan assets.",
+   "B": "the accumulated benefit obligation less contributions made during the year.",
+   "C": "the total of contractual future benefit payments."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The funded status — the defined benefit obligation net of plan assets at fair value — is recognised directly on the balance sheet under both IFRS and US GAAP.",
+   "B": "Incorrect. Contributions affect plan assets but are not netted against the obligation in this way.",
+   "C": "Incorrect. Undiscounted future payments overstate the obligation; the obligation is a present value."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "Under IFRS, actuarial gains and losses on a defined benefit pension plan (remeasurements) are:",
+  "options": {
+   "A": "recognised in profit or loss immediately.",
+   "B": "recognised in other comprehensive income and not subsequently reclassified to profit or loss.",
+   "C": "amortised into profit or loss using the corridor approach."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Only service cost and net interest on the net liability go through profit or loss under IAS 19.",
+   "B": "Correct. Remeasurements go to OCI and stay there; they are never recycled through profit or loss.",
+   "C": "Incorrect. The corridor approach was eliminated from IAS 19; a form of deferred amortisation survives only under US GAAP."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "An increase in the discount rate used to measure a defined benefit obligation will most likely:",
+  "options": {
+   "A": "increase the obligation and increase the net pension liability.",
+   "B": "decrease the obligation and decrease the net pension liability.",
+   "C": "leave the obligation unchanged but increase service cost."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. A higher discount rate reduces, not increases, the present value of future benefits.",
+   "B": "Correct. The obligation is a present value, so raising the discount rate lowers it and improves funded status — a common lever for flattering reported pension figures.",
+   "C": "Incorrect. Both the obligation and current service cost fall when the discount rate rises."
+  }
+ },
+ {
+  "sub": "Non-Current Liabilities",
+  "stem": "A debt covenant requiring the company to maintain a minimum interest coverage ratio is best described as:",
+  "options": {
+   "A": "an affirmative covenant.",
+   "B": "a negative covenant.",
+   "C": "a subordination clause."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Affirmative covenants require the borrower to do something — maintain ratios, provide statements, keep insurance.",
+   "B": "Incorrect. Negative covenants restrict actions, such as prohibiting additional debt or asset sales.",
+   "C": "Incorrect. Subordination governs claim priority in liquidation, not ongoing financial performance."
+  }
+ },
+ {
+  "sub": "Financial Reporting Quality",
+  "stem": "On the quality spectrum, financial reports that are GAAP-compliant but reflect biased choices within the standards are best described as:",
+  "options": {
+   "A": "high quality and decision useful.",
+   "B": "lower quality, because the reporting is compliant but not neutral.",
+   "C": "fraudulent."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. High-quality reporting requires both compliance and decision-useful, unbiased content.",
+   "B": "Correct. Compliance is a floor, not a guarantee; biased estimates and aggressive-but-permissible choices sit between high quality and outright non-compliance.",
+   "C": "Incorrect. Fraud involves fictitious transactions or deliberate non-compliance, which is further along the spectrum."
+  }
+ },
+ {
+  "sub": "Financial Reporting Quality",
+  "stem": "Receivables growing substantially faster than revenue, combined with a rising gap between net income and cash flow from operations, most likely signals:",
+  "options": {
+   "A": "conservative revenue recognition.",
+   "B": "aggressive revenue recognition or channel stuffing.",
+   "C": "an improvement in working capital management."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Conservative recognition would delay revenue and tend to shrink, not inflate, receivables relative to sales.",
+   "B": "Correct. Revenue booked without corresponding collections builds receivables and widens the accrual gap — the classic signature of premature recognition or loading the distribution channel.",
+   "C": "Incorrect. Better working capital management would shorten, not lengthen, the collection cycle."
+  }
+ },
+ {
+  "sub": "Financial Reporting Quality",
+  "stem": "The three conditions commonly present when low-quality financial reporting occurs are:",
+  "options": {
+   "A": "motivation, opportunity, and rationalisation.",
+   "B": "materiality, measurement, and disclosure.",
+   "C": "leverage, liquidity, and profitability."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Pressure or incentive to misreport, weak controls or vague standards that create the opportunity, and a self-justifying rationalisation together form the classic fraud triangle.",
+   "B": "Incorrect. These are accounting concepts, not behavioural conditions.",
+   "C": "Incorrect. These are financial characteristics that may create motivation but do not describe the full set of conditions."
+  }
+ },
+ {
+  "sub": "Financial Reporting Quality",
+  "stem": "A company reclassifies a recurring operating expense as a non-recurring restructuring charge. This is best described as:",
+  "options": {
+   "A": "a classification shift that inflates recurring operating earnings.",
+   "B": "a change in accounting estimate applied prospectively.",
+   "C": "a permanent difference affecting the effective tax rate."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Total net income is unchanged, but the earnings base analysts extrapolate is flattered — one of the most common and hardest-to-detect quality issues.",
+   "B": "Incorrect. No estimate has changed; only the label on the expense has.",
+   "C": "Incorrect. Tax treatment is unaffected by presentation within pre-tax income."
+  }
+ },
+ {
+  "sub": "Financial Reporting Quality",
+  "stem": "Which of the following would an analyst most likely view as a sign of conservative, high-quality accounting?",
+  "options": {
+   "A": "Lengthening the depreciable lives of core production assets.",
+   "B": "Recognising a warranty provision that has consistently proven adequate relative to actual claims.",
+   "C": "Capitalising a growing share of software development costs."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Longer lives reduce depreciation and inflate current earnings, an aggressive choice absent supporting evidence.",
+   "B": "Correct. Provisions that track actual outcomes indicate disciplined, unbiased estimation rather than a cookie-jar reserve or systematic understatement.",
+   "C": "Incorrect. A rising capitalisation rate defers costs and is an aggressive choice that requires scrutiny."
+  }
+ },
+ {
+  "sub": "Financial Reporting Quality",
+  "stem": "The Beneish M-score is best described as a model that:",
+  "options": {
+   "A": "estimates the probability that a company has manipulated its earnings.",
+   "B": "predicts the probability of bankruptcy within two years.",
+   "C": "measures the sustainable growth rate of a company."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The M-score combines eight variables — including days sales in receivables, gross margin, asset quality, and total accruals — into a probit-style manipulation score.",
+   "B": "Incorrect. Bankruptcy prediction is the purpose of the Altman Z-score.",
+   "C": "Incorrect. Sustainable growth is retention ratio times ROE, unrelated to the M-score."
+  }
+ },
+ {
+  "sub": "Financial Statement Analysis Applications",
+  "stem": "In assessing the credit quality of a corporate borrower, an analyst would place the greatest weight on:",
+  "options": {
+   "A": "earnings per share growth.",
+   "B": "leverage and cash-flow-based coverage of fixed obligations.",
+   "C": "the price-to-book ratio."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. EPS is an equity-holder metric distorted by share count and does not measure debt service capacity.",
+   "B": "Correct. Credit analysis centres on scale, leverage, and whether recurring cash flow reliably covers interest and maturities across a cycle.",
+   "C": "Incorrect. Price-to-book is a market-based valuation multiple, not a measure of repayment capacity."
+  }
+ },
+ {
+  "sub": "Financial Statement Analysis Applications",
+  "stem": "Before comparing two companies that use different inventory cost formulas, an analyst should:",
+  "options": {
+   "A": "restate the LIFO reporter's inventory and cost of goods sold onto a FIFO basis.",
+   "B": "ignore the difference, since it affects only the balance sheet.",
+   "C": "convert both companies' statements to a cash basis."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The LIFO reserve disclosure allows a like-for-like restatement of inventory, COGS, equity, and the associated deferred tax, which is the standard comparability adjustment.",
+   "B": "Incorrect. The choice affects COGS, gross margin, net income, and taxes as well as inventory.",
+   "C": "Incorrect. Discarding accruals entirely destroys the very measures being compared."
+  }
+ },
+ {
+  "sub": "Financial Statement Analysis Applications",
+  "stem": "When using screening ratios to build an equity portfolio, a key limitation an analyst must address is that:",
+  "options": {
+   "A": "ratios are not comparable across companies using different accounting policies.",
+   "B": "ratios cannot be computed from audited financial statements.",
+   "C": "ratios are always forward looking."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Differences in cost formulas, capitalisation policy, depreciation methods, and reporting frameworks make unadjusted ratios non-comparable, which is why screens need normalisation.",
+   "B": "Incorrect. Audited statements are the standard input for ratio computation.",
+   "C": "Incorrect. Ratios computed from reported statements are backward looking; forecasting them is a separate step."
+  }
+ },
+ {
+  "sub": "Financial Statement Analysis Applications",
+  "stem": "An analyst adjusting reported financial statements to forecast future performance should most appropriately:",
+  "options": {
+   "A": "remove items identified as non-recurring and reassess the sustainability of the remaining earnings base.",
+   "B": "use reported net income unadjusted, because it is audited.",
+   "C": "exclude all non-cash charges, including depreciation, from the forecast."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Forecasting requires isolating the recurring, repeatable component of earnings and cash flow, which means scrutinising restructuring charges, gains on disposal, and one-off tax items.",
+   "B": "Incorrect. Audit assurance concerns fair presentation, not persistence of the reported figures.",
+   "C": "Incorrect. Depreciation proxies for the consumption of capacity and cannot simply be discarded from a going-concern forecast."
+  }
+ }
+]

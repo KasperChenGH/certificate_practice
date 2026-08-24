@@ -1,0 +1,452 @@
+[
+ {
+  "sub": "Income Taxes",
+  "stem": "Taxable income differs from accounting profit because:",
+  "options": {
+   "A": "tax authorities and accounting standard setters have different objectives and rules.",
+   "B": "companies deliberately misreport one of the two figures.",
+   "C": "accounting profit is measured on a cash basis."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Tax rules pursue revenue collection and policy goals, while accounting standards pursue decision-useful reporting; the two legitimately diverge.",
+   "B": "Incorrect. Divergence is structural and expected, not evidence of misreporting.",
+   "C": "Incorrect. Accounting profit is measured on the accrual basis."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Pre-tax accounting profit is USD 800, which includes USD 50 of permanently tax-exempt municipal bond interest. Tax depreciation exceeds book depreciation by USD 120. At a 25% tax rate, current taxes payable are:",
+  "options": {
+   "A": "USD 157.50.",
+   "B": "USD 200.00.",
+   "C": "USD 187.50."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Taxable income = 800 - 50 - 120 = USD 630; current tax = 630 x 25% = USD 157.50.",
+   "B": "Incorrect. USD 200 applies the rate to accounting profit with no adjustments.",
+   "C": "Incorrect. USD 187.50 is total income tax expense, which includes the USD 30 deferred component."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Pre-tax accounting profit is USD 800, including USD 50 of permanently tax-exempt interest, and tax depreciation exceeds book depreciation by USD 120. At a 25% tax rate, the effective tax rate is closest to:",
+  "options": {
+   "A": "23.4%.",
+   "B": "25.0%.",
+   "C": "19.7%."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Tax expense = current 157.50 + deferred 30.00 = USD 187.50; ETR = 187.50 / 800 = 23.4%. Only the permanent difference moves the ETR away from the statutory rate.",
+   "B": "Incorrect. 25.0% is the statutory rate, which the tax-exempt interest reduces.",
+   "C": "Incorrect. 19.7% uses the current tax charge only, omitting the deferred component."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A company receives USD 200,000 of rent in advance, which is taxable on receipt but recognised as revenue only when earned. At a 30% rate, this creates:",
+  "options": {
+   "A": "a deferred tax asset of USD 60,000.",
+   "B": "a deferred tax liability of USD 60,000.",
+   "C": "a permanent difference of USD 200,000."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The unearned revenue liability has a carrying amount of 200,000 and a tax base of zero, creating a future deductible amount and therefore a DTA of 200,000 x 30% = USD 60,000.",
+   "B": "Incorrect. Tax has already been paid on the receipt, so the future benefit is an asset, not a liability.",
+   "C": "Incorrect. The difference reverses as the revenue is earned, so it is temporary."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A company incurs a tax loss of USD 400,000 that can be carried forward. At a 20% rate, and assuming future taxable profits are probable, it recognises:",
+  "options": {
+   "A": "a deferred tax asset of USD 80,000.",
+   "B": "a deferred tax liability of USD 80,000.",
+   "C": "a receivable from the tax authority of USD 400,000."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. An unused tax loss carryforward gives a future deduction, recognised as a DTA at 400,000 x 20% = USD 80,000, but only to the extent future taxable profit is probable.",
+   "B": "Incorrect. A loss carryforward reduces future tax, which is a benefit.",
+   "C": "Incorrect. A carryforward is not a claim for a cash refund; it offsets future taxable income."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A permanent difference is best described as one that:",
+  "options": {
+   "A": "reverses in a future period.",
+   "B": "never reverses and therefore creates no deferred tax.",
+   "C": "arises only in the first year of an asset's life."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Reversal is the defining feature of a temporary difference.",
+   "B": "Correct. Items such as tax-exempt interest, non-deductible fines, and permanently non-taxable government grants shift the effective rate but generate no deferred balance.",
+   "C": "Incorrect. Timing of origination does not determine permanence."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "An equipment item has a carrying amount of USD 300,000 and a tax base of USD 220,000. At a 25% tax rate the balance sheet shows:",
+  "options": {
+   "A": "a deferred tax liability of USD 20,000.",
+   "B": "a deferred tax asset of USD 20,000.",
+   "C": "a deferred tax liability of USD 80,000."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The taxable temporary difference is 300,000 - 220,000 = USD 80,000, and the DTL is 80,000 x 25% = USD 20,000.",
+   "B": "Incorrect. A carrying amount above the tax base means future taxable amounts, giving a liability.",
+   "C": "Incorrect. USD 80,000 is the temporary difference, before applying the rate."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Under IFRS, deferred tax assets and liabilities are presented on the balance sheet as:",
+  "options": {
+   "A": "current items.",
+   "B": "non-current items.",
+   "C": "split between current and non-current based on expected reversal."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Deferred tax balances are never classified as current under IFRS.",
+   "B": "Correct. IAS 1 requires non-current classification regardless of the expected timing of reversal — a point that matters when computing the current ratio.",
+   "C": "Incorrect. Splitting by expected reversal was an earlier US GAAP approach, since eliminated."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "An increase in the valuation allowance against a deferred tax asset will:",
+  "options": {
+   "A": "increase income tax expense and reduce net income.",
+   "B": "decrease income tax expense and raise net income.",
+   "C": "have no income statement effect."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The allowance reduces the carrying amount of the DTA, and the offsetting charge runs through income tax expense.",
+   "B": "Incorrect. Only a release of the allowance produces a benefit.",
+   "C": "Incorrect. Changes in the allowance are recognised in profit or loss."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "An analyst notices a company released a large valuation allowance in a year when reported earnings would otherwise have missed guidance. The appropriate response is to:",
+  "options": {
+   "A": "treat the resulting tax benefit as a recurring item.",
+   "B": "exclude the one-off benefit from sustainable earnings and examine whether the underlying profitability evidence supports the release.",
+   "C": "conclude the company has committed fraud."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. A valuation allowance release is a one-time non-cash benefit that cannot recur once the allowance is exhausted.",
+   "B": "Correct. The release requires management to judge future taxable profits probable; the timing invites scrutiny of both the earnings base and the underlying judgement.",
+   "C": "Incorrect. Suspicious timing warrants scrutiny, not an unsupported accusation."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Deferred tax arising on the revaluation of property under IAS 16 is recognised in:",
+  "options": {
+   "A": "profit or loss.",
+   "B": "other comprehensive income, matching the treatment of the revaluation itself.",
+   "C": "retained earnings directly."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Routing the tax through profit or loss while the gain sits in OCI would break the matching of an item with its tax effect.",
+   "B": "Correct. IAS 12 requires the tax effect to follow the item: tax on OCI items goes to OCI, tax on items in equity goes to equity.",
+   "C": "Incorrect. Direct charges to retained earnings apply only in specified circumstances."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "For analytical purposes, a deferred tax liability that is expected to reverse and be paid in the foreseeable future should be treated as:",
+  "options": {
+   "A": "a liability.",
+   "B": "equity.",
+   "C": "neither, and excluded from the balance sheet entirely."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. If reversal and payment are genuinely expected, the DTL is economically debt-like and belongs in leverage measures.",
+   "B": "Incorrect. Equity treatment is appropriate only where a growing asset base makes reversal indefinitely unlikely.",
+   "C": "Incorrect. Exclusion is a third analytical treatment, appropriate when both the amount and timing are highly uncertain, but not for a DTL expected to be paid."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A capital-intensive company continually replaces its fixed assets, so its deferred tax liability from accelerated tax depreciation grows every year and never reverses in aggregate. An analyst would most appropriately treat this DTL as:",
+  "options": {
+   "A": "a current liability.",
+   "B": "equity, since no cash outflow is expected in the foreseeable future.",
+   "C": "a contingent liability requiring note disclosure only."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. There is no expectation of settlement within twelve months, and IFRS classifies deferred tax as non-current in any case.",
+   "B": "Correct. A perpetually rolling deferred balance functions as permanent capital; classifying it as equity avoids overstating leverage.",
+   "C": "Incorrect. The obligation is recognised, not contingent."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "The income tax rate reconciliation disclosure is most useful to an analyst because it:",
+  "options": {
+   "A": "reveals the drivers of the gap between the statutory and effective tax rates and their likely persistence.",
+   "B": "discloses the exact amount of tax paid in each country.",
+   "C": "restates prior-year tax expense."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Line-by-line reconciling items — foreign rate differentials, tax credits, non-deductible expenses, valuation allowance movements — let the analyst judge which portions of the tax rate are durable.",
+   "B": "Incorrect. Country-by-country cash tax detail is a separate disclosure regime and is not generally in the reconciliation.",
+   "C": "Incorrect. The reconciliation explains the current period; it does not restate."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "When the enacted tax rate increases, existing deferred tax assets are:",
+  "options": {
+   "A": "remeasured upward, producing a deferred tax benefit.",
+   "B": "remeasured downward, producing a deferred tax expense.",
+   "C": "left unchanged until they reverse."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. A higher future rate makes each unit of future deduction more valuable, so the DTA is written up and the credit runs through tax expense.",
+   "B": "Incorrect. That is the effect of a rate increase on a deferred tax liability.",
+   "C": "Incorrect. Remeasurement occurs in the period of enactment."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Under IFRS, a deferred tax asset is recognised:",
+  "options": {
+   "A": "in full, then reduced by a valuation allowance.",
+   "B": "only to the extent that it is probable future taxable profit will be available against which it can be used.",
+   "C": "only when the tax authority has confirmed the deduction."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. The gross-plus-allowance mechanic is the US GAAP presentation; IFRS records the net amount directly.",
+   "B": "Correct. The recognition threshold is built into the measurement, so no separate allowance account appears on an IFRS balance sheet.",
+   "C": "Incorrect. Confirmation by the authority is not a recognition condition."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A company's cash tax rate is persistently far below its effective tax rate. The most likely explanation is:",
+  "options": {
+   "A": "large and growing deferred tax liabilities, typically from accelerated tax depreciation.",
+   "B": "a large valuation allowance.",
+   "C": "tax-exempt income."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. When the deferred component of tax expense is large and positive, book tax expense exceeds cash tax paid — the classic signature of a capital-intensive company taking accelerated tax depreciation.",
+   "B": "Incorrect. A valuation allowance raises book tax expense but does not create the ongoing cash-versus-book gap described.",
+   "C": "Incorrect. Tax-exempt income lowers both the effective and the cash rate, so it does not create a gap between them."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Goodwill that is not deductible for tax purposes:",
+  "options": {
+   "A": "gives rise to a deferred tax liability on initial recognition.",
+   "B": "is specifically exempt from deferred tax recognition on initial recognition.",
+   "C": "gives rise to a deferred tax asset."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Recognising a DTL would increase goodwill, which would increase the DTL again — a circularity the standard avoids.",
+   "B": "Correct. IAS 12 contains an initial recognition exemption for goodwill precisely because of that circularity.",
+   "C": "Incorrect. Non-deductible goodwill provides no future deduction."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Undistributed profits of a foreign subsidiary that would attract withholding tax on remittance give rise to a deferred tax liability unless:",
+  "options": {
+   "A": "the parent controls the timing of the reversal and reversal is not expected in the foreseeable future.",
+   "B": "the subsidiary is profitable.",
+   "C": "the withholding rate is below 10%."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. IAS 12 exempts such temporary differences where the parent can control the dividend decision and does not intend to remit.",
+   "B": "Incorrect. Profitability is what creates the temporary difference in the first place.",
+   "C": "Incorrect. No rate threshold governs the exemption."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Income tax expense of USD 250 comprises current tax of USD 310 and a deferred tax benefit. The deferred component is:",
+  "options": {
+   "A": "a benefit of USD 60.",
+   "B": "an expense of USD 60.",
+   "C": "a benefit of USD 560."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Total expense = current + deferred, so deferred = 250 - 310 = USD -60, a benefit typically arising from a net increase in deferred tax assets or decrease in liabilities.",
+   "B": "Incorrect. An additional expense would make the total exceed the current charge.",
+   "C": "Incorrect. USD 560 adds the two figures rather than differencing them."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A warranty provision of USD 500,000 is deductible for tax only when claims are paid. The liability's tax base is:",
+  "options": {
+   "A": "USD 500,000.",
+   "B": "USD 0.",
+   "C": "USD 250,000."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. A tax base equal to the carrying amount would mean no future deduction exists.",
+   "B": "Correct. Tax base of a liability = carrying amount less amounts deductible in the future = 500,000 - 500,000 = USD 0, which produces a deductible temporary difference and a DTA.",
+   "C": "Incorrect. There is no partial deduction; the entire provision is deductible when paid."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Deferred tax assets and liabilities may be offset on the balance sheet when:",
+  "options": {
+   "A": "they relate to income taxes levied by the same tax authority and the entity has a legally enforceable right of set-off.",
+   "B": "management considers the net presentation more useful.",
+   "C": "they arise in the same reporting period."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Both conditions must hold; balances with different tax authorities cannot be netted, which is why multinational groups often show both a DTA and a DTL.",
+   "B": "Incorrect. Offsetting is not a presentation preference.",
+   "C": "Incorrect. Timing of origination is irrelevant to the offsetting criteria."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A company operating solely in one jurisdiction reports an effective tax rate of 12% against a 25% statutory rate, explained entirely by 'research and development tax credits'. For forecasting, the analyst should:",
+  "options": {
+   "A": "assume the 12% rate persists indefinitely.",
+   "B": "assess whether R&D spending and the credit regime are expected to continue at the same intensity.",
+   "C": "use the 25% statutory rate regardless."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Assuming indefinite persistence ignores that the credit scales with R&D spending and depends on the legislation remaining in force.",
+   "B": "Correct. The credit is real and may well persist, but it is contingent on both the spending level and the policy; the forecast should model it explicitly rather than assume a flat rate.",
+   "C": "Incorrect. Ignoring a genuine and substantial credit would systematically understate after-tax earnings."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Which of the following creates a temporary difference?",
+  "options": {
+   "A": "A fine paid to a regulator that is not deductible for tax.",
+   "B": "Bad debt expense recognised for accounting but deductible only when the receivable is written off.",
+   "C": "Interest income on securities that is permanently exempt from tax."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. A permanently non-deductible fine never reverses.",
+   "B": "Correct. The deduction is deferred rather than denied, creating a deductible temporary difference and a deferred tax asset.",
+   "C": "Incorrect. Permanently exempt income creates a permanent difference."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "In a business combination, the acquirer recognises deferred tax on the difference between the fair values assigned to acquired assets and their tax bases. This most likely:",
+  "options": {
+   "A": "increases the goodwill recognised when the fair value step-up is not tax deductible.",
+   "B": "decreases goodwill in all cases.",
+   "C": "has no effect on goodwill."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. A DTL on the non-deductible step-up reduces the fair value of identifiable net assets acquired, so the residual goodwill increases.",
+   "B": "Incorrect. The direction depends on whether a net DTL or DTA arises.",
+   "C": "Incorrect. Deferred tax is part of identifiable net assets and therefore affects the goodwill residual."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "A company reports a large deferred tax asset relating to loss carryforwards but has reported losses in each of the past three years. The analyst should be most concerned that:",
+  "options": {
+   "A": "the asset may not be recoverable, since realisation depends on future taxable profits.",
+   "B": "the asset will expire within twelve months.",
+   "C": "the loss carryforward increases the effective tax rate."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. A history of losses is strong negative evidence against the probability of future taxable profit, making the DTA a prime candidate for write-down.",
+   "B": "Incorrect. Carryforward periods vary by jurisdiction and are often long or indefinite; nothing in the facts indicates imminent expiry.",
+   "C": "Incorrect. Recognising the benefit lowers, not raises, the effective rate."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Relative to a company with no deferred tax balances, a company recognising a large deferred tax liability will report:",
+  "options": {
+   "A": "higher total liabilities and a higher debt-to-assets ratio.",
+   "B": "lower total liabilities.",
+   "C": "unchanged total liabilities but higher equity."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The DTL is a recognised liability, so it enlarges the balance sheet's liability side and mechanically raises leverage ratios computed on total liabilities.",
+   "B": "Incorrect. Recognising a liability cannot reduce total liabilities.",
+   "C": "Incorrect. The offsetting entry is to tax expense and hence retained earnings, which reduces equity."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "The current tax expense for a period equals:",
+  "options": {
+   "A": "taxable income multiplied by the applicable tax rate.",
+   "B": "pre-tax accounting profit multiplied by the effective tax rate.",
+   "C": "the change in the net deferred tax position."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Current tax is the amount payable on the period's taxable income under the tax rules, which is what the return reports.",
+   "B": "Incorrect. That product gives total tax expense, not the current portion.",
+   "C": "Incorrect. The change in deferred balances is the deferred, not the current, component."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "An analyst adjusting reported earnings to a fully-taxed basis for comparison purposes would most appropriately:",
+  "options": {
+   "A": "apply a normalised tax rate to pre-tax income, removing the effect of non-recurring tax items.",
+   "B": "use the cash tax rate for all periods.",
+   "C": "apply a zero tax rate."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Normalising for one-off credits, valuation allowance movements, and settlement items produces an earnings figure that can be compared across periods and companies.",
+   "B": "Incorrect. The cash rate is volatile and reflects timing rather than the economic tax burden.",
+   "C": "Incorrect. Pre-tax comparison discards a real and differentiating cost."
+  }
+ },
+ {
+  "sub": "Income Taxes",
+  "stem": "Under IAS 12, deferred tax assets and liabilities are measured using tax rates that are:",
+  "options": {
+   "A": "enacted or substantively enacted by the reporting date.",
+   "B": "expected to be proposed by the government.",
+   "C": "the average of the past five years' rates."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Measurement uses the rates expected to apply when the asset is realised or liability settled, based on rates enacted or substantively enacted at the reporting date. US GAAP requires full enactment.",
+   "B": "Incorrect. Anticipating unenacted legislation would introduce speculation into the measurement.",
+   "C": "Incorrect. Historical averages have no role in deferred tax measurement."
+  }
+ }
+]

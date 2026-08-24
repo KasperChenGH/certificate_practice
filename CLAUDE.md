@@ -17,7 +17,7 @@ Run locally: `python -m http.server 8000` then open `http://localhost:8000`.
 | `futures`         | 期貨商業務員               | 592   |
 | `securities`      | 證券商高級業務員            | 297   |
 | `finance_ethics`  | 金融市場常識與職業道德       | 1120  |
-| `cfa_fra`         | CFA Level I — Financial Reporting & Analysis | 133 |
+| `cfa_fra`         | CFA Level I — Financial Reporting & Analysis | 514 |
 
 Each quiz draws exactly 100 random questions from the chosen bank.
 
@@ -55,8 +55,9 @@ derives the letters from the non-empty options, so both formats render from one 
 - **期貨商業務員**: deduplicated PDF covering 112年第1次 → 114年第1次 (592 q after dedup)
 - **證券商高級業務員**: SFI past papers 114年第3次 + 115年第1次; 3 concatenated sub-papers per PDF (投資學 / 財務分析 / 法規)
 - **金融市場常識與職業道德**: SFI official 1,120-question bank effective 113年9月1日
-- **CFA Level I FRA**: hand-authored against the CFA Level I Financial Statement Analysis
-  curriculum — not parsed from any PDF. Canonical file: `sources/cfa_fra.json`.
+- **CFA Level I FRA**: 514 questions hand-authored against the CFA Level I Financial Statement
+  Analysis curriculum — not parsed from any PDF. Canonical file: `sources/cfa_fra.json`,
+  assembled from batch files by `scripts/build_cfa.py`.
 
 Source PDFs live in `sources/`. Rebuild script: `python scripts/build.py` (requires `pip install pymupdf`).
 `build.py` carries `explanations` over from the existing `questions.json`, so a rebuild does
@@ -114,9 +115,15 @@ const WRONG_RATIO = 0.5;    // threshold: ≥50% wrong → often wrong
 5. LLM-generated per-option explanations (Traditional Chinese) for all 2009 questions via parallel subagents; merged into questions.json.
 6. Updated quiz UI to display 解析 explanation block after every answered question.
 7. Quiz state persistence: auto-saved to localStorage after every answer/navigation; resume banner on home page; 儲存並回到首頁 button for explicit mid-quiz pause.
-8. Added the CFA Level I FRA bank (133 hand-authored 3-choice questions with per-option
+8. Added the CFA Level I FRA bank (514 hand-authored 3-choice questions with per-option
    explanations) and removed the Options Pricing Theory study section, its markdown
    pipeline, and the marked/KaTeX CDN dependencies.
+
+`build_cfa.py` also **rebalances the answer key**: hand-authored questions came out
+heavily skewed toward A, so each question's options are cyclically rotated (preserving
+their relative order, and carrying explanations with them) until the key lands on a
+target letter from a balanced, fixed-seed-shuffled list. Keep this step if the bank is
+extended — it prints the A/B/C distribution on every run.
 
 ## Deployment
 

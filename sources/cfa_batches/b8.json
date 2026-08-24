@@ -1,0 +1,527 @@
+[
+ {
+  "sub": "Income Statement",
+  "stem": "The second step of the five-step revenue recognition model is to:",
+  "options": {
+   "A": "determine the transaction price.",
+   "B": "identify the separate performance obligations in the contract.",
+   "C": "allocate the transaction price to the performance obligations."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Determining the transaction price is step three.",
+   "B": "Correct. The order is: identify the contract, identify the performance obligations, determine the transaction price, allocate that price, and recognise revenue as each obligation is satisfied.",
+   "C": "Incorrect. Allocation is step four and cannot precede identification of the obligations."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A software company sells a licence and one year of support for a bundled price of USD 900. The standalone selling prices are USD 800 for the licence and USD 400 for support. Revenue allocated to the licence is:",
+  "options": {
+   "A": "USD 800.",
+   "B": "USD 600.",
+   "C": "USD 900."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. USD 800 ignores the bundle discount, which must be spread across both obligations in proportion to standalone prices.",
+   "B": "Correct. Allocation = 900 x (800 / 1,200) = USD 600 to the licence and USD 300 to support.",
+   "C": "Incorrect. USD 900 assigns the whole transaction price to one of two distinct performance obligations."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Variable consideration is included in the transaction price only to the extent that it is:",
+  "options": {
+   "A": "certain to be received.",
+   "B": "already collected in cash.",
+   "C": "highly probable that a significant reversal of cumulative revenue will not occur."
+  },
+  "answer": "C",
+  "explanations": {
+   "A": "Incorrect. Certainty is a higher bar than the standard requires and would defer nearly all variable amounts.",
+   "B": "Incorrect. Cash receipt is not the recognition trigger under an accrual-based model.",
+   "C": "Correct. The constraint on variable consideration limits recognition to the amount for which a significant reversal is highly probable not to occur; the estimate uses the expected value or most likely amount."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "An entity recognises revenue over time rather than at a point in time when:",
+  "options": {
+   "A": "the asset created has no alternative use to the entity and the entity has an enforceable right to payment for performance completed to date.",
+   "B": "the contract price exceeds USD 1 million.",
+   "C": "the contract term is longer than twelve months."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. This is one of the three over-time criteria, alongside the customer simultaneously receiving and consuming the benefits, and the entity creating or enhancing an asset the customer controls.",
+   "B": "Incorrect. Contract size is irrelevant to the timing criteria.",
+   "C": "Incorrect. Duration alone does not determine whether control transfers over time."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Under IFRS 15, an assurance-type warranty (a promise that the product meets agreed specifications) is accounted for as:",
+  "options": {
+   "A": "a separate performance obligation with revenue allocated to it.",
+   "B": "a provision, with the estimated cost accrued when the product is sold.",
+   "C": "a reduction of the transaction price."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Only a service-type warranty, which the customer could purchase separately, is a distinct performance obligation.",
+   "B": "Correct. An assurance warranty is not a separate service; the expected cost of honouring it is accrued as a liability under IAS 37 in the period of sale.",
+   "C": "Incorrect. Warranty costs are an expense, not a price adjustment."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Incremental costs of obtaining a contract, such as a sales commission that would not have been incurred had the contract not been won, are:",
+  "options": {
+   "A": "always expensed as incurred.",
+   "B": "capitalised as an asset if the entity expects to recover them, and amortised as the related revenue is recognised.",
+   "C": "deducted from the transaction price."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Immediate expensing is permitted only under a practical expedient when the amortisation period would be one year or less.",
+   "B": "Correct. IFRS 15 requires capitalisation of recoverable incremental acquisition costs, amortised on a basis consistent with the transfer of the related goods or services.",
+   "C": "Incorrect. Only consideration payable to the customer reduces the transaction price."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A customer pays USD 100,000 today for equipment that will be delivered in two years. The prevailing discount rate is 6%. The seller should:",
+  "options": {
+   "A": "recognise USD 100,000 of revenue on delivery.",
+   "B": "recognise a contract liability that accretes interest expense, with revenue on delivery exceeding USD 100,000.",
+   "C": "recognise USD 100,000 of revenue immediately on receipt of cash."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. This ignores the significant financing component embedded in the two-year advance payment.",
+   "B": "Correct. Where a contract contains a significant financing benefit to the seller, the liability is accreted at the discount rate and the interest is recognised as a financing cost, so revenue at delivery exceeds the cash received.",
+   "C": "Incorrect. Cash receipt precedes satisfaction of the performance obligation."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A retailer sells goods with an unconditional right of return. At the point of sale, the retailer should:",
+  "options": {
+   "A": "recognise revenue only for the amount it expects to be entitled to, with a refund liability for expected returns.",
+   "B": "defer all revenue until the return window expires.",
+   "C": "recognise the full invoice amount as revenue."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Expected returns are variable consideration; the entity recognises revenue net of expected returns, a refund liability, and an asset for the right to recover the returned goods.",
+   "B": "Incorrect. Full deferral is inappropriate when returns can be reliably estimated.",
+   "C": "Incorrect. Recognising gross revenue overstates the amount the entity expects to be entitled to."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Which of the following best describes the matching principle?",
+  "options": {
+   "A": "Expenses are recognised when cash is paid.",
+   "B": "Expenses are recognised in the same period as the revenues they help generate.",
+   "C": "Expenses are recognised evenly over the fiscal year."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. That is the cash basis, which accrual accounting rejects.",
+   "B": "Correct. Costs with a direct causal link to revenue — cost of goods sold, sales commissions, warranty costs — are recognised in the period the related revenue is recognised.",
+   "C": "Incorrect. Straight-line allocation applies only to period costs with no identifiable revenue association."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Which cost is a period cost rather than a product cost?",
+  "options": {
+   "A": "Factory supervisor salaries.",
+   "B": "Administrative office rent.",
+   "C": "Raw materials consumed in production."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Production supervision is manufacturing overhead, capitalised into inventory.",
+   "B": "Correct. General and administrative costs have no identifiable association with specific units of output and are expensed in the period incurred.",
+   "C": "Incorrect. Direct materials are a product cost capitalised into inventory until sale."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company reports revenue of USD 1,000, cost of sales of USD 600, SG&A of USD 200, depreciation of USD 80, and interest of USD 40. EBITDA is:",
+  "options": {
+   "A": "USD 200.",
+   "B": "USD 280.",
+   "C": "USD 120."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. USD 200 is operating profit (EBIT), which is after depreciation.",
+   "B": "Correct. EBITDA = revenue - cost of sales - SG&A = 1,000 - 600 - 200 = USD 200 before depreciation; adding back the USD 80 of depreciation already deducted gives USD 280.",
+   "C": "Incorrect. USD 120 deducts interest as well, which EBITDA excludes by construction."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "On a multi-step income statement, gross profit is:",
+  "options": {
+   "A": "revenue less cost of sales.",
+   "B": "revenue less all operating expenses.",
+   "C": "operating profit less interest and tax."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Gross profit isolates the direct margin on goods and services sold, before operating overheads.",
+   "B": "Incorrect. Deducting all operating expenses yields operating profit.",
+   "C": "Incorrect. Deducting interest and tax from operating profit yields net income."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company grants employees share options that vest over four years. The related compensation expense is:",
+  "options": {
+   "A": "recognised in full on the grant date.",
+   "B": "recognised over the four-year vesting period, based on the grant-date fair value.",
+   "C": "never recognised, because no cash changes hands."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. The employee has not yet rendered the service that the award compensates.",
+   "B": "Correct. Grant-date fair value is expensed over the requisite service period, with a corresponding credit to equity.",
+   "C": "Incorrect. Share-based payment is a real cost of employment even though it is settled in equity."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "An analyst notes that a company's cost of sales excludes depreciation on manufacturing equipment, which is reported on a separate line. Relative to a peer that includes it, this company's reported gross margin will be:",
+  "options": {
+   "A": "overstated on a like-for-like basis.",
+   "B": "understated on a like-for-like basis.",
+   "C": "unaffected."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Excluding a genuine cost of production from cost of sales inflates gross profit; the analyst must reclassify before comparing gross margins.",
+   "B": "Incorrect. Removing a cost from the numerator's deduction raises, not lowers, gross profit.",
+   "C": "Incorrect. Presentation choices within the income statement directly affect subtotal-based margins."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company changes from the straight-line to the double-declining balance method of depreciation. Under IFRS this is:",
+  "options": {
+   "A": "a change in accounting estimate applied prospectively.",
+   "B": "a change in accounting policy applied retrospectively.",
+   "C": "a correction of an error."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. IAS 16 treats the depreciation method as a reflection of the expected pattern of consumption of benefits, so a change to it is a change in estimate applied prospectively.",
+   "B": "Incorrect. Unlike an inventory cost formula, the depreciation method is not treated as a policy for this purpose.",
+   "C": "Incorrect. The prior method was acceptable, so nothing was in error."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company recognises USD 40,000 of bad debt expense by increasing its allowance for doubtful accounts. The effect on the accounting equation is:",
+  "options": {
+   "A": "assets decrease and equity decreases.",
+   "B": "assets decrease and liabilities increase.",
+   "C": "liabilities increase and equity increases."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Net receivables (an asset) fall via the contra account, and the expense reduces retained earnings within equity.",
+   "B": "Incorrect. The allowance is a contra-asset, not a liability.",
+   "C": "Incorrect. An expense reduces equity; it cannot increase it."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A telecommunications company sells a handset together with a 24-month service plan. Under IFRS 15, relative to the previous practice of treating the handset as a marketing cost, the company will most likely report:",
+  "options": {
+   "A": "more revenue at contract inception and less over the service period.",
+   "B": "less revenue at contract inception and more over the service period.",
+   "C": "the same revenue pattern, since total consideration is unchanged."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The handset is a distinct performance obligation, so a portion of the total consideration is allocated to it and recognised on delivery, front-loading revenue relative to the old treatment.",
+   "B": "Incorrect. This is the opposite of the allocation effect.",
+   "C": "Incorrect. Total consideration is unchanged, but its timing across periods is not."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "An input method for measuring progress toward complete satisfaction of a performance obligation would use:",
+  "options": {
+   "A": "units delivered relative to total units promised.",
+   "B": "costs incurred relative to total expected costs.",
+   "C": "surveys of performance completed to date."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Units delivered is an output measure.",
+   "B": "Correct. Input methods measure the entity's efforts or inputs consumed — labour hours, machine hours, or the cost-to-cost approach.",
+   "C": "Incorrect. Appraisals and surveys of results achieved are output measures."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Which of the following would most likely cause reported revenue to be recognised on a gross rather than net basis?",
+  "options": {
+   "A": "The entity has inventory risk before the good is transferred to the customer.",
+   "B": "The entity earns a fixed commission per transaction.",
+   "C": "The supplier sets the price charged to the end customer."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Bearing inventory risk is a key indicator that the entity controls the good before transfer and is therefore the principal, reporting gross revenue.",
+   "B": "Incorrect. A fixed commission is a classic agent indicator.",
+   "C": "Incorrect. Lack of pricing discretion points to agent status."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company recognises revenue when goods are shipped, but the customer takes control only on delivery, which averages three weeks later. This practice most likely:",
+  "options": {
+   "A": "accelerates revenue recognition relative to the standard.",
+   "B": "defers revenue recognition relative to the standard.",
+   "C": "has no effect, since the goods are eventually delivered."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Recognising on shipment when control passes on delivery pulls revenue into an earlier period, inflating current results and building unbilled or in-transit balances.",
+   "B": "Incorrect. Shipment precedes delivery, so recognition is earlier, not later.",
+   "C": "Incorrect. Period-to-period cut-off is precisely what recognition timing governs."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company reports 'operating income' that includes a USD 30 million gain on the sale of a factory. For forecasting purposes an analyst should:",
+  "options": {
+   "A": "include the gain, since management classified it as operating.",
+   "B": "exclude the gain from the sustainable operating base.",
+   "C": "annualise the gain over the next four quarters."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Management's classification is not binding on the analyst, and disposal gains are not a repeatable source of operating profit.",
+   "B": "Correct. A one-off disposal gain must be stripped out before extrapolating operating income, and the associated loss of the factory's future output considered.",
+   "C": "Incorrect. Spreading a non-recurring gain forward compounds the error."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Net income is USD 900,000 and the weighted average number of common shares is 300,000. During the year the company also declared USD 60,000 of dividends on non-cumulative preferred shares. Basic EPS is:",
+  "options": {
+   "A": "USD 3.00.",
+   "B": "USD 2.80.",
+   "C": "USD 3.20."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. USD 3.00 omits the preferred dividend deduction.",
+   "B": "Correct. (900,000 - 60,000) / 300,000 = USD 2.80.",
+   "C": "Incorrect. USD 3.20 adds the preferred dividend to the numerator instead of deducting it."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "For cumulative preferred shares, the amount deducted in computing basic EPS is:",
+  "options": {
+   "A": "only the dividends actually declared during the period.",
+   "B": "the dividends for the period whether or not they were declared.",
+   "C": "nothing, since cumulative dividends are a liability."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. That rule applies to non-cumulative preferred shares.",
+   "B": "Correct. Cumulative preferred dividends accrue to the preferred holders regardless of declaration, so the full periodic entitlement reduces income available to common shareholders.",
+   "C": "Incorrect. Undeclared cumulative dividends are generally not recognised as a liability, but they still reduce the EPS numerator."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company effects a 3-for-1 stock split in the final month of the fiscal year. In computing the weighted average share count for EPS, the split is:",
+  "options": {
+   "A": "applied only to the final month.",
+   "B": "applied retroactively to the beginning of the earliest period presented.",
+   "C": "ignored, because no cash was received."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Time-weighting applies to share issues for consideration, not to splits.",
+   "B": "Correct. Splits and stock dividends change the number of shares without changing resources, so all prior share counts and per-share figures are restated for comparability.",
+   "C": "Incorrect. The share count changes and must be reflected."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "When a company has multiple potentially dilutive securities, diluted EPS is computed by:",
+  "options": {
+   "A": "including all of them simultaneously regardless of effect.",
+   "B": "ranking them from most to least dilutive and including each only while EPS continues to fall.",
+   "C": "including only the single most dilutive security."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Including antidilutive securities would overstate diluted EPS and is prohibited.",
+   "B": "Correct. Securities are sequenced by their incremental effect on EPS and added one at a time; inclusion stops once a security would raise EPS.",
+   "C": "Incorrect. All dilutive securities are included, not just one."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company with a net loss has 200,000 outstanding employee share options that are in the money. In computing diluted EPS, these options are:",
+  "options": {
+   "A": "included, increasing the loss per share.",
+   "B": "excluded, because they would be antidilutive when there is a loss.",
+   "C": "included only to the extent of the intrinsic value."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Increasing the denominator against a negative numerator would make the loss per share smaller, which is antidilutive.",
+   "B": "Correct. With a loss, any increase in the share count reduces the reported loss per share, so all potentially dilutive securities are excluded.",
+   "C": "Incorrect. There is no partial-intrinsic-value inclusion method."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "The treasury stock method assumes that proceeds from the assumed exercise of options are used to:",
+  "options": {
+   "A": "repay debt at the market interest rate.",
+   "B": "repurchase shares at the average market price for the period.",
+   "C": "pay a special dividend to existing shareholders."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Debt repayment is the assumption in the if-converted method for convertible debt, and even there it is the interest that is added back.",
+   "B": "Correct. The net incremental share count equals the shares issued on exercise less the shares that could be repurchased with the exercise proceeds at the average market price.",
+   "C": "Incorrect. No dividend assumption is involved."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Which of the following is most likely to be classified as an unusual or infrequent item within continuing operations?",
+  "options": {
+   "A": "A gain from the sale of a discontinued business segment.",
+   "B": "A loss from the write-off of obsolete equipment following a plant restructuring.",
+   "C": "Routine depreciation of production assets."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. That gain is presented within discontinued operations, net of tax.",
+   "B": "Correct. Restructuring-related write-offs are unusual in nature but remain part of continuing operations and are disclosed separately, pre-tax.",
+   "C": "Incorrect. Depreciation is an ordinary recurring expense."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company's revenue grew 8% while its accounts receivable grew 25% and days sales outstanding lengthened from 45 to 55 days. The most appropriate analytical conclusion is that:",
+  "options": {
+   "A": "revenue quality has deteriorated and collection risk has increased.",
+   "B": "the company has improved its credit terms to customers at no cost.",
+   "C": "revenue is understated."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Receivables outrunning sales and a lengthening collection period point to looser credit, channel loading, or recognition ahead of collectibility — all reasons to discount reported revenue growth.",
+   "B": "Incorrect. Extending credit consumes working capital and raises default exposure; it is never costless.",
+   "C": "Incorrect. The pattern suggests revenue may be overstated relative to cash economics, not understated."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A manufacturer capitalises USD 5 million of costs into inventory that a peer expenses immediately. Relative to the peer, in the year of the outlay this manufacturer reports:",
+  "options": {
+   "A": "higher gross profit and higher current assets.",
+   "B": "lower gross profit and lower current assets.",
+   "C": "higher gross profit and lower current assets."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Deferring the cost into inventory keeps it out of cost of sales until the goods are sold, raising gross profit, and it sits on the balance sheet as a current asset.",
+   "B": "Incorrect. Both effects run the other way.",
+   "C": "Incorrect. Capitalisation increases, not decreases, current assets."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "An entity that presents a 'statement of profit or loss and other comprehensive income' as two separate statements must:",
+  "options": {
+   "A": "begin the second statement with profit or loss for the period.",
+   "B": "present other comprehensive income before profit or loss.",
+   "C": "omit the total for comprehensive income."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. When the two-statement presentation is used, the statement of comprehensive income starts with the profit or loss figure carried down from the first statement.",
+   "B": "Incorrect. OCI is presented after profit or loss, not before it.",
+   "C": "Incorrect. The total of comprehensive income must be presented."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "Which OCI item is subsequently reclassified ('recycled') to profit or loss?",
+  "options": {
+   "A": "Revaluation surplus on property, plant, and equipment.",
+   "B": "Cumulative translation adjustment on disposal of the foreign operation.",
+   "C": "Remeasurements of a defined benefit pension plan under IFRS."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. The revaluation surplus is transferred within equity to retained earnings; it never passes through profit or loss.",
+   "B": "Correct. On disposal of a foreign operation, the accumulated translation adjustment relating to it is reclassified from equity to profit or loss.",
+   "C": "Incorrect. IAS 19 remeasurements are never recycled."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company reports revenue of USD 500 million and cost of sales of USD 350 million in Year 1, and USD 600 million and USD 438 million in Year 2. The change in gross margin is closest to:",
+  "options": {
+   "A": "an increase of 3.0 percentage points.",
+   "B": "a decrease of 3.0 percentage points.",
+   "C": "no change."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. The margin fell; it did not rise.",
+   "B": "Correct. Year 1 gross margin = 150 / 500 = 30.0%; Year 2 = 162 / 600 = 27.0%; the margin contracted by 3.0 percentage points despite revenue growth of 20%.",
+   "C": "Incorrect. Both revenue and cost grew, but cost grew faster in percentage terms."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "An analyst separating a company's revenue growth into volume and price effects is performing:",
+  "options": {
+   "A": "a common-size analysis.",
+   "B": "a decomposition that isolates whether growth is being bought with discounting.",
+   "C": "a solvency analysis."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Common-size analysis scales line items; it does not decompose a single line into drivers.",
+   "B": "Correct. Volume-versus-price decomposition reveals whether top-line growth reflects genuine demand or is being purchased through price cuts that will show up later in margin.",
+   "C": "Incorrect. Solvency concerns the capital structure and debt service."
+  }
+ },
+ {
+  "sub": "Income Statement",
+  "stem": "A company sells a product for USD 500 that includes two years of free servicing with a standalone value of USD 100. At the point of sale, revenue recognised is:",
+  "options": {
+   "A": "USD 500.",
+   "B": "the portion of USD 500 allocated to the product based on relative standalone selling prices.",
+   "C": "USD 400, the invoice price less the service value."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Recognising the full amount ignores the unsatisfied service obligation.",
+   "B": "Correct. The service is a distinct performance obligation, so the transaction price is allocated between product and service on relative standalone selling prices, and the service portion is recognised over the two years.",
+   "C": "Incorrect. Simply subtracting the standalone service price is the residual approach, which is permitted only in limited circumstances; the general rule is relative allocation."
+  }
+ }
+]

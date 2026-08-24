@@ -1,0 +1,482 @@
+[
+ {
+  "sub": "Inventories",
+  "stem": "Beginning inventory is USD 200, purchases during the year are USD 900, and ending inventory is USD 250. Cost of goods sold is:",
+  "options": {
+   "A": "USD 850.",
+   "B": "USD 950.",
+   "C": "USD 1,350."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The inventory equation gives COGS = beginning + purchases - ending = 200 + 900 - 250 = USD 850.",
+   "B": "Incorrect. USD 950 adds the ending balance instead of deducting it.",
+   "C": "Incorrect. USD 1,350 sums all three figures."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "The specific identification cost formula is most appropriate for:",
+  "options": {
+   "A": "large volumes of interchangeable units such as barrels of crude oil.",
+   "B": "inventory items that are not ordinarily interchangeable, such as bespoke machinery or fine art.",
+   "C": "any inventory, at the entity's discretion."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Interchangeable units are costed using FIFO or weighted average.",
+   "B": "Correct. IAS 2 requires specific identification for items that are not ordinarily interchangeable and for goods produced and segregated for specific projects.",
+   "C": "Incorrect. The choice of formula is not free; it must reflect the nature of the inventory."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Under which cost formula do periodic and perpetual inventory systems always produce the same cost of goods sold?",
+  "options": {
+   "A": "FIFO.",
+   "B": "LIFO.",
+   "C": "Weighted average cost."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Under FIFO the oldest costs are charged first regardless of when the calculation is performed, so the timing of the costing has no effect.",
+   "B": "Incorrect. Periodic LIFO uses the latest costs of the whole period, while perpetual LIFO uses the latest costs available at each sale date; the results differ.",
+   "C": "Incorrect. Periodic weighted average uses one rate for the period; the perpetual (moving average) recomputes after each purchase."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "In a period of rising prices, a company using FIFO rather than LIFO will report:",
+  "options": {
+   "A": "higher gross profit and higher income taxes.",
+   "B": "lower gross profit and lower income taxes.",
+   "C": "higher gross profit and lower income taxes."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. FIFO charges older, cheaper costs to COGS, producing higher gross profit and therefore a larger tax bill in jurisdictions where the book method drives the tax method.",
+   "B": "Incorrect. Both effects run the other way.",
+   "C": "Incorrect. Higher pre-tax profit cannot produce lower tax at a constant rate."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "In a period of rising prices, a LIFO reporter will show, relative to an otherwise identical FIFO reporter:",
+  "options": {
+   "A": "a higher inventory turnover ratio and a lower current ratio.",
+   "B": "a lower inventory turnover ratio and a higher current ratio.",
+   "C": "identical turnover and current ratios."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. LIFO produces higher COGS and lower carrying inventory, so turnover (COGS / average inventory) rises on both counts, while the smaller inventory balance depresses current assets and hence the current ratio.",
+   "B": "Incorrect. Both effects are stated backwards.",
+   "C": "Incorrect. The cost formula affects both the numerator and denominator of these ratios."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "An inventory item has a cost of USD 100 and a net realisable value of USD 85. Under IFRS, the required entry is:",
+  "options": {
+   "A": "a write-down of USD 15, charged to profit or loss.",
+   "B": "no entry, since the item has not been sold.",
+   "C": "a write-down of USD 15, charged to other comprehensive income."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Inventory is carried at the lower of cost and NRV, and the write-down is recognised as an expense — usually within cost of sales — in the period it occurs.",
+   "B": "Incorrect. The lower-of-cost-or-NRV test is applied at each reporting date, not at sale.",
+   "C": "Incorrect. Inventory write-downs never go to OCI."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "An inventory item with an original cost of USD 100 was written down to a carrying amount of USD 85. In the next period its net realisable value recovers to USD 110. Under IFRS the carrying amount becomes:",
+  "options": {
+   "A": "USD 110.",
+   "B": "USD 100.",
+   "C": "USD 85."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Inventory is never written up above original cost.",
+   "B": "Correct. The reversal is limited to the amount of the original write-down, so the carrying amount returns to cost of USD 100 — a USD 15 credit to cost of sales.",
+   "C": "Incorrect. IFRS requires reversal when NRV recovers; only US GAAP prohibits it."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A company's current assets are USD 500, including LIFO inventory of USD 200, and current liabilities are USD 250. The LIFO reserve is USD 80. The current ratio adjusted to a FIFO basis is closest to:",
+  "options": {
+   "A": "2.00.",
+   "B": "2.32.",
+   "C": "1.68."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. 2.00 is the unadjusted LIFO current ratio, 500 / 250.",
+   "B": "Correct. FIFO current assets = 500 + 80 = 580; the associated deferred tax is non-current, so the current ratio = 580 / 250 = 2.32.",
+   "C": "Incorrect. 1.68 subtracts the reserve from current assets."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A US GAAP company discloses that its LIFO reserve declined during a year in which its supplier prices rose. This most likely indicates:",
+  "options": {
+   "A": "a LIFO liquidation.",
+   "B": "a switch to FIFO.",
+   "C": "an inventory write-down reversal."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. With prices rising, the reserve should grow; a decline points to inventory quantities falling and old low-cost layers being charged to COGS, inflating gross profit unsustainably.",
+   "B": "Incorrect. A method change would be disclosed as a change in accounting principle, not shown as a shrinking reserve.",
+   "C": "Incorrect. US GAAP prohibits reversal of inventory write-downs."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Goods held on consignment by a retailer on behalf of a manufacturer should be included in the inventory of:",
+  "options": {
+   "A": "the retailer, because it has physical possession.",
+   "B": "the manufacturer, because it retains the risks and rewards of ownership.",
+   "C": "neither party, until the goods are sold."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Physical possession does not determine recognition; control and the risks and rewards of ownership do.",
+   "B": "Correct. The consignor retains title and bears the risk of unsold goods, so the inventory stays on its balance sheet.",
+   "C": "Incorrect. The goods exist and must be recognised by whichever party controls them."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Which of the following costs is included in the cost of inventory?",
+  "options": {
+   "A": "Selling and distribution costs.",
+   "B": "Transport costs of bringing raw materials to the factory.",
+   "C": "General administrative overhead."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Selling costs are incurred after the inventory is ready and are period expenses.",
+   "B": "Correct. Inward freight is a cost of purchase, along with the purchase price, import duties, and non-recoverable taxes, net of trade discounts and rebates.",
+   "C": "Incorrect. Administrative overhead not related to bringing inventories to their present location and condition is expensed."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Fixed production overhead is allocated to inventory based on:",
+  "options": {
+   "A": "actual production volume in the period, however low.",
+   "B": "the normal capacity of the production facilities.",
+   "C": "the maximum theoretical capacity of the facilities."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Allocating fixed overhead over an abnormally low volume would capitalise the cost of idle capacity into inventory.",
+   "B": "Correct. IAS 2 requires allocation based on normal capacity, with unallocated overhead in a low-production period expensed immediately.",
+   "C": "Incorrect. Theoretical capacity is never achieved and would systematically under-absorb overhead."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Under IFRS, borrowing costs may be capitalised into the cost of inventory when the inventory:",
+  "options": {
+   "A": "is held for more than 30 days.",
+   "B": "necessarily takes a substantial period of time to get ready for its intended sale.",
+   "C": "is financed by a specific loan, in all cases."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. No fixed holding-period threshold exists.",
+   "B": "Correct. Inventories that qualify as 'qualifying assets' — maturing whisky or aged cheese, for example — attract capitalised borrowing costs; routine inventory produced in large quantities on a repetitive basis does not.",
+   "C": "Incorrect. The nature of the asset, not the source of financing, determines eligibility."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A commodity broker-trader measures its inventory at fair value less costs to sell. Changes in fair value are:",
+  "options": {
+   "A": "recognised in profit or loss in the period of change.",
+   "B": "recognised in OCI.",
+   "C": "deferred until the commodity is sold."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. This is a specific IAS 2 exception for broker-traders who buy or sell commodities principally to profit from short-term price fluctuations.",
+   "B": "Incorrect. OCI treatment does not apply to inventory.",
+   "C": "Incorrect. Deferral would defeat the purpose of the fair value measurement."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "An analyst comparing a LIFO reporter's gross margin with a FIFO peer's, in a rising-price environment, should:",
+  "options": {
+   "A": "expect the LIFO reporter's margin to be structurally lower and adjust COGS using the change in the LIFO reserve.",
+   "B": "expect the LIFO reporter's margin to be structurally higher.",
+   "C": "treat the two margins as directly comparable."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. LIFO charges current-cost inventory to COGS, compressing the reported margin; adding the increase in the LIFO reserve back converts COGS to a FIFO basis.",
+   "B": "Incorrect. Higher COGS under LIFO means a lower, not higher, reported margin.",
+   "C": "Incorrect. Direct comparison is exactly the error the LIFO reserve disclosure exists to prevent."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Which inventory cost formula generally produces a balance sheet figure closest to current replacement cost in a period of rising prices?",
+  "options": {
+   "A": "LIFO.",
+   "B": "FIFO.",
+   "C": "Specific identification."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. LIFO leaves the oldest, most outdated costs on the balance sheet.",
+   "B": "Correct. FIFO assigns the most recent purchase costs to ending inventory, so the carrying amount approximates current cost — the flip side being that COGS is stale.",
+   "C": "Incorrect. Specific identification tracks actual costs, which may be of any vintage."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A manufacturer classifies its inventory into raw materials, work in progress, and finished goods. A sharp increase in the finished goods component relative to the others most likely signals:",
+  "options": {
+   "A": "an anticipated increase in production efficiency.",
+   "B": "weakening demand and a risk of write-downs.",
+   "C": "a shortage of raw materials."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Efficiency gains would show as faster throughput, not accumulating finished stock.",
+   "B": "Correct. Finished goods piling up faster than raw materials or WIP is a classic early warning that output is not being sold, foreshadowing discounting or obsolescence charges.",
+   "C": "Incorrect. A raw materials shortage would constrain production and reduce finished goods over time."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "IAS 2 requires disclosure of all of the following EXCEPT:",
+  "options": {
+   "A": "the accounting policies adopted in measuring inventories.",
+   "B": "the carrying amount of inventories pledged as security for liabilities.",
+   "C": "the name of the largest supplier."
+  },
+  "answer": "C",
+  "explanations": {
+   "A": "Incorrect. Policy disclosure, including the cost formula used, is required.",
+   "B": "Incorrect. Pledged inventory must be disclosed, as it is not freely available to general creditors.",
+   "C": "Correct. Supplier identity is commercially sensitive information that IAS 2 does not require."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A company using the retail method estimates ending inventory by:",
+  "options": {
+   "A": "reducing the sales value of the inventory by the gross margin percentage.",
+   "B": "multiplying units on hand by the most recent purchase price.",
+   "C": "taking the average of FIFO and LIFO values."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The retail method works back from retail selling prices to cost using the cost-to-retail ratio, a practical expedient permitted where the results approximate cost.",
+   "B": "Incorrect. That describes a FIFO-style unit costing, not the retail method.",
+   "C": "Incorrect. No such averaging method exists."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Inventory turnover has risen from 6.0 to 9.0 while the gross margin has fallen from 32% to 24%. The most likely explanation is that the company:",
+  "options": {
+   "A": "has improved its supply chain efficiency at no cost.",
+   "B": "has been discounting aggressively to clear stock.",
+   "C": "has switched from LIFO to FIFO."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Genuine efficiency gains would not require sacrificing eight points of margin.",
+   "B": "Correct. Faster turnover bought with a sharply lower margin points to price cuts to move inventory — the two ratios must always be read together.",
+   "C": "Incorrect. Switching to FIFO in a rising-price environment would raise the gross margin, not lower it."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A company writes down inventory by USD 5 million. The effect in the year of the write-down is to:",
+  "options": {
+   "A": "decrease current assets, decrease net income, and increase future gross margin when the goods are sold.",
+   "B": "decrease current assets, decrease net income, and decrease future gross margin.",
+   "C": "leave net income unchanged, since the write-down is non-cash."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. The charge is taken now, so the goods carry a lower cost into the next period; when they sell at the same price, the reported margin is higher. This is why large write-downs are examined as a possible way to shift profit between periods.",
+   "B": "Incorrect. A lower carrying cost raises, not lowers, the future margin.",
+   "C": "Incorrect. Non-cash charges still reduce reported income."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Under US GAAP, a company using a method other than LIFO or the retail method measures inventory at:",
+  "options": {
+   "A": "the lower of cost and net realisable value.",
+   "B": "the lower of cost and market with a ceiling and floor.",
+   "C": "fair value."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. US GAAP converged on lower of cost and NRV for FIFO and average-cost inventories; the older market-with-collar rule survives only for LIFO and retail-method inventories.",
+   "B": "Incorrect. That test now applies only to LIFO and retail-method inventories.",
+   "C": "Incorrect. Fair value measurement is reserved for narrow exceptions such as commodity broker-traders."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "An analyst wishing to compare a US LIFO reporter with an IFRS peer should adjust:",
+  "options": {
+   "A": "inventory, cost of goods sold, retained earnings, and deferred tax liabilities.",
+   "B": "inventory only.",
+   "C": "cost of goods sold only."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. A complete restatement adds the reserve to inventory, adjusts COGS by the change in the reserve, adds the after-tax reserve to equity, and records the tax portion as a deferred tax liability.",
+   "B": "Incorrect. Adjusting only the asset leaves the income statement and equity inconsistent.",
+   "C": "Incorrect. Adjusting only COGS leaves the balance sheet on the old basis."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A company reports days of inventory on hand of 95 days versus an industry median of 42 days, and its inventory write-downs have been nil for three years. The analyst should most appropriately:",
+  "options": {
+   "A": "accept the absence of write-downs as evidence that the inventory is sound.",
+   "B": "treat the absence of write-downs as a possible reporting-quality issue given the slow turnover.",
+   "C": "conclude the company uses LIFO."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Absence of a charge is not evidence of value; it may equally reflect an unwillingness to take one.",
+   "B": "Correct. Inventory sitting more than twice as long as peers, with no impairment ever recognised, suggests either a genuinely different business model or an understated allowance — either way it requires explanation.",
+   "C": "Incorrect. Nothing in the facts identifies the cost formula."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Purchases were USD 1,000, beginning inventory USD 300, and cost of goods sold USD 1,100. Ending inventory is:",
+  "options": {
+   "A": "USD 200.",
+   "B": "USD 400.",
+   "C": "USD 2,400."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Ending = beginning + purchases - COGS = 300 + 1,000 - 1,100 = USD 200.",
+   "B": "Incorrect. USD 400 reverses the sign on the COGS deduction relative to purchases.",
+   "C": "Incorrect. USD 2,400 sums all three amounts."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Under IFRS, agricultural produce harvested from a biological asset is measured at the point of harvest at:",
+  "options": {
+   "A": "historical cost of cultivation.",
+   "B": "fair value less costs to sell, which becomes its cost for subsequent inventory accounting.",
+   "C": "net realisable value at the reporting date."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. IAS 41 uses a fair value model rather than accumulated cultivation cost.",
+   "B": "Correct. Harvested produce enters inventory at fair value less costs to sell at harvest, and IAS 2 applies from that point using that amount as cost.",
+   "C": "Incorrect. NRV is the ceiling test applied subsequently, not the initial measurement."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A company that has been steadily building inventory while sales growth decelerates is most exposed to:",
+  "options": {
+   "A": "a future write-down and a period of depressed gross margin as it clears stock.",
+   "B": "an increase in its effective tax rate.",
+   "C": "a covenant breach on its interest coverage ratio."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Inventory outgrowing sales is one of the most reliable leading indicators of margin pressure, whether realised through write-downs or through discounting.",
+   "B": "Incorrect. Inventory levels have no direct effect on the effective tax rate.",
+   "C": "Incorrect. Interest coverage depends on EBIT and interest expense, neither of which is directly driven by inventory levels."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Capitalising a cost into inventory rather than expensing it affects the timing of recognition such that the expense is deferred until:",
+  "options": {
+   "A": "the end of the fiscal year.",
+   "B": "the inventory is sold.",
+   "C": "the cash is paid to the supplier."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Year-end has no bearing; unsold inventory carries forward.",
+   "B": "Correct. Capitalised inventory costs are released to cost of goods sold when the related revenue is recognised, which is the matching principle in action.",
+   "C": "Incorrect. Cash payment is a financing event distinct from expense recognition."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "Which of the following statements about the weighted average cost formula is correct?",
+  "options": {
+   "A": "It produces results between FIFO and LIFO in a period of consistently changing prices.",
+   "B": "It is prohibited under IFRS.",
+   "C": "It always equals FIFO under a perpetual system."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. Averaging blends old and new costs, so COGS and ending inventory fall between the FIFO and LIFO extremes when prices move consistently in one direction.",
+   "B": "Incorrect. Weighted average is one of the two cost formulas IFRS permits for interchangeable items.",
+   "C": "Incorrect. The two coincide only in the trivial case of constant unit costs."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A LIFO reporter's cost of goods sold is USD 2,000 and the LIFO reserve fell from USD 300 to USD 240. FIFO cost of goods sold is:",
+  "options": {
+   "A": "USD 2,060.",
+   "B": "USD 1,940.",
+   "C": "USD 2,000."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. FIFO COGS = LIFO COGS - change in LIFO reserve = 2,000 - (-60) = USD 2,060. A falling reserve, typically from a LIFO liquidation, means LIFO COGS understates current-cost consumption.",
+   "B": "Incorrect. USD 1,940 applies the adjustment with the wrong sign.",
+   "C": "Incorrect. USD 2,000 ignores the reserve movement."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "A company's inventory note shows a large 'reserve for obsolescence' that has been shrinking as a percentage of gross inventory over three years while days of inventory on hand rises. This combination most likely indicates:",
+  "options": {
+   "A": "improving inventory quality.",
+   "B": "an increasingly optimistic obsolescence estimate that flatters current earnings.",
+   "C": "a change in the inventory cost formula."
+  },
+  "answer": "B",
+  "explanations": {
+   "A": "Incorrect. Genuinely improving quality would show as faster, not slower, turnover.",
+   "B": "Correct. Slower-moving stock carrying a proportionally smaller obsolescence allowance is an estimate moving in the wrong direction relative to the underlying evidence.",
+   "C": "Incorrect. A change in cost formula would be disclosed as a policy change and would not by itself alter the obsolescence reserve."
+  }
+ },
+ {
+  "sub": "Inventories",
+  "stem": "When a company changes from weighted average cost to FIFO, the change is applied:",
+  "options": {
+   "A": "retrospectively, with prior periods restated.",
+   "B": "prospectively, from the date of change.",
+   "C": "only to inventory acquired after the change."
+  },
+  "answer": "A",
+  "explanations": {
+   "A": "Correct. A change of inventory cost formula is a change in accounting policy, requiring restatement of comparatives unless it is impracticable to determine the effect.",
+   "B": "Incorrect. Prospective application applies to changes in estimate, not policy.",
+   "C": "Incorrect. Applying the new formula only to new purchases would produce an incoherent mixed basis."
+  }
+ }
+]
