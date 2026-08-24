@@ -128,6 +128,38 @@
   .stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; }
   .topic-meta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 400; }
   .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
+
+  /* ===== Exam history ===== */
+  .hist-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 8px; cursor: pointer;
+  }
+  .hist-row:active { background: #eef0f4; }
+  .hist-row .when { font-size: 13px; color: var(--muted); }
+  .hist-row .topic { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+  .hist-row .grow { flex: 1; min-width: 0; }
+  .hist-row .chev { color: var(--muted); font-size: 18px; }
+  .score-pill {
+    font-weight: 700; font-size: 15px; padding: 4px 10px;
+    border-radius: 999px; white-space: nowrap;
+  }
+  .score-pill.pass { color: var(--good); background: rgba(31,138,62,0.12); }
+  .score-pill.fail { color: var(--bad);  background: rgba(198,56,56,0.12); }
+  .hist-summary {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px;
+  }
+  .hist-summary .name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .hist-summary .figs { color: var(--muted); }
+  .hist-summary .figs b { color: var(--text); font-weight: 600; }
+  .your-line { color: var(--bad); font-size: 14px; margin-top: 6px; }
+  @media (prefers-color-scheme: dark) {
+    .hist-row:active { background: #2a2a2c; }
+    .score-pill.pass { background: rgba(31,138,62,0.22); }
+    .score-pill.fail { background: rgba(198,56,56,0.22); }
+  }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #1c1c1e; --card: #2c2c2e; --text: #f5f5f7; --muted: #98989d;
@@ -169,6 +201,7 @@
     <button class="btn" data-topic="sitca">投信投顧業務員<div class="topic-meta" id="meta-sitca">—</div></button>
     <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
     <button class="btn review" id="btn-review">常錯題複習</button>
+    <button class="btn secondary" id="btn-history">測驗紀錄</button>
     <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
 
     <p class="footer-note">作答紀錄存於本機瀏覽器（localStorage），不會上傳。</p>
@@ -204,7 +237,27 @@
       <div class="big"><span class="pct" id="result-score">0</span> / <span id="result-total">100</span></div>
       <div class="meta" id="result-detail">—</div>
     </div>
-    <button class="btn" id="btn-home">回首頁</button>
+    <button class="btn" id="btn-result-review">檢視本次錯題</button>
+    <button class="btn secondary" id="btn-home">回首頁</button>
+  </div>
+
+  <!-- HISTORY (past exams) -->
+  <div id="page-history" class="hidden">
+    <h1>測驗紀錄</h1>
+    <p class="meta" id="history-meta">—</p>
+    <div id="history-summary"></div>
+    <div id="history-list"></div>
+    <button class="btn" id="btn-history-home">回首頁</button>
+    <button class="btn secondary" id="btn-history-clear" style="color:var(--bad);">清除測驗紀錄</button>
+  </div>
+
+  <!-- HISTORY DETAIL (one exam's wrong questions) -->
+  <div id="page-history-detail" class="hidden">
+    <h1 id="hd-title">—</h1>
+    <p class="meta" id="hd-meta">—</p>
+    <div id="hd-list"></div>
+    <button class="btn" id="btn-hd-back">← 測驗紀錄</button>
+    <button class="btn secondary" id="btn-hd-home">回首頁</button>
   </div>
 
   <!-- REVIEW (often-wrong) -->
@@ -223,8 +276,14 @@ const TOPIC_NAMES = {
   securities: '證券商高級業務員',
   securities_rep: '證券商業務員',
   sitca: '投信投顧業務員',
-  cfa_fra: 'CFA Level I — Financial Reporting & Analysis',
+  cfa_fra: 'CFA Level I \u2014 Financial Reporting & Analysis',
 };
+// Banks no longer published. Exam history recorded before a bank was retired still
+// needs a readable name, so keep the label even though the questions are gone.
+const RETIRED_TOPIC_NAMES = {
+  finance_ethics: '\u91d1\u878d\u5e02\u5834\u5e38\u8b58\u8207\u8077\u696d\u9053\u5fb7\uff08\u5df2\u4e0b\u67b6\uff09',
+};
+function topicLabel(t) { return TOPIC_NAMES[t] || RETIRED_TOPIC_NAMES[t] || t; }
 const QUIZ_SIZE = 100;      // target length; a smaller bank uses its whole pool
 const RECENT_WINDOW = 10;   // last N attempts per question
 const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
@@ -241,6 +300,12 @@ let STATE = null;           // current quiz state
 // Schema: { [questionId]: { attempts: [true|false], ... last RECENT_WINDOW kept } }
 const LS_KEY = 'quiz_history_v1';
 const LS_QUIZ_KEY = 'quiz_state_v1';
+// One record per submitted exam, newest first:
+//   { t: topic, ts: epoch ms, n: questions asked, c: correct, w: [[questionId, picked|null], ...] }
+// Only wrong answers are stored; question text is looked up from DATA at render time.
+const LS_RESULTS_KEY = 'quiz_results_v1';
+const MAX_RESULTS = 50;
+const PASS_MARK = 0.7;      // 70% is the pass mark for these exams
 function loadHistory() {
   try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
   catch { return {}; }
@@ -287,6 +352,39 @@ function overallStats() {
   return { total, correct, wrongPool };
 }
 
+// ------- exam history -------
+function loadResults() {
+  try {
+    const r = JSON.parse(localStorage.getItem(LS_RESULTS_KEY) || '[]');
+    return Array.isArray(r) ? r : [];
+  } catch { return []; }
+}
+function saveResults(list) {
+  // Drop the oldest records and retry if the browser rejects the write on quota.
+  let out = list.slice(0, MAX_RESULTS);
+  while (out.length) {
+    try { localStorage.setItem(LS_RESULTS_KEY, JSON.stringify(out)); return true; }
+    catch (e) { out = out.slice(0, out.length - 1); }
+  }
+  console.warn('Could not save exam history (storage full)');
+  return false;
+}
+function recordResult(correct) {
+  const wrong = [];
+  STATE.questions.forEach((q, i) => {
+    if (STATE.answers[i] !== q.answer) wrong.push([q.id, STATE.answers[i]]);
+  });
+  const list = loadResults();
+  list.unshift({ t: STATE.topic, ts: Date.now(), n: STATE.questions.length, c: correct, w: wrong });
+  saveResults(list);
+}
+function fmtWhen(ts) {
+  const d = new Date(ts), pad = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate()) +
+         ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+function pctOf(r) { return r.n ? Math.round(100 * r.c / r.n) : 0; }
+
 // ------- quiz state persistence -------
 function saveQuizState() {
   if (!STATE) return;
@@ -332,7 +430,7 @@ function optionLetters(q) {
   return ['A','B','C','D'].filter(L => (q.options[L] || '').trim() !== '');
 }
 function show(pageId) {
-  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review')
+  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review,#page-history,#page-history-detail')
     .forEach(p => p.classList.add('hidden'));
   el(pageId).classList.remove('hidden');
   window.scrollTo(0, 0);
@@ -465,6 +563,7 @@ function submitQuiz() {
     if (STATE.answers[i] === STATE.questions[i].answer) correct++;
   }
   clearQuizState();
+  recordResult(correct);
   el('result-score').textContent = correct;
   el('result-total').textContent = currentSize();
   el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${currentSize()-correct} 題`;
@@ -486,30 +585,160 @@ function showReview() {
     cont.innerHTML = '<div class="empty-state">目前還沒有常錯題。<br>多做幾次測驗就會累積。</div>';
   } else {
     list.forEach((q, i) => {
-      const div = document.createElement('div');
-      div.className = 'result-q review-q';
       const h = loadHistory()[q.id];
-      const ratio = `${h.attempts.filter(x=>!x).length}/${h.attempts.length}`;
-      const stem = document.createElement('div');
-      stem.className = 'stem';
-      stem.textContent = `${i+1}. ${q.stem}`;
-      div.appendChild(stem);
-      for (const letter of optionLetters(q)) {
-        const line = document.createElement('div');
-        line.style.fontSize = '14px';
-        line.style.padding = '2px 0';
-        const isAns = letter === q.answer;
-        line.innerHTML = `<span style="color:${isAns?'var(--good)':'var(--muted)'};font-weight:${isAns?'600':'400'}">${isAns?'✓':'　'} (${letter}) ${escapeHtml(q.options[letter] || '')}</span>`;
-        div.appendChild(line);
-      }
-      const meta = document.createElement('div');
-      meta.className = 'origin';
-      meta.textContent = `正解：(${q.answer})　近期錯誤 ${ratio}　${q.origin || ''}`;
-      div.appendChild(meta);
+      const ratio = h.attempts.filter(x => !x).length + '/' + h.attempts.length;
+      const div = wrongQuestionCard(q, null, i + 1);
+      div.classList.add('review-q');
+      // No single "your answer" here — this view aggregates across attempts.
+      div.querySelector('.your-line').remove();
+      div.querySelector('.origin').textContent =
+        '\u6b63\u89e3\uff1a(' + q.answer + ')\u3000\u8fd1\u671f\u932f\u8aa4 ' + ratio +
+        '\u3000' + (q.origin || '');
       cont.appendChild(div);
     });
   }
   show('page-review');
+}
+
+// ------- shared: one wrong-question card -------
+// `sel` is the letter the user picked, or null when the question was left blank.
+function wrongQuestionCard(q, sel, n) {
+  const div = document.createElement('div');
+  div.className = 'result-q';
+  const stem = document.createElement('div');
+  stem.className = 'stem';
+  stem.textContent = n + '. ' + q.stem;
+  div.appendChild(stem);
+  for (const letter of optionLetters(q)) {
+    const line = document.createElement('div');
+    line.style.fontSize = '14px';
+    line.style.padding = '2px 0';
+    const isAns = letter === q.answer, isSel = letter === sel;
+    const mark = isAns ? '\u2713' : (isSel ? '\u2717' : '\u3000');
+    const color = isAns ? 'var(--good)' : (isSel ? 'var(--bad)' : 'var(--muted)');
+    const weight = (isAns || isSel) ? '600' : '400';
+    line.innerHTML = '<span style="color:' + color + ';font-weight:' + weight + '">' +
+      mark + ' (' + letter + ') ' + escapeHtml(q.options[letter] || '') + '</span>';
+    div.appendChild(line);
+  }
+  const your = document.createElement('div');
+  your.className = 'your-line';
+  your.textContent = sel ? ('\u4f60\u7684\u7b54\u6848\uff1a(' + sel + ')') : '\u672a\u4f5c\u7b54';
+  div.appendChild(your);
+  if (q.explanations) {
+    const block = document.createElement('div');
+    block.className = 'expl-block';
+    block.innerHTML = '<div class="expl-title">\u89e3\u6790</div>';
+    for (const letter of optionLetters(q)) {
+      const expl = q.explanations[letter];
+      if (!expl) continue;
+      const item = document.createElement('div');
+      item.className = 'expl-item' +
+        (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
+      item.innerHTML = '<span class="expl-letter">(' + letter + ')</span><span>' +
+        escapeHtml(expl) + '</span>';
+      block.appendChild(item);
+    }
+    div.appendChild(block);
+  }
+  const meta = document.createElement('div');
+  meta.className = 'origin';
+  meta.textContent = q.origin || '';
+  div.appendChild(meta);
+  return div;
+}
+
+// ------- history -------
+function findQuestion(qid) {
+  if (!DATA) return null;
+  for (const t of Object.keys(DATA)) {
+    const hit = DATA[t].find(q => q.id === qid);
+    if (hit) return hit;
+  }
+  return null;   // question belonged to a bank that is no longer published
+}
+
+function showHistory() {
+  const list = loadResults();
+  el('history-meta').textContent = list.length
+    ? ('\u5171 ' + list.length + ' \u6b21\u6e2c\u9a57\u7d00\u9304\uff08\u6700\u591a\u4fdd\u7559 ' + MAX_RESULTS + ' \u6b21\uff09')
+    : '';
+
+  // Per-topic summary: attempts, best, average, most recent.
+  const summary = el('history-summary');
+  summary.innerHTML = '';
+  const byTopic = {};
+  for (const r of list) (byTopic[r.t] = byTopic[r.t] || []).push(r);
+  for (const t of Object.keys(byTopic)) {
+    const rs = byTopic[t];
+    const pcts = rs.map(pctOf);
+    const avg = Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length);
+    const div = document.createElement('div');
+    div.className = 'hist-summary';
+    div.innerHTML =
+      '<div class="name">' + escapeHtml(topicLabel(t)) + '</div>' +
+      '<div class="figs">\u4f5c\u7b54 <b>' + rs.length + '</b> \u6b21\u3000' +
+      '\u6700\u4f73 <b>' + Math.max.apply(null, pcts) + '%</b>\u3000' +
+      '\u5e73\u5747 <b>' + avg + '%</b>\u3000' +
+      '\u6700\u8fd1 <b>' + pcts[0] + '%</b></div>';
+    summary.appendChild(div);
+  }
+
+  const cont = el('history-list');
+  cont.innerHTML = '';
+  if (!list.length) {
+    cont.innerHTML = '<div class="empty-state">\u9084\u6c92\u6709\u6e2c\u9a57\u7d00\u9304\u3002<br>' +
+      '\u5b8c\u6210\u4e00\u6b21\u6e2c\u9a57\u4e26\u4ea4\u5377\u5f8c\u5c31\u6703\u51fa\u73fe\u5728\u9019\u88e1\u3002</div>';
+  }
+  list.forEach((r, i) => {
+    const pct = pctOf(r);
+    const row = document.createElement('div');
+    row.className = 'hist-row';
+    row.innerHTML =
+      '<div class="grow">' +
+        '<div class="topic">' + escapeHtml(topicLabel(r.t)) + '</div>' +
+        '<div class="when">' + fmtWhen(r.ts) + '\u3000\u7b54\u932f ' + r.w.length + ' \u984c</div>' +
+      '</div>' +
+      '<span class="score-pill ' + (pct >= PASS_MARK * 100 ? 'pass' : 'fail') + '">' +
+        r.c + '/' + r.n + '\u3000' + pct + '%</span>' +
+      '<span class="chev">\u203a</span>';
+    row.onclick = () => showHistoryDetail(i);
+    cont.appendChild(row);
+  });
+  show('page-history');
+}
+
+function showHistoryDetail(i) {
+  const list = loadResults();
+  const r = list[i];
+  if (!r) { showHistory(); return; }
+  const pct = pctOf(r);
+  el('hd-title').textContent = topicLabel(r.t);
+  el('hd-meta').textContent = fmtWhen(r.ts) +
+    '\u3000\u5f97\u5206 ' + r.c + ' / ' + r.n + '\uff08' + pct + '%\uff09' +
+    '\u3000\u7b54\u932f ' + r.w.length + ' \u984c';
+
+  const cont = el('hd-list');
+  cont.innerHTML = '';
+  if (!r.w.length) {
+    cont.innerHTML = '<div class="empty-state">\u9019\u6b21\u5168\u5c0d\uff0c\u6c92\u6709\u932f\u984c\u3002</div>';
+    show('page-history-detail');
+    return;
+  }
+  let n = 0, missing = 0;
+  for (const pair of r.w) {
+    const q = findQuestion(pair[0]);
+    if (!q) { missing++; continue; }
+    cont.appendChild(wrongQuestionCard(q, pair[1], ++n));
+  }
+  if (missing) {
+    const note = document.createElement('div');
+    note.className = 'empty-state';
+    note.textContent = '\u53e6\u6709 ' + missing +
+      ' \u984c\u5df2\u4e0d\u5728\u76ee\u524d\u984c\u5eab\u4e2d\uff0c\u7121\u6cd5\u986f\u793a\u3002';
+    cont.appendChild(note);
+  }
+  show('page-history-detail');
 }
 
 // ------- escape -------
@@ -554,6 +783,18 @@ async function boot() {
     }
   };
   el('btn-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-history').onclick = showHistory;
+  el('btn-history-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-hd-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-hd-back').onclick = showHistory;
+  // The just-submitted exam is always record 0.
+  el('btn-result-review').onclick = () => showHistoryDetail(0);
+  el('btn-history-clear').onclick = () => {
+    if (confirm('\u78ba\u5b9a\u6e05\u9664\u6240\u6709\u6e2c\u9a57\u7d00\u9304\uff1f\u6b64\u52d5\u4f5c\u7121\u6cd5\u5fa9\u539f\u3002')) {
+      localStorage.removeItem(LS_RESULTS_KEY);
+      showHistory();
+    }
+  };
   el('btn-review-home').onclick = () => { show('page-home'); renderHome(); };
   el('btn-resume').onclick = () => { const s = loadSavedQuiz(); if (s) resumeQuiz(s); };
   el('btn-discard').onclick = () => { clearQuizState(); el('resume-banner').classList.add('hidden'); };

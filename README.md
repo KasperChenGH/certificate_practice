@@ -42,6 +42,7 @@ Don't open `index.html` directly — `fetch('questions.json')` needs an HTTP ori
 | Quiz | Tap an option, navigate with **上一題 / 下一題**. Final question's button becomes **交卷**. Mid-quiz abort returns to Home (current quiz is discarded). |
 | Results | Score out of 100. Lists each question you missed with the correct answer and your selection. **回首頁** to return. |
 | Review (常錯題) | Lists every question you've gotten wrong on ≥ 50% of your **last 10** attempts, gated by a minimum of 3 attempts. |
+| History (測驗紀錄) | One row per submitted exam — topic, date, score, wrong count — plus a per-topic summary of attempts, best, average, and most recent score. Tap a row to see exactly which questions you missed, what you picked, and the explanation. |
 
 ## Files
 

@@ -98,8 +98,10 @@ _expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.p
 |-----------|-----------|
 | Home      | Stats card (total attempts / accuracy / wrong-pool size). Resume banner shown if a saved quiz exists. Pick topic → start 100-question quiz. |
 | Quiz      | Tap option → immediate locked feedback. Correct option goes green, wrong selection goes red. 解析 block shows per-option explanation for all 4 choices. Navigate with 上一題 / 下一題. Last question becomes 交卷. Bottom has 儲存並回到首頁 (saves progress, returns home) and 放棄並回首頁 (clears progress after confirm). |
-| Results   | Score out of 100, topic name, wrong count. 回首頁 button. |
-| Review    | 常錯題複習 — lists questions wrong ≥ 50% of last 10 attempts (min 3 attempts). Shows all options + correct answer + error ratio. |
+| Results   | Score, topic name, wrong count. 檢視本次錯題 opens this exam's wrong questions directly; 回首頁 returns. |
+| Review    | 常錯題複習 — lists questions wrong ≥ 50% of last 10 attempts (min 3 attempts). Aggregate view across attempts, so no single "your answer". |
+| History   | 測驗紀錄 — one row per submitted exam, newest first: topic, timestamp, score pill (green ≥ 70%, red below), wrong count. Above the list, a per-topic summary of attempts / best / average / most recent. 清除測驗紀錄 clears only this log. |
+| History detail | The wrong questions from one exam: every option with ✓ on the correct answer and ✗ on what was picked, 你的答案 / 未作答, and the 解析 block where the question has one. |
 
 ## localStorage
 
@@ -107,6 +109,12 @@ _expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.p
 |-----|--------|---------|
 | `quiz_history_v1` | `{ [questionId]: { attempts: [true\|false, ...] } }` (last 10 kept) | Per-question attempt history; drives stats and often-wrong detection. Entries for retired banks are ignored, not deleted. Cleared via 清除作答紀錄. |
 | `quiz_state_v1` | `{ topic, questionIds[], answers[], idx }` | In-progress quiz snapshot. Saved after every answer and navigation. Cleared on submit or 放棄. |
+| `quiz_results_v1` | `[{ t: topic, ts: epoch ms, n: asked, c: correct, w: [[questionId, picked\|null], ...] }]` newest first, capped at `MAX_RESULTS` (50) | One record per **submitted** exam — an abandoned quiz is never recorded. Only wrong answers are stored; question text is looked up from `DATA` at render time, so a record outlives an edit to the bank. `null` in `w` means the question was left blank. Cleared via 清除測驗紀錄, independently of `quiz_history_v1`. |
+
+Writes to `quiz_results_v1` retry after dropping the oldest records, so a full quota
+degrades to a shorter history instead of throwing. A record whose bank has since been
+retired still renders: `topicLabel()` falls back to `RETIRED_TOPIC_NAMES`, and questions
+that no longer resolve are counted in a "已不在目前題庫中" note rather than skipped silently.
 
 ## Quiz resume flow
 
