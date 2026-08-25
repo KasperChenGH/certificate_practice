@@ -78,8 +78,8 @@ pip install pymupdf
 python scripts/build.py
 ```
 
-This re-parses every source PDF, folds in `sources/cfa_fra.json`, deduplicates, and
-overwrites `questions.json`. The script is deterministic — running it on unchanged inputs
+This re-parses every source PDF, folds in `sources/cfa_fra.json`, deduplicates, applies
+`sources/stem_overrides.json`, and overwrites `questions.json`. The script is deterministic — running it on unchanged inputs
 produces an identical file — and it carries the per-option explanations over from the
 existing `questions.json` rather than dropping them.
 

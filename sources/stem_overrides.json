@@ -1,0 +1,22 @@
+{
+  "_README": [
+    "Stems rewritten because the printed exam text does not survive this delivery medium.",
+    "A paper presents questions in order, so 同上題 / 承上題 works there. This app draws a",
+    "random subset and shuffles it, so a stem that points at 'the previous question' is",
+    "unanswerable. Rewrites preserve the original meaning and add only the context the",
+    "referenced question supplied.",
+    "",
+    "Applied by build.py AFTER dedup. Each entry asserts `was` still matches the parsed",
+    "stem, so if a parser change alters the text the build fails loudly instead of",
+    "silently rewriting the wrong question.",
+    "",
+    "build.py also fails if any stem still references another question and has no entry",
+    "here — that guard is what keeps this class of bug from reappearing when new papers",
+    "are added."
+  ],
+  "futures-503": {
+    "was": "同上題,若預期瑞郎對英鎊貶值,則又該如何操作?",
+    "stem": "對一個美國交易人,若預期瑞郎對英鎊貶值,則應該如何操作?",
+    "reason": "113年第3次 期貨交易理論與實務 第26題 continues 第25題 (futures-502, '對一個美國交易人,預期瑞郎對英鎊升值時,則應該如何操作?'). Only the 美國交易人 framing was carried over; the rest of the stem already stood alone."
+  }
+}

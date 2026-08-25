@@ -76,6 +76,21 @@ derives the letters from the non-empty options, so both formats render from one 
 Source PDFs live in `sources/`. Rebuild script: `python scripts/build.py` (requires `pip install pymupdf`).
 `build.py` carries `explanations` over from the existing `questions.json`, so a rebuild does
 not drop the LLM-generated explanations (they are not reproducible from the source PDFs).
+Carry-over matches on question **id** first (requiring the answer key to agree), falling back
+to a stem+options fingerprint — so a stem override does not orphan its explanations.
+
+### Stem overrides
+
+A printed paper presents questions in order, so 同上題 / 承上題 works there. This app draws a
+random subset and shuffles it, so such a stem is unanswerable. `sources/stem_overrides.json`
+holds self-contained rewrites, applied by `build.py` after dedup.
+
+**Editing a stem directly in `questions.json` does not survive a rebuild** — stems come
+straight from the PDF parse, unlike explanations. Use the override file.
+
+Each entry records the original text and the build fails if the parse no longer matches it.
+`build.py` also **fails when any stem references another question and has no override**, which
+is what stops this class of bug returning when new papers are added.
 
 ## Key files
 

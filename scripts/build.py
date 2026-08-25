@@ -203,6 +203,54 @@ def dedup(qs: list[dict]) -> list[dict]:
         seen.setdefault(_fp(q), q)
     return list(seen.values())
 
+STEM_OVERRIDES = SRC / 'stem_overrides.json'
+
+# A paper presents questions in order; this app shuffles a random subset. Any stem that
+# points at another question is unanswerable here and must be rewritten to stand alone.
+CROSS_REF_RE = re.compile(r'同上題|承上題|續上題|依上題|接上題|同前題|依前題|上一題|下一題')
+
+
+def apply_stem_overrides(data: dict) -> None:
+    """Rewrite stems listed in sources/stem_overrides.json, then verify none remain.
+
+    Each override asserts the stem it replaces, so a parser change cannot silently
+    rewrite the wrong question. After applying them, any remaining cross-reference is
+    a hard error: a new paper has introduced one and it needs an override entry.
+    """
+    overrides = {}
+    if STEM_OVERRIDES.exists():
+        overrides = {k: v for k, v in
+                     json.loads(STEM_OVERRIDES.read_text(encoding='utf-8')).items()
+                     if not k.startswith('_')}
+
+    by_id = {q['id']: q for qs in data.values() for q in qs}
+    applied = 0
+    for qid, spec in overrides.items():
+        q = by_id.get(qid)
+        if q is None:
+            raise ValueError(
+                f'stem_overrides.json: {qid} is not in the build. It may have been '
+                'deduped away or renumbered — re-check the override.')
+        if q['stem'] == spec['stem']:
+            continue                      # already applied upstream; nothing to do
+        if q['stem'] != spec['was']:
+            raise ValueError(
+                f'stem_overrides.json: {qid} no longer matches the recorded original.\n'
+                f'  expected: {spec["was"]!r}\n  parsed:   {q["stem"]!r}')
+        q['stem'] = spec['stem']
+        applied += 1
+    print(f'Applied {applied} stem override(s)')
+
+    stragglers = [(q['id'], q['stem'][:60]) for qs in data.values() for q in qs
+                  if CROSS_REF_RE.search(q['stem']) and q['id'] not in overrides]
+    if stragglers:
+        lines = '\n'.join(f'  {i}: {t}' for i, t in stragglers)
+        raise ValueError(
+            'These stems reference another question, which breaks once the quiz '
+            'shuffles. Add a self-contained rewrite to sources/stem_overrides.json:\n'
+            + lines)
+
+
 def carry_over_explanations(data: dict) -> None:
     """Re-attach `explanations` from the existing questions.json.
 
@@ -212,15 +260,26 @@ def carry_over_explanations(data: dict) -> None:
     if not OUT.exists():
         return
     prev = json.loads(OUT.read_text(encoding='utf-8'))
-    by_fp = {}
+    by_id, by_fp = {}, {}
     for qs in prev.values():
         for q in qs:
             if q.get('explanations'):
+                by_id[q['id']] = (q['answer'], q['explanations'])
                 by_fp[_fp(q)] = q['explanations']
     kept = 0
     for qs in data.values():
         for q in qs:
-            if not q.get('explanations') and _fp(q) in by_fp:
+            if q.get('explanations'):
+                continue
+            # Match on id first: a stem override (see apply_stem_overrides) changes the
+            # text and therefore the fingerprint, but the question is the same one. The
+            # answer key must agree, so an explanation can never be attached to a
+            # question whose correct option has moved.
+            hit = by_id.get(q['id'])
+            if hit and hit[0] == q['answer']:
+                q['explanations'] = hit[1]
+                kept += 1
+            elif _fp(q) in by_fp:
                 q['explanations'] = by_fp[_fp(q)]
                 kept += 1
     print(f'Carried over explanations for {kept} questions')
@@ -254,6 +313,7 @@ def main():
         'sitca': sitca,
         'cfa_fra': cfa_fra,
     }
+    apply_stem_overrides(data)
     carry_over_explanations(data)
     OUT.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
     sz = OUT.stat().st_size
