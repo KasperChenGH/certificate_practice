@@ -13,7 +13,14 @@
   "",
   "A bank with no entry here (cfa_fra) falls back to drawing QUIZ_SIZE at random.",
   "",
-  "`note` is shown to the user on the results page, so keep it in Traditional Chinese."
+  "`note` is shown to the user on the results page, so keep it in Traditional Chinese.",
+  "",
+  "cfa_fra has no exam sessions to mirror, so its paper is a full-length drill sized to",
+  "one CFA Level I session (90 questions). CFA Institute publishes topic-area weights but",
+  "not module-level ones, so the section sizes are proportional to this bank's own coverage",
+  "of the Financial Statement Analysis curriculum — stated rather than implied. It carries",
+  "no pass_mark: the CFA minimum passing score is not published, and there is no per-topic",
+  "one, so the results page shows section scores without a pass/fail verdict."
  ],
  "futures": {
   "exam": "期貨商業務員",
@@ -74,6 +81,77 @@
     "subject": "投信投顧相關法規",
     "count": 50,
     "points": 2
+   }
+  ]
+ },
+ "cfa_fra": {
+  "exam": "CFA Level I — Financial Reporting & Analysis",
+  "note": "Full-length drill: 90 questions, the length of one CFA Level I exam session. Section sizes follow this bank's coverage of the Financial Statement Analysis curriculum, since CFA Institute publishes topic-area weights but not module-level ones. On the real exam, Financial Statement Analysis is roughly 11-14% of 180 questions — about 20-25 questions, not 90.",
+  "subjects": [
+   {
+    "subject": "Financial Analysis Techniques",
+    "count": 11,
+    "points": 1
+   },
+   {
+    "subject": "Statement of Cash Flows",
+    "count": 9,
+    "points": 1
+   },
+   {
+    "subject": "Income Statement",
+    "count": 9,
+    "points": 1
+   },
+   {
+    "subject": "Long-Lived Assets",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Balance Sheet",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Non-Current Liabilities",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Inventories",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Income Taxes",
+    "count": 7,
+    "points": 1
+   },
+   {
+    "subject": "Financial Reporting Quality",
+    "count": 6,
+    "points": 1
+   },
+   {
+    "subject": "Financial Reporting Standards",
+    "count": 5,
+    "points": 1
+   },
+   {
+    "subject": "Financial Statement Analysis Applications",
+    "count": 4,
+    "points": 1
+   },
+   {
+    "subject": "Introduction to Financial Statement Analysis",
+    "count": 4,
+    "points": 1
+   },
+   {
+    "subject": "Intercorporate Investments",
+    "count": 3,
+    "points": 1
    }
   ]
  }

@@ -211,16 +211,20 @@ BLUEPRINTS_OUT = REPO / 'blueprints.json'
 def tag_subjects(data: dict) -> None:
     """Copy the subject out of `origin` into its own field.
 
-    origin is '112 年第1 次｜期貨交易法規｜第 5 題'. The app needs the middle field to
-    compose a paper by subject, and parsing it in JS would put the format in two
-    places. cfa_fra uses a different origin format and has no blueprint, so it is
-    left untagged.
+    The Taiwan banks use '112 年第1 次｜期貨交易法規｜第 5 題' and the CFA bank uses
+    'CFA Level I | FRA | Income Statement'. Both put the subject in the middle field.
+    The app needs it to compose a paper by subject, and parsing it in JS would put the
+    origin format in two places.
     """
     for qs in data.values():
         for q in qs:
-            parts = [x.strip() for x in q.get('origin', '').split('｜')]
+            origin = q.get('origin', '')
+            sep = '｜' if '｜' in origin else ('|' if '|' in origin else None)
+            if not sep:
+                continue
+            parts = [x.strip() for x in origin.split(sep)]
             if len(parts) == 3:
-                q['subject'] = parts[1]
+                q['subject'] = parts[2] if sep == '|' else parts[1]
 
 
 def write_blueprints(data: dict) -> None:

@@ -18,10 +18,11 @@ rather than drawing at random:
 | 證券商高級業務員 | 150 題 = 投資學 50 + 財務分析 50 + 法規與實務 50 |
 | 證券商業務員 | 50 題 = 證券交易相關法規與實務 50 |
 | 投信投顧業務員 | 50 題 = 投信投顧相關法規 50 |
-| CFA Level I FRA | 100 題, drawn at random |
+| CFA Level I FRA | 90 題 = one CFA session length, across 13 curriculum sections |
 
-Results are scored **per subject** against a 70% pass mark, because the real exams fail a
-candidate who fails any one subject. Edit `sources/exam_blueprints.json` to change a split.
+Results are scored **per subject**. The Taiwan exams fail a candidate who fails any one
+subject, so each section is marked against a 70% pass mark; the CFA drill reports section
+scores without a verdict, since no minimum passing score is published. Edit `sources/exam_blueprints.json` to change a split.
 Wrong-answer history is kept per-device in `localStorage` (no backend, no account).
 
 ## Live demo

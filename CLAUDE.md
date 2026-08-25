@@ -36,7 +36,7 @@ built banks and emits `blueprints.json` for the app.
 | `securities` | 150 = 投資學 50 + 財務分析 50 + 法規與實務 50 |
 | `securities_rep` | 50 = 證券交易相關法規與實務 50 |
 | `sitca` | 50 = 投信投顧相關法規 50 |
-| `cfa_fra` | 100 drawn at random (no session structure) |
+| `cfa_fra` | 90 = a full CFA session length, 13 sections proportional to bank coverage |
 
 `build.py` **fails** if a blueprint names a subject no question carries, asks for more
 questions than exist, or names a bank that is not built — a typo would otherwise yield a
@@ -45,8 +45,10 @@ silently short or empty section. Covered by `scripts/test_blueprints.py`.
 Subjects come from the `subject` field, which `tag_subjects()` copies out of the middle of
 `origin` at build time, so the origin format is parsed in exactly one place.
 
-Scoring is **per subject**, with `pass_mark` (70) applied to each: the real exams fail a
-candidate who fails one subject regardless of the total. The results page and each history
+Scoring is **per subject**. `pass_mark` (70) is applied per section where the exam defines
+one: the Taiwan exams fail a candidate who fails one subject regardless of the total.
+`cfa_fra` deliberately omits `pass_mark` — CFA Institute does not publish a minimum passing
+score, let alone a per-topic one — so its sections show scores with no pass/fail verdict. The results page and each history
 record carry the per-subject split. A bank with no blueprint falls back to a random
 `QUIZ_SIZE` draw, and anything keyed off quiz length reads `currentSize()`, never the
 `QUIZ_SIZE` constant.

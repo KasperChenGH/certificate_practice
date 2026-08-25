@@ -475,8 +475,11 @@ function renderHome() {
     const bp = blueprintFor(t);
     let label = `${DATA[t].length} \u984c`;
     if (bp) {
-      const parts = bp.subjects.map(sec => `${sec.subject} ${sec.count}`).join('\uff0b');
-      label += `\u3000\u6bcf\u56de ${quizSizeFor(t)} \u984c\uff1a${parts}`;
+      // Enumerating 13 sections would swamp the button, so summarise past a few.
+      const detail = bp.subjects.length <= 3
+        ? bp.subjects.map(sec => `${sec.subject} ${sec.count}`).join('\uff0b')
+        : `${bp.subjects.length} \u500b\u4e3b\u984c`;
+      label += `\u3000\u6bcf\u56de ${quizSizeFor(t)} \u984c\uff1a${detail}`;
     }
     el('meta-'+t).textContent = label;
   }

@@ -60,5 +60,76 @@
     "points": 2
    }
   ]
+ },
+ "cfa_fra": {
+  "exam": "CFA Level I — Financial Reporting & Analysis",
+  "note": "Full-length drill: 90 questions, the length of one CFA Level I exam session. Section sizes follow this bank's coverage of the Financial Statement Analysis curriculum, since CFA Institute publishes topic-area weights but not module-level ones. On the real exam, Financial Statement Analysis is roughly 11-14% of 180 questions — about 20-25 questions, not 90.",
+  "subjects": [
+   {
+    "subject": "Financial Analysis Techniques",
+    "count": 11,
+    "points": 1
+   },
+   {
+    "subject": "Statement of Cash Flows",
+    "count": 9,
+    "points": 1
+   },
+   {
+    "subject": "Income Statement",
+    "count": 9,
+    "points": 1
+   },
+   {
+    "subject": "Long-Lived Assets",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Balance Sheet",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Non-Current Liabilities",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Inventories",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Income Taxes",
+    "count": 7,
+    "points": 1
+   },
+   {
+    "subject": "Financial Reporting Quality",
+    "count": 6,
+    "points": 1
+   },
+   {
+    "subject": "Financial Reporting Standards",
+    "count": 5,
+    "points": 1
+   },
+   {
+    "subject": "Financial Statement Analysis Applications",
+    "count": 4,
+    "points": 1
+   },
+   {
+    "subject": "Introduction to Financial Statement Analysis",
+    "count": 4,
+    "points": 1
+   },
+   {
+    "subject": "Intercorporate Investments",
+    "count": 3,
+    "points": 1
+   }
+  ]
  }
 }
