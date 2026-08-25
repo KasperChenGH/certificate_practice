@@ -144,6 +144,32 @@ const MIN_ATTEMPTS = 3;     // min attempts before a question can be "often wron
 const WRONG_RATIO = 0.5;    // threshold: ≥50% wrong → often wrong
 ```
 
+## Auditing the banks
+
+Two read-only scripts. Neither changes data nor gates the build.
+
+```bash
+python scripts/audit_conflicts.py [--all]      # cross-session contradictions
+python scripts/audit_staleness.py [--limit N]  # age profile + staleness risk list
+```
+
+`audit_conflicts.py` finds the same question asked in two sessions with two different
+correct answers — either a rule changed or one is mis-keyed. Two questions count as the
+same only when **both** stem and option set are >= 85% similar; stem alone is not enough,
+since a generic stem like 下列敘述何者有誤? recurs with entirely different options. Answers
+compare on the keyed option's **text**, never its letter (sessions shuffle option order),
+with 臺/台 and a leading 僅 before an enumeration normalised away — those variants produced
+most of the initial false positives.
+
+`audit_staleness.py` covers what conflicts cannot: a rule that moved *after* a question's
+last appearance leaves no internal trace. It reports the age profile, references to
+superseded benchmarks (LIBOR, 歐洲美元), and pre-113年 questions whose answer is a hard
+number, split into re-confirmed (asked again later, same answer) and unconfirmed.
+
+Last run: **0 real contradictions** across 1,185 Taiwan-bank questions — 58 near-duplicate
+pairs, 55 agreeing, and the 3 flagged are distinct questions that merely read alike
+(買權/賣權, 投信/投顧, 多頭/空頭).
+
 ## Work completed
 
 1. Parsed all source PDFs into structured JSONL using PyMuPDF + custom row-clustering parsers.
