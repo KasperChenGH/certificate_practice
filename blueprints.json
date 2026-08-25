@@ -1,0 +1,64 @@
+{
+ "futures": {
+  "exam": "期貨商業務員",
+  "pass_mark": 70,
+  "subjects": [
+   {
+    "subject": "期貨交易法規",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "期貨交易理論與實務",
+    "count": 50,
+    "points": 2
+   }
+  ]
+ },
+ "securities": {
+  "exam": "證券商高級業務員",
+  "pass_mark": 70,
+  "note": "本測驗依來源試卷編成：投資學、財務分析、法規與實務三卷，各 50 題。",
+  "subjects": [
+   {
+    "subject": "投資學",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "財務分析",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "法規與實務",
+    "count": 50,
+    "points": 2
+   }
+  ]
+ },
+ "securities_rep": {
+  "exam": "證券商業務員",
+  "pass_mark": 70,
+  "note": "正式測驗另有「證券投資與財務分析」50 題，該試卷不在題庫中，故此處僅測驗本科目。",
+  "subjects": [
+   {
+    "subject": "證券交易相關法規與實務",
+    "count": 50,
+    "points": 2
+   }
+  ]
+ },
+ "sitca": {
+  "exam": "投信投顧業務員",
+  "pass_mark": 70,
+  "note": "正式測驗另有「證券投資與財務分析」50 題，該試卷不在題庫中，故此處僅測驗本科目。",
+  "subjects": [
+   {
+    "subject": "投信投顧相關法規",
+    "count": 50,
+    "points": 2
+   }
+  ]
+ }
+}

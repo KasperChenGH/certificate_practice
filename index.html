@@ -129,6 +129,22 @@
   .topic-meta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 400; }
   .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
 
+  .subject-table { margin: 12px 0 0; font-size: 14px; }
+  .subject-table .row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 0; border-top: 1px solid var(--border);
+  }
+  .subject-table .row .nm { flex: 1; min-width: 0; text-align: left; }
+  .subject-table .row .sc { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .subject-table .row .vd { font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .subject-table .row .vd.pass { color: var(--good); background: rgba(31,138,62,0.12); }
+  .subject-table .row .vd.fail { color: var(--bad);  background: rgba(198,56,56,0.12); }
+  .blueprint-note { color: var(--muted); font-size: 12px; margin-top: 10px; line-height: 1.5; }
+  @media (prefers-color-scheme: dark) {
+    .subject-table .row .vd.pass { background: rgba(31,138,62,0.22); }
+    .subject-table .row .vd.fail { background: rgba(198,56,56,0.22); }
+  }
+
   /* ===== Exam history ===== */
   .hist-row {
     display: flex; align-items: center; gap: 12px;
@@ -236,6 +252,8 @@
       <div>本次得分</div>
       <div class="big"><span class="pct" id="result-score">0</span> / <span id="result-total">100</span></div>
       <div class="meta" id="result-detail">—</div>
+      <div class="subject-table" id="result-subjects"></div>
+      <div class="blueprint-note" id="result-note"></div>
     </div>
     <button class="btn" id="btn-result-review">檢視本次錯題</button>
     <button class="btn secondary" id="btn-home">回首頁</button>
@@ -255,7 +273,8 @@
   <div id="page-history-detail" class="hidden">
     <h1 id="hd-title">—</h1>
     <p class="meta" id="hd-meta">—</p>
-    <div id="hd-list"></div>
+    <div class="subject-table" id="hd-subjects"></div>
+    <div id="hd-list" style="margin-top:16px;"></div>
     <button class="btn" id="btn-hd-back">← 測驗紀錄</button>
     <button class="btn secondary" id="btn-hd-home">回首頁</button>
   </div>
@@ -289,8 +308,14 @@ const RECENT_WINDOW = 10;   // last N attempts per question
 const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
 const WRONG_RATIO = 0.5;    // ≥50% wrong over recent attempts
 
-let DATA = null;            // {topic: [{id, stem, options, answer, origin, topic}]}
+let DATA = null;            // {topic: [{id, stem, options, answer, origin, subject, topic}]}
+// {topic: {exam, pass_mark, note, subjects:[{subject, count, points}]}} — how a practice
+// paper is composed so it mirrors the real exam. Missing or unreachable => random draw.
+let BLUEPRINTS = {};
+function blueprintFor(topic) { return BLUEPRINTS[topic] || null; }
 function quizSizeFor(topic) {
+  const bp = blueprintFor(topic);
+  if (bp) return bp.subjects.reduce((a, sec) => a + sec.count, 0);
   return Math.min(QUIZ_SIZE, (DATA && DATA[topic] ? DATA[topic].length : QUIZ_SIZE));
 }
 function currentSize() { return STATE ? STATE.questions.length : QUIZ_SIZE; }
@@ -369,13 +394,16 @@ function saveResults(list) {
   console.warn('Could not save exam history (storage full)');
   return false;
 }
-function recordResult(correct) {
+function recordResult(correct, breakdown) {
   const wrong = [];
   STATE.questions.forEach((q, i) => {
     if (STATE.answers[i] !== q.answer) wrong.push([q.id, STATE.answers[i]]);
   });
   const list = loadResults();
-  list.unshift({ t: STATE.topic, ts: Date.now(), n: STATE.questions.length, c: correct, w: wrong });
+  // `s` holds the per-subject split: the record stores only wrong answers, so the
+  // per-subject totals could not be recomputed from it later.
+  list.unshift({ t: STATE.topic, ts: Date.now(), n: STATE.questions.length,
+                 c: correct, w: wrong, s: breakdown || {} });
   saveResults(list);
 }
 function fmtWhen(ts) {
@@ -443,9 +471,14 @@ function renderHome() {
   el('stat-accuracy').textContent = s.total ? (Math.round(100 * s.correct / s.total) + '%') : '—';
   el('stat-wrong-pool').textContent = s.wrongPool;
   for (const t of Object.keys(TOPIC_NAMES)) {
-    if (DATA && DATA[t]) {
-      el('meta-'+t).textContent = `${DATA[t].length} 題`;
+    if (!DATA || !DATA[t]) continue;
+    const bp = blueprintFor(t);
+    let label = `${DATA[t].length} \u984c`;
+    if (bp) {
+      const parts = bp.subjects.map(sec => `${sec.subject} ${sec.count}`).join('\uff0b');
+      label += `\u3000\u6bcf\u56de ${quizSizeFor(t)} \u984c\uff1a${parts}`;
     }
+    el('meta-'+t).textContent = label;
   }
   const saved = loadSavedQuiz();
   if (saved && DATA && !DATA[saved.topic]) clearQuizState();
@@ -462,9 +495,22 @@ function renderHome() {
 // ------- quiz -------
 function startQuiz(topic) {
   const pool = DATA[topic] || [];
-  if (!pool.length) { alert('此題庫目前沒有題目。'); return; }
-  const size = quizSizeFor(topic);
-  const picked = shuffle(pool).slice(0, size);
+  if (!pool.length) { alert('\u6b64\u984c\u5eab\u76ee\u524d\u6c92\u6709\u984c\u76ee\u3002'); return; }
+  const bp = blueprintFor(topic);
+  let picked;
+  if (bp) {
+    // Draw each subject's quota separately so the paper matches the real exam,
+    // then shuffle so the sections are interleaved rather than blocked.
+    picked = [];
+    for (const sec of bp.subjects) {
+      const sub = pool.filter(q => q.subject === sec.subject);
+      picked = picked.concat(shuffle(sub).slice(0, sec.count));
+    }
+    picked = shuffle(picked);
+  } else {
+    picked = shuffle(pool).slice(0, quizSizeFor(topic));
+  }
+  const size = picked.length;
   STATE = {
     topic,
     questions: picked,
@@ -563,7 +609,11 @@ function submitQuiz() {
     if (STATE.answers[i] === STATE.questions[i].answer) correct++;
   }
   clearQuizState();
-  recordResult(correct);
+  const breakdown = subjectBreakdown(STATE.questions, STATE.answers);
+  const bp = blueprintFor(STATE.topic);
+  recordResult(correct, breakdown);
+  renderSubjectTable(el('result-subjects'), breakdown, bp && bp.pass_mark);
+  el('result-note').textContent = bp && bp.note ? bp.note : '';
   el('result-score').textContent = correct;
   el('result-total').textContent = currentSize();
   el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${currentSize()-correct} 題`;
@@ -598,6 +648,40 @@ function showReview() {
     });
   }
   show('page-review');
+}
+
+// ------- per-subject scoring -------
+// The real exams are graded per subject: passing overall while failing one subject is
+// still a fail, so a combined score alone would be misleading.
+function subjectBreakdown(questions, answers) {
+  const acc = {};
+  questions.forEach((q, i) => {
+    const key = q.subject || '';
+    if (!key) return;
+    const row = acc[key] || (acc[key] = { correct: 0, total: 0 });
+    row.total++;
+    if (answers[i] === q.answer) row.correct++;
+  });
+  return acc;
+}
+
+function renderSubjectTable(el_, breakdown, passMark) {
+  el_.innerHTML = '';
+  const names = Object.keys(breakdown);
+  if (names.length < 2 && !passMark) return;   // nothing useful to add
+  for (const name of names) {
+    const { correct, total } = breakdown[name];
+    const pct = total ? Math.round(100 * correct / total) : 0;
+    const row = document.createElement('div');
+    row.className = 'row';
+    const verdict = passMark
+      ? `<span class="vd ${pct >= passMark ? 'pass' : 'fail'}">` +
+        `${pct >= passMark ? '\u53ca\u683c' : '\u672a\u53ca\u683c'}</span>`
+      : '';
+    row.innerHTML = `<span class="nm">${escapeHtml(name)}</span>` +
+      `<span class="sc">${correct}/${total}\u3000${pct}%</span>${verdict}`;
+    el_.appendChild(row);
+  }
 }
 
 // ------- shared: one wrong-question card -------
@@ -718,6 +802,9 @@ function showHistoryDetail(i) {
     '\u3000\u5f97\u5206 ' + r.c + ' / ' + r.n + '\uff08' + pct + '%\uff09' +
     '\u3000\u7b54\u932f ' + r.w.length + ' \u984c';
 
+  const bp = blueprintFor(r.t);
+  renderSubjectTable(el('hd-subjects'), r.s || {}, bp && bp.pass_mark);
+
   const cont = el('hd-list');
   cont.innerHTML = '';
   if (!r.w.length) {
@@ -753,6 +840,11 @@ async function boot() {
   try {
     const r = await fetch('questions.json');
     DATA = await r.json();
+    // Optional: without it every bank falls back to a random QUIZ_SIZE draw.
+    try {
+      const b = await fetch('blueprints.json');
+      if (b.ok) BLUEPRINTS = await b.json();
+    } catch (e) { console.warn('No exam blueprints; drawing at random.', e); }
   } catch (e) {
     document.body.innerHTML = '<div class="app"><h1>載入失敗</h1><p>無法讀取題庫檔（questions.json）。</p></div>';
     return;

@@ -24,9 +24,32 @@ Run locally: `python -m http.server 8000` then open `http://localhost:8000`.
 published. `build_finance_ethics()`, `parse_bank.py`, and the source PDFs are kept; restore
 by calling it from `build.py`'s `main()` again.
 
-Each quiz draws up to 100 random questions — `quizSizeFor()` uses the whole pool when a bank
-is smaller (`sitca` has 97). Anything keyed off the quiz length reads `currentSize()`, never
-the `QUIZ_SIZE` constant.
+### Exam blueprints
+
+A practice paper mirrors the real exam's subject split instead of drawing at random.
+`sources/exam_blueprints.json` is the one home for that; `build.py` validates it against the
+built banks and emits `blueprints.json` for the app.
+
+| Bank | Paper drawn |
+|---|---|
+| `futures` | 100 = 期貨交易法規 50 + 期貨交易理論與實務 50 |
+| `securities` | 150 = 投資學 50 + 財務分析 50 + 法規與實務 50 |
+| `securities_rep` | 50 = 證券交易相關法規與實務 50 |
+| `sitca` | 50 = 投信投顧相關法規 50 |
+| `cfa_fra` | 100 drawn at random (no session structure) |
+
+`build.py` **fails** if a blueprint names a subject no question carries, asks for more
+questions than exist, or names a bank that is not built — a typo would otherwise yield a
+silently short or empty section. Covered by `scripts/test_blueprints.py`.
+
+Subjects come from the `subject` field, which `tag_subjects()` copies out of the middle of
+`origin` at build time, so the origin format is parsed in exactly one place.
+
+Scoring is **per subject**, with `pass_mark` (70) applied to each: the real exams fail a
+candidate who fails one subject regardless of the total. The results page and each history
+record carry the per-subject split. A bank with no blueprint falls back to a random
+`QUIZ_SIZE` draw, and anything keyed off quiz length reads `currentSize()`, never the
+`QUIZ_SIZE` constant.
 
 `overallStats()` counts only question IDs present in the loaded banks. History for a retired
 bank stays in localStorage and would otherwise inflate the totals forever.
@@ -103,6 +126,7 @@ scripts/
   parse_sec.py      Parses 證券高業 試題 + 答案 PDFs (3 papers per session)
   parse_paper.py    Parses a single-subject paper; picks the answer block by subject label
   build_cfa.py      Validates + assembles the hand-authored CFA bank into sources/cfa_fra.json
+  test_blueprints.py  Asserts build.py rejects a blueprint that does not match the data
 sources/            Source PDFs (~6.5 MB) + cfa_fra.json + papers/ (single-subject papers)
 _expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.py)
 ```

@@ -9,8 +9,19 @@ Mobile-friendly web quiz for four Taiwan finance certifications plus CFA Level I
 - **CFA Level I — Financial Reporting & Analysis** — 514 questions, English, in the CFA
   exam's own three-choice format, with a per-option explanation on every question
 
-**1,699 questions in total.** Each quiz draws up to **100 random questions** from the chosen
-bank (a smaller bank uses its whole pool).
+**1,699 questions in total.** Each practice paper mirrors the real exam's subject split
+rather than drawing at random:
+
+| Exam | Practice paper |
+|---|---|
+| 期貨商業務員 | 100 題 = 期貨交易法規 50 + 期貨交易理論與實務 50 |
+| 證券商高級業務員 | 150 題 = 投資學 50 + 財務分析 50 + 法規與實務 50 |
+| 證券商業務員 | 50 題 = 證券交易相關法規與實務 50 |
+| 投信投顧業務員 | 50 題 = 投信投顧相關法規 50 |
+| CFA Level I FRA | 100 題, drawn at random |
+
+Results are scored **per subject** against a 70% pass mark, because the real exams fail a
+candidate who fails any one subject. Edit `sources/exam_blueprints.json` to change a split.
 Wrong-answer history is kept per-device in `localStorage` (no backend, no account).
 
 ## Live demo

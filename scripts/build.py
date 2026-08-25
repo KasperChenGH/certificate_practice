@@ -204,6 +204,61 @@ def dedup(qs: list[dict]) -> list[dict]:
     return list(seen.values())
 
 STEM_OVERRIDES = SRC / 'stem_overrides.json'
+BLUEPRINTS_IN = SRC / 'exam_blueprints.json'
+BLUEPRINTS_OUT = REPO / 'blueprints.json'
+
+
+def tag_subjects(data: dict) -> None:
+    """Copy the subject out of `origin` into its own field.
+
+    origin is '112 年第1 次｜期貨交易法規｜第 5 題'. The app needs the middle field to
+    compose a paper by subject, and parsing it in JS would put the format in two
+    places. cfa_fra uses a different origin format and has no blueprint, so it is
+    left untagged.
+    """
+    for qs in data.values():
+        for q in qs:
+            parts = [x.strip() for x in q.get('origin', '').split('｜')]
+            if len(parts) == 3:
+                q['subject'] = parts[1]
+
+
+def write_blueprints(data: dict) -> None:
+    """Validate sources/exam_blueprints.json against the built banks, then emit it.
+
+    A subject name that does not match the data, or a section asking for more
+    questions than exist, would silently yield a short or empty section at quiz time.
+    Both are build failures instead.
+    """
+    if not BLUEPRINTS_IN.exists():
+        print('  !! sources/exam_blueprints.json missing - skipping blueprints')
+        return
+    raw = json.loads(BLUEPRINTS_IN.read_text(encoding='utf-8'))
+    blueprints = {k: v for k, v in raw.items() if not k.startswith('_')}
+
+    for topic, bp in blueprints.items():
+        if topic not in data:
+            raise ValueError(f'exam_blueprints.json: no bank named {topic!r}')
+        available = {}
+        for q in data[topic]:
+            available[q.get('subject')] = available.get(q.get('subject'), 0) + 1
+        for sec in bp['subjects']:
+            have = available.get(sec['subject'], 0)
+            if not have:
+                raise ValueError(
+                    f'exam_blueprints.json: {topic} has no questions whose subject is '
+                    f'{sec["subject"]!r}. Available: {sorted(k for k in available if k)}')
+            if have < sec['count']:
+                raise ValueError(
+                    f'exam_blueprints.json: {topic}/{sec["subject"]} asks for '
+                    f'{sec["count"]} questions but only {have} exist')
+        total = sum(sec['count'] for sec in bp['subjects'])
+        print(f'  {topic}: {total} questions = ' +
+              ' + '.join(f'{sec["count"]} {sec["subject"]}' for sec in bp['subjects']))
+
+    BLUEPRINTS_OUT.write_text(json.dumps(blueprints, ensure_ascii=False, indent=1),
+                              encoding='utf-8')
+    print(f'Wrote {BLUEPRINTS_OUT}')
 
 # A paper presents questions in order; this app shuffles a random subset. Any stem that
 # points at another question is unanswerable here and must be rewritten to stand alone.
@@ -314,7 +369,11 @@ def main():
         'cfa_fra': cfa_fra,
     }
     apply_stem_overrides(data)
+    tag_subjects(data)
     carry_over_explanations(data)
+    print('Blueprints...')
+    write_blueprints(data)
+
     OUT.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
     sz = OUT.stat().st_size
     print(f'\nWrote {OUT} ({sz} bytes, {sz/1024:.1f} KB)')
