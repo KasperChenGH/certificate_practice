@@ -3,7 +3,9 @@
 ## Project
 
 Mobile-friendly quiz webapp for Taiwan financial certification exams, hosted on GitHub Pages.
-Live URL: `https://kasperchengh.github.io/certificate_practice/`
+Live URL: `https://certifications.courses/`
+(custom domain, set by the root `CNAME` file; the old
+`kasperchengh.github.io/certificate_practice/` address redirects to it)
 
 ## Scope
 

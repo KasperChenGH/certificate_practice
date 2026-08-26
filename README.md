@@ -27,8 +27,11 @@ Wrong-answer history is kept per-device in `localStorage` (no backend, no accoun
 
 ## Live demo
 
-After enabling GitHub Pages, the site will be at:
-`https://kasperchengh.github.io/certificate_practice/`
+`https://certifications.courses/`
+
+Served from GitHub Pages on a custom domain. The root `CNAME` file is what tells Pages
+the domain — deleting it reverts the site to `kasperchengh.github.io/certificate_practice/`.
+All asset paths in `index.html` are relative, so the site works at either address.
 
 ## Run locally
 
