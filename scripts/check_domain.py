@@ -45,7 +45,7 @@ def fetch(url: str, follow: bool = False):
     try:
         with opener.open(Request(url, headers={'User-Agent': 'check_domain'}),
                          timeout=20) as r:
-            return r.status, r.headers, r.read(4000)
+            return r.status, r.headers, r.read(80_000)
     except HTTPError as e:
         return e.code, e.headers, b''
     except (URLError, ssl.SSLError, TimeoutError, OSError) as e:
@@ -138,10 +138,12 @@ def main() -> int:
     served = False
     try:
         out = subprocess.run(
-            ['curl', '-s', '--max-time', '25', '--resolve', f'{d}:80:185.199.108.153',
+            ['curl', '-sL', '--max-time', '25',
+             '--resolve', f'{d}:80:185.199.108.153',
+             '--resolve', f'{d}:443:185.199.108.153',
              f'http://{d}/'], capture_output=True, text=True,
             encoding='utf-8', errors='replace')
-        served = 'questions.json' in out.stdout
+        served = 'questions.json' in out.stdout or '金融證照練習' in out.stdout
     except Exception:
         pass
     print(f'[{OK if served else WARN}] GitHub Pages '
@@ -151,7 +153,7 @@ def main() -> int:
 
     # ---- the real user-facing test ---------------------------------------------
     status, info, body = fetch(f'https://{d}/', follow=True)
-    if status == 200 and b'questions.json' in body:
+    if status == 200 and (b'questions.json' in body or '金融證照練習'.encode() in body):
         print(f'[{OK}] https://{d}/ serves the site')
     elif status is None:
         print(f'[{INFO}] https://{d}/ not reachable yet ({info}) — expected until the '

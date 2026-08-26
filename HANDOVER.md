@@ -9,9 +9,8 @@ Quiz site for four Taiwan finance certifications plus a CFA Level I FRA drill �
 **1,699 questions**. Static: one `index.html` plus `questions.json` and
 `blueprints.json`, no backend, no build step.
 
-Just moved to the custom domain **certifications.courses** (GoDaddy DNS, GitHub Pages
-hosting). **HTTP works and is fully verified. HTTPS is not live** and looks stuck rather
-than merely slow — see Pending item 1, which is the first thing to do.
+Live at **https://certifications.courses/** (GoDaddy DNS, GitHub Pages hosting), with a
+Let's Encrypt certificate valid to 2026-11-24 and Enforce HTTPS on.
 
 ## What was done this session
 
@@ -46,35 +45,19 @@ than merely slow — see Pending item 1, which is the first thing to do.
 
 ## Pending / next steps
 
-1. **HTTPS certificate — appears STUCK, needs a manual re-trigger.**
-   DNS is finished and verified from GitHub's own side:
-   `is_pointed_to_github_pages_ip`, `is_served_by_pages`, `is_valid` and
-   `is_https_eligible` are all **True**, `caa_error` is None, `www` is valid, and the
-   ACME challenge path answers from GitHub on port 80. Despite that, a watcher polled
-   for **2 hours (58 checks, all `eligible=True`) and no certificate was ever issued** —
-   the Pages API has no `https_certificate` key at all, meaning the request was never
-   initiated rather than being in progress. Re-saving the same domain via
-   `PUT /pages -f cname=…` did not help; it is a no-op.
+**Nothing blocking. The site is live at https://certifications.courses/ with a valid
+Let's Encrypt certificate and Enforce HTTPS on; `http://` 301s to `https://`.**
 
-   **Do this first on the other machine** — the documented remedy is to remove and
-   re-add the custom domain so Pages re-requests the certificate:
-   Settings → Pages → Custom domain → clear the field → Save → wait ~1 min →
-   re-enter `certifications.courses` → Save.
+Optional, in rough order of value:
 
-   Expect GitHub to delete and recreate the root `CNAME` file as it does this, which
-   creates commits on `main` — `git pull` before pushing anything afterwards.
-
-   Then:
-   ```bash
-   python scripts/check_domain.py          # says exactly what is outstanding
-   python scripts/await_https.py           # polls, then enables Enforce HTTPS
-   ```
-   Do not enable enforcement before the certificate exists — it errors.
-   Until it is issued the site works on `http://` only.
-2. Optional: `www` CNAME → `kasperchengh.github.io` (currently points at the apex,
-   which works).
-3. Optional: explanations for the 293 questions, if sourced rather than invented.
-4. Optional: recover the 證券投資分析人員 papers.
+1. Explanations for the 293 recovered questions (99 futures, 97 securities_rep,
+   97 sitca) — only if sourced rather than written from memory.
+2. Recover the 證券投資分析人員 papers (~63 questions); needs column-aware parsing of a
+   two-column answer key. See `sources/papers/README.md`.
+3. `www` CNAME → `kasperchengh.github.io` (currently points at the apex, which works).
+4. Confirm the 證券商高級業務員 blueprint: it is set to 150 questions to mirror the
+   source paper's three 試卷. Change in `sources/exam_blueprints.json` if the real exam
+   is a 100-question two-subject paper.
 
 ## Important context
 
@@ -90,8 +73,12 @@ than merely slow — see Pending item 1, which is the first thing to do.
   (matched by id, then fingerprint).
 - `build.py` **fails** on a blueprint naming an unknown subject, an oversized section, or
   a stem referencing another question with no override. Those guards are deliberate.
-- A background HTTPS watcher was running on the previous machine; it does not follow the
-  repo. Re-run `await_https.py` if the certificate is still pending.
+- **The certificate request wedged once.** GitHub reported the domain valid and
+  `is_https_eligible: True` for 15 hours while never creating a certificate record at
+  all. Re-saving the same domain via the API is a no-op. What fixed it: delete the root
+  `CNAME`, push, let Pages rebuild without a custom domain, then restore `CNAME` and
+  push — the certificate was approved within seconds. Doing it through the file rather
+  than the Pages UI keeps the commits in your own history.
 
 ## Files touched this session
 
