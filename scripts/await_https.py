@@ -44,9 +44,15 @@ def main() -> int:
     while time.time() < deadline:
         pages = api(f'repos/{REPO}/pages') or {}
         cert = (pages.get('https_certificate') or {}).get('state')
-        health = (api(f'repos/{REPO}/pages/health') or {}).get('domain') or {}
+        # One retry: this endpoint intermittently returns a body without `domain`,
+        # which otherwise logs a misleading run of None.
+        health = (api(f'repos/{REPO}/pages/health') or {}).get('domain')
+        if health is None:
+            time.sleep(3)
+            health = (api(f'repos/{REPO}/pages/health') or {}).get('domain') or {}
         print(f'[{stamp()}] dns_ok={health.get("is_pointed_to_github_pages_ip")} '
               f'served={health.get("is_served_by_pages")} '
+              f'eligible={health.get("is_https_eligible")} '
               f'cert={cert or "pending"} '
               f'enforced={pages.get("https_enforced")}', flush=True)
 
