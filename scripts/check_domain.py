@@ -9,7 +9,7 @@ Exit status 0 when the apex resolves to GitHub and HTTPS serves the site.
 """
 from __future__ import annotations
 import argparse, socket, ssl, sys, io, json, subprocess
-from urllib.request import urlopen, Request
+from urllib.request import urlopen, Request, build_opener, HTTPRedirectHandler
 from urllib.error import URLError, HTTPError
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
@@ -21,6 +21,27 @@ GH_AAAA = {'2606:50c0:8000::153', '2606:50c0:8001::153',
 REPO = 'KasperChenGH/certificate_practice'
 
 OK, BAD, WARN = '  OK  ', ' TODO ', ' WARN '
+
+
+class _NoRedirect(HTTPRedirectHandler):
+    """Report the first response instead of following it.
+
+    A forwarding service answers with a redirect; following it would hide the
+    Server header that identifies who is actually holding the domain.
+    """
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def server_header(url: str) -> str:
+    try:
+        with build_opener(_NoRedirect).open(
+                Request(url, headers={'User-Agent': 'check_domain'}), timeout=15) as r:
+            return r.headers.get('server', '')
+    except HTTPError as e:
+        return e.headers.get('server', '')
+    except Exception:
+        return ''
 
 
 def resolve(host: str, family) -> set[str]:
@@ -86,6 +107,16 @@ def main() -> int:
                 problems += 1
     except Exception as e:
         print(f'[{WARN}] could not read the Pages API ({e})')
+
+    # GoDaddy's parking/forwarding service answers with 'server: DPS/...'. While
+    # forwarding is enabled it pins the apex A record, so the registrar's DNS panel
+    # refuses to add more A records — the symptom is "it won't let me add a second one".
+    server = server_header(f'http://{d}/')
+    if server.startswith('DPS'):
+        print(f'[{BAD}] GoDaddy Forwarding is still ON (server: {server})')
+        print( '          It pins the apex A record — the DNS panel will refuse extra A')
+        print( '          records until you delete the forwarding entry.')
+        problems += 1
 
     # Does it actually serve?
     for scheme in ('http', 'https'):
