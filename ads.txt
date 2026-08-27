@@ -1,0 +1,13 @@
+# Authorized Digital Sellers — https://iabtechlab.com/ads-txt/
+# Lists who may sell advertising on certifications.courses. Buyers check this file
+# before bidding, so inventory from a domain without it attracts fewer bids.
+#
+# Fields: <ad system>, <publisher id>, <relationship>, <certification authority id>
+# The trailing id is Google's own TAG certification id and is the same for every
+# AdSense publisher; only the pub- number is specific to this account.
+#
+# The publisher id must match the one in the AdSense snippet in each page's <head>
+# (ca-pub-7642249081069780). A file that exists but omits it reads as 未授權 and stops
+# ads serving altogether — worse than having no file.
+
+google.com, pub-7642249081069780, DIRECT, f08c47fec0942fa0
