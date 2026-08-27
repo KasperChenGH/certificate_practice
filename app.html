@@ -94,11 +94,6 @@
   .expl-item .expl-letter { font-weight: 700; min-width: 26px; flex-shrink: 0; }
   .expl-item.expl-correct .expl-letter { color: var(--good); }
   .expl-item.expl-sel-wrong .expl-letter { color: var(--bad); }
-  @media (prefers-color-scheme: dark) {
-    .feedback.correct { background: #1e3a26; }
-    .feedback.wrong { background: #3a1e1e; }
-    .expl-block { border-top-color: rgba(255,255,255,0.1); }
-  }
   .option.locked { cursor: default; }
   .result-summary {
     text-align: center; padding: 20px; background: var(--card);
@@ -127,6 +122,9 @@
   .stat .num { font-size: 20px; font-weight: 700; color: var(--accent); }
   .stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; }
   .topic-meta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 400; }
+  .topic-meta .tc-n { font-weight: 700; }
+  .topic-meta .tc-n small { font-weight: 600; opacity: 0.8; margin-left: 2px; }
+  .topic-meta .tc-p::before { content: '\3000'; }
   .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
 
   .subject-table { margin: 12px 0 0; font-size: 14px; }
@@ -140,10 +138,6 @@
   .subject-table .row .vd.pass { color: var(--good); background: rgba(31,138,62,0.12); }
   .subject-table .row .vd.fail { color: var(--bad);  background: rgba(198,56,56,0.12); }
   .blueprint-note { color: var(--muted); font-size: 12px; margin-top: 10px; line-height: 1.5; }
-  @media (prefers-color-scheme: dark) {
-    .subject-table .row .vd.pass { background: rgba(31,138,62,0.22); }
-    .subject-table .row .vd.fail { background: rgba(198,56,56,0.22); }
-  }
 
   /* ===== Exam history ===== */
   .hist-row {
@@ -171,21 +165,6 @@
   .hist-summary .figs { color: var(--muted); }
   .hist-summary .figs b { color: var(--text); font-weight: 600; }
   .your-line { color: var(--bad); font-size: 14px; margin-top: 6px; }
-  @media (prefers-color-scheme: dark) {
-    .hist-row:active { background: #2a2a2c; }
-    .score-pill.pass { background: rgba(31,138,62,0.22); }
-    .score-pill.fail { background: rgba(198,56,56,0.22); }
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1c1c1e; --card: #2c2c2e; --text: #f5f5f7; --muted: #98989d;
-      --accent: #6ea1d8; --accent-soft: #87b6e6; --border: #3a3a3c;
-    }
-    .option.selected { background: #1e3550; }
-    .option.correct { background: #1e3a26; }
-    .option.wrong { background: #3a1e1e; }
-    .btn.secondary { background: #3a3a3c; color: var(--text); }
-  }
 
 
   /* ===== ad slots: reserved height, never flush against a control ===== */
@@ -241,10 +220,20 @@
       margin-bottom: 0; text-align: left; padding: 22px; min-height: 190px;
       display: flex; flex-direction: column; justify-content: space-between; font-size: 17px;
     }
+    /* On desktop the button is a card: title at the top, the count as its anchor
+       number, the paper composition on a rule at the foot. */
     .topic-grid .btn[data-topic] .topic-meta {
-      font-size: 13px; line-height: 1.65; opacity: 0.8; margin-top: 14px;
-      padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.18);
+      display: flex; flex-direction: column; opacity: 1; margin-top: 10px;
+      padding-top: 0; border-top: none; flex: 1;
     }
+    .topic-grid .topic-meta .tc-n { font-size: 34px; line-height: 1; font-weight: 700;
+      font-variant-numeric: tabular-nums; }
+    .topic-grid .topic-meta .tc-n small { font-size: 13px; }
+    .topic-grid .topic-meta .tc-p {
+      font-size: 13px; line-height: 1.65; opacity: 0.78; margin-top: auto;
+      padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.18);
+    }
+    .topic-grid .topic-meta .tc-p::before { content: none; }
     .topic-grid .adband { padding: 0; }
     .topic-grid .adslot { min-height: 190px; }
     #page-home .btn.review, #page-home .btn.secondary { max-width: 260px; }
@@ -277,7 +266,10 @@
       background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
     }
     .history-grid .hist-row:first-child { border-top: 1px solid var(--border); }
-    .hist-row .subj-cell { display: block; flex: 0 0 240px; font-size: 13px; color: var(--muted); }
+    .hist-row .subj-cell {
+      display: block; flex: 0 0 250px; font-size: 12.5px; line-height: 1.6;
+      color: var(--muted); font-variant-numeric: tabular-nums;
+    }
     .history-side .adslot { min-height: 250px; }
 
     /* 常錯題複習 / 紀錄明細 — two columns of cards */
@@ -640,15 +632,18 @@ function renderHome() {
   for (const t of Object.keys(TOPIC_NAMES)) {
     if (!DATA || !DATA[t]) continue;
     const bp = blueprintFor(t);
-    let label = `${DATA[t].length} \u984c`;
+    // Three tiers, matching the design: bank size, then how a paper is composed.
+    // Built as markup rather than one string so the count can carry its own weight
+    // on desktop, where the button becomes a card.
+    let html = `<span class="tc-n">${DATA[t].length}<small>\u984c</small></span>`;
     if (bp) {
-      // Enumerating 13 sections would swamp the button, so summarise past a few.
+      // Enumerating 13 sections would swamp the card, so summarise past a few.
       const detail = bp.subjects.length <= 3
-        ? bp.subjects.map(sec => `${sec.subject} ${sec.count}`).join('\uff0b')
+        ? bp.subjects.map(sec => `${escapeHtml(sec.subject)} ${sec.count}`).join('\uff0b')
         : `${bp.subjects.length} \u500b\u4e3b\u984c`;
-      label += `\u3000\u6bcf\u56de ${quizSizeFor(t)} \u984c\uff1a${detail}`;
+      html += `<span class="tc-p">\u6bcf\u56de ${quizSizeFor(t)} \u984c\uff1a${detail}</span>`;
     }
-    el('meta-'+t).textContent = label;
+    el('meta-'+t).innerHTML = html;
   }
   const saved = loadSavedQuiz();
   if (saved && DATA && !DATA[saved.topic]) clearQuizState();
@@ -975,7 +970,7 @@ function showHistory() {
     // so CSS hides it below 1024px rather than the markup differing between widths.
     const subj = Object.entries(r.s || {})
       .map(([nm, v]) => escapeHtml(nm) + ' ' + (v.total ? Math.round(100 * v.correct / v.total) : 0) + '%')
-      .join('\u3000');
+      .join('<br>');
     row.innerHTML =
       '<div class="grow">' +
         '<div class="topic">' + escapeHtml(topicLabel(r.t)) + '</div>' +
