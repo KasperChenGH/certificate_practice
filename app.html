@@ -1097,6 +1097,13 @@ async function boot() {
   el('btn-discard').onclick = () => { clearQuizState(); el('resume-banner').classList.add('hidden'); };
   renderHome();
   show('page-home');
+
+  // Deep link from the landing page: /app.html?topic=futures starts that paper.
+  // Not when a paper is already in progress — beginning a new one would discard it,
+  // and losing 60 answered questions to a stray click is not a fair trade. In that
+  // case the home page is already showing the resume banner, so the choice is theirs.
+  const wanted = new URLSearchParams(location.search).get('topic');
+  if (wanted && DATA[wanted] && !loadSavedQuiz()) startQuiz(wanted);
 }
 boot();
 </script>

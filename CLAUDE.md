@@ -18,6 +18,12 @@ Two pages, static data, no backend:
   layouts behind `@media (min-width: 1024px)`.
 - `questions.json` + `blueprints.json` — fetched relatively, so both work at any root.
 
+**Deep link:** `app.html?topic=<key>` starts that paper immediately. The landing page's
+exam directory links every live row this way (證券交易相關法規與實務乙科 points at
+`securities_rep` — same paper). It deliberately does **not** start a paper when one is
+already in progress: that would discard the saved answers, so it lands on the home page
+with the resume banner instead. Covered by `design/linktest.mjs`.
+
 Run locally: `python -m http.server 8000` then open `http://localhost:8000`.
 
 ## Question banks
