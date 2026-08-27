@@ -7,6 +7,12 @@ Live URL: `https://certifications.courses/`
 (custom domain, set by the root `CNAME` file; the old
 `kasperchengh.github.io/certificate_practice/` address redirects to it)
 
+## Before searching the web for questions
+
+**Read `docs/SEARCH_LOG.md` first.** It records every source already looked at — the ones
+that worked, the dead ends, and the exams that are blocked for reasons no further search
+will fix. Append to it after any search, including the ones that find nothing.
+
 ## Scope
 
 Two pages, static data, no backend:
@@ -19,8 +25,11 @@ Two pages, static data, no backend:
 - `questions.json` + `blueprints.json` — fetched relatively, so both work at any root.
 
 **Deep link:** `app.html?topic=<key>` starts that paper immediately. The landing page's
-exam directory links every live row this way (證券交易相關法規與實務乙科 points at
-`securities_rep` — same paper). It deliberately does **not** start a paper when one is
+exam directory links every live row this way. 證券商業務員 and 證券交易相關法規與實務乙科
+both point at `securities_rep`: they are different certificates — 100 題 over two subjects
+versus 50 題 over one of them — that share the one subject this bank holds.
+
+The deep link deliberately does **not** start a paper when one is
 already in progress: that would discard the saved answers, so it lands on the home page
 with the resume banner instead. Covered by `design/linktest.mjs`.
 
@@ -28,17 +37,18 @@ Run locally: `python -m http.server 8000` then open `http://localhost:8000`.
 
 ## Question banks
 
-| Topic key         | Display name               | Count |
-|-------------------|---------------------------|-------|
-| `futures`         | 期貨商業務員               | 691   |
-| `securities`      | 證券商高級業務員            | 297   |
-| `securities_rep`  | 證券商業務員                | 100   |
-| `sitca`           | 投信投顧業務員              | 97    |
-| `cfa_fra`         | CFA Level I — Financial Reporting & Analysis | 514 |
+Bank keys, display names and sizes are **not listed here** — they went stale every time
+a paper was added. `questions.json` is the list; `app.html`'s `TOPIC_NAMES` is the naming;
+`blueprints.json` carries each bank's paper composition and its `coverage` block
+(pool / draw / ratio). To see the current state:
 
-**Retired:** `finance_ethics` (金融市場常識與職業道德, 1120 q) — exam passed, no longer
-published. `build_finance_ethics()`, `parse_bank.py`, and the source PDFs are kept; restore
-by calling it from `build.py`'s `main()` again.
+```bash
+python -c "import json;d=json.load(open('questions.json',encoding='utf-8'));print({k:len(v) for k,v in d.items()})"
+```
+
+A bank may be retired by dropping it from `build.py`'s `main()`; keep its builder and
+source PDFs so it can be restored, and see `check_explanation_coverage` below for the
+trap that lies in wait when it is.
 
 ### Exam blueprints
 
@@ -46,13 +56,6 @@ A practice paper mirrors the real exam's subject split instead of drawing at ran
 `sources/exam_blueprints.json` is the one home for that; `build.py` validates it against the
 built banks and emits `blueprints.json` for the app.
 
-| Bank | Paper drawn |
-|---|---|
-| `futures` | 100 = 期貨交易法規 50 + 期貨交易理論與實務 50 |
-| `securities` | 150 = 投資學 50 + 財務分析 50 + 法規與實務 50 |
-| `securities_rep` | 50 = 證券交易相關法規與實務 50 |
-| `sitca` | 50 = 投信投顧相關法規 50 |
-| `cfa_fra` | 90 = a full CFA session length, 13 sections proportional to bank coverage |
 
 `build.py` **fails** if a blueprint names a subject no question carries, asks for more
 questions than exist, or names a bank that is not built — a typo would otherwise yield a
@@ -99,22 +102,29 @@ derives the letters from the non-empty options, so both formats render from one 
 }
 ```
 
-`explanations` was LLM-generated for all 2009 questions (Traditional Chinese, per-option).
+`explanations` is LLM-generated (Traditional Chinese, per-option) and is **not
+reproducible from the source PDFs**. Coverage is not total — questions from newly added
+papers carry the official answer and no explanation until one is written. The per-bank
+count lives in `sources/explanation_coverage.json`, which is also the guard's baseline.
 
 ## Data sources
 
-- **期貨商業務員**: deduplicated PDF covering 112年第1次 → 114年第1次 (592 q after dedup)
-- **證券商高級業務員**: SFI past papers 114年第3次 + 115年第1次; 3 concatenated sub-papers per PDF (投資學 / 財務分析 / 法規)
-- **金融市場常識與職業道德**: SFI official 1,120-question bank effective 113年9月1日
-- **期貨交易法規 / 證券商業務員 / 投信投顧**: single-subject SFI papers for 114年第3次 and
-  115年第1次, in `sources/papers/` — see the README there. Answer blocks are matched to
-  subjects **by printed label with coordinates**, never by position, because each answer PDF
-  covers every subject in that session's exam.
-- **CFA Level I FRA**: 514 questions hand-authored against the CFA Level I Financial Statement
-  Analysis curriculum — not parsed from any PDF. Canonical file: `sources/cfa_fra.json`,
-  assembled from batch files by `scripts/build_cfa.py`.
+Two of the banks come from a complete official 題庫; every other bank is built from past
+papers, so its size is (sittings collected) × (questions per paper).
 
-Source PDFs live in `sources/`. Rebuild script: `python scripts/build.py` (requires `pip install pymupdf`).
+- **Where each bank's papers come from, and why some exams are absent**:
+  `sources/papers/README.md`
+- **Which URLs have already been searched, and which were dead ends**:
+  `docs/SEARCH_LOG.md`
+
+證基會 publishes only the two most recent sittings, so papers must be pulled each quarter
+or recovered from a web archive afterwards. Answer blocks are matched to subjects **by
+printed label with coordinates**, never by position, and the parser raises rather than
+guess — an answer PDF covers every subject in that session's exam.
+
+Rebuild: `python scripts/build.py` (requires `pip install pymupdf`).
+
+
 `build.py` carries `explanations` over from the existing `questions.json`, so a rebuild does
 not drop the LLM-generated explanations (they are not reproducible from the source PDFs).
 Carry-over matches on question **id** first (requiring the answer key to agree), falling back
@@ -136,17 +146,21 @@ is what stops this class of bug returning when new papers are added.
 ## Key files
 
 ```
-index.html          Full webapp — quiz logic, review page, localStorage, all CSS/JS
-questions.json      Combined question bank (~1.5 MB, UTF-8, includes explanations)
+app.html            The quiz app — quiz logic, review, history, localStorage, all CSS/JS
+index.html          Landing page. GENERATED from design/Main.dc.html
+questions.json      Combined question bank (UTF-8, includes explanations)
+blueprints.json     Per-bank paper composition + coverage ratios, emitted by build.py
+docs/SEARCH_LOG.md  Every source already searched — read before searching again
 scripts/
   build.py          Orchestrator — rebuilds questions.json from source PDFs
   parse_bank.py     Parses SFI 金融市場常識 / 職業道德 bank PDFs
   parse_sec.py      Parses 證券高業 試題 + 答案 PDFs (3 papers per session)
-  parse_paper.py    Parses a single-subject paper; picks the answer block by subject label
-  build_cfa.py      Validates + assembles the hand-authored CFA bank into sources/cfa_fra.json
-  test_blueprints.py  Asserts build.py rejects a blueprint that does not match the data
-sources/            Source PDFs (~6.5 MB) + cfa_fra.json + papers/ (single-subject papers)
-_expl_work/         Explanation generation artifacts (pilot + 14 chunks, merge.py)
+  parse_paper.py    Parses one subject out of a paper; picks the answer block by label
+  build_cfa.py      Validates + assembles the hand-authored CFA bank
+  test_*.py         Build guards: blueprints, explanation coverage, stem overrides
+sources/            Source PDFs + cfa_fra.json + papers/ (see papers/README.md)
+design/             Landing-page source, site build, and the browser test suites
+_expl_work/         Explanation generation artifacts
 ```
 
 ## App pages
@@ -257,20 +271,27 @@ pairs, 55 agreeing, and the 3 flagged are distinct questions that merely read al
 2. Deduplicated questions via SHA-1 fingerprint on normalized stem text.
 3. Built initial webapp with 3-topic quiz, localStorage history, "often wrong" review page.
 4. UI refinements: abort button spacing, inline per-question correct-answer feedback, score-only results page.
-5. LLM-generated per-option explanations (Traditional Chinese) for all 2009 questions via parallel subagents; merged into questions.json.
+5. LLM-generated per-option explanations (Traditional Chinese), merged into questions.json.
 6. Updated quiz UI to display 解析 explanation block after every answered question.
 7. Quiz state persistence: auto-saved to localStorage after every answer/navigation; resume banner on home page; 儲存並回到首頁 button for explicit mid-quiz pause.
 8. Added the CFA Level I FRA bank (514 hand-authored 3-choice questions with per-option
    explanations) and removed the Options Pricing Theory study section, its markdown
    pipeline, and the marked/KaTeX CDN dependencies.
 9. Recovered six unused SFI papers from `期貨證照/_raw/probe/`: +99 futures questions and
-   two new banks (`securities_rep`, `sitca`). Retired `finance_ethics`. Quiz length became
-   per-bank; stats now ignore retired-bank history.
+   two new banks (`securities_rep`, `sitca`). Quiz length became per-bank; stats now
+   ignore retired-bank history.
+10. Restored `finance_ethics` and rebuilt the landing directory on 證基會's official
+    category names.
+11. Pulled every paper 證基會 currently publishes, plus 24 older sittings recovered from
+    web-archive captures of the same download slots — three new banks and several more
+    sittings for the existing ones. See `docs/SEARCH_LOG.md`.
 
-**Known gap:** the 293 questions added in step 9 have no `explanations` (99 futures, 97
-securities_rep, 97 sitca). The 解析 block simply does not render for them. Writing Taiwan
-regulatory rationale from memory risks confidently wrong statutory specifics, so it was
-left undone rather than guessed.
+**Known gap:** questions from newly added papers carry the official answer but no
+`explanations`, and the 解析 block does not render for them. Writing Taiwan regulatory
+rationale from memory risks confidently wrong statutory specifics, so it is left undone
+rather than guessed; where an answer is a bare statutory threshold the explanation states
+the rule instead of inventing a rationale. Current coverage per bank:
+`sources/explanation_coverage.json`.
 
 `build_cfa.py` also **rebalances the answer key**: hand-authored questions came out
 heavily skewed toward A, so each question's options are cyclically rotated (preserving
