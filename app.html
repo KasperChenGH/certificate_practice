@@ -168,13 +168,6 @@
   .your-line { color: var(--bad); font-size: 14px; margin-top: 6px; }
 
 
-  /* ===== ad slots: reserved height, never flush against a control ===== */
-  .adband { padding: 22px 0 4px; }
-  .adband.ruled { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 26px; }
-  .adslot {
-    min-height: 258px; display: flex; align-items: center; justify-content: center;
-    border: 1px dashed #c9c9ce; border-radius: 10px; background: rgba(0,0,0,0.015);
-  }
 
   /* ===== desktop top bar (hidden on phones, where buttons are the navigation) ===== */
   .topbar { display: none; }
@@ -235,8 +228,6 @@
       padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.18);
     }
     .topic-grid .topic-meta .tc-p::before { content: none; }
-    .topic-grid .adband { padding: 0; }
-    .topic-grid .adslot { min-height: 190px; }
     #page-home .btn.review, #page-home .btn.secondary { max-width: 260px; }
     #page-home .home-actions { display: flex; gap: 10px; margin-top: 22px; }
     #page-home .home-actions .btn { margin-bottom: 0; }
@@ -245,8 +236,6 @@
     .quiz-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
     .quiz-side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 84px; }
     .quiz-side .btn { margin-bottom: 0; }
-    .quiz-side .adslot { min-height: 250px; }
-    .quiz-side .adband { padding: 4px 0 0; }
     #page-quiz .progress-wrap { position: static; }
     #page-quiz .abort-row { display: flex; gap: 10px; }
     #page-quiz .abort-row .btn { margin-top: 0 !important; }
@@ -257,8 +246,6 @@
     .results-grid .result-summary .big { font-size: 52px; }
     .results-side { display: flex; flex-direction: column; gap: 12px; }
     .results-side .btn { margin-bottom: 0; }
-    .results-side .adslot { min-height: 250px; }
-    .results-side .adband { padding: 4px 0 0; }
 
     /* 測驗紀錄 — summaries beside a scannable list, with a per-subject column */
     .history-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 28px; align-items: start; }
@@ -271,7 +258,6 @@
       display: block; flex: 0 0 250px; font-size: 12.5px; line-height: 1.6;
       color: var(--muted); font-variant-numeric: tabular-nums;
     }
-    .history-side .adslot { min-height: 250px; }
 
     /* 常錯題複習 / 紀錄明細 — two columns of cards */
     #review-list, #hd-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
@@ -279,7 +265,6 @@
     .detail-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 28px; align-items: start; }
     .detail-grid .detail-side { position: sticky; top: 84px; }
     .detail-grid .detail-side .btn { margin-bottom: 8px; }
-    .detail-grid .detail-side .adslot { min-height: 250px; }
     .detail-grid #hd-list { margin-top: 0 !important; }
   }
 </style>
@@ -324,10 +309,6 @@
     <button class="btn" data-topic="sustainability">永續發展基礎能力測驗<div class="topic-meta" id="meta-sustainability">—</div></button>
     <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
     <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
-    <div class="adband"><div class="adslot">
-      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
-           container: the reserved height stops the ad shifting the page (CLS). -->
-    </div></div>
     </div>
     <div class="home-actions">
       <button class="btn review" id="btn-review">常錯題複習</button>
@@ -374,10 +355,6 @@
         </div>
       </div>
       <button class="btn" id="btn-submit-side">交卷</button>
-      <div class="adband"><div class="adslot">
-      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
-           container: the reserved height stops the ad shifting the page (CLS). -->
-    </div></div>
     </aside>
    </div>
   </div>
@@ -395,10 +372,6 @@
     <div class="results-side">
       <button class="btn" id="btn-result-review">檢視本次錯題</button>
       <button class="btn secondary" id="btn-home">回首頁</button>
-      <div class="adband"><div class="adslot">
-      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
-           container: the reserved height stops the ad shifting the page (CLS). -->
-    </div></div>
     </div>
    </div>
   </div>
@@ -410,10 +383,6 @@
    <div class="history-grid">
     <div class="history-side">
       <div id="history-summary"></div>
-      <div class="adband"><div class="adslot">
-      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
-           container: the reserved height stops the ad shifting the page (CLS). -->
-    </div></div>
       <button class="btn" id="btn-history-home" style="margin-top:12px;">回首頁</button>
       <button class="btn secondary" id="btn-history-clear" style="color:var(--bad);">清除測驗紀錄</button>
     </div>
@@ -430,10 +399,6 @@
       <div class="subject-table" id="hd-subjects"></div>
       <button class="btn" id="btn-hd-back" style="margin-top:16px;">← 測驗紀錄</button>
       <button class="btn secondary" id="btn-hd-home">回首頁</button>
-      <div class="adband"><div class="adslot">
-      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
-           container: the reserved height stops the ad shifting the page (CLS). -->
-    </div></div>
     </div>
     <div id="hd-list" style="margin-top:16px;"></div>
    </div>
@@ -444,10 +409,6 @@
     <h1>常錯題複習</h1>
     <p class="meta" id="review-meta">—</p>
     <div id="review-list"></div>
-    <div class="adband"><div class="adslot">
-      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
-           container: the reserved height stops the ad shifting the page (CLS). -->
-    </div></div>
     <button class="btn" id="btn-review-home" style="margin-top:16px;">回首頁</button>
   </div>
 

@@ -121,12 +121,6 @@
 
     /* Reserved ad space. Fixed min-height so the slot cannot shift the page when it
        fills (CLS), and its own band of padding so an ad never lands against a button. */
-    .adband { padding: 8px 0 20px; }
-    .adslot {
-      min-height: 106px; display: flex; align-items: center; justify-content: center;
-      border: 1px dashed #c9c9ce; border-radius: 10px; background: #fafafb;
-      color: #a1a1a6; font-size: 12px; letter-spacing: 1px; text-align: center;
-    }
 
     footer { border-top: 1px solid var(--line); padding: 40px 0 56px; }
     footer p { margin: 0 0 8px; font-size: 13px; line-height: 1.75; color: var(--muted); }
@@ -149,7 +143,6 @@
       a.rowinner .go { opacity: 0.55; }
       .exam .nm { font-size: 15.5px; }
       .exam .req { margin-top: 6px; line-height: 1.65; }
-      .adslot { min-height: 258px; }
       .why { grid-template-columns: minmax(0, 1fr); }
       .btn { padding: 15px 24px; }
       .cta-row .btn { flex: 1; text-align: center; }
@@ -247,14 +240,6 @@
   </div>
 </section>
 
-<div class="adband">
-  <div class="wrap"><div class="adslot" data-ad-slot="1">
-        <!-- AdSense: paste the <ins class="adsbygoogle"> unit here.
-             Keep this container: its reserved height stops the ad shifting
-             the page when it loads (CLS). Desktop 728x90, mobile 300x250. -->
-      </div></div>
-</div>
-
 <section style="background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
   <div class="wrap">
     <div class="sec-head">
@@ -301,14 +286,6 @@
     </div>
   </div>
 </section>
-
-<div class="adband" style="padding-bottom: 40px;">
-  <div class="wrap"><div class="adslot" data-ad-slot="2">
-        <!-- AdSense: paste the <ins class="adsbygoogle"> unit here.
-             Keep this container: its reserved height stops the ad shifting
-             the page when it loads (CLS). Desktop 728x90, mobile 300x250. -->
-      </div></div>
-</div>
 
 <footer>
   <div class="wrap">
