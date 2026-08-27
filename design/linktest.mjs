@@ -51,17 +51,24 @@ await go('http://localhost:8123/index.html');
 
 const links = await ev(`return [...document.querySelectorAll('.exam a.rowinner')]
   .map(a => a.getAttribute('href'));`);
-check('six rows link', links.length === 6, links.join(' '));
+const BANKS = ['futures','securities','securities_rep','sitca','finance_ethics',
+               'futures_trust','internal_control','sustainability','cfa_fra'];
 check('every live bank is reachable from the directory',
-  ['futures','securities','securities_rep','sitca','finance_ethics','cfa_fra']
-    .every(t => links.includes('/app.html?topic=' + t)));
+  BANKS.every(t => links.includes('/app.html?topic=' + t)),
+  links.join(' '));
+check('no row points at a bank that does not exist',
+  links.every(h => BANKS.includes(h.replace('/app.html?topic=', ''))));
 check('every link carries a topic', links.every(h => h.startsWith('/app.html?topic=') && h.length > 16));
-check('no bank is listed twice', new Set(links).size === links.length);
-check('the two certificates that share a paper share one row',
-  await ev(`const a = [...document.querySelectorAll('.exam a.rowinner')]
-              .find(x => x.getAttribute('href').endsWith('securities_rep'));
-            const n = a.querySelector('.nm').textContent;
-            return n.includes('證券商業務員') && n.includes('證券交易相關法規與實務乙科');`));
+const dupes = links.filter((h, i) => links.indexOf(h) !== i);
+check('only securities_rep is listed twice, and deliberately',
+  dupes.length === 1 && dupes[0].endsWith('securities_rep'), dupes.join(' '));
+check('both rows sharing that bank say which subject is online',
+  await ev(`const rows = [...document.querySelectorAll('.exam a.rowinner')]
+              .filter(x => x.getAttribute('href').endsWith('securities_rep'))
+              .map(x => x.querySelector('.nm').textContent);
+            return rows.length === 2
+              && rows.some(t => t.includes('證券商業務員') && t.includes('只上線'))
+              && rows.some(t => t.includes('乙科') && t.includes('同一個題庫'));`));
 check('收錄中 rows are inert',
   (await ev(`return document.querySelectorAll('.exam.soon a').length;`)) === 0);
 check('link covers the whole row, not just the text',
@@ -70,7 +77,8 @@ check('link covers the whole row, not just the text',
 
 console.log('\n== deep links start the right paper ==');
 const EXPECT = { futures: 100, securities: 150, securities_rep: 50, sitca: 50,
-                 finance_ethics: 50, cfa_fra: 90 };
+                 finance_ethics: 50, futures_trust: 50, internal_control: 80,
+                 sustainability: 80, cfa_fra: 90 };
 for (const [topic, size] of Object.entries(EXPECT)) {
   await go(`http://localhost:8123/app.html?topic=${topic}`);
   await ev(`localStorage.clear(); return 1;`);

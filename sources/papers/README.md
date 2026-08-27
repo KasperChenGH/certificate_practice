@@ -8,9 +8,32 @@ Parsed by `scripts/parse_paper.py`, wired into `questions.json` by `scripts/buil
 
 | Session | Subject | Feeds topic |
 |---|---|---|
-| 115年第1次 / 114年第3次 | 期貨交易法規 | `futures` (merged with the dedup bank) |
-| 115年第1次 / 114年第3次 | 證券交易相關法規與實務 (證券商業務員) | `securities_rep` |
-| 115年第1次 / 114年第3次 | 投信投顧相關法規 | `sitca` |
+| 115年第2次 / 115年第1次 / 114年第3次 | 期貨交易法規 ＋ 期貨交易理論與實務 | `futures` (merged with the dedup bank) |
+| 115年第2次 | 投資學 ／ 財務分析 ／ 法規與實務 | `securities` (merged with the `sec/` sessions) |
+| 115年第2次 / 115年第1次 / 114年第3次 | 證券交易相關法規與實務 | `securities_rep` |
+| 115年第2次 / 115年第1次 / 114年第3次 | 投信投顧相關法規 | `sitca` |
+| 115年第2次 / 115年第1次 | 期貨信託法規及自律規範 | `futures_trust` |
+| 115年第2次 / 115年第1次 | 企業內部控制理論與實務 | `internal_control` |
+| 115年第4次 / 114年第4次 ＋ 高雄考區 | 永續發展 | `sustainability` |
+
+## A paper carries more than the subject it is filed under
+
+`115Q1_證券商業務員_試題.pdf` is the whole 100-question paper — 證券交易相關法規與實務 50
+＋ 證券投資與財務分析 50 — and `115Q1_投信投顧_試題.pdf` is the whole 150-question,
+three-subject paper. Each bank reads one section out of its paper, so **the file name
+names the exam, not the bank's contents**.
+
+Two parser bugs were latent in that arrangement until sections other than the first
+were needed, because every bank happens to read section 1:
+
+- `parse_questions_pdf` ignored `subject` and read questions from the top of the
+  document. Asking for section 2 returned section 1's questions paired with section 2's
+  key — the same 50 questions, every answer wrong. It now narrows to the 科目 heading
+  that names the subject.
+- `parse_answers_by_subject` matched a subject as a substring of a label. `財務分析`
+  matches both `證券投資與財務分析－試卷「投資學」` and `…試卷「財務分析」`, so 財務分析
+  silently took 投資學's key. Matching more than one label is now an error; pass
+  `「財務分析」` to disambiguate.
 
 ## Why the answer block is chosen by label, not by position
 
@@ -42,27 +65,35 @@ cannot be established from vertical position. `parse_answers_by_subject` raises 
 this layout by design. Recovering these ~63 questions needs column-aware extraction
 plus an independent check on the resulting key — worth doing, but not worth guessing.
 
-## Why three banks are thin, and what would fix them
+## Why the banks are thin, and what would fix them
 
-證基會 publishes a complete official 題庫 for only two of these exams:
+**證基會 only publishes the two most recent sittings** ("本基金會提供前兩季筆試所有測驗
+類別試題及選擇題答案下載"). Older papers come off the site, so a pool cannot be grown by
+collecting harder — it grows one sitting at a time, as each new quarter is published, and
+only if the files are pulled before they roll off.
 
-| Bank | Source | Size |
-|---|---|---|
-| `futures` | `../futures_exam_dedup_answers.pdf` official bank + 2 papers | 691 |
-| `finance_ethics` | `../sfi_金融市場常識-113.pdf` + `../sfi_職業道德-113.pdf` | 1,120 |
+A complete official 題庫 exists for exactly two exams: `futures`
+(`../futures_exam_dedup_answers.pdf`) and `finance_ethics` (`../sfi_金融市場常識-113.pdf`
+＋ `../sfi_職業道德-113.pdf`, 1,120 questions). Every other bank is past papers only, so
+its size is (sittings collected) × (questions per paper).
 
-For 證券商高級業務員, 證券商業務員 and 投信投顧, no official bank is published — only
-past papers. So those pools are bounded by how many sittings have been collected, which
-is currently two each (114年第3次 and 115年第1次):
+Banks under the 3× pool-to-draw ratio `build.py` warns below are listed in `_thin_ok` in
+`../exam_blueprints.json`; the site shows the repeat rate on the exam card and in the
+landing directory.
 
-| Bank | Papers × questions | Pool | Draw | Repeat rate |
-|---|---|---|---|---|
-| `securities` | 2 sittings × 3 subjects × 50 | 297 | 150 | ~51% |
-| `securities_rep` | 2 sittings × 50 | 100 | 50 | 50% |
-| `sitca` | 2 sittings × 50 | 97 | 50 | ~52% |
+## Not yet included
 
-The draw is the real paper composition and cannot be shrunk without misrepresenting the
-exam, so the only fix is more sittings — each one adds 50 questions per subject. Three
-more sittings per bank would clear the 3× ratio that `build.py` warns below. They are
-listed in `_thin_ok` in `../exam_blueprints.json` until then, and the site says so on
-both the landing directory and the exam card.
+| Exam | Blocker |
+|---|---|
+| 證券投資分析人員 | The key prints two subjects side by side in one grid; column-to-subject mapping cannot be established from vertical position. `parse_answers_by_subject` raises on it by design. |
+| 期貨交易分析人員 | Four subjects, and the paper carries non-multiple-choice sections. |
+| 防制洗錢與打擊資恐專業人員 | Questions 61–80 are 複選題 with keys like `ABCD`; the app only models one correct option. |
+| 證券商業務員 證券投資與財務分析, 投信投顧業務員 remaining two subjects | Parseable now that the parser is subject-aware — these are the next papers to wire in, not a blocker. |
+
+## An answer key can carry errata
+
+`115Q2` 投信投顧相關法規 prints "第36題修正為(A)(B)均給分" below the grid. Two things follow:
+a prose line must never be tokenised as answers (it read as `36 -> A` and overwrote the
+real key), and a question with two accepted options cannot be stored against a single
+answer. `parse_answers_by_subject` returns those question numbers and `parse_paper` drops
+them.

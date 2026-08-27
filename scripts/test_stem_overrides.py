@@ -8,7 +8,9 @@ b = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(b)          # build.py rebinds sys.stdout; restore it below
 sys.stdout = io.TextIOWrapper(sys.__stdout__.buffer, encoding='utf-8', errors='replace')
 
-OVR = json.loads((REPO / 'sources' / 'stem_overrides.json').read_text(encoding='utf-8'))
+OVR = {k: v for k, v in
+       json.loads((REPO / 'sources' / 'stem_overrides.json').read_text(encoding='utf-8')).items()
+       if not k.startswith('_')}
 WAS = OVR['futures-503']['was']
 NEW = OVR['futures-503']['stem']
 
@@ -17,19 +19,27 @@ def q(qid, stem):
     return {'id': qid, 'stem': stem, 'options': {'A': 'x'}, 'answer': 'A'}
 
 
-# 1. Happy path: the override applies and nothing is left dangling.
-data = {'futures': [q('futures-503', WAS), q('other-1', '一般題目')]}
+def fresh():
+    """Every override target must be present, or the missing-target guard fires."""
+    return {'futures': [q(k, v['was']) for k, v in OVR.items()] + [q('other-1', '一般題目')]}
+
+
+# 1. Happy path: every override applies and nothing is left dangling.
+data = fresh()
 b.apply_stem_overrides(data)
-assert data['futures'][0]['stem'] == NEW, 'override not applied'
-print('PASS  override applied, stem is now self-contained')
+for qq in data['futures']:
+    if qq['id'] in OVR:
+        assert qq['stem'] == OVR[qq['id']]['stem'], f'override not applied: {qq["id"]}'
+print(f'PASS  all {len(OVR)} overrides applied, stems are now self-contained')
 
 # 2. Idempotent: running again on already-rewritten data is a no-op, not an error.
 b.apply_stem_overrides(data)
-assert data['futures'][0]['stem'] == NEW
+assert data['futures'][0]['stem'] == OVR[data['futures'][0]['id']]['stem']
 print('PASS  re-running on already-overridden data is a no-op')
 
 # 3. An un-overridden cross-reference is a hard error.
-data = {'futures': [q('futures-503', WAS), q('new-99', '承上題,則下列何者正確?')]}
+data = fresh()
+data['futures'].append(q('new-99', '承上題,則下列何者正確?'))
 try:
     b.apply_stem_overrides(data)
     print('FAIL  a dangling cross-reference was allowed through')
@@ -38,7 +48,8 @@ except ValueError as e:
     print('PASS  dangling cross-reference rejected:', str(e).splitlines()[0])
 
 # 4. If the parsed stem drifts from the recorded original, refuse to rewrite.
-data = {'futures': [q('futures-503', '完全不同的題目文字')]}
+data = fresh()
+data['futures'][0]['stem'] = '完全不同的題目文字'
 try:
     b.apply_stem_overrides(data)
     print('FAIL  override applied to a stem it does not match')

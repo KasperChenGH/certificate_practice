@@ -83,13 +83,14 @@ def build_futures() -> list[dict]:
 
 PAPERS = SRC / 'papers'
 
-def _papers(topic: str, subject: str, sessions: list[tuple[str, str]]) -> list[dict]:
+def _papers(topic: str, subject: str, sessions: list[tuple[str, str]],
+            expect: int = 50) -> list[dict]:
     """Parse one subject across sessions. `sessions` is [(label, filename stem)]."""
     out = []
     for label, base in sessions:
         qs = parse_paper.parse_paper(
             str(PAPERS / f'{base}_試題.pdf'), str(PAPERS / f'{base}_答案.pdf'),
-            label, subject)
+            label, subject, expect=expect)
         for q in qs:
             out.append({
                 'id': f'{topic}-{base}-{q["qnum"]}',
@@ -103,24 +104,58 @@ def _papers(topic: str, subject: str, sessions: list[tuple[str, str]]) -> list[d
 
 
 def build_futures_papers() -> list[dict]:
-    return _papers('futures', '期貨交易法規',
-                   [('115年第1次', '115Q1_期貨交易法規'),
-                    ('114年第3次', '114Q3_期貨交易法規')])
+    sessions = [('115年第2次', '115Q2_期貨商業務員'),
+                ('115年第1次', '115Q1_期貨交易法規'),
+                ('114年第3次', '114Q3_期貨交易法規')]
+    return (_papers('futures', '期貨交易法規', sessions)
+            + _papers('futures', '期貨交易理論與實務', sessions))
 
 
 def build_securities_rep() -> list[dict]:
     return _papers('securities_rep', '證券交易相關法規與實務',
-                   [('115年第1次', '115Q1_證券商業務員'),
+                   [('115年第2次', '115Q2_證券商業務員'),
+                    ('115年第1次', '115Q1_證券商業務員'),
                     ('114年第3次', '114Q3_證券商業務員')])
 
 
 def build_sitca() -> list[dict]:
     return _papers('sitca', '投信投顧相關法規',
-                   [('115年第1次', '115Q1_投信投顧'),
+                   [('115年第2次', '115Q2_投信投顧'),
+                    ('115年第1次', '115Q1_投信投顧'),
                     ('114年第3次', '114Q3_投信投顧')])
 
 
 # --- 2. Securities Senior: parse 試題 + 答案 PDFs ----------------------------
+
+def build_sustainability() -> list[dict]:
+    """永續發展基礎能力測驗.
+
+    The subject label changed between sessions, so each session is asked for by its
+    own; the 高雄 sitting is a separate paper rather than a reprint of the same one.
+    """
+    out = (_papers('sustainability', '永續發展相關規範與實務',
+                   [('115年第4次', '115Q4_永續發展')], expect=80)
+           + _papers('sustainability', '永續發展基礎能力測驗',
+                     [('114年第4次', '114Q4_永續發展'),
+                      ('114年第4次高雄考區', '114Q4_永續發展高雄')], expect=80))
+    # The answer keys label the section differently by session; normalise so the bank
+    # has one subject rather than two that mean the same thing.
+    for q in out:
+        q['origin'] = q['origin'].replace('永續發展相關規範與實務', '永續發展基礎能力測驗')
+    return out
+
+
+def build_internal_control() -> list[dict]:
+    return _papers('internal_control', '企業內部控制理論與實務(含相關法規)',
+                   [('115年第2次', '115Q2_企業內部控制'),
+                    ('115年第1次', '115Q1_企業內部控制')], expect=80)
+
+
+def build_futures_trust() -> list[dict]:
+    return _papers('futures_trust', '期貨信託法規及自律規範',
+                   [('115年第2次', '115Q2_期貨信託銷售'),
+                    ('115年第1次', '115Q1_期貨信託銷售')], expect=50)
+
 
 def build_securities() -> list[dict]:
     sessions = [
@@ -146,6 +181,29 @@ def build_securities() -> list[dict]:
     return out
 
 # --- 3. Finance + Ethics: parse two SFI bank PDFs ---------------------------
+
+def build_securities_papers() -> list[dict]:
+    """證券商高級業務員 sessions published as one three-subject paper."""
+    LOOKUP = [('「投資學」', '投資學'),
+              ('「財務分析」', '財務分析'),
+              ('證券交易相關法規與實務', '法規與實務')]
+    out = []
+    for label, base in [('115年第2次', '115Q2_證券商高級業務員')]:
+        for needle, short in LOOKUP:
+            qs = parse_paper.parse_paper(
+                str(PAPERS / f'{base}_試題.pdf'), str(PAPERS / f'{base}_答案.pdf'),
+                label, needle)
+            for q in qs:
+                out.append({
+                    'id': f'securities-{label}-{short}-{q["qnum"]}',
+                    'topic': 'securities',
+                    'stem': q['stem'],
+                    'options': q['options'],
+                    'answer': q['answer'],
+                    'origin': f'{label}｜{short}｜第 {q["qnum"]} 題',
+                })
+    return out
+
 
 def build_finance_ethics() -> list[dict]:
     """The SFI 1,120-question official bank, effective 113年9月1日.
@@ -461,8 +519,20 @@ def main():
     futures = dedup(build_futures() + build_futures_papers())
     print(f'  -> {len(futures)} unique futures questions')
 
+    print('Building sustainability...')
+    sustainability = dedup(build_sustainability())
+    print(f'  -> {len(sustainability)} unique sustainability questions')
+
+    print('Building internal_control...')
+    internal_control = dedup(build_internal_control())
+    print(f'  -> {len(internal_control)} unique internal_control questions')
+
+    print('Building futures_trust...')
+    futures_trust = dedup(build_futures_trust())
+    print(f'  -> {len(futures_trust)} unique futures_trust questions')
+
     print('Building securities...')
-    securities = dedup(build_securities())
+    securities = dedup(build_securities() + build_securities_papers())
     print(f'  -> {len(securities)} unique securities questions')
 
     print('Building finance_ethics...')
@@ -487,6 +557,9 @@ def main():
         'securities_rep': securities_rep,
         'finance_ethics': finance_ethics,
         'sitca': sitca,
+        'futures_trust': futures_trust,
+        'internal_control': internal_control,
+        'sustainability': sustainability,
         'cfa_fra': cfa_fra,
     }
     apply_stem_overrides(data)

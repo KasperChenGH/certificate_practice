@@ -35,7 +35,10 @@
   "securities/財務分析",
   "securities/法規與實務",
   "securities_rep/證券交易相關法規與實務",
-  "sitca/投信投顧相關法規"
+  "sitca/投信投顧相關法規",
+  "futures_trust/期貨信託法規及自律規範",
+  "internal_control/企業內部控制理論與實務(含相關法規)",
+  "sustainability/永續發展基礎能力測驗"
  ],
  "futures": {
   "exam": "期貨商業務員",
@@ -184,6 +187,42 @@
     "subject": "職業道德",
     "count": 28,
     "points": 2
+   }
+  ]
+ },
+ "futures_trust": {
+  "exam": "期貨信託基金銷售機構銷售人員",
+  "pass_mark": 70,
+  "note": "證基會歷屆試題：115年第2次、115年第1次。每回 50 題單選題，每題 2 分。",
+  "subjects": [
+   {
+    "subject": "期貨信託法規及自律規範",
+    "count": 50,
+    "points": 2
+   }
+  ]
+ },
+ "internal_control": {
+  "exam": "企業內部控制基本能力測驗",
+  "pass_mark": 70,
+  "note": "證基會歷屆試題：115年第2次、115年第1次。每回 80 題單選題，每題 1.25 分。",
+  "subjects": [
+   {
+    "subject": "企業內部控制理論與實務(含相關法規)",
+    "count": 80,
+    "points": 1.25
+   }
+  ]
+ },
+ "sustainability": {
+  "exam": "永續發展基礎能力測驗",
+  "pass_mark": 70,
+  "note": "證基會歷屆試題：115年第4次、114年第4次（含高雄考區）。每回 80 題單選題，每題 1.25 分。",
+  "subjects": [
+   {
+    "subject": "永續發展基礎能力測驗",
+    "count": 80,
+    "points": 1.25
    }
   ]
  }

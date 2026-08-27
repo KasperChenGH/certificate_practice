@@ -74,9 +74,15 @@ try:
     # 6. the ratios reach blueprints.json, so thinness is inspectable not folklore.
     r = build()
     bp = json.loads((REPO / 'blueprints.json').read_text(encoding='utf-8'))
-    assert bp['sitca']['coverage']['ratio'] == 1.94, bp['sitca']['coverage']
-    assert bp['futures']['coverage']['subjects']['期貨交易法規']['ratio'] > 3
-    print('PASS  coverage ratios recorded in blueprints.json')
+    qs = json.loads((REPO / 'questions.json').read_text(encoding='utf-8'))
+    for topic, b in bp.items():
+        cov = b['coverage']
+        assert cov['pool'] == len(qs[topic]), (topic, cov['pool'], len(qs[topic]))
+        assert cov['draw'] == sum(x['count'] for x in b['subjects']), topic
+        assert cov['ratio'] == round(cov['pool'] / cov['draw'], 2), topic
+    assert bp['sitca']['coverage']['ratio'] < 3, 'sitca should still read as thin'
+    assert bp['finance_ethics']['coverage']['ratio'] > 3, 'finance_ethics is not thin'
+    print(f'PASS  coverage ratios recorded and self-consistent for {len(bp)} banks')
 finally:
     shutil.copy(BAK, SRC)
     BAK.unlink()

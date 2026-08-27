@@ -1,22 +1,32 @@
 {
-  "_README": [
-    "Stems rewritten because the printed exam text does not survive this delivery medium.",
-    "A paper presents questions in order, so 同上題 / 承上題 works there. This app draws a",
-    "random subset and shuffles it, so a stem that points at 'the previous question' is",
-    "unanswerable. Rewrites preserve the original meaning and add only the context the",
-    "referenced question supplied.",
-    "",
-    "Applied by build.py AFTER dedup. Each entry asserts `was` still matches the parsed",
-    "stem, so if a parser change alters the text the build fails loudly instead of",
-    "silently rewriting the wrong question.",
-    "",
-    "build.py also fails if any stem still references another question and has no entry",
-    "here — that guard is what keeps this class of bug from reappearing when new papers",
-    "are added."
-  ],
-  "futures-503": {
-    "was": "同上題,若預期瑞郎對英鎊貶值,則又該如何操作?",
-    "stem": "對一個美國交易人,若預期瑞郎對英鎊貶值,則應該如何操作?",
-    "reason": "113年第3次 期貨交易理論與實務 第26題 continues 第25題 (futures-502, '對一個美國交易人,預期瑞郎對英鎊升值時,則應該如何操作?'). Only the 美國交易人 framing was carried over; the rest of the stem already stood alone."
-  }
+ "_README": [
+  "Stems rewritten because the printed exam text does not survive this delivery medium.",
+  "A paper presents questions in order, so 同上題 / 承上題 works there. This app draws a",
+  "random subset and shuffles it, so a stem that points at 'the previous question' is",
+  "unanswerable. Rewrites preserve the original meaning and add only the context the",
+  "referenced question supplied.",
+  "",
+  "Applied by build.py AFTER dedup. Each entry asserts `was` still matches the parsed",
+  "stem, so if a parser change alters the text the build fails loudly instead of",
+  "silently rewriting the wrong question.",
+  "",
+  "build.py also fails if any stem still references another question and has no entry",
+  "here — that guard is what keeps this class of bug from reappearing when new papers",
+  "are added."
+ ],
+ "futures-503": {
+  "was": "同上題,若預期瑞郎對英鎊貶值,則又該如何操作?",
+  "stem": "對一個美國交易人,若預期瑞郎對英鎊貶值,則應該如何操作?",
+  "reason": "113年第3次 期貨交易理論與實務 第26題 continues 第25題 (futures-502, '對一個美國交易人,預期瑞郎對英鎊升值時,則應該如何操作?'). Only the 美國交易人 framing was carried over; the rest of the stem already stood alone."
+ },
+ "futures-114Q3_期貨交易法規-12": {
+  "was": "同上題，此價差交易是何種類？",
+  "stem": "在正向市場下，某交易人在CBOT 市場發現3 月份和5 月份的玉米期貨間的價差過大，因而買進3 月份玉米期貨、賣出5 月份玉米期貨。此價差交易是何種類？",
+  "reason": "114年第3次 期貨交易理論與實務 第12題 continues 第11題 (同一 CBOT 玉米 3月/5月 價差情境，第11題答案為買進3月、賣出5月)。抽題打散後題號相鄰不再成立，故把情境與第11題的正解一併寫進題幹。"
+ },
+ "futures-114Q3_期貨交易法規-13": {
+  "was": "同上題，若此交易人在價差為12 美分／每英斗作此價差交易，而在價差為7 美分／每英斗把他的部位做結清，則此交易人的損益為多少？",
+  "stem": "在正向市場下，某交易人在CBOT 市場買進3 月份玉米期貨、賣出5 月份玉米期貨。若此交易人在價差為12 美分／每英斗作此價差交易，而在價差為7 美分／每英斗把他的部位做結清，則此交易人的損益為多少？",
+  "reason": "114年第3次 期貨交易理論與實務 第13題 continues 第11題的同一情境。只有部位方向需要帶入，價差進出場數字題目本身已載明。"
+ }
 }

@@ -1,8 +1,11 @@
 {
- "futures": 691,
- "securities": 297,
+ "futures": 719,
+ "securities": 298,
  "securities_rep": 100,
  "finance_ethics": 1120,
  "sitca": 97,
- "cfa_fra": 514
+ "cfa_fra": 514,
+ "futures_trust": 1,
+ "internal_control": 0,
+ "sustainability": 0
 }

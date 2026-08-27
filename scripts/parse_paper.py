@@ -19,6 +19,8 @@ guess. See `sources/papers/README.md`.
 from __future__ import annotations
 import fitz, re, sys, io
 
+CJK = re.compile(r'[一-鿿]')
+
 if __name__ == '__main__':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
@@ -47,14 +49,45 @@ def _is_header(s: str) -> bool:
     return False
 
 
+SUBJECT_RE = re.compile(r'^(?:專業)?科目\s*[：:]\s*(.+?)\s*$')
+
+
+def _subject_section(lines: list[str], subject: str, pdf_path: str) -> list[str]:
+    """Narrow `lines` to the one 科目 section whose heading names `subject`.
+
+    A paper carrying several subjects restarts numbering at 1 for each, so reading
+    from the top always yields the first subject. Papers with a single subject are
+    returned unchanged.
+    """
+    marks = [(i, m.group(1)) for i, l in enumerate(lines)
+             if (m := SUBJECT_RE.match(l.strip()))]
+    if not marks:
+        return lines
+    names = list(dict.fromkeys(n for _, n in marks))
+    if len(names) == 1:
+        return lines
+
+    hits = [n for n in names if subject in n]
+    if len(hits) != 1:
+        raise ValueError(
+            f'{pdf_path}: {subject!r} matches {len(hits)} of the paper\'s subject '
+            f'headings ({names}). Pass a subject string that identifies exactly one.')
+    want = hits[0]
+
+    start = next(i for i, n in marks if n == want)
+    end = next((i for i, n in marks if i > start and n != want), len(lines))
+    return lines[start:end]
+
+
 def parse_questions_pdf(pdf_path: str, session: str, subject: str, expect: int = 50) -> list[dict]:
-    """Collect `expect` questions numbered 1..expect, then stop.
+    """Collect `expect` questions numbered 1..expect from `subject`'s section.
 
     The cap matters for papers that continue into an essay section whose sub-parts
     are also numbered `N.` and would otherwise be picked up as questions.
     """
     doc = fitz.open(pdf_path)
     lines = ''.join(doc[p].get_text() + '\n' for p in range(len(doc))).split('\n')
+    lines = _subject_section(lines, subject, pdf_path)
 
     raw: list[dict] = []
     cur: dict | None = None
@@ -108,6 +141,10 @@ def _split_stem_options(content: str) -> tuple[str, dict]:
 def parse_answers_by_subject(pdf_path: str, subject: str) -> dict[int, str]:
     """Return {question number: answer letter} for the block labelled `subject`.
 
+    Returns `(answers, disputed)`. `disputed` holds question numbers the paper's own
+    errata note says accept more than one option — they cannot be represented as a
+    single key, so the caller drops them rather than picking one.
+
     Raises if the label is missing, if two labels share a line (a side-by-side
     two-column key that cannot be split by vertical position), or if the matched
     block does not yield a gapless run starting at 1.
@@ -120,9 +157,24 @@ def parse_answers_by_subject(pdf_path: str, subject: str) -> dict[int, str]:
             if not text:
                 continue
             labels = [m.strip() for m in re.findall(r'[^\s]*?(?:試題解答|試題答案)', text)]
-            kind = 'label' if labels else 'grid'
+            # "115年第2次 證券交易相關法規與實務乙科資格測驗試題解答" is the paper's
+            # title, not a section label. On a single-subject paper it contains the
+            # subject name too, so without this it matches before the real label and
+            # the grid — which sits after that label — is never reached.
+            is_title = bool(re.search(r'\d+\s*年第\s*\d+\s*次', text))
+            kind = 'label' if labels and not is_title else 'grid'
             items.append((pno, b[1], b[0], kind, text, labels))
     items.sort(key=lambda t: (t[0], round(t[1], 1), t[2]))
+
+    # A substring can match more than one section: '財務分析' appears in both
+    # '證券投資與財務分析--試卷「投資學」' and '...試卷「財務分析」', which silently
+    # paired one subject's questions with another subject's key. Ambiguity is an error.
+    all_hits = [l for _, _, _, kind, _, labels in items if kind == 'label'
+                for l in labels if subject in l]
+    if len(all_hits) > 1:
+        raise ValueError(
+            f'{pdf_path}: {subject!r} matches {len(all_hits)} answer labels ({all_hits}). '
+            'Pass a subject string that identifies exactly one of them.')
 
     matched_at = None
     for i, (_, _, _, kind, text, labels) in enumerate(items):
@@ -141,11 +193,25 @@ def parse_answers_by_subject(pdf_path: str, subject: str) -> dict[int, str]:
     if matched_at is None:
         raise ValueError(f'{pdf_path}: no answer block labelled with {subject!r}')
 
-    grid = ''
+    grid, disputed, notes = '', set(), []
     for _, _, _, kind, text, _ in items[matched_at + 1:]:
         if kind == 'label':
             break
+        # The grid is digits and letters only. Anything containing Chinese is prose —
+        # a footnote or an errata line — and must not be tokenised as answers:
+        # "第36題修正為(A)(B)均給分" would otherwise read as 36 -> A and overwrite the key.
+        if CJK.search(text):
+            notes.append(text)
+            continue
         grid += ' ' + text
+
+    for note in notes:
+        for num in re.findall(r'第\s*(\d+)\s*題[^。；]*?(?:均給分|一律給分|皆給分|送分)', note):
+            disputed.add(int(num))
+        if re.search(r'均給分|一律給分|皆給分|送分', note) and not disputed:
+            raise ValueError(
+                f'{pdf_path}: the key carries an errata note awarding marks for more '
+                f'than one option, but no question number could be read from it: {note!r}')
     if not grid.strip():
         raise ValueError(f'{pdf_path}: subject {subject!r} label found but no grid follows it')
 
@@ -160,12 +226,19 @@ def parse_answers_by_subject(pdf_path: str, subject: str) -> dict[int, str]:
             i += 1
     if not answers or sorted(answers) != list(range(1, max(answers) + 1)):
         raise ValueError(f'{pdf_path}: answer block for {subject!r} is not a gapless run from 1')
-    return answers
+    return answers, disputed
 
 
 def parse_paper(qpdf: str, apdf: str, session: str, subject: str, expect: int = 50) -> list[dict]:
     questions = parse_questions_pdf(qpdf, session, subject, expect)
-    answers = parse_answers_by_subject(apdf, subject)
+    answers, disputed = parse_answers_by_subject(apdf, subject)
+    if disputed:
+        # The paper's own errata awards marks for more than one option on these, so
+        # there is no single correct answer to key them against. Drop rather than pick.
+        print(f'  !! {subject}: dropping question(s) {sorted(disputed)} — the official '
+              f'errata accepts more than one option')
+        questions = [q for q in questions if q['qnum'] not in disputed]
+        expect -= len(disputed)
     if len(questions) != expect:
         raise ValueError(f'{qpdf}: parsed {len(questions)} questions, expected {expect}')
     missing = [q['qnum'] for q in questions if q['qnum'] not in answers]
