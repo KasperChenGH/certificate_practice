@@ -67,6 +67,11 @@ check('every bank has a name and every name has a bank', await ev(`
   const banks = Object.keys(DATA).sort().join(',');
   const named = Object.keys(TOPIC_NAMES).sort().join(',');
   return banks === named ? true : banks + ' != ' + named;`) === true);
+check('a 單科 exam scores overall, not per section', await ev(`
+  const bp = BLUEPRINTS.finance_ethics;
+  if (!bp || bp.scoring !== 'overall') return 'blueprint not marked overall';
+  return sectionPassMark(bp) === null
+    && sectionPassMark(BLUEPRINTS.futures) === 70;`) === true);
 check('every bank has a home button', await ev(`
   return Object.keys(DATA).every(t => document.querySelector('[data-topic="' + t + '"]'));`));
 check('home has an ad container', await ev(`return !!document.querySelector('#page-home .adslot');`));

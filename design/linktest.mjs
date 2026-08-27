@@ -77,7 +77,7 @@ check('link covers the whole row, not just the text',
 
 console.log('\n== deep links start the right paper ==');
 const EXPECT = { futures: 100, securities: 150, securities_rep: 50, sitca: 50,
-                 finance_ethics: 50, futures_trust: 50, internal_control: 80,
+                 finance_ethics: 100, futures_trust: 50, internal_control: 80,
                  sustainability: 80, cfa_fra: 90 };
 for (const [topic, size] of Object.entries(EXPECT)) {
   await go(`http://localhost:8123/app.html?topic=${topic}`);

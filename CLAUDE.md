@@ -7,6 +7,22 @@ Live URL: `https://certifications.courses/`
 (custom domain, set by the root `CNAME` file; the old
 `kasperchengh.github.io/certificate_practice/` address redirects to it)
 
+## What is public
+
+The repository is **public** and GitHub Pages serves it, so two different things are
+exposed and they are not the same:
+
+- **On the website** — only what `_config.yml`'s `exclude` list leaves in: `index.html`,
+  `app.html`, `questions.json`, `blueprints.json`, `CNAME`. Source PDFs, scripts, design
+  sources and these notes are excluded. Underscore-prefixed directories (`_expl_work/`)
+  are skipped by Jekyll anyway. **Never add `.nojekyll`** — it disables both.
+- **On GitHub** — everything committed, `exclude` list included. `exclude` is not privacy.
+  Anything that must stay private must not be committed.
+
+Before committing, check that no personal address, credential, or unrelated project
+detail is in the file. One was found and removed: a spec under `docs/superpowers/` for a
+long-deleted feature carried an email address and was being served publicly.
+
 ## Before searching the web for questions
 
 **Read `docs/SEARCH_LOG.md` first.** It records every source already looked at — the ones

@@ -812,7 +812,7 @@ function submitQuiz() {
   const breakdown = subjectBreakdown(STATE.questions, STATE.answers);
   const bp = blueprintFor(STATE.topic);
   recordResult(correct, breakdown);
-  renderSubjectTable(el('result-subjects'), breakdown, bp && bp.pass_mark);
+  renderSubjectTable(el('result-subjects'), breakdown, sectionPassMark(bp));
   el('result-note').textContent = bp && bp.note ? bp.note : '';
   el('result-score').textContent = correct;
   el('result-total').textContent = currentSize();
@@ -863,6 +863,14 @@ function subjectBreakdown(questions, answers) {
     if (answers[i] === q.answer) row.correct++;
   });
   return acc;
+}
+
+// A blueprint's sections are separate 科 unless it says otherwise: 金融市場常識與
+// 職業道德 is one 科 whose two halves are content weighting, so its 70 is an overall
+// bar. Stamping each half 及格/未及格 would fail a 75% candidate who scored 65% in one.
+function sectionPassMark(bp) {
+  if (!bp || bp.scoring === 'overall') return null;
+  return bp.pass_mark || null;
 }
 
 function renderSubjectTable(el_, breakdown, passMark) {
@@ -1009,7 +1017,7 @@ function showHistoryDetail(i) {
     '\u3000\u7b54\u932f ' + r.w.length + ' \u984c';
 
   const bp = blueprintFor(r.t);
-  renderSubjectTable(el('hd-subjects'), r.s || {}, bp && bp.pass_mark);
+  renderSubjectTable(el('hd-subjects'), r.s || {}, sectionPassMark(bp));
 
   const cont = el('hd-list');
   cont.innerHTML = '';

@@ -89,6 +89,34 @@ Rejected by that check, do not retry without fixing the underlying PDF:
 | `Download/03/`, `/04/`, `/05/` for codes 53, 40, 36, 59 | all non-200. Only two slots exist; there is no deeper archive on the live site |
 | WebSearch `證基會 examweb.sfi.org.tw 歷屆試題 下載 期貨商業務員 投信投顧 證券商業務員` | only re-surfaced sfi.org.tw's own nodes (214 / 216 / 217 / 247). Nothing a direct fetch of `Node?id=217` does not give |
 
+## 簡章 (prospectus) — the authority on paper composition
+
+`https://www.sfi.org.tw/Node?id=216` lists them; each links a PDF under
+`https://webline.sfi.org.tw/download/test_ftp/<name>(筆).PDF`.
+
+**Read the 簡章 before writing a blueprint.** A composition inferred from anything else
+has already been wrong once: 金融市場常識與職業道德 was built as 50 questions split 22/28
+from the two source banks' size ratio, when the 簡章 says 100 questions, 各佔 50%, 1 point
+each. What the prospectuses establish:
+
+| Exam | Paper | Scoring |
+|---|---|---|
+| 金融市場常識與職業道德 | 100 題, 每題 1 分, 兩部份各佔 50% | **單科** — 70 overall, not per half |
+| 期貨商業務員 | 第1節 期貨交易法規 50 ＋ 第2節 期貨交易理論與實務 50 | per 科 |
+| 證券商業務員 | 第1節 證券交易相關法規與實務 50 ＋ 第2節 證券投資與財務分析 50 | per 科 |
+| 證券商高級業務員 | 投資學 50 ＋ 財務分析 50 ＋ 證券交易相關法規與實務 50 | per 科 |
+| 投信投顧業務員（三科） | 投信投顧相關法規 50 ＋ 證券投資與財務分析 50 ＋ 證券交易相關法規與實務 50 | per 科 |
+| 各乙科 | 一節, 50 題 | 70 |
+| 期貨信託基金銷售機構銷售人員 | 一節, 50 題 | 70 |
+| 企業內部控制 | 80 題; 出題數 理論與實務 75% / 相關法規 25% | 70 |
+| 永續發展基礎能力測驗 | 共一科, 80 題, 總分 100 | 70 overall |
+| 證券投資分析人員 / 期貨交易分析人員 | 4 科, 選擇題 70% ＋ 申論或計算題 30% | **個科及格制, 60 分**, 保留 2 年 |
+
+Two notes worth keeping: 企業內部控制's 75/25 split cannot be applied — the answer key
+labels the whole paper as one subject and the questions carry nothing to tell the halves
+apart. And the two 分析人員 exams pass at **60**, not 70, on top of being blocked for
+parsing reasons.
+
 ## Also fetched
 
 | URL | Purpose | Result |
@@ -119,6 +147,8 @@ for reasons that a further search will not solve.
   route.
 - **CFA Level II / III.** No search run. `cfa_fra` (Level I) was hand-authored against the
   curriculum rather than sourced, so the same approach would apply.
-- **`sources/exam_blueprints.json` pass marks** for the newer banks were read off each
-  paper's own 注意 line, not looked up. If a pass mark ever matters more precisely,
-  證基會's 簡章 (`Node?id=216`) is the place to check.
+- **防制洗錢 and the 電腦應試 prospectuses.** The 簡章 for 防制洗錢 was located but not
+  read — the exam is blocked on 複選題 support, so its composition was not needed yet.
+  The 電腦應試 (computer-based) 簡章 covering 債券人員 / 股務人員 / 工商倫理 /
+  資產證券化 / 票券商 / 公司治理 was not opened at all; it is the place to start if those
+  are ever added.
