@@ -20,6 +20,16 @@ from __future__ import annotations
 import fitz, re, sys, io
 
 CJK = re.compile(r'[一-鿿]')
+# 均給分 / 送分 mark a question the examiner later accepted several answers for.
+# The PDFs space these characters irregularly ('均給 分'), so match tolerantly.
+DISPUTE = re.compile(r'均\s*給\s*分|一律\s*給\s*分|皆\s*給\s*分|送\s*分')
+DISPUTE_NUM = re.compile(r'第?\s*(\d+)\s*題?[^0-9]{0,60}?(?:均\s*給\s*分|送\s*分)')
+# Some keys print a corrected answer in the grid cell itself: '51 修正為B'.
+# That is still one answer, so it is applied rather than treated as disputed.
+CORRECTION = re.compile(r'(\d+)\s*修正\s*為\s*\(?([A-D])\)?')
+# Wording that only ever appears in an errata footnote. A block carrying any of it
+# is prose even when digits and letters inside it would tokenise as answers.
+PROSE = re.compile(r'公告|審閱|委員|確認|說明|備註|注意')
 
 if __name__ == '__main__':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
@@ -194,21 +204,29 @@ def parse_answers_by_subject(pdf_path: str, subject: str) -> dict[int, str]:
         raise ValueError(f'{pdf_path}: no answer block labelled with {subject!r}')
 
     grid, disputed, notes = '', set(), []
+    # Joined before stripping: a corrected cell can straddle two blocks ('51 修正' /
+    # '為B'), so the pattern is only visible once the blocks are back together.
+    joined = ' '.join(text for _, _, _, kind, text, _ in items[matched_at + 1:]
+                      if kind != 'label')
+    corrections = {int(n): a for n, a in CORRECTION.findall(joined)}
+
     for _, _, _, kind, text, _ in items[matched_at + 1:]:
         if kind == 'label':
             break
-        # The grid is digits and letters only. Anything containing Chinese is prose —
-        # a footnote or an errata line — and must not be tokenised as answers:
-        # "第36題修正為(A)(B)均給分" would otherwise read as 36 -> A and overwrite the key.
-        if CJK.search(text):
+        # Prose must not be tokenised as answers: "第36題修正為(A)(B)均給分" would
+        # otherwise read as 36 -> A and overwrite the real key. But a grid can carry an
+        # inline 均給分 in place of a letter, so record those numbers before deciding.
+        disputed.update(int(n) for n in DISPUTE_NUM.findall(text))
+        stripped = CJK.sub(' ', text)
+        if re.search(r'\d+\s+[A-D]', stripped) and not PROSE.search(text):
+            grid += ' ' + stripped
+        elif CJK.search(text):
             notes.append(text)
-            continue
-        grid += ' ' + text
+        else:
+            grid += ' ' + text
 
     for note in notes:
-        for num in re.findall(r'第\s*(\d+)\s*題[^。；]*?(?:均給分|一律給分|皆給分|送分)', note):
-            disputed.add(int(num))
-        if re.search(r'均給分|一律給分|皆給分|送分', note) and not disputed:
+        if DISPUTE.search(note) and not DISPUTE_NUM.search(note):
             raise ValueError(
                 f'{pdf_path}: the key carries an errata note awarding marks for more '
                 f'than one option, but no question number could be read from it: {note!r}')
@@ -224,8 +242,15 @@ def parse_answers_by_subject(pdf_path: str, subject: str) -> dict[int, str]:
             i += 2
         else:
             i += 1
-    if not answers or sorted(answers) != list(range(1, max(answers) + 1)):
-        raise ValueError(f'{pdf_path}: answer block for {subject!r} is not a gapless run from 1')
+    answers.update(corrections)
+    # A disputed question's printed letter is no longer the whole answer, so the
+    # key is dropped rather than kept alongside the note that contradicts it.
+    for n in disputed:
+        answers.pop(n, None)
+    expected = [n for n in range(1, max(answers) + 1) if n not in disputed] if answers else []
+    if not answers or sorted(answers) != expected:
+        raise ValueError(f'{pdf_path}: answer block for {subject!r} is not a gapless run from 1 '
+                         f'(disputed and therefore absent: {sorted(disputed) or "none"})')
     return answers, disputed
 
 

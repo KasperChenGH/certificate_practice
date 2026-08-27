@@ -115,14 +115,29 @@ def build_securities_rep() -> list[dict]:
     return _papers('securities_rep', '證券交易相關法規與實務',
                    [('115年第2次', '115Q2_證券商業務員'),
                     ('115年第1次', '115Q1_證券商業務員'),
-                    ('114年第3次', '114Q3_證券商業務員')])
+                    ('114年第3次', '114Q3_證券商業務員'),
+                    # recovered from Internet Archive captures of the download slots
+                    ('114年第3次乙科', '114Q3_證券交易法規乙科'),
+                    ('114年第2次', '114Q2_證券交易法規乙科'),
+                    ('113年第1次', '113Q1_證券交易法規乙科'),
+                    ('112年第2次', '112Q2_證券交易法規乙科'),
+                    ('112年第1次', '112Q1_證券交易法規乙科'),
+                    ('110年第1次', '110Q1_證券交易法規乙科'),
+                    ('109年第4次', '109Q4_證券交易法規乙科'),
+                    ])
 
 
 def build_sitca() -> list[dict]:
     return _papers('sitca', '投信投顧相關法規',
                    [('115年第2次', '115Q2_投信投顧'),
                     ('115年第1次', '115Q1_投信投顧'),
-                    ('114年第3次', '114Q3_投信投顧')])
+                    ('114年第3次', '114Q3_投信投顧'),
+                    # recovered from Internet Archive captures of the download slots
+                    ('114年第3次乙科', '114Q3_投信投顧法規乙科'),
+                    ('114年第2次', '114Q2_投信投顧法規乙科'),
+                    ('112年第2次', '112Q2_投信投顧法規乙科'),
+                    ('110年第1次', '110Q1_投信投顧法規乙科'),
+                    ])
 
 
 # --- 2. Securities Senior: parse 試題 + 答案 PDFs ----------------------------
@@ -148,13 +163,30 @@ def build_sustainability() -> list[dict]:
 def build_internal_control() -> list[dict]:
     return _papers('internal_control', '企業內部控制理論與實務(含相關法規)',
                    [('115年第2次', '115Q2_企業內部控制'),
-                    ('115年第1次', '115Q1_企業內部控制')], expect=80)
+                    ('115年第1次', '115Q1_企業內部控制'),
+                    # recovered from Internet Archive captures of the download slots
+                    ('114年第3次', '114Q3_企業內部控制'),
+                    ('114年第2次', '114Q2_企業內部控制'),
+                    ('112年第3次', '112Q3_企業內部控制'),
+                    ('112年第2次', '112Q2_企業內部控制'),
+                    ('112年第1次', '112Q1_企業內部控制'),
+                    ('110年第1次', '110Q1_企業內部控制'),
+                    ('109年第4次', '109Q4_企業內部控制'),
+                    ], expect=80)
 
 
 def build_futures_trust() -> list[dict]:
     return _papers('futures_trust', '期貨信託法規及自律規範',
                    [('115年第2次', '115Q2_期貨信託銷售'),
-                    ('115年第1次', '115Q1_期貨信託銷售')], expect=50)
+                    ('115年第1次', '115Q1_期貨信託銷售'),
+                    # recovered from Internet Archive captures of the download slots
+                    ('114年第3次', '114Q3_期貨信託銷售'),
+                    ('114年第2次', '114Q2_期貨信託銷售'),
+                    ('113年第1次', '113Q1_期貨信託銷售'),
+                    ('112年第2次', '112Q2_期貨信託銷售'),
+                    ('112年第1次', '112Q1_期貨信託銷售'),
+                    ('109年第4次', '109Q4_期貨信託銷售'),
+                    ], expect=50)
 
 
 def build_securities() -> list[dict]:
@@ -392,6 +424,14 @@ def write_blueprints(data: dict) -> None:
             f'    {t}/{sub}: draws {draw} from {pool} ({r:.2f}x) — about '
             f'{min(draw / pool, 1.0):.0%} of each paper repeats the one before'
             for t, sub, pool, draw, r in rows)
+
+    stale = thin_ok - {f'{t}/{sub}' for t, sub, *_ in known_thin}
+    if stale:
+        raise ValueError(
+            '_thin_ok in exam_blueprints.json lists subjects that are no longer thin:\n'
+            + '\n'.join(f'    {x}' for x in sorted(stale))
+            + '\n  Remove them, so the list keeps meaning "known exception" rather\n'
+            '  than quietly covering a subject that becomes thin again later.')
 
     if new_thin:
         raise ValueError(

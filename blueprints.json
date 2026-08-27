@@ -88,14 +88,14 @@
    }
   ],
   "coverage": {
-   "pool": 146,
+   "pool": 404,
    "draw": 50,
-   "ratio": 2.92,
+   "ratio": 8.08,
    "subjects": {
     "證券交易相關法規與實務": {
-     "pool": 146,
+     "pool": 404,
      "draw": 50,
-     "ratio": 2.92
+     "ratio": 8.08
     }
    }
   }
@@ -112,14 +112,14 @@
    }
   ],
   "coverage": {
-   "pool": 141,
+   "pool": 268,
    "draw": 50,
-   "ratio": 2.82,
+   "ratio": 5.36,
    "subjects": {
     "投信投顧相關法規": {
-     "pool": 141,
+     "pool": 268,
      "draw": 50,
-     "ratio": 2.82
+     "ratio": 5.36
     }
    }
   }
@@ -313,14 +313,14 @@
    }
   ],
   "coverage": {
-   "pool": 92,
+   "pool": 335,
    "draw": 50,
-   "ratio": 1.84,
+   "ratio": 6.7,
    "subjects": {
     "期貨信託法規及自律規範": {
-     "pool": 92,
+     "pool": 335,
      "draw": 50,
-     "ratio": 1.84
+     "ratio": 6.7
     }
    }
   }
@@ -337,14 +337,14 @@
    }
   ],
   "coverage": {
-   "pool": 149,
+   "pool": 610,
    "draw": 80,
-   "ratio": 1.86,
+   "ratio": 7.62,
    "subjects": {
     "企業內部控制理論與實務(含相關法規)": {
-     "pool": 149,
+     "pool": 610,
      "draw": 80,
-     "ratio": 1.86
+     "ratio": 7.62
     }
    }
   }

@@ -64,14 +64,23 @@ try:
     shutil.copy(BAK, SRC)
 
     # 5. _thin_ok is what makes the known-thin subjects build; drop one and it fails.
-    mutate(lambda d: d['_thin_ok'].remove('sitca/投信投顧相關法規'))
+    listed = json.loads(SRC.read_text(encoding='utf-8'))['_thin_ok'][0]
+    mutate(lambda d: d['_thin_ok'].remove(listed))
     r = build()
-    msg = next((l for l in r.stderr.splitlines() if '投信投顧相關法規' in l and 'draws' in l), '')
+    subject = listed.split('/', 1)[1]
+    msg = next((l for l in r.stderr.splitlines() if subject in l and 'draws' in l), '')
     assert r.returncode != 0 and msg, r.stderr[-800:]
     print('PASS  un-listing a thin subject rejected:', msg.strip()[:96])
     shutil.copy(BAK, SRC)
 
-    # 6. the ratios reach blueprints.json, so thinness is inspectable not folklore.
+    # 6. A subject listed there that is no longer thin must be pruned, not left to rot.
+    mutate(lambda d: d['_thin_ok'].append('finance_ethics/職業道德'))
+    r = build()
+    assert r.returncode != 0 and 'no longer thin' in r.stderr, r.stderr[-500:]
+    print('PASS  stale _thin_ok entry rejected')
+    shutil.copy(BAK, SRC)
+
+    # 7. the ratios reach blueprints.json, so thinness is inspectable not folklore.
     r = build()
     bp = json.loads((REPO / 'blueprints.json').read_text(encoding='utf-8'))
     qs = json.loads((REPO / 'questions.json').read_text(encoding='utf-8'))
@@ -80,7 +89,10 @@ try:
         assert cov['pool'] == len(qs[topic]), (topic, cov['pool'], len(qs[topic]))
         assert cov['draw'] == sum(x['count'] for x in b['subjects']), topic
         assert cov['ratio'] == round(cov['pool'] / cov['draw'], 2), topic
-    assert bp['sitca']['coverage']['ratio'] < 3, 'sitca should still read as thin'
+    listed = {x.split('/', 1)[0] for x in
+               json.loads(SRC.read_text(encoding='utf-8'))['_thin_ok']}
+    thin = {t for t, x in bp.items() if x['coverage']['ratio'] < 3}
+    assert thin == listed, f'thin banks {sorted(thin)} != _thin_ok {sorted(listed)}'
     assert bp['finance_ethics']['coverage']['ratio'] > 3, 'finance_ethics is not thin'
     print(f'PASS  coverage ratios recorded and self-consistent for {len(bp)} banks')
 finally:

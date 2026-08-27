@@ -65,12 +65,20 @@ cannot be established from vertical position. `parse_answers_by_subject` raises 
 this layout by design. Recovering these ~63 questions needs column-aware extraction
 plus an independent check on the resulting key — worth doing, but not worth guessing.
 
-## Why the banks are thin, and what would fix them
+## Where the older sittings came from
 
 **證基會 only publishes the two most recent sittings** ("本基金會提供前兩季筆試所有測驗
-類別試題及選擇題答案下載"). Older papers come off the site, so a pool cannot be grown by
-collecting harder — it grows one sitting at a time, as each new quarter is published, and
-only if the files are pulled before they roll off.
+類別試題及選擇題答案下載"), so older papers cannot be fetched from the site at all.
+
+The download URLs are stable slots — `Download/01/<code>.pdf` is always the most recent
+sitting and `Download/02/<code>.pdf` the one before — which means an Internet Archive
+capture of those URLs holds whichever paper was current on the crawl date. Captures from
+2021, 2023, 2024 and 2026 yielded 24 further sittings across four subjects.
+
+Every archived pair is only used after the 年第N次 in the paper matches the 年第N次 in its
+key: the two files are separate captures, and a mismatched pair would key one sitting's
+questions against another's answers. `scripts/build.py` names each staged file by the
+session read out of the PDF, not by the crawl date.
 
 A complete official 題庫 exists for exactly two exams: `futures`
 (`../futures_exam_dedup_answers.pdf`) and `finance_ethics` (`../sfi_金融市場常識-113.pdf`
@@ -78,8 +86,9 @@ A complete official 題庫 exists for exactly two exams: `futures`
 its size is (sittings collected) × (questions per paper).
 
 Banks under the 3× pool-to-draw ratio `build.py` warns below are listed in `_thin_ok` in
-`../exam_blueprints.json`; the site shows the repeat rate on the exam card and in the
-landing directory.
+`../exam_blueprints.json`, and an entry there that is no longer thin is a build error —
+otherwise the list silently stops meaning anything.
+
 
 ## Not yet included
 
