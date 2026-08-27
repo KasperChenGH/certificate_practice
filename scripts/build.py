@@ -226,18 +226,69 @@ def tag_subjects(data: dict) -> None:
                 q['subject'] = parts[2] if sep == '|' else parts[1]
 
 
+COVERAGE = SRC / 'explanation_coverage.json'
+# Below this pool-to-draw ratio a paper cannot vary much: at 2.0x two consecutive
+# sittings exhaust the pool, so half of every paper is a question you just saw.
+THIN_RATIO = 3.0
+
+
+def check_explanation_coverage(data: dict, accept_drop: bool = False) -> None:
+    """Fail if a bank comes back with fewer explanations than it last shipped.
+
+    carry_over_explanations reads the previous questions.json, so a bank that is
+    absent from it for even one commit loses every explanation on the next rebuild
+    with no error — that is how 1,120 finance_ethics explanations were nearly lost.
+    Comparing against the last build does not catch it, because by then the bank had
+    been gone for several commits. So the baseline is committed and entries for banks
+    that are not in the current build are kept, which is what makes retiring a bank
+    and restoring it later safe.
+
+    Pass --accept-coverage-drop to record a drop you actually intend.
+    """
+    current = {t: sum(1 for q in qs if q.get('explanations')) for t, qs in data.items()}
+    baseline = json.loads(COVERAGE.read_text(encoding='utf-8')) if COVERAGE.exists() else {}
+
+    dropped = [(t, baseline[t], current[t]) for t in current
+               if t in baseline and current[t] < baseline[t]]
+    if dropped and not accept_drop:
+        lines = '\n'.join(f'    {t}: {was} -> {now}  (lost {was - now})'
+                           for t, was, now in dropped)
+        raise ValueError(
+            'explanation coverage went backwards:\n' + lines +
+            '\n  These are not reproducible from the source PDFs. Recover them from git\n'
+            "  (git show <commit>:questions.json), re-attach by question id where the\n"
+            '  answer key still agrees, then rebuild. If the drop is intended, rerun\n'
+            '  with --accept-coverage-drop.')
+
+    # Keep baselines for banks not in this build, so a retired bank is still protected.
+    baseline.update(current)
+    COVERAGE.write_text(json.dumps(baseline, ensure_ascii=False, indent=1) + '\n',
+                        encoding='utf-8')
+    total = sum(current.values())
+    print(f'Explanation coverage: {total} / {sum(len(v) for v in data.values())}'
+          + (f'  (accepted a drop in {len(dropped)} bank(s))' if dropped else ''))
+
+
 def write_blueprints(data: dict) -> None:
     """Validate sources/exam_blueprints.json against the built banks, then emit it.
 
     A subject name that does not match the data, or a section asking for more
     questions than exist, would silently yield a short or empty section at quiz time.
     Both are build failures instead.
+
+    Filling the paper is not the same as being able to vary it. A subject drawing 50
+    from a pool of 97 repeats about half of every paper, so a subject thinner than
+    THIN_RATIO must be listed in the blueprint file's `_thin_ok`. Known-thin subjects
+    warn; a newly thin one fails, which is what stops a section from quietly becoming
+    unpracticable when a paper is added or a draw is enlarged.
     """
     if not BLUEPRINTS_IN.exists():
         print('  !! sources/exam_blueprints.json missing - skipping blueprints')
         return
     raw = json.loads(BLUEPRINTS_IN.read_text(encoding='utf-8'))
     blueprints = {k: v for k, v in raw.items() if not k.startswith('_')}
+    thin_ok = set(raw.get('_thin_ok', []))
+    known_thin, new_thin = [], []
 
     for topic, bp in blueprints.items():
         if topic not in data:
@@ -258,6 +309,41 @@ def write_blueprints(data: dict) -> None:
         total = sum(sec['count'] for sec in bp['subjects'])
         print(f'  {topic}: {total} questions = ' +
               ' + '.join(f'{sec["count"]} {sec["subject"]}' for sec in bp['subjects']))
+
+        # Record the ratio so the thinness is inspectable rather than folklore.
+        bp['coverage'] = {
+            'pool': len(data[topic]),
+            'draw': total,
+            'ratio': round(len(data[topic]) / total, 2),
+            'subjects': {sec['subject']: {
+                'pool': available.get(sec['subject'], 0),
+                'draw': sec['count'],
+                'ratio': round(available.get(sec['subject'], 0) / sec['count'], 2),
+            } for sec in bp['subjects']},
+        }
+        for sec in bp['subjects']:
+            ratio = available.get(sec['subject'], 0) / sec['count']
+            if ratio < THIN_RATIO:
+                (known_thin if f'{topic}/{sec["subject"]}' in thin_ok
+                 else new_thin).append((topic, sec['subject'],
+                                        available.get(sec['subject'], 0),
+                                        sec['count'], ratio))
+
+    def _fmt(rows):
+        return '\n'.join(
+            f'    {t}/{sub}: draws {draw} from {pool} ({r:.2f}x) — about '
+            f'{min(draw / pool, 1.0):.0%} of each paper repeats the one before'
+            for t, sub, pool, draw, r in rows)
+
+    if new_thin:
+        raise ValueError(
+            f'these subjects draw from a pool thinner than {THIN_RATIO}x:\n'
+            + _fmt(new_thin) +
+            '\n  Add questions, shrink the draw, or — if the real paper is this size and\n'
+            '  the pool is all that exists — list them in _thin_ok in\n'
+            '  sources/exam_blueprints.json so the thinness is a recorded decision.')
+    if known_thin:
+        print(f'  !! thin pools (known, listed in _thin_ok):\n' + _fmt(known_thin))
 
     BLUEPRINTS_OUT.write_text(json.dumps(blueprints, ensure_ascii=False, indent=1),
                               encoding='utf-8')
@@ -379,6 +465,7 @@ def main():
     apply_stem_overrides(data)
     tag_subjects(data)
     carry_over_explanations(data)
+    check_explanation_coverage(data, accept_drop='--accept-coverage-drop' in sys.argv)
     print('Blueprints...')
     write_blueprints(data)
 

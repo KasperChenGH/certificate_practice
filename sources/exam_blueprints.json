@@ -20,7 +20,22 @@
   "not module-level ones, so the section sizes are proportional to this bank's own coverage",
   "of the Financial Statement Analysis curriculum — stated rather than implied. It carries",
   "no pass_mark: the CFA minimum passing score is not published, and there is no per-topic",
-  "one, so the results page shows section scores without a pass/fail verdict."
+  "one, so the results page shows section scores without a pass/fail verdict.",
+  "",
+  "build.py also FAILS when a subject draws from a pool thinner than 3x, because a",
+  "paper that cannot vary is not practice — at 2x, two sittings exhaust the pool and",
+  "half of every paper repeats the one before. The subjects in `_thin_ok` are the",
+  "known exceptions: their draw is the real paper size and the pool is every question",
+  "that has been collected so far, so the only fix is more questions. Listing one here",
+  "is a decision to ship it thin; a subject that becomes thin without being listed is",
+  "a build failure."
+ ],
+ "_thin_ok": [
+  "securities/投資學",
+  "securities/財務分析",
+  "securities/法規與實務",
+  "securities_rep/證券交易相關法規與實務",
+  "sitca/投信投顧相關法規"
  ],
  "futures": {
   "exam": "期貨商業務員",

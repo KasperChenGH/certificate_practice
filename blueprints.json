@@ -13,7 +13,24 @@
     "count": 50,
     "points": 2
    }
-  ]
+  ],
+  "coverage": {
+   "pool": 691,
+   "draw": 100,
+   "ratio": 6.91,
+   "subjects": {
+    "期貨交易法規": {
+     "pool": 382,
+     "draw": 50,
+     "ratio": 7.64
+    },
+    "期貨交易理論與實務": {
+     "pool": 309,
+     "draw": 50,
+     "ratio": 6.18
+    }
+   }
+  }
  },
  "securities": {
   "exam": "證券商高級業務員",
@@ -35,7 +52,29 @@
     "count": 50,
     "points": 2
    }
-  ]
+  ],
+  "coverage": {
+   "pool": 297,
+   "draw": 150,
+   "ratio": 1.98,
+   "subjects": {
+    "投資學": {
+     "pool": 99,
+     "draw": 50,
+     "ratio": 1.98
+    },
+    "財務分析": {
+     "pool": 100,
+     "draw": 50,
+     "ratio": 2.0
+    },
+    "法規與實務": {
+     "pool": 98,
+     "draw": 50,
+     "ratio": 1.96
+    }
+   }
+  }
  },
  "securities_rep": {
   "exam": "證券商業務員",
@@ -47,7 +86,19 @@
     "count": 50,
     "points": 2
    }
-  ]
+  ],
+  "coverage": {
+   "pool": 100,
+   "draw": 50,
+   "ratio": 2.0,
+   "subjects": {
+    "證券交易相關法規與實務": {
+     "pool": 100,
+     "draw": 50,
+     "ratio": 2.0
+    }
+   }
+  }
  },
  "sitca": {
   "exam": "投信投顧業務員",
@@ -59,7 +110,19 @@
     "count": 50,
     "points": 2
    }
-  ]
+  ],
+  "coverage": {
+   "pool": 97,
+   "draw": 50,
+   "ratio": 1.94,
+   "subjects": {
+    "投信投顧相關法規": {
+     "pool": 97,
+     "draw": 50,
+     "ratio": 1.94
+    }
+   }
+  }
  },
  "cfa_fra": {
   "exam": "CFA Level I — Financial Reporting & Analysis",
@@ -130,7 +193,79 @@
     "count": 3,
     "points": 1
    }
-  ]
+  ],
+  "coverage": {
+   "pool": 514,
+   "draw": 90,
+   "ratio": 5.71,
+   "subjects": {
+    "Financial Analysis Techniques": {
+     "pool": 64,
+     "draw": 11,
+     "ratio": 5.82
+    },
+    "Statement of Cash Flows": {
+     "pool": 54,
+     "draw": 9,
+     "ratio": 6.0
+    },
+    "Income Statement": {
+     "pool": 52,
+     "draw": 9,
+     "ratio": 5.78
+    },
+    "Long-Lived Assets": {
+     "pool": 48,
+     "draw": 8,
+     "ratio": 6.0
+    },
+    "Balance Sheet": {
+     "pool": 47,
+     "draw": 8,
+     "ratio": 5.88
+    },
+    "Non-Current Liabilities": {
+     "pool": 44,
+     "draw": 8,
+     "ratio": 5.5
+    },
+    "Inventories": {
+     "pool": 43,
+     "draw": 8,
+     "ratio": 5.38
+    },
+    "Income Taxes": {
+     "pool": 39,
+     "draw": 7,
+     "ratio": 5.57
+    },
+    "Financial Reporting Quality": {
+     "pool": 36,
+     "draw": 6,
+     "ratio": 6.0
+    },
+    "Financial Reporting Standards": {
+     "pool": 26,
+     "draw": 5,
+     "ratio": 5.2
+    },
+    "Financial Statement Analysis Applications": {
+     "pool": 24,
+     "draw": 4,
+     "ratio": 6.0
+    },
+    "Introduction to Financial Statement Analysis": {
+     "pool": 23,
+     "draw": 4,
+     "ratio": 5.75
+    },
+    "Intercorporate Investments": {
+     "pool": 14,
+     "draw": 3,
+     "ratio": 4.67
+    }
+   }
+  }
  },
  "finance_ethics": {
   "exam": "金融市場常識與職業道德",
@@ -147,6 +282,23 @@
     "count": 28,
     "points": 2
    }
-  ]
+  ],
+  "coverage": {
+   "pool": 1120,
+   "draw": 50,
+   "ratio": 22.4,
+   "subjects": {
+    "金融市場常識": {
+     "pool": 504,
+     "draw": 22,
+     "ratio": 22.91
+    },
+    "職業道德": {
+     "pool": 616,
+     "draw": 28,
+     "ratio": 22.0
+    }
+   }
+  }
  }
 }

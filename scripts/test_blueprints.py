@@ -52,6 +52,31 @@ try:
     msg = next((l for l in r.stderr.splitlines() if 'no bank named' in l), '')
     assert r.returncode != 0 and msg, r.stderr[-500:]
     print('PASS  unknown bank rejected:', msg.strip()[:96])
+    shutil.copy(BAK, SRC)
+
+    # 4. a draw enlarged until its pool can no longer vary the paper. 382 questions
+    #    fills a 200-question section, so the old have<count check passes it.
+    mutate(lambda d: d['futures']['subjects'][0].__setitem__('count', 200))
+    r = build()
+    msg = next((l for l in r.stderr.splitlines() if '期貨交易法規' in l and 'draws' in l), '')
+    assert r.returncode != 0 and msg, r.stderr[-800:]
+    print('PASS  newly thin subject rejected:', msg.strip()[:96])
+    shutil.copy(BAK, SRC)
+
+    # 5. _thin_ok is what makes the known-thin subjects build; drop one and it fails.
+    mutate(lambda d: d['_thin_ok'].remove('sitca/投信投顧相關法規'))
+    r = build()
+    msg = next((l for l in r.stderr.splitlines() if '投信投顧相關法規' in l and 'draws' in l), '')
+    assert r.returncode != 0 and msg, r.stderr[-800:]
+    print('PASS  un-listing a thin subject rejected:', msg.strip()[:96])
+    shutil.copy(BAK, SRC)
+
+    # 6. the ratios reach blueprints.json, so thinness is inspectable not folklore.
+    r = build()
+    bp = json.loads((REPO / 'blueprints.json').read_text(encoding='utf-8'))
+    assert bp['sitca']['coverage']['ratio'] == 1.94, bp['sitca']['coverage']
+    assert bp['futures']['coverage']['subjects']['期貨交易法規']['ratio'] > 3
+    print('PASS  coverage ratios recorded in blueprints.json')
 finally:
     shutil.copy(BAK, SRC)
     BAK.unlink()
