@@ -1,29 +1,4 @@
-# GitHub Pages build config.
-#
-# The site needs exactly five things at the root: index.html, app.html,
-# questions.json, blueprints.json and CNAME. Everything else in this repo is
-# build input or developer documentation, and Pages was serving all of it —
-# 22 MB of source PDFs, the scripts, the design sources, and these notes —
-# from https://certifications.courses/.
-#
-# `exclude` keeps them out of the published site. It does NOT make them private:
-# the repository is public, so anything committed is still readable on GitHub.
-# To make something genuinely private, do not commit it (or make the repo
-# private, which needs GitHub Pro for Pages).
-#
-# Do NOT add a .nojekyll file. It would disable this config and also start
-# serving the underscore-prefixed directories, which Jekyll currently skips.
-
+# Only the site is published from this repo; README is for GitHub, not the website.
 exclude:
-  - CLAUDE.md
-  - HANDOVER.md
   - README.md
-  - docs/
-  - scripts/
-  - sources/
-  - design/
-  - Gemfile
-  - Gemfile.lock
-
-# Nothing here is a blog; skip the plugins and defaults that assume one.
 plugins: []
