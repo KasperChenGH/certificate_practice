@@ -148,10 +148,9 @@ def build_securities() -> list[dict]:
 # --- 3. Finance + Ethics: parse two SFI bank PDFs ---------------------------
 
 def build_finance_ethics() -> list[dict]:
-    """Retired: 金融市場常識與職業道德 is no longer published to the site.
+    """The SFI 1,120-question official bank, effective 113年9月1日.
 
-    Kept, with its parser and source PDFs, so the bank can be restored by calling
-    this from main() again. Not referenced by the current build.
+    Two subjects: 金融市場常識 and 職業道德.
     """
     out = []
     DIGIT2LETTER = {'1':'A','2':'B','3':'C','4':'D'}
@@ -168,7 +167,7 @@ def build_finance_ethics() -> list[dict]:
                 'stem': q['stem'],
                 'options': opts,
                 'answer': DIGIT2LETTER.get(str(q['answer']), q['answer']),
-                'origin': f'{cat}｜第 {q["qnum"]} 題',
+                'origin': f'113年9月版｜{cat}｜第 {q["qnum"]} 題',
             })
     # Clean up temp file
     tmp = REPO/'_tmp_bank.jsonl'
@@ -353,6 +352,10 @@ def main():
     securities = dedup(build_securities())
     print(f'  -> {len(securities)} unique securities questions')
 
+    print('Building finance_ethics...')
+    finance_ethics = dedup(build_finance_ethics())
+    print(f'  -> {len(finance_ethics)} unique finance_ethics questions')
+
     print('Building securities_rep...')
     securities_rep = dedup(build_securities_rep())
     print(f'  -> {len(securities_rep)} unique securities_rep questions')
@@ -369,6 +372,7 @@ def main():
         'futures': futures,
         'securities': securities,
         'securities_rep': securities_rep,
+        'finance_ethics': finance_ethics,
         'sitca': sitca,
         'cfa_fra': cfa_fra,
     }

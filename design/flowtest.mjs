@@ -63,7 +63,12 @@ await sleep(2600);
 await ev(`localStorage.clear(); return 1;`);
 await send('Page.reload'); await sleep(2600);
 
-check('banks loaded', (await ev(`return Object.keys(DATA).length;`)) === 5);
+check('every bank has a name and every name has a bank', await ev(`
+  const banks = Object.keys(DATA).sort().join(',');
+  const named = Object.keys(TOPIC_NAMES).sort().join(',');
+  return banks === named ? true : banks + ' != ' + named;`) === true);
+check('every bank has a home button', await ev(`
+  return Object.keys(DATA).every(t => document.querySelector('[data-topic="' + t + '"]'));`));
 check('home has an ad container', await ev(`return !!document.querySelector('#page-home .adslot');`));
 await shot('home');
 

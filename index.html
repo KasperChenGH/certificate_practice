@@ -72,7 +72,11 @@
 
     /* ---- exam directory: families of rows, not a grid of cards ---- */
     .fams { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
-    .fam { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 8px 24px 20px; }
+    .col { display: flex; flex-direction: column; gap: 16px; }
+    .fam {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 8px 24px 20px;
+    }
     .fam h3 {
       margin: 0; padding: 16px 0 12px; font-size: 13px; font-weight: 700;
       letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase;
@@ -100,7 +104,6 @@
       background: var(--ground); border: 1px solid var(--line);
       border-radius: 999px; padding: 3px 10px;
     }
-    .exam.same .st { font-size: 12px; font-weight: 600; color: var(--good); }
 
     .why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .point { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 28px; display: flex; gap: 18px; align-items: flex-start; }
@@ -134,6 +137,7 @@
       .sec-head { margin-bottom: 32px; }
       .sec-head h2 { font-size: 26px; }
       .fams { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+      .col { gap: 20px; }
       .fam { padding: 10px 20px 22px; }
       .fam h3 { padding: 18px 0 12px; }
       .rowinner { padding: 17px 0; gap: 12px; }
@@ -154,7 +158,7 @@
     <div>
       <p class="eyebrow">CERTIFICATIONS.COURSES</p>
       <h1 class="serif">照真正的考卷<br>結構練習</h1>
-      <p>台灣證券、期貨、投信投顧從業人員資格測驗與 CFA。目前上線 1,699 題，每一份練習卷都依正式考試的科目配比抽題，並且分科計分——因為單科不及格就是不及格。</p>
+      <p>證基會證券、期貨、投信投顧從業人員資格測驗，金融市場常識與職業道德，以及 CFA。目前上線 2,819 題，每一份練習卷都依正式考試的科目配比抽題，並且分科計分——因為單科不及格就是不及格。</p>
       <div class="cta-row">
         <a class="btn primary" href="/app.html">開始練習</a>
         <a class="btn ghost" href="#exams">看證照清單</a>
@@ -163,9 +167,10 @@
     </div>
 
     <div class="slab">
-      <div class="total">1,699</div>
+      <div class="total">2,819</div>
       <div class="total-lbl">題，目前已上線</div>
       <ul>
+        <li><span>金融常識與職業道德</span><b>1,120</b></li>
         <li><span>期貨類</span><b>691</b></li>
         <li><span>CFA</span><b>514</b></li>
         <li><span>證券類</span><b>397</b></li>
@@ -179,46 +184,58 @@
   <div class="wrap">
     <div class="sec-head">
       <h2 class="serif">依證照分類，逐張補齊</h2>
-      <p>抽題不是把整個題庫打散隨機挑，而是照該張證照真實考卷的科目配比組卷。已上線的標示題數，其餘正在收錄中。部分證照有報考資格限制，一併列出。</p>
+      <p>分類與名稱依證基會官方測驗列表。抽題不是把整個題庫打散隨機挑，而是照該張證照真實考卷的科目配比組卷。已上線的標示題數、點名稱可直接開始練習，其餘正在收錄中。</p>
     </div>
 
     <div class="fams">
+      <div class="col">
       <div class="fam">
-        <h3>證券類</h3>
+        <h3>證券、投信投顧暨期貨從業人員資格測驗</h3>
         <ul>
-          <li class="exam soon"><span class="rowinner"><span class="nm">證券投資分析人員</span><span class="st">收錄中</span></span></li>
-          <li class="exam"><a class="rowinner" href="/app.html?topic=securities"><span class="nm">證券商高級業務員<span class="req">每回 150 題：投資學 50 ＋ 財務分析 50 ＋ 法規與實務 50</span></span><span class="st">297<small>題</small></span><span class="go">→</span></a></li>
-          <li class="exam"><a class="rowinner" href="/app.html?topic=securities_rep"><span class="nm">證券商業務員<span class="req">每回 50 題：證券交易相關法規與實務 50</span></span><span class="st">100<small>題</small></span><span class="go">→</span></a></li>
-          <li class="exam same"><a class="rowinner" href="/app.html?topic=securities_rep"><span class="nm">證券交易相關法規與實務乙科<span class="req">與「證券商業務員」同一份考卷，練的是同一個題庫</span></span><span class="st">同上</span><span class="go">→</span></a></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">證券投資分析人員</span><span class="st">收錄中</span></span></li>
+        <li class="exam"><a class="rowinner" href="/app.html?topic=securities"><span class="nm">證券商高級業務員<span class="req">每回 150 題：投資學 50 ＋ 財務分析 50 ＋ 法規與實務 50</span></span><span class="st">297<small>題</small></span><span class="go">→</span></a></li>
+        <li class="exam"><a class="rowinner" href="/app.html?topic=securities_rep"><span class="nm">證券商業務員 ／ 證券交易相關法規與實務乙科<span class="req">同一份考卷，練的是同一個題庫。乙科僅取得該科合格證明，不得換發為證券商業務員合格證明</span></span><span class="st">100<small>題</small></span><span class="go">→</span></a></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">期貨交易分析人員</span><span class="st">收錄中</span></span></li>
+        <li class="exam"><a class="rowinner" href="/app.html?topic=futures"><span class="nm">期貨商業務員<span class="req">每回 100 題：期貨交易法規 50 ＋ 期貨交易理論與實務 50</span></span><span class="st">691<small>題</small></span><span class="go">→</span></a></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">期貨信託基金銷售機構銷售人員</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">投信投顧業務員（三科）<span class="req">目前只上線「投信投顧相關法規」一科</span></span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">投信投顧業務員（一科）<span class="req">需高業 ＋ 效期內之金融常識與職業道德</span></span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">投信投顧業務員（二科）<span class="req">需投信投顧相關法規乙科資格</span></span><span class="st">收錄中</span></span></li>
+        <li class="exam"><a class="rowinner" href="/app.html?topic=sitca"><span class="nm">投信投顧相關法規（含自律規範）乙科<span class="req">每回 50 題。需信託或投資型保險業務員證書才能報考</span></span><span class="st">97<small>題</small></span><span class="go">→</span></a></li>
         </ul>
       </div>
-
-      <div class="fam">
-        <h3>期貨類</h3>
-        <ul>
-          <li class="exam soon"><span class="rowinner"><span class="nm">期貨交易分析人員</span><span class="st">收錄中</span></span></li>
-          <li class="exam"><a class="rowinner" href="/app.html?topic=futures"><span class="nm">期貨商業務員<span class="req">每回 100 題：期貨交易法規 50 ＋ 期貨交易理論與實務 50</span></span><span class="st">691<small>題</small></span><span class="go">→</span></a></li>
-          <li class="exam soon"><span class="rowinner"><span class="nm">期貨信託基金銷售機構銷售人員</span><span class="st">收錄中</span></span></li>
-        </ul>
       </div>
-
+      <div class="col">
       <div class="fam">
-        <h3>投信投顧類</h3>
+        <h3>金融常識測驗 ／ 防制洗錢測驗</h3>
         <ul>
-          <li class="exam soon"><span class="rowinner"><span class="nm">投信投顧業務員（三科）<span class="req">目前只上線「投信投顧相關法規」一科</span></span><span class="st">收錄中</span></span></li>
-          <li class="exam soon"><span class="rowinner"><span class="nm">投信投顧業務員（一科）<span class="req">需高業 ＋ 效期內之金融常識與職業道德</span></span><span class="st">收錄中</span></span></li>
-          <li class="exam soon"><span class="rowinner"><span class="nm">投信投顧業務員（二科）<span class="req">需投信投顧相關法規乙科資格</span></span><span class="st">收錄中</span></span></li>
-          <li class="exam"><a class="rowinner" href="/app.html?topic=sitca"><span class="nm">投信投顧相關法規（含自律規範）乙科<span class="req">每回 50 題。需信託或投資型保險業務員證書才能報考</span></span><span class="st">97<small>題</small></span><span class="go">→</span></a></li>
+        <li class="exam"><a class="rowinner" href="/app.html?topic=finance_ethics"><span class="nm">金融市場常識與職業道德<span class="req">每回 50 題：金融市場常識 22 ＋ 職業道德 28。證基會官方 1,120 題題庫</span></span><span class="st">1,120<small>題</small></span><span class="go">→</span></a></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">防制洗錢與打擊資恐專業人員</span><span class="st">收錄中</span></span></li>
         </ul>
       </div>
 
       <div class="fam">
         <h3>CFA</h3>
         <ul>
-          <li class="exam"><a class="rowinner" href="/app.html?topic=cfa_fra"><span class="nm">Level I — Financial Reporting &amp; Analysis<span class="req">每回 90 題，涵蓋 13 個主題。英文，三選一</span></span><span class="st">514<small>題</small></span><span class="go">→</span></a></li>
-          <li class="exam soon"><span class="rowinner"><span class="nm">Level II</span><span class="st">收錄中</span></span></li>
-          <li class="exam soon"><span class="rowinner"><span class="nm">Level III</span><span class="st">收錄中</span></span></li>
+        <li class="exam"><a class="rowinner" href="/app.html?topic=cfa_fra"><span class="nm">Level I — Financial Reporting &amp; Analysis<span class="req">每回 90 題，涵蓋 13 個主題。英文，三選一</span></span><span class="st">514<small>題</small></span><span class="go">→</span></a></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">Level II</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">Level III</span><span class="st">收錄中</span></span></li>
         </ul>
+      </div>
+
+      <div class="fam">
+        <h3>能力測驗</h3>
+        <ul>
+        <li class="exam soon"><span class="rowinner"><span class="nm">債券人員</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">股務人員</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">工商倫理</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">企業內部控制</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">資產證券化</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">票券商業務人員</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">公司治理</span><span class="st">收錄中</span></span></li>
+        <li class="exam soon"><span class="rowinner"><span class="nm">永續發展基礎能力測驗</span><span class="st">收錄中</span></span></li>
+        </ul>
+      </div>
       </div>
     </div>
   </div>
@@ -262,7 +279,7 @@
       <div class="point">
         <svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg>
         <div>
-          <h3>1,406 題附逐選項解析</h3>
+          <h3>2,526 題附逐選項解析</h3>
           <p>不只告訴你正解，而是四個選項各自為什麼對、為什麼錯。答錯當下就展開，不必再去翻書。</p>
         </div>
       </div>
@@ -274,7 +291,7 @@
   <div class="wrap" style="padding-top: 64px;">
     <div class="note">
       <h3>還沒做完的部分</h3>
-      <p>標示「收錄中」的證照目前還沒有題庫，先把清單列出來是為了讓你知道會補到哪裡。另外已上線的 1,699 題裡有 293 題——114 年第 3 次與 115 年第 1 次新收錄的那批——目前只標示正解，逐選項解析還沒補上。</p>
+      <p>標示「收錄中」的證照目前還沒有題庫，先把清單列出來是為了讓你知道會補到哪裡。另外已上線的 2,819 題裡有 293 題——114 年第 3 次與 115 年第 1 次新收錄的那批——目前只標示正解，逐選項解析還沒補上。</p>
     </div>
   </div>
 </section>

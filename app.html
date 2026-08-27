@@ -318,6 +318,7 @@
     <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
     <button class="btn" data-topic="securities_rep">證券商業務員<div class="topic-meta" id="meta-securities_rep">—</div></button>
     <button class="btn" data-topic="sitca">投信投顧業務員<div class="topic-meta" id="meta-sitca">—</div></button>
+    <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
     <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
     <div class="adband"><div class="adslot">
       <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
@@ -454,13 +455,12 @@ const TOPIC_NAMES = {
   securities: '證券商高級業務員',
   securities_rep: '證券商業務員',
   sitca: '投信投顧業務員',
+  finance_ethics: '金融市場常識與職業道德',
   cfa_fra: 'CFA Level I \u2014 Financial Reporting & Analysis',
 };
-// Banks no longer published. Exam history recorded before a bank was retired still
-// needs a readable name, so keep the label even though the questions are gone.
-const RETIRED_TOPIC_NAMES = {
-  finance_ethics: '\u91d1\u878d\u5e02\u5834\u5e38\u8b58\u8207\u8077\u696d\u9053\u5fb7\uff08\u5df2\u4e0b\u67b6\uff09',
-};
+// Banks no longer published. Exam history recorded before a bank is retired still
+// needs a readable name, so labels outlive the questions. Empty today.
+const RETIRED_TOPIC_NAMES = {};
 function topicLabel(t) { return TOPIC_NAMES[t] || RETIRED_TOPIC_NAMES[t] || t; }
 const QUIZ_SIZE = 100;      // target length; a smaller bank uses its whole pool
 const RECENT_WINDOW = 10;   // last N attempts per question
@@ -635,7 +635,7 @@ function renderHome() {
     // Three tiers, matching the design: bank size, then how a paper is composed.
     // Built as markup rather than one string so the count can carry its own weight
     // on desktop, where the button becomes a card.
-    let html = `<span class="tc-n">${DATA[t].length}<small>\u984c</small></span>`;
+    let html = `<span class="tc-n">${DATA[t].length.toLocaleString('en-US')}<small>\u984c</small></span>`;
     if (bp) {
       // Enumerating 13 sections would swamp the card, so summarise past a few.
       const detail = bp.subjects.length <= 3
