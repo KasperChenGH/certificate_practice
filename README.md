@@ -37,10 +37,14 @@ All asset paths in `index.html` are relative, so the site works at either addres
 
 ```bash
 python -m http.server 8000
-# open http://localhost:8000
+# open http://localhost:8000        landing page
+# open http://localhost:8000/app.html   the quiz itself
 ```
 
-Don't open `index.html` directly — `fetch('questions.json')` needs an HTTP origin.
+Don't open the files directly — `fetch('questions.json')` needs an HTTP origin.
+
+`index.html` is generated from `design/Main.dc.html` by `node design/build-site.mjs`.
+Edit the design source, not the output.
 
 ## Publish via GitHub Pages
 
@@ -63,7 +67,9 @@ Don't open `index.html` directly — `fetch('questions.json')` needs an HTTP ori
 
 ```
 .
-├── index.html         UI + quiz/review logic (~20 KB)
+├── index.html         landing page — GENERATED from design/Main.dc.html
+├── app.html           the quiz app: UI + quiz/review/history logic
+├── design/            design sources, generators and the screenshot loop
 ├── questions.json     combined question bank for all five topics (~1.2 MB, UTF-8)
 ├── sources/           inputs used to generate questions.json (~6.5 MB)
 │   ├── futures_exam_dedup_answers.pdf

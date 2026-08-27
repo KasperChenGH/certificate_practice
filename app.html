@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e3a5f">
+<title>金融證照練習</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --accent: #1e3a5f;
+    --accent-soft: #2a4d7c;
+    --good: #1f8a3e;
+    --bad: #c63838;
+    --border: #d2d2d7;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "PingFang TC", "Noto Sans CJK TC", sans-serif;
+    background: var(--bg); color: var(--text);
+    font-size: 16px; line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+  .app { max-width: 720px; margin: 0 auto; padding: 16px 16px 48px; }
+  .hidden { display: none !important; }
+  h1 { font-size: 22px; margin: 12px 0 16px; font-weight: 700; }
+  h2 { font-size: 18px; margin: 12px 0 8px; font-weight: 600; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px; margin-bottom: 12px;
+  }
+  .btn {
+    display: block; width: 100%;
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 16px; font-size: 17px; font-weight: 600; margin-bottom: 12px;
+    cursor: pointer; transition: background 0.15s;
+    text-align: center; font-family: inherit;
+  }
+  .btn:active { background: var(--accent-soft); }
+  .btn.secondary { background: #e8e8ed; color: var(--text); }
+  .btn.secondary:active { background: #d2d2d7; }
+  .btn.review { background: #b8551c; }
+  .btn.review:active { background: #9a4717; }
+  .btn-row { display: flex; gap: 8px; }
+  .btn-row .btn { flex: 1; }
+  .meta { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .progress-wrap {
+    position: sticky; top: 0; background: var(--bg); padding: 8px 0 4px;
+    z-index: 10;
+  }
+  .progress-bar {
+    height: 4px; background: #e0e0e5; border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--accent); transition: width 0.2s;
+  }
+  .progress-label { font-size: 13px; color: var(--muted); margin-top: 4px;
+    display: flex; justify-content: space-between; }
+  .question { font-size: 16px; font-weight: 600; margin-bottom: 14px; line-height: 1.55; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 14px; cursor: pointer; display: flex; align-items: flex-start;
+    gap: 10px; font-size: 15px; transition: background 0.1s, border-color 0.1s;
+  }
+  .option:active { background: #eef0f4; }
+  .option.selected { border-color: var(--accent); background: #eaf0f9; }
+  .option.correct { border-color: var(--good); background: #e6f4ea; }
+  .option.wrong { border-color: var(--bad); background: #fbeaea; }
+  .option .letter {
+    font-weight: 700; min-width: 22px; color: var(--accent);
+  }
+  .option.correct .letter { color: var(--good); }
+  .option.wrong .letter { color: var(--bad); }
+  .nav { display: flex; gap: 8px; margin-top: 16px; }
+  .nav .btn { margin-bottom: 0; }
+  .abort-row { margin-top: 36px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .abort-row .btn { margin-bottom: 0; }
+  .feedback {
+    margin-top: 14px; padding: 10px 12px; border-radius: 8px;
+    font-size: 14px; line-height: 1.5;
+  }
+  .feedback.correct { background: #e6f4ea; color: var(--good); border-left: 4px solid var(--good); }
+  .feedback.wrong { background: #fbeaea; color: var(--bad); border-left: 4px solid var(--bad); }
+  .feedback .answer-text { color: var(--text); font-weight: 600; margin-top: 4px; }
+  .expl-block { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.12); }
+  .expl-title { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .expl-item { font-size: 13px; line-height: 1.55; margin-bottom: 8px; color: var(--text); display: flex; gap: 6px; }
+  .expl-item:last-child { margin-bottom: 0; }
+  .expl-item .expl-letter { font-weight: 700; min-width: 26px; flex-shrink: 0; }
+  .expl-item.expl-correct .expl-letter { color: var(--good); }
+  .expl-item.expl-sel-wrong .expl-letter { color: var(--bad); }
+  @media (prefers-color-scheme: dark) {
+    .feedback.correct { background: #1e3a26; }
+    .feedback.wrong { background: #3a1e1e; }
+    .expl-block { border-top-color: rgba(255,255,255,0.1); }
+  }
+  .option.locked { cursor: default; }
+  .result-summary {
+    text-align: center; padding: 20px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;
+  }
+  .result-summary .big { font-size: 36px; font-weight: 700; margin: 8px 0; }
+  .result-summary .pct { color: var(--accent); }
+  .result-q {
+    border-left: 4px solid var(--bad);
+    padding: 12px 14px; background: var(--card);
+    margin-bottom: 10px; border-radius: 4px 10px 10px 4px;
+  }
+  .result-q .stem { font-weight: 600; margin-bottom: 8px; }
+  .result-q .answer-line { color: var(--good); font-size: 14px; margin-top: 6px; }
+  .result-q .wrong-line { color: var(--bad); font-size: 14px; }
+  .result-q .origin { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .review-q { border-left-color: var(--accent); }
+  .empty-state {
+    text-align: center; color: var(--muted); padding: 40px 16px;
+  }
+  .stat-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .stat {
+    flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 6px; text-align: center;
+  }
+  .stat .num { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; }
+  .topic-meta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 400; }
+  .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
+
+  .subject-table { margin: 12px 0 0; font-size: 14px; }
+  .subject-table .row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 0; border-top: 1px solid var(--border);
+  }
+  .subject-table .row .nm { flex: 1; min-width: 0; text-align: left; }
+  .subject-table .row .sc { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .subject-table .row .vd { font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .subject-table .row .vd.pass { color: var(--good); background: rgba(31,138,62,0.12); }
+  .subject-table .row .vd.fail { color: var(--bad);  background: rgba(198,56,56,0.12); }
+  .blueprint-note { color: var(--muted); font-size: 12px; margin-top: 10px; line-height: 1.5; }
+  @media (prefers-color-scheme: dark) {
+    .subject-table .row .vd.pass { background: rgba(31,138,62,0.22); }
+    .subject-table .row .vd.fail { background: rgba(198,56,56,0.22); }
+  }
+
+  /* ===== Exam history ===== */
+  .hist-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 8px; cursor: pointer;
+  }
+  .hist-row:active { background: #eef0f4; }
+  .hist-row .when { font-size: 13px; color: var(--muted); }
+  .hist-row .topic { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+  .hist-row .grow { flex: 1; min-width: 0; }
+  .hist-row .chev { color: var(--muted); font-size: 18px; }
+  .score-pill {
+    font-weight: 700; font-size: 15px; padding: 4px 10px;
+    border-radius: 999px; white-space: nowrap;
+  }
+  .score-pill.pass { color: var(--good); background: rgba(31,138,62,0.12); }
+  .score-pill.fail { color: var(--bad);  background: rgba(198,56,56,0.12); }
+  .hist-summary {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px;
+  }
+  .hist-summary .name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .hist-summary .figs { color: var(--muted); }
+  .hist-summary .figs b { color: var(--text); font-weight: 600; }
+  .your-line { color: var(--bad); font-size: 14px; margin-top: 6px; }
+  @media (prefers-color-scheme: dark) {
+    .hist-row:active { background: #2a2a2c; }
+    .score-pill.pass { background: rgba(31,138,62,0.22); }
+    .score-pill.fail { background: rgba(198,56,56,0.22); }
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e; --card: #2c2c2e; --text: #f5f5f7; --muted: #98989d;
+      --accent: #6ea1d8; --accent-soft: #87b6e6; --border: #3a3a3c;
+    }
+    .option.selected { background: #1e3550; }
+    .option.correct { background: #1e3a26; }
+    .option.wrong { background: #3a1e1e; }
+    .btn.secondary { background: #3a3a3c; color: var(--text); }
+  }
+
+
+  /* ===== ad slots: reserved height, never flush against a control ===== */
+  .adband { padding: 22px 0 4px; }
+  .adband.ruled { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 26px; }
+  .adslot {
+    min-height: 258px; display: flex; align-items: center; justify-content: center;
+    border: 1px dashed #c9c9ce; border-radius: 10px; background: rgba(0,0,0,0.015);
+  }
+
+  /* ===== desktop top bar (hidden on phones, where buttons are the navigation) ===== */
+  .topbar { display: none; }
+
+  /* ===== desktop question navigator (built by renderNav) ===== */
+  .quiz-side { display: none; }
+  .qnav { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-top: 14px; }
+  .qnav i {
+    font-style: normal; font-size: 11px; text-align: center; padding: 5px 0; border-radius: 5px;
+    background: var(--bg); color: var(--muted); border: 1px solid var(--border);
+    font-variant-numeric: tabular-nums; cursor: pointer;
+  }
+  .qnav i.done { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .qnav i.now { background: var(--card); color: var(--accent); border-color: var(--accent); border-width: 2px; font-weight: 700; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .legend b { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+  .hist-row .subj-cell { display: none; }
+
+  /* ================= DESKTOP ================= */
+  @media (min-width: 1024px) {
+    .app { max-width: 1240px; padding: 28px 40px 56px; }
+    h1 { font-size: 26px; }
+
+    .topbar {
+      display: flex; align-items: center; gap: 26px; height: 60px; padding: 0 40px;
+      background: var(--card); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 20;
+    }
+    .topbar .brand { font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
+    .topbar .spacer { flex: 1; }
+    .topbar .navlink {
+      background: none; border: none; font-family: inherit; font-size: 14px;
+      color: var(--muted); cursor: pointer; padding: 0;
+    }
+    .topbar .navlink:hover { color: var(--accent); }
+
+    /* 首頁 — exams as a grid, all visible at once */
+    #page-home .stat-row { margin-bottom: 20px; }
+    #page-home .stat { padding: 16px 18px; text-align: left; }
+    #page-home .stat .num { font-size: 26px; }
+    #page-home .stat .lbl { font-size: 12px; }
+    .topic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .topic-grid .btn[data-topic] {
+      margin-bottom: 0; text-align: left; padding: 22px; min-height: 190px;
+      display: flex; flex-direction: column; justify-content: space-between; font-size: 17px;
+    }
+    .topic-grid .btn[data-topic] .topic-meta {
+      font-size: 13px; line-height: 1.65; opacity: 0.8; margin-top: 14px;
+      padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.18);
+    }
+    .topic-grid .adband { padding: 0; }
+    .topic-grid .adslot { min-height: 190px; }
+    #page-home .btn.review, #page-home .btn.secondary { max-width: 260px; }
+    #page-home .home-actions { display: flex; gap: 10px; margin-top: 22px; }
+    #page-home .home-actions .btn { margin-bottom: 0; }
+
+    /* 作答中 — two columns, navigator on the right */
+    .quiz-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
+    .quiz-side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 84px; }
+    .quiz-side .btn { margin-bottom: 0; }
+    .quiz-side .adslot { min-height: 250px; }
+    .quiz-side .adband { padding: 4px 0 0; }
+    #page-quiz .progress-wrap { position: static; }
+    #page-quiz .abort-row { display: flex; gap: 10px; }
+    #page-quiz .abort-row .btn { margin-top: 0 !important; }
+
+    /* 成績 — score and actions side by side */
+    .results-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
+    .results-grid .result-summary { margin-bottom: 0; text-align: left; padding: 28px; }
+    .results-grid .result-summary .big { font-size: 52px; }
+    .results-side { display: flex; flex-direction: column; gap: 12px; }
+    .results-side .btn { margin-bottom: 0; }
+    .results-side .adslot { min-height: 250px; }
+    .results-side .adband { padding: 4px 0 0; }
+
+    /* 測驗紀錄 — summaries beside a scannable list, with a per-subject column */
+    .history-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 28px; align-items: start; }
+    .history-grid .hist-row { margin-bottom: 0; border-radius: 0; border-left: none; border-right: none; border-top: none; }
+    .history-grid #history-list {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .history-grid .hist-row:first-child { border-top: 1px solid var(--border); }
+    .hist-row .subj-cell { display: block; flex: 0 0 240px; font-size: 13px; color: var(--muted); }
+    .history-side .adslot { min-height: 250px; }
+
+    /* 常錯題複習 / 紀錄明細 — two columns of cards */
+    #review-list, #hd-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
+    #review-list .result-q, #hd-list .result-q { margin-bottom: 0; }
+    .detail-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 28px; align-items: start; }
+    .detail-grid .detail-side { position: sticky; top: 84px; }
+    .detail-grid .detail-side .btn { margin-bottom: 8px; }
+    .detail-grid .detail-side .adslot { min-height: 250px; }
+    .detail-grid #hd-list { margin-top: 0 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="/">金融證照練習</a>
+  <button class="navlink" data-nav="home">題庫</button>
+  <button class="navlink" data-nav="review">常錯題複習</button>
+  <button class="navlink" data-nav="history">測驗紀錄</button>
+  <span class="spacer"></span>
+  <button class="navlink" data-nav="clear">清除作答紀錄</button>
+</div>
+<div class="app">
+
+  <!-- HOME -->
+  <div id="page-home">
+    <h1>金融證照練習</h1>
+    <div class="stat-row">
+      <div class="stat"><div class="num" id="stat-attempts">0</div><div class="lbl">總作答數</div></div>
+      <div class="stat"><div class="num" id="stat-accuracy">—</div><div class="lbl">整體正確率</div></div>
+      <div class="stat"><div class="num" id="stat-wrong-pool">0</div><div class="lbl">常錯題庫</div></div>
+    </div>
+
+    <div id="resume-banner" class="hidden card" style="border-left:4px solid var(--accent);margin-bottom:12px;">
+      <div style="font-weight:600;margin-bottom:4px;">繼續上次測驗</div>
+      <div class="meta" id="resume-meta">—</div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button class="btn" id="btn-resume" style="margin-bottom:0">繼續作答</button>
+        <button class="btn secondary" id="btn-discard" style="margin-bottom:0">捨棄</button>
+      </div>
+    </div>
+
+    <h2>選擇測驗類別</h2>
+    <div class="topic-grid">
+    <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
+    <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
+    <button class="btn" data-topic="securities_rep">證券商業務員<div class="topic-meta" id="meta-securities_rep">—</div></button>
+    <button class="btn" data-topic="sitca">投信投顧業務員<div class="topic-meta" id="meta-sitca">—</div></button>
+    <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
+    <div class="adband"><div class="adslot">
+      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
+           container: the reserved height stops the ad shifting the page (CLS). -->
+    </div></div>
+    </div>
+    <div class="home-actions">
+      <button class="btn review" id="btn-review">常錯題複習</button>
+      <button class="btn secondary" id="btn-history">測驗紀錄</button>
+      <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
+    </div>
+
+    <p class="footer-note">作答紀錄存於本機瀏覽器（localStorage），不會上傳。</p>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="page-quiz" class="hidden">
+   <div class="quiz-grid">
+    <div class="quiz-main">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label">
+        <span id="quiz-label">—</span>
+        <span id="quiz-counter">—</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="question" id="q-stem"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+    <div class="nav">
+      <button class="btn secondary" id="btn-prev">上一題</button>
+      <button class="btn" id="btn-next">下一題</button>
+    </div>
+    <div class="abort-row">
+      <button class="btn secondary" id="btn-save-home">儲存並回到首頁</button>
+      <button class="btn secondary" id="btn-abort" style="margin-top:8px;color:var(--bad);">放棄並回首頁</button>
+    </div>
+    </div>
+    <aside class="quiz-side">
+      <div class="card">
+        <div style="font-weight:600;font-size:15px;" id="qs-topic">—</div>
+        <div class="progress-bar" style="margin-top:10px;"><div class="progress-fill" id="qs-fill"></div></div>
+        <div class="progress-label"><span id="qs-count">—</span></div>
+        <div class="qnav" id="qs-nav"></div>
+        <div class="legend">
+          <span><b style="background:var(--accent)"></b>已作答</span>
+          <span><b style="background:var(--card);border:1px solid var(--border)"></b>未作答</span>
+        </div>
+      </div>
+      <button class="btn" id="btn-submit-side">交卷</button>
+      <div class="adband"><div class="adslot">
+      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
+           container: the reserved height stops the ad shifting the page (CLS). -->
+    </div></div>
+    </aside>
+   </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="page-results" class="hidden">
+   <div class="results-grid">
+    <div class="result-summary">
+      <div>本次得分</div>
+      <div class="big"><span class="pct" id="result-score">0</span> / <span id="result-total">100</span></div>
+      <div class="meta" id="result-detail">—</div>
+      <div class="subject-table" id="result-subjects"></div>
+      <div class="blueprint-note" id="result-note"></div>
+    </div>
+    <div class="results-side">
+      <button class="btn" id="btn-result-review">檢視本次錯題</button>
+      <button class="btn secondary" id="btn-home">回首頁</button>
+      <div class="adband"><div class="adslot">
+      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
+           container: the reserved height stops the ad shifting the page (CLS). -->
+    </div></div>
+    </div>
+   </div>
+  </div>
+
+  <!-- HISTORY (past exams) -->
+  <div id="page-history" class="hidden">
+    <h1>測驗紀錄</h1>
+    <p class="meta" id="history-meta">—</p>
+   <div class="history-grid">
+    <div class="history-side">
+      <div id="history-summary"></div>
+      <div class="adband"><div class="adslot">
+      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
+           container: the reserved height stops the ad shifting the page (CLS). -->
+    </div></div>
+      <button class="btn" id="btn-history-home" style="margin-top:12px;">回首頁</button>
+      <button class="btn secondary" id="btn-history-clear" style="color:var(--bad);">清除測驗紀錄</button>
+    </div>
+    <div id="history-list"></div>
+   </div>
+  </div>
+
+  <!-- HISTORY DETAIL (one exam's wrong questions) -->
+  <div id="page-history-detail" class="hidden">
+    <h1 id="hd-title">—</h1>
+    <p class="meta" id="hd-meta">—</p>
+   <div class="detail-grid">
+    <div class="detail-side">
+      <div class="subject-table" id="hd-subjects"></div>
+      <button class="btn" id="btn-hd-back" style="margin-top:16px;">← 測驗紀錄</button>
+      <button class="btn secondary" id="btn-hd-home">回首頁</button>
+      <div class="adband"><div class="adslot">
+      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
+           container: the reserved height stops the ad shifting the page (CLS). -->
+    </div></div>
+    </div>
+    <div id="hd-list" style="margin-top:16px;"></div>
+   </div>
+  </div>
+
+  <!-- REVIEW (often-wrong) -->
+  <div id="page-review" class="hidden">
+    <h1>常錯題複習</h1>
+    <p class="meta" id="review-meta">—</p>
+    <div id="review-list"></div>
+    <div class="adband"><div class="adslot">
+      <!-- AdSense: paste the <ins class="adsbygoogle"> unit here. Keep this
+           container: the reserved height stops the ad shifting the page (CLS). -->
+    </div></div>
+    <button class="btn" id="btn-review-home" style="margin-top:16px;">回首頁</button>
+  </div>
+
+</div>
+
+<script>
+const TOPIC_NAMES = {
+  futures: '期貨商業務員',
+  securities: '證券商高級業務員',
+  securities_rep: '證券商業務員',
+  sitca: '投信投顧業務員',
+  cfa_fra: 'CFA Level I \u2014 Financial Reporting & Analysis',
+};
+// Banks no longer published. Exam history recorded before a bank was retired still
+// needs a readable name, so keep the label even though the questions are gone.
+const RETIRED_TOPIC_NAMES = {
+  finance_ethics: '\u91d1\u878d\u5e02\u5834\u5e38\u8b58\u8207\u8077\u696d\u9053\u5fb7\uff08\u5df2\u4e0b\u67b6\uff09',
+};
+function topicLabel(t) { return TOPIC_NAMES[t] || RETIRED_TOPIC_NAMES[t] || t; }
+const QUIZ_SIZE = 100;      // target length; a smaller bank uses its whole pool
+const RECENT_WINDOW = 10;   // last N attempts per question
+const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
+const WRONG_RATIO = 0.5;    // ≥50% wrong over recent attempts
+
+let DATA = null;            // {topic: [{id, stem, options, answer, origin, subject, topic}]}
+// {topic: {exam, pass_mark, note, subjects:[{subject, count, points}]}} — how a practice
+// paper is composed so it mirrors the real exam. Missing or unreachable => random draw.
+let BLUEPRINTS = {};
+function blueprintFor(topic) { return BLUEPRINTS[topic] || null; }
+function quizSizeFor(topic) {
+  const bp = blueprintFor(topic);
+  if (bp) return bp.subjects.reduce((a, sec) => a + sec.count, 0);
+  return Math.min(QUIZ_SIZE, (DATA && DATA[topic] ? DATA[topic].length : QUIZ_SIZE));
+}
+function currentSize() { return STATE ? STATE.questions.length : QUIZ_SIZE; }
+let STATE = null;           // current quiz state
+
+// ------- localStorage history -------
+// Schema: { [questionId]: { attempts: [true|false], ... last RECENT_WINDOW kept } }
+const LS_KEY = 'quiz_history_v1';
+const LS_QUIZ_KEY = 'quiz_state_v1';
+// One record per submitted exam, newest first:
+//   { t: topic, ts: epoch ms, n: questions asked, c: correct, w: [[questionId, picked|null], ...] }
+// Only wrong answers are stored; question text is looked up from DATA at render time.
+const LS_RESULTS_KEY = 'quiz_results_v1';
+const MAX_RESULTS = 50;
+const PASS_MARK = 0.7;      // 70% is the pass mark for these exams
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveHistory(h) {
+  localStorage.setItem(LS_KEY, JSON.stringify(h));
+}
+function recordAttempt(qid, correct) {
+  const h = loadHistory();
+  const rec = h[qid] || { attempts: [] };
+  rec.attempts.push(correct);
+  if (rec.attempts.length > RECENT_WINDOW) {
+    rec.attempts = rec.attempts.slice(-RECENT_WINDOW);
+  }
+  h[qid] = rec;
+  saveHistory(h);
+}
+function isOftenWrong(qid) {
+  const h = loadHistory();
+  const rec = h[qid];
+  if (!rec || rec.attempts.length < MIN_ATTEMPTS) return false;
+  const wrong = rec.attempts.filter(x => !x).length;
+  return wrong / rec.attempts.length >= WRONG_RATIO;
+}
+// Question IDs currently published. History for retired banks (e.g. the 金融市場常識
+// bank, removed once passed) stays in localStorage and would otherwise keep inflating
+// the totals and the often-wrong count forever.
+function liveIds() {
+  const ids = new Set();
+  if (DATA) for (const t of Object.keys(DATA)) for (const q of DATA[t]) ids.add(q.id);
+  return ids;
+}
+function overallStats() {
+  const h = loadHistory();
+  const live = liveIds();
+  let total = 0, correct = 0, wrongPool = 0;
+  for (const qid in h) {
+    if (!live.has(qid)) continue;
+    const r = h[qid];
+    total += r.attempts.length;
+    correct += r.attempts.filter(x=>x).length;
+    if (isOftenWrong(qid)) wrongPool++;
+  }
+  return { total, correct, wrongPool };
+}
+
+// ------- exam history -------
+function loadResults() {
+  try {
+    const r = JSON.parse(localStorage.getItem(LS_RESULTS_KEY) || '[]');
+    return Array.isArray(r) ? r : [];
+  } catch { return []; }
+}
+function saveResults(list) {
+  // Drop the oldest records and retry if the browser rejects the write on quota.
+  let out = list.slice(0, MAX_RESULTS);
+  while (out.length) {
+    try { localStorage.setItem(LS_RESULTS_KEY, JSON.stringify(out)); return true; }
+    catch (e) { out = out.slice(0, out.length - 1); }
+  }
+  console.warn('Could not save exam history (storage full)');
+  return false;
+}
+function recordResult(correct, breakdown) {
+  const wrong = [];
+  STATE.questions.forEach((q, i) => {
+    if (STATE.answers[i] !== q.answer) wrong.push([q.id, STATE.answers[i]]);
+  });
+  const list = loadResults();
+  // `s` holds the per-subject split: the record stores only wrong answers, so the
+  // per-subject totals could not be recomputed from it later.
+  list.unshift({ t: STATE.topic, ts: Date.now(), n: STATE.questions.length,
+                 c: correct, w: wrong, s: breakdown || {} });
+  saveResults(list);
+}
+function fmtWhen(ts) {
+  const d = new Date(ts), pad = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate()) +
+         ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+function pctOf(r) { return r.n ? Math.round(100 * r.c / r.n) : 0; }
+
+// ------- quiz state persistence -------
+function saveQuizState() {
+  if (!STATE) return;
+  localStorage.setItem(LS_QUIZ_KEY, JSON.stringify({
+    topic: STATE.topic,
+    questionIds: STATE.questions.map(q => q.id),
+    answers: STATE.answers,
+    idx: STATE.idx,
+  }));
+}
+function clearQuizState() {
+  localStorage.removeItem(LS_QUIZ_KEY);
+}
+function loadSavedQuiz() {
+  try { return JSON.parse(localStorage.getItem(LS_QUIZ_KEY) || 'null'); }
+  catch { return null; }
+}
+function resumeQuiz(saved) {
+  const pool = DATA[saved.topic];
+  if (!pool) return;
+  const byId = {};
+  for (const q of pool) byId[q.id] = q;
+  const questions = saved.questionIds.map(id => byId[id]).filter(Boolean);
+  if (questions.length !== saved.questionIds.length) { clearQuizState(); return; }
+  STATE = { topic: saved.topic, questions, answers: saved.answers, idx: saved.idx, submitted: false };
+  el('quiz-label').textContent = TOPIC_NAMES[saved.topic];
+  renderQuiz();
+  show('page-quiz');
+}
+
+// ------- helpers -------
+function shuffle(a) {
+  a = a.slice();
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function el(id) { return document.getElementById(id); }
+// Taiwan banks are 4-choice (A-D); the CFA bank follows the exam's 3-choice format (A-C).
+function optionLetters(q) {
+  return ['A','B','C','D'].filter(L => (q.options[L] || '').trim() !== '');
+}
+function show(pageId) {
+  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review,#page-history,#page-history-detail')
+    .forEach(p => p.classList.add('hidden'));
+  el(pageId).classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+
+// ------- home -------
+function renderHome() {
+  const s = overallStats();
+  el('stat-attempts').textContent = s.total;
+  el('stat-accuracy').textContent = s.total ? (Math.round(100 * s.correct / s.total) + '%') : '—';
+  el('stat-wrong-pool').textContent = s.wrongPool;
+  for (const t of Object.keys(TOPIC_NAMES)) {
+    if (!DATA || !DATA[t]) continue;
+    const bp = blueprintFor(t);
+    let label = `${DATA[t].length} \u984c`;
+    if (bp) {
+      // Enumerating 13 sections would swamp the button, so summarise past a few.
+      const detail = bp.subjects.length <= 3
+        ? bp.subjects.map(sec => `${sec.subject} ${sec.count}`).join('\uff0b')
+        : `${bp.subjects.length} \u500b\u4e3b\u984c`;
+      label += `\u3000\u6bcf\u56de ${quizSizeFor(t)} \u984c\uff1a${detail}`;
+    }
+    el('meta-'+t).textContent = label;
+  }
+  const saved = loadSavedQuiz();
+  if (saved && DATA && !DATA[saved.topic]) clearQuizState();
+  const banner = el('resume-banner');
+  if (saved && DATA && DATA[saved.topic]) {
+    const answered = saved.answers.filter(a => a !== null).length;
+    el('resume-meta').textContent = `${TOPIC_NAMES[saved.topic]}　已作答 ${answered} / ${saved.questionIds.length} 題`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+
+// ------- quiz -------
+function startQuiz(topic) {
+  const pool = DATA[topic] || [];
+  if (!pool.length) { alert('\u6b64\u984c\u5eab\u76ee\u524d\u6c92\u6709\u984c\u76ee\u3002'); return; }
+  const bp = blueprintFor(topic);
+  let picked;
+  if (bp) {
+    // Draw each subject's quota separately so the paper matches the real exam,
+    // then shuffle so the sections are interleaved rather than blocked.
+    picked = [];
+    for (const sec of bp.subjects) {
+      const sub = pool.filter(q => q.subject === sec.subject);
+      picked = picked.concat(shuffle(sub).slice(0, sec.count));
+    }
+    picked = shuffle(picked);
+  } else {
+    picked = shuffle(pool).slice(0, quizSizeFor(topic));
+  }
+  const size = picked.length;
+  STATE = {
+    topic,
+    questions: picked,
+    answers: new Array(size).fill(null),  // 'A'/'B'/'C'/'D' or null
+    idx: 0,
+    submitted: false,
+  };
+  el('quiz-label').textContent = TOPIC_NAMES[topic];
+  renderQuiz();
+  show('page-quiz');
+}
+// The desktop side panel: a cell per question, filled when answered, outlined on the
+// current one, click to jump. On a 100-question paper this is the difference between
+// scrolling blind and seeing your coverage at a glance. Hidden on phones by CSS, but
+// built either way — cheap, and it keeps one code path.
+function renderNav() {
+  const nav = el('qs-nav');
+  if (!nav || !STATE) return;
+  const answered = STATE.answers.filter(a => a !== null).length;
+  el('qs-topic').textContent = topicLabel(STATE.topic);
+  el('qs-count').textContent = `已作答 ${answered} / ${currentSize()} 題`;
+  el('qs-fill').style.width = (answered / currentSize() * 100) + '%';
+  nav.innerHTML = '';
+  STATE.questions.forEach((q, i) => {
+    const cell = document.createElement('i');
+    cell.textContent = i + 1;
+    if (i === STATE.idx) cell.className = 'now';
+    else if (STATE.answers[i] !== null) cell.className = 'done';
+    cell.onclick = () => { STATE.idx = i; saveQuizState(); renderQuiz(); };
+    nav.appendChild(cell);
+  });
+}
+
+function renderQuiz() {
+  const q = STATE.questions[STATE.idx];
+  const sel = STATE.answers[STATE.idx];
+  const locked = sel !== null;  // already answered → show feedback, no more clicks
+  el('q-stem').textContent = `${STATE.idx+1}. ${q.stem}`;
+  const oc = el('q-options');
+  oc.innerHTML = '';
+  for (const letter of optionLetters(q)) {
+    const div = document.createElement('div');
+    div.className = 'option';
+    if (locked) {
+      div.classList.add('locked');
+      if (letter === q.answer) div.classList.add('correct');
+      else if (letter === sel) div.classList.add('wrong');
+    }
+    div.innerHTML = `<span class="letter">(${letter})</span><span>${escapeHtml(q.options[letter] || '')}</span>`;
+    if (!locked) {
+      div.onclick = () => {
+        STATE.answers[STATE.idx] = letter;
+        // Record this attempt immediately (so the wrong-pool stays accurate even if user aborts)
+        recordAttempt(q.id, letter === q.answer);
+        saveQuizState();
+        renderQuiz();
+      };
+    }
+    oc.appendChild(div);
+  }
+  // Feedback block under options
+  const existing = document.querySelector('.feedback');
+  if (existing) existing.remove();
+  if (locked) {
+    const fb = document.createElement('div');
+    const ok = sel === q.answer;
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+    if (ok) {
+      fb.innerHTML = `✓ 答對了`;
+    } else {
+      fb.innerHTML = `✗ 答錯了<div class="answer-text">正解：(${q.answer}) ${escapeHtml(q.options[q.answer] || '')}</div>`;
+    }
+    if (q.explanations) {
+      const block = document.createElement('div');
+      block.className = 'expl-block';
+      block.innerHTML = '<div class="expl-title">解析</div>';
+      for (const letter of optionLetters(q)) {
+        const expl = q.explanations[letter];
+        if (!expl) continue;
+        const item = document.createElement('div');
+        item.className = 'expl-item' +
+          (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
+        item.innerHTML = `<span class="expl-letter">(${letter})</span><span>${escapeHtml(expl)}</span>`;
+        block.appendChild(item);
+      }
+      fb.appendChild(block);
+    }
+    el('q-options').parentElement.appendChild(fb);
+  }
+  el('progress-fill').style.width = ((STATE.idx+1)/currentSize() * 100) + '%';
+  el('quiz-counter').textContent = `${STATE.idx+1} / ${currentSize()}`;
+  el('btn-prev').disabled = STATE.idx === 0;
+  el('btn-prev').style.opacity = STATE.idx === 0 ? 0.4 : 1;
+  el('btn-next').textContent = STATE.idx === currentSize()-1 ? '交卷' : '下一題';
+  renderNav();
+}
+function nextQ() {
+  if (STATE.idx === currentSize()-1) {
+    submitQuiz();
+  } else {
+    STATE.idx++;
+    saveQuizState();
+    renderQuiz();
+  }
+}
+function prevQ() {
+  if (STATE.idx > 0) { STATE.idx--; saveQuizState(); renderQuiz(); }
+}
+
+function submitQuiz() {
+  // Inline feedback was already shown after each answer; just compute & show score.
+  // (Attempts are already recorded immediately on selection — see renderQuiz.)
+  const unanswered = STATE.answers.filter(a => a === null).length;
+  if (unanswered > 0) {
+    if (!confirm(`還有 ${unanswered} 題未作答，確定交卷？（未作答視為錯誤）`)) return;
+  }
+  let correct = 0;
+  for (let i = 0; i < currentSize(); i++) {
+    if (STATE.answers[i] === STATE.questions[i].answer) correct++;
+  }
+  clearQuizState();
+  const breakdown = subjectBreakdown(STATE.questions, STATE.answers);
+  const bp = blueprintFor(STATE.topic);
+  recordResult(correct, breakdown);
+  renderSubjectTable(el('result-subjects'), breakdown, bp && bp.pass_mark);
+  el('result-note').textContent = bp && bp.note ? bp.note : '';
+  el('result-score').textContent = correct;
+  el('result-total').textContent = currentSize();
+  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${currentSize()-correct} 題`;
+  show('page-results');
+}
+
+// ------- review (often-wrong) -------
+function showReview() {
+  const list = [];
+  for (const t of Object.keys(DATA)) {
+    for (const q of DATA[t]) {
+      if (isOftenWrong(q.id)) list.push(q);
+    }
+  }
+  el('review-meta').textContent = `${list.length} 題（最近 ${RECENT_WINDOW} 次作答中答錯率 ≥ 50%、且至少作答 ${MIN_ATTEMPTS} 次）`;
+  const cont = el('review-list');
+  cont.innerHTML = '';
+  if (list.length === 0) {
+    cont.innerHTML = '<div class="empty-state">目前還沒有常錯題。<br>多做幾次測驗就會累積。</div>';
+  } else {
+    list.forEach((q, i) => {
+      const h = loadHistory()[q.id];
+      const ratio = h.attempts.filter(x => !x).length + '/' + h.attempts.length;
+      const div = wrongQuestionCard(q, null, i + 1);
+      div.classList.add('review-q');
+      // No single "your answer" here — this view aggregates across attempts.
+      div.querySelector('.your-line').remove();
+      div.querySelector('.origin').textContent =
+        '\u6b63\u89e3\uff1a(' + q.answer + ')\u3000\u8fd1\u671f\u932f\u8aa4 ' + ratio +
+        '\u3000' + (q.origin || '');
+      cont.appendChild(div);
+    });
+  }
+  show('page-review');
+}
+
+// ------- per-subject scoring -------
+// The real exams are graded per subject: passing overall while failing one subject is
+// still a fail, so a combined score alone would be misleading.
+function subjectBreakdown(questions, answers) {
+  const acc = {};
+  questions.forEach((q, i) => {
+    const key = q.subject || '';
+    if (!key) return;
+    const row = acc[key] || (acc[key] = { correct: 0, total: 0 });
+    row.total++;
+    if (answers[i] === q.answer) row.correct++;
+  });
+  return acc;
+}
+
+function renderSubjectTable(el_, breakdown, passMark) {
+  el_.innerHTML = '';
+  const names = Object.keys(breakdown);
+  if (names.length < 2 && !passMark) return;   // nothing useful to add
+  for (const name of names) {
+    const { correct, total } = breakdown[name];
+    const pct = total ? Math.round(100 * correct / total) : 0;
+    const row = document.createElement('div');
+    row.className = 'row';
+    const verdict = passMark
+      ? `<span class="vd ${pct >= passMark ? 'pass' : 'fail'}">` +
+        `${pct >= passMark ? '\u53ca\u683c' : '\u672a\u53ca\u683c'}</span>`
+      : '';
+    row.innerHTML = `<span class="nm">${escapeHtml(name)}</span>` +
+      `<span class="sc">${correct}/${total}\u3000${pct}%</span>${verdict}`;
+    el_.appendChild(row);
+  }
+}
+
+// ------- shared: one wrong-question card -------
+// `sel` is the letter the user picked, or null when the question was left blank.
+function wrongQuestionCard(q, sel, n) {
+  const div = document.createElement('div');
+  div.className = 'result-q';
+  const stem = document.createElement('div');
+  stem.className = 'stem';
+  stem.textContent = n + '. ' + q.stem;
+  div.appendChild(stem);
+  for (const letter of optionLetters(q)) {
+    const line = document.createElement('div');
+    line.style.fontSize = '14px';
+    line.style.padding = '2px 0';
+    const isAns = letter === q.answer, isSel = letter === sel;
+    const mark = isAns ? '\u2713' : (isSel ? '\u2717' : '\u3000');
+    const color = isAns ? 'var(--good)' : (isSel ? 'var(--bad)' : 'var(--muted)');
+    const weight = (isAns || isSel) ? '600' : '400';
+    line.innerHTML = '<span style="color:' + color + ';font-weight:' + weight + '">' +
+      mark + ' (' + letter + ') ' + escapeHtml(q.options[letter] || '') + '</span>';
+    div.appendChild(line);
+  }
+  const your = document.createElement('div');
+  your.className = 'your-line';
+  your.textContent = sel ? ('\u4f60\u7684\u7b54\u6848\uff1a(' + sel + ')') : '\u672a\u4f5c\u7b54';
+  div.appendChild(your);
+  if (q.explanations) {
+    const block = document.createElement('div');
+    block.className = 'expl-block';
+    block.innerHTML = '<div class="expl-title">\u89e3\u6790</div>';
+    for (const letter of optionLetters(q)) {
+      const expl = q.explanations[letter];
+      if (!expl) continue;
+      const item = document.createElement('div');
+      item.className = 'expl-item' +
+        (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
+      item.innerHTML = '<span class="expl-letter">(' + letter + ')</span><span>' +
+        escapeHtml(expl) + '</span>';
+      block.appendChild(item);
+    }
+    div.appendChild(block);
+  }
+  const meta = document.createElement('div');
+  meta.className = 'origin';
+  meta.textContent = q.origin || '';
+  div.appendChild(meta);
+  return div;
+}
+
+// ------- history -------
+function findQuestion(qid) {
+  if (!DATA) return null;
+  for (const t of Object.keys(DATA)) {
+    const hit = DATA[t].find(q => q.id === qid);
+    if (hit) return hit;
+  }
+  return null;   // question belonged to a bank that is no longer published
+}
+
+function showHistory() {
+  const list = loadResults();
+  el('history-meta').textContent = list.length
+    ? ('\u5171 ' + list.length + ' \u6b21\u6e2c\u9a57\u7d00\u9304\uff08\u6700\u591a\u4fdd\u7559 ' + MAX_RESULTS + ' \u6b21\uff09')
+    : '';
+
+  // Per-topic summary: attempts, best, average, most recent.
+  const summary = el('history-summary');
+  summary.innerHTML = '';
+  const byTopic = {};
+  for (const r of list) (byTopic[r.t] = byTopic[r.t] || []).push(r);
+  for (const t of Object.keys(byTopic)) {
+    const rs = byTopic[t];
+    const pcts = rs.map(pctOf);
+    const avg = Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length);
+    const div = document.createElement('div');
+    div.className = 'hist-summary';
+    div.innerHTML =
+      '<div class="name">' + escapeHtml(topicLabel(t)) + '</div>' +
+      '<div class="figs">\u4f5c\u7b54 <b>' + rs.length + '</b> \u6b21\u3000' +
+      '\u6700\u4f73 <b>' + Math.max.apply(null, pcts) + '%</b>\u3000' +
+      '\u5e73\u5747 <b>' + avg + '%</b>\u3000' +
+      '\u6700\u8fd1 <b>' + pcts[0] + '%</b></div>';
+    summary.appendChild(div);
+  }
+
+  const cont = el('history-list');
+  cont.innerHTML = '';
+  if (!list.length) {
+    cont.innerHTML = '<div class="empty-state">\u9084\u6c92\u6709\u6e2c\u9a57\u7d00\u9304\u3002<br>' +
+      '\u5b8c\u6210\u4e00\u6b21\u6e2c\u9a57\u4e26\u4ea4\u5377\u5f8c\u5c31\u6703\u51fa\u73fe\u5728\u9019\u88e1\u3002</div>';
+  }
+  list.forEach((r, i) => {
+    const pct = pctOf(r);
+    const row = document.createElement('div');
+    row.className = 'hist-row';
+    // Per-subject breakdown as its own column. The phone layout has no room for it,
+    // so CSS hides it below 1024px rather than the markup differing between widths.
+    const subj = Object.entries(r.s || {})
+      .map(([nm, v]) => escapeHtml(nm) + ' ' + (v.total ? Math.round(100 * v.correct / v.total) : 0) + '%')
+      .join('\u3000');
+    row.innerHTML =
+      '<div class="grow">' +
+        '<div class="topic">' + escapeHtml(topicLabel(r.t)) + '</div>' +
+        '<div class="when">' + fmtWhen(r.ts) + '\u3000\u7b54\u932f ' + r.w.length + ' \u984c</div>' +
+      '</div>' +
+      '<span class="subj-cell">' + subj + '</span>' +
+      '<span class="score-pill ' + (pct >= PASS_MARK * 100 ? 'pass' : 'fail') + '">' +
+        r.c + '/' + r.n + '\u3000' + pct + '%</span>' +
+      '<span class="chev">\u203a</span>';
+    row.onclick = () => showHistoryDetail(i);
+    cont.appendChild(row);
+  });
+  show('page-history');
+}
+
+function showHistoryDetail(i) {
+  const list = loadResults();
+  const r = list[i];
+  if (!r) { showHistory(); return; }
+  const pct = pctOf(r);
+  el('hd-title').textContent = topicLabel(r.t);
+  el('hd-meta').textContent = fmtWhen(r.ts) +
+    '\u3000\u5f97\u5206 ' + r.c + ' / ' + r.n + '\uff08' + pct + '%\uff09' +
+    '\u3000\u7b54\u932f ' + r.w.length + ' \u984c';
+
+  const bp = blueprintFor(r.t);
+  renderSubjectTable(el('hd-subjects'), r.s || {}, bp && bp.pass_mark);
+
+  const cont = el('hd-list');
+  cont.innerHTML = '';
+  if (!r.w.length) {
+    cont.innerHTML = '<div class="empty-state">\u9019\u6b21\u5168\u5c0d\uff0c\u6c92\u6709\u932f\u984c\u3002</div>';
+    show('page-history-detail');
+    return;
+  }
+  let n = 0, missing = 0;
+  for (const pair of r.w) {
+    const q = findQuestion(pair[0]);
+    if (!q) { missing++; continue; }
+    cont.appendChild(wrongQuestionCard(q, pair[1], ++n));
+  }
+  if (missing) {
+    const note = document.createElement('div');
+    note.className = 'empty-state';
+    note.textContent = '\u53e6\u6709 ' + missing +
+      ' \u984c\u5df2\u4e0d\u5728\u76ee\u524d\u984c\u5eab\u4e2d\uff0c\u7121\u6cd5\u986f\u793a\u3002';
+    cont.appendChild(note);
+  }
+  show('page-history-detail');
+}
+
+// ------- escape -------
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+// ------- bootstrap -------
+async function boot() {
+  try {
+    const r = await fetch('questions.json');
+    DATA = await r.json();
+    // Optional: without it every bank falls back to a random QUIZ_SIZE draw.
+    try {
+      const b = await fetch('blueprints.json');
+      if (b.ok) BLUEPRINTS = await b.json();
+    } catch (e) { console.warn('No exam blueprints; drawing at random.', e); }
+  } catch (e) {
+    document.body.innerHTML = '<div class="app"><h1>載入失敗</h1><p>無法讀取題庫檔（questions.json）。</p></div>';
+    return;
+  }
+  // Wire buttons
+  document.querySelectorAll('[data-topic]').forEach(b => {
+    b.onclick = () => startQuiz(b.dataset.topic);
+  });
+  el('btn-review').onclick = showReview;
+  // Desktop top bar. Same handlers as the on-page buttons, so behaviour cannot diverge.
+  document.querySelectorAll('.topbar .navlink').forEach(b => {
+    b.onclick = () => {
+      const to = b.dataset.nav;
+      if (to === 'home') { show('page-home'); renderHome(); }
+      else if (to === 'review') showReview();
+      else if (to === 'history') showHistory();
+      else if (to === 'clear') el('btn-clear').click();
+    };
+  });
+  el('btn-submit-side').onclick = () => submitQuiz();
+  el('btn-clear').onclick = () => {
+    if (confirm('確定清除所有作答紀錄？此動作無法復原。')) {
+      localStorage.removeItem(LS_KEY);
+      renderHome();
+    }
+  };
+  el('btn-prev').onclick = prevQ;
+  el('btn-next').onclick = nextQ;
+  el('btn-save-home').onclick = () => {
+    saveQuizState();
+    show('page-home');
+    renderHome();
+  };
+  el('btn-abort').onclick = () => {
+    if (confirm('放棄本次測驗並回首頁？（進度將清除）')) {
+      clearQuizState();
+      show('page-home');
+      renderHome();
+    }
+  };
+  el('btn-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-history').onclick = showHistory;
+  el('btn-history-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-hd-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-hd-back').onclick = showHistory;
+  // The just-submitted exam is always record 0.
+  el('btn-result-review').onclick = () => showHistoryDetail(0);
+  el('btn-history-clear').onclick = () => {
+    if (confirm('\u78ba\u5b9a\u6e05\u9664\u6240\u6709\u6e2c\u9a57\u7d00\u9304\uff1f\u6b64\u52d5\u4f5c\u7121\u6cd5\u5fa9\u539f\u3002')) {
+      localStorage.removeItem(LS_RESULTS_KEY);
+      showHistory();
+    }
+  };
+  el('btn-review-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-resume').onclick = () => { const s = loadSavedQuiz(); if (s) resumeQuiz(s); };
+  el('btn-discard').onclick = () => { clearQuizState(); el('resume-banner').classList.add('hidden'); };
+  renderHome();
+  show('page-home');
+}
+boot();
+</script>
+</body>
+</html>

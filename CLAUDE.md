@@ -9,7 +9,15 @@ Live URL: `https://certifications.courses/`
 
 ## Scope
 
-Single-file frontend (`index.html`) + static data (`questions.json`). No backend, no build step.
+Two pages, static data, no backend:
+
+- `index.html` — the landing page at the domain root. **Generated**: edit
+  `design/Main.dc.html` and run `node design/build-site.mjs`; never edit `index.html`
+  directly, a rebuild overwrites it.
+- `app.html` — the quiz app itself (hand-maintained). Mobile-first, with desktop
+  layouts behind `@media (min-width: 1024px)`.
+- `questions.json` + `blueprints.json` — fetched relatively, so both work at any root.
+
 Run locally: `python -m http.server 8000` then open `http://localhost:8000`.
 
 ## Question banks
@@ -171,6 +179,45 @@ const RECENT_WINDOW = 10;   // sliding window for often-wrong detection
 const MIN_ATTEMPTS = 3;     // min attempts before a question can be "often wrong"
 const WRONG_RATIO = 0.5;    // threshold: ≥50% wrong → often wrong
 ```
+
+## Design sources (`design/`)
+
+The site's visual design lives here as Design Component artboards, published as a canvas
+at claude.ai. Working files, all committed:
+
+| File | Role |
+|---|---|
+| `Main.dc.html` | The landing page — **the source `index.html` is built from** |
+| `build-site.mjs` | `Main.dc.html` → `../index.html`, with head, meta and reserved ad slots |
+| `build-screens.mjs` | Generates the six phone app-screen artboards |
+| `build-desktop.mjs` | Generates the six desktop app-screen artboards |
+| `canvas.json` | Artboard layout, two pages, annotations |
+| `preview.mjs` | Unwraps a `.dc.html` into a standalone page for screenshotting |
+| `shoot.mjs` | Full-page screenshot at an exact viewport, over CDP |
+| `flowtest.mjs` | Drives the real app end to end and asserts + captures each screen |
+
+Screens are generated rather than hand-written because artboards share nothing at
+runtime — six hand-maintained copies of the shell CSS would drift within a day.
+
+**`shoot.mjs` exists because `chrome --headless --screenshot` lies.** It enforces a
+minimum window width (485px), then crops the image to whatever you asked for, so a
+"390px" shot silently shows a wider layout with the right-hand side sliced off — which
+reads exactly like a responsive bug that is not there. It also disables the cache and
+pins `prefers-color-scheme`, both of which produced wrong readings before they were set.
+
+## Ad slots
+
+Every page carries one reserved slot (the landing has two), marked in the markup with a
+comment where the AdSense `<ins>` unit goes. No publisher id is in the repo.
+
+Two rules the layout enforces, worth keeping:
+
+1. **Fixed height on every slot.** A late-loading ad must not shift the page — that is
+   the CLS score, which affects both ranking and ad revenue.
+2. **Never adjacent to the thing the screen exists for.** On 作答中 especially: people
+   tap fast through 100 questions, and an ad beside the options is the accidental-click
+   pattern that gets AdSense accounts limited. Its slot sits at the foot of the desktop
+   side panel and at the very bottom on phones, below every control.
 
 ## Auditing the banks
 
