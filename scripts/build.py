@@ -395,6 +395,33 @@ def apply_stem_overrides(data: dict) -> None:
             + lines)
 
 
+# The instruction line that opens each paper ("本測驗為單一選擇題,請依題意選出一個正確
+# 或最適當的答案"), sometimes preceded by the session title, sits directly below the last
+# option of the preceding page. Every extractor here reads it as part of option (D) of
+# question 50, so the text is stripped after parsing rather than in each parser.
+HEADER_BLEED = re.compile(
+    r'(?:\d+\s*年第\s*\d+\s*次.{0,40}?試題)?'   # optional session title
+    r'\s*(?:本測驗)?\s*[為一]?\s*(?:單一)?\s*'
+    r'選擇題\s*[，,]\s*請依題意選出一個正確或最適當的答案\s*$')
+
+
+def strip_header_bleed(data: dict) -> None:
+    """Remove the next page's instruction line from the end of an option."""
+    fixed = 0
+    for qs in data.values():
+        for q in qs:
+            for k, v in q['options'].items():
+                clean = HEADER_BLEED.sub('', v).strip()
+                if clean != v:
+                    if not clean:
+                        raise ValueError(
+                            f'{q["id"]} option {k}: stripping the header bleed would '
+                            f'empty the option — the pattern is too greedy for {v!r}')
+                    q['options'][k] = clean
+                    fixed += 1
+    print(f'Stripped page-header bleed from {fixed} options')
+
+
 def carry_over_explanations(data: dict) -> None:
     """Re-attach `explanations` from the existing questions.json.
 
@@ -463,6 +490,7 @@ def main():
         'cfa_fra': cfa_fra,
     }
     apply_stem_overrides(data)
+    strip_header_bleed(data)
     tag_subjects(data)
     carry_over_explanations(data)
     check_explanation_coverage(data, accept_drop='--accept-coverage-drop' in sys.argv)

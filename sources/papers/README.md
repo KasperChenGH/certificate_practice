@@ -42,8 +42,27 @@ cannot be established from vertical position. `parse_answers_by_subject` raises 
 this layout by design. Recovering these ~63 questions needs column-aware extraction
 plus an independent check on the resulting key — worth doing, but not worth guessing.
 
-## Retired: 金融市場常識與職業道德
+## Why three banks are thin, and what would fix them
 
-That bank is no longer published (exam passed). `build_finance_ethics()` in
-`build.py` and `parse_bank.py` are kept, along with the source PDFs in `sources/`,
-so it can be restored by calling it from `main()` again.
+證基會 publishes a complete official 題庫 for only two of these exams:
+
+| Bank | Source | Size |
+|---|---|---|
+| `futures` | `../futures_exam_dedup_answers.pdf` official bank + 2 papers | 691 |
+| `finance_ethics` | `../sfi_金融市場常識-113.pdf` + `../sfi_職業道德-113.pdf` | 1,120 |
+
+For 證券商高級業務員, 證券商業務員 and 投信投顧, no official bank is published — only
+past papers. So those pools are bounded by how many sittings have been collected, which
+is currently two each (114年第3次 and 115年第1次):
+
+| Bank | Papers × questions | Pool | Draw | Repeat rate |
+|---|---|---|---|---|
+| `securities` | 2 sittings × 3 subjects × 50 | 297 | 150 | ~51% |
+| `securities_rep` | 2 sittings × 50 | 100 | 50 | 50% |
+| `sitca` | 2 sittings × 50 | 97 | 50 | ~52% |
+
+The draw is the real paper composition and cannot be shrunk without misrepresenting the
+exam, so the only fix is more sittings — each one adds 50 questions per subject. Three
+more sittings per bank would clear the 3× ratio that `build.py` warns below. They are
+listed in `_thin_ok` in `../exam_blueprints.json` until then, and the site says so on
+both the landing directory and the exam card.
