@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1e3a5f">
-<title>金融證照練習</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>證照考試練習</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7642249081069780"
      crossorigin="anonymous"></script>
 <style>
@@ -29,6 +31,10 @@
   }
   .app { max-width: 720px; margin: 0 auto; padding: 16px 16px 48px; }
   .hidden { display: none !important; }
+  /* The topic buttons set `display: flex` through a more specific selector than the
+     browser's own `[hidden] { display: none }`, so filtering them with the hidden
+     property silently did nothing on desktop — search showed the whole family. */
+  [hidden] { display: none !important; }
   h1 { font-size: 22px; margin: 12px 0 16px; font-weight: 700; }
   h2 { font-size: 18px; margin: 12px 0 8px; font-weight: 600; }
   .card {
@@ -128,6 +134,49 @@
   .topic-meta .tc-thin { display: block; margin-top: 4px; font-size: 11.5px; opacity: 0.85; }
   .topic-meta .tc-n small { font-weight: 600; opacity: 0.8; margin-left: 2px; }
   .topic-meta .tc-p::before { content: '\3000'; }
+  /* Home directory: the same six collapsible families as the landing page, plus search.
+     Twenty-nine cards at 190px each made this page a very long scroll before anyone could
+     see what was on it, and on a phone it was twenty-nine stacked blocks. */
+  .finder { margin-bottom: 12px; }
+  .srch { position: relative; display: block; }
+  .srch input {
+    width: 100%; font: inherit; font-size: 16px; padding: 13px 14px 13px 42px;
+    border-radius: 10px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text);
+  }
+  .srch input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+  .srch svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+              color: var(--muted); pointer-events: none; }
+  .nohit { color: var(--muted); font-size: 14px; margin: 10px 2px; }
+  details.fam {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 10px;
+  }
+  details.fam > summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center;
+    gap: 12px; padding: 16px; border-radius: 12px;
+  }
+  details.fam > summary::-webkit-details-marker { display: none; }
+  details.fam > summary:active { background: #eef0f4; }
+  .fchev {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--border); display: inline-flex; align-items: center;
+    justify-content: center; font-size: 15px; line-height: 1; color: var(--accent);
+    transition: transform .15s, background .15s;
+  }
+  details.fam[open] .fchev { transform: rotate(180deg); background: var(--bg); }
+  .ftitle { flex: 1; min-width: 0; font-weight: 700; font-size: 15px; line-height: 1.4; }
+  .fcount { flex-shrink: 0; font-size: 12.5px; font-weight: 600; color: var(--muted);
+            font-variant-numeric: tabular-nums; }
+  details.fam .topic-grid { padding: 0 16px 16px; }
+  .topic-meta .tc-tags { display: flex; gap: 5px; margin-top: 8px; }
+  .topic-meta .tc-tag { font-size: 11px; font-weight: 700; padding: 2px 7px;
+    border-radius: 4px; background: rgba(255,255,255,0.16); }
+  .topic-meta .tc-note { display: block; margin-top: 8px; font-size: 11.5px;
+    line-height: 1.55; opacity: 0.8; }
+  .fnote:empty { display: none; }
+  .fnote { margin: -4px 16px 12px 56px; font-size: 12px; line-height: 1.6;
+    color: var(--muted); }
   .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
 
   .subject-table { margin: 12px 0 0; font-size: 14px; }
@@ -273,7 +322,7 @@
 </head>
 <body>
 <div class="topbar">
-  <a class="brand" href="/">金融證照練習</a>
+  <a class="brand" href="/">證照考試練習</a>
   <button class="navlink" data-nav="home">題庫</button>
   <button class="navlink" data-nav="review">常錯題複習</button>
   <button class="navlink" data-nav="history">測驗紀錄</button>
@@ -284,7 +333,7 @@
 
   <!-- HOME -->
   <div id="page-home">
-    <h1>金融證照練習</h1>
+    <h1>證照考試練習</h1>
     <div class="stat-row">
       <div class="stat"><div class="num" id="stat-attempts">0</div><div class="lbl">總作答數</div></div>
       <div class="stat"><div class="num" id="stat-accuracy">—</div><div class="lbl">整體正確率</div></div>
@@ -301,30 +350,75 @@
     </div>
 
     <h2>選擇測驗類別</h2>
-    <div class="topic-grid">
-    <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
-    <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
-    <button class="btn" data-topic="securities_sales">證券商業務員<div class="topic-meta" id="meta-securities_sales">—</div></button>
-    <button class="btn" data-topic="securities_rep">證券交易相關法規與實務乙科<div class="topic-meta" id="meta-securities_rep">—</div></button>
-    <button class="btn" data-topic="sitca_full">投信投顧業務員（三科）<div class="topic-meta" id="meta-sitca_full">—</div></button>
-    <button class="btn" data-topic="sitca">投信投顧相關法規乙科<div class="topic-meta" id="meta-sitca">—</div></button>
-    <button class="btn" data-topic="securities_analyst">證券投資分析人員<div class="topic-meta" id="meta-securities_analyst">—</div></button>
-    <button class="btn" data-topic="futures_analyst">期貨交易分析人員<div class="topic-meta" id="meta-futures_analyst">—</div></button>
-    <button class="btn" data-topic="futures_trust">期貨信託基金銷售機構銷售人員<div class="topic-meta" id="meta-futures_trust">—</div></button>
-    <button class="btn" data-topic="internal_control">企業內部控制<div class="topic-meta" id="meta-internal_control">—</div></button>
-    <button class="btn" data-topic="sustainability">永續發展基礎能力測驗<div class="topic-meta" id="meta-sustainability">—</div></button>
-    <button class="btn" data-topic="aml">防制洗錢與打擊資恐專業人員<div class="topic-meta" id="meta-aml">—</div></button>
-    <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
-    <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
-    <button class="btn" data-topic="corp_gov">公司治理<div class="topic-meta" id="meta-corp_gov">—</div></button>
-    <button class="btn" data-topic="securitization">資產證券化<div class="topic-meta" id="meta-securitization">—</div></button>
-    <button class="btn" data-topic="bonds">債券人員<div class="topic-meta" id="meta-bonds">—</div></button>
-    <button class="btn" data-topic="stock_affairs">股務人員<div class="topic-meta" id="meta-stock_affairs">—</div></button>
-    <button class="btn" data-topic="biz_ethics">工商倫理<div class="topic-meta" id="meta-biz_ethics">—</div></button>
-    <button class="btn" data-topic="bills_finance">票券商業務人員<div class="topic-meta" id="meta-bills_finance">—</div></button>
-    <button class="btn" data-topic="cfa_l2">CFA Level II<div class="topic-meta" id="meta-cfa_l2">—</div></button>
-    <button class="btn" data-topic="cfa_l3">CFA Level III<div class="topic-meta" id="meta-cfa_l3">—</div></button>
+    <div class="finder">
+      <div id="examsearch"></div>
+      <p class="nohit" id="nohit" hidden>沒有符合的考試或科目。</p>
     </div>
+    <details class="fam" data-fam="securities">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">證券、投信投顧暨期貨從業人員資格測驗</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="securities_analyst">證券投資分析人員<div class="topic-meta" id="meta-securities_analyst">—</div></button>
+      <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
+      <button class="btn" data-topic="securities_sales">證券商業務員<div class="topic-meta" id="meta-securities_sales">—</div></button>
+      <button class="btn" data-topic="securities_rep">證券交易相關法規與實務乙科<div class="topic-meta" id="meta-securities_rep">—</div></button>
+      <button class="btn" data-topic="futures_analyst">期貨交易分析人員<div class="topic-meta" id="meta-futures_analyst">—</div></button>
+      <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
+      <button class="btn" data-topic="futures_trust">期貨信託基金銷售機構銷售人員<div class="topic-meta" id="meta-futures_trust">—</div></button>
+      <button class="btn" data-topic="sitca_full">投信投顧業務員（三科）<div class="topic-meta" id="meta-sitca_full">—</div></button>
+      <button class="btn" data-topic="sitca">投信投顧相關法規乙科<div class="topic-meta" id="meta-sitca">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="ability">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">能力測驗</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="internal_control">企業內部控制<div class="topic-meta" id="meta-internal_control">—</div></button>
+      <button class="btn" data-topic="sustainability">永續發展基礎能力測驗<div class="topic-meta" id="meta-sustainability">—</div></button>
+      <button class="btn" data-topic="bonds">債券人員<div class="topic-meta" id="meta-bonds">—</div></button>
+      <button class="btn" data-topic="stock_affairs">股務人員<div class="topic-meta" id="meta-stock_affairs">—</div></button>
+      <button class="btn" data-topic="biz_ethics">工商倫理<div class="topic-meta" id="meta-biz_ethics">—</div></button>
+      <button class="btn" data-topic="securitization">資產證券化<div class="topic-meta" id="meta-securitization">—</div></button>
+      <button class="btn" data-topic="bills_finance">票券商業務人員<div class="topic-meta" id="meta-bills_finance">—</div></button>
+      <button class="btn" data-topic="corp_gov">公司治理<div class="topic-meta" id="meta-corp_gov">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="civil">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">公務人員考試（初等、地特五等、高普考）</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="civil_law_basics">法學大意（初等考、地特五等）<div class="topic-meta" id="meta-civil_law_basics">—</div></button>
+      <button class="btn" data-topic="civil_civics_english">公民與英文（初等考、地特五等）<div class="topic-meta" id="meta-civil_civics_english">—</div></button>
+      <button class="btn" data-topic="civil_admin">行政學大意（初等考、地特五等）<div class="topic-meta" id="meta-civil_admin">—</div></button>
+      <button class="btn" data-topic="civil_local_gov">地方自治大意（初等考、地特五等）<div class="topic-meta" id="meta-civil_local_gov">—</div></button>
+      <button class="btn" data-topic="civil_chinese">國文（初等考、地特五等）<div class="topic-meta" id="meta-civil_chinese">—</div></button>
+      <button class="btn" data-topic="civil_law_english">法學知識與英文（高普考）<div class="topic-meta" id="meta-civil_law_english">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="cfa">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">CFA</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
+      <button class="btn" data-topic="cfa_l2">CFA Level II<div class="topic-meta" id="meta-cfa_l2">—</div></button>
+      <button class="btn" data-topic="cfa_l3">CFA Level III<div class="topic-meta" id="meta-cfa_l3">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="finance">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">金融常識測驗 ／ 防制洗錢測驗</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
+      <button class="btn" data-topic="aml">防制洗錢與打擊資恐專業人員<div class="topic-meta" id="meta-aml">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="bar">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">律師、司法官</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="bar_1">律師、司法官第一試<div class="topic-meta" id="meta-bar_1">—</div></button>
+      </div>
+    </details>
     <div class="home-actions">
       <button class="btn review" id="btn-review">常錯題複習</button>
       <button class="btn secondary" id="btn-history">測驗紀錄</button>
@@ -453,6 +547,15 @@ const TOPIC_NAMES = {
   bills_finance: '票券商業務人員',
   cfa_l2: 'CFA Level II',
   cfa_l3: 'CFA Level III',
+  // 考選部 banks. One per 科目, not per 類科 — 法學大意 is one printing sat by seven of
+  // 初等考's 類科, and 法學知識與英文 by most of 高考三級's, so the 科目 is what a bank is.
+  civil_law_basics: '法學大意（初等考、地特五等）',
+  civil_civics_english: '公民與英文（初等考、地特五等）',
+  civil_chinese: '國文（初等考、地特五等）',
+  civil_admin: '行政學大意（初等考、地特五等）',
+  civil_local_gov: '地方自治大意（初等考、地特五等）',
+  civil_law_english: '法學知識與英文（高普考）',
+  bar_1: '律師、司法官第一試',
 };
 // Banks no longer published. Exam history recorded before a bank is retired still
 // needs a readable name, so labels outlive the questions. Empty today.
@@ -490,8 +593,14 @@ function loadHistory() {
   try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
   catch { return {}; }
 }
+// Persistence is a convenience; answering is the product. This write was unguarded and
+// sits on the answer-click path (recordAttempt -> saveHistory), so on a browser with
+// storage blocked it threw and aborted the handler before renderQuiz() — every option tap
+// did nothing at all, while the page looked perfectly healthy. Every read is already
+// inside a try/catch; the writes now match.
 function saveHistory(h) {
-  localStorage.setItem(LS_KEY, JSON.stringify(h));
+  try { localStorage.setItem(LS_KEY, JSON.stringify(h)); }
+  catch { console.warn('Could not save attempt history (storage unavailable)'); }
 }
 function recordAttempt(qid, correct) {
   const h = loadHistory();
@@ -571,15 +680,20 @@ function pctOf(r) { return r.n ? Math.round(100 * r.c / r.n) : 0; }
 // ------- quiz state persistence -------
 function saveQuizState() {
   if (!STATE) return;
-  localStorage.setItem(LS_QUIZ_KEY, JSON.stringify({
-    topic: STATE.topic,
-    questionIds: STATE.questions.map(q => q.id),
-    answers: STATE.answers,
-    idx: STATE.idx,
-  }));
+  // Same reason as saveHistory: losing the resume point is survivable, losing the tap is not.
+  try {
+    localStorage.setItem(LS_QUIZ_KEY, JSON.stringify({
+      topic: STATE.topic,
+      questionIds: STATE.questions.map(q => q.id),
+      answers: STATE.answers,
+      idx: STATE.idx,
+    }));
+  } catch { console.warn('Could not save quiz progress (storage unavailable)'); }
 }
 function clearQuizState() {
-  localStorage.removeItem(LS_QUIZ_KEY);
+  // renderHome() calls this during boot, so an unguarded throw here takes the home page
+  // down with it — the same failure as the writes above.
+  try { localStorage.removeItem(LS_QUIZ_KEY); } catch { /* storage unavailable */ }
 }
 function loadSavedQuiz() {
   try { return JSON.parse(localStorage.getItem(LS_QUIZ_KEY) || 'null'); }
@@ -620,7 +734,43 @@ function show(pageId) {
 }
 
 // ------- home -------
+// Two sentences, not one: 證券交易相關法規與實務乙科's whole point — that it covers only one
+// subject of the full 證券商業務員 exam — is in its note's *second* sentence, so a
+// one-sentence cut silently dropped the caveat. These notes are the only place the exam's
+// own caveats appear now that the landing page lists categories rather than exams.
+function noteFor(t) {
+  const bp = blueprintFor(t);
+  if (!bp || !bp.note) return '';
+  const sents = bp.note.split('。').filter(x => x.trim());
+  const n = sents.slice(0, 2).join('。');
+  return n.length > 120 ? n.slice(0, 120) + '…' : n + '。';
+}
+// topic -> the note its whole family shares, when every bank in it has the same one.
+const FAM_NOTE = new Map();
+function computeFamNotes() {
+  FAM_NOTE.clear();
+  document.querySelectorAll('details.fam').forEach(fam => {
+    const ts = [...fam.querySelectorAll('[data-topic]')]
+      .map(b => b.dataset.topic).filter(t => DATA && DATA[t]);
+    if (ts.length < 2) return;
+    // The note shared by MOST of the family, not by all of it: five of the six 公務人員
+    // banks share one paragraph and 法學知識與英文 has its own, so requiring unanimity
+    // hoisted nothing and the same text still printed five times.
+    const counts = new Map();
+    ts.forEach(t => { const n = noteFor(t); if (n) counts.set(n, (counts.get(n) || 0) + 1); });
+    let shared = '', best = 1;
+    counts.forEach((c, n) => { if (c > best) { best = c; shared = n; } });
+    if (!shared) return;
+    ts.forEach(t => { if (noteFor(t) === shared) FAM_NOTE.set(t, shared); });
+    const slot = fam.querySelector('.fnote');
+    if (slot) slot.textContent = shared;
+  });
+}
+
 function renderHome() {
+  // Must run before the button loop below: it decides which notes are family-wide,
+  // and each button consults that so the same paragraph is not printed on every card.
+  computeFamNotes();
   const s = overallStats();
   el('stat-attempts').textContent = s.total;
   el('stat-accuracy').textContent = s.total ? (Math.round(100 * s.correct / s.total) + '%') : '—';
@@ -643,9 +793,33 @@ function renderHome() {
         const rep = Math.round(Math.min(cov.draw / cov.pool, 1) * 100);
         html += `<span class="tc-thin">連續兩回會重複到約 ${rep}%</span>`;
       }
+      // The landing page no longer lists exams, so these disclosures live here or
+      // nowhere. All three are derived: 自編 from the blueprint's own wording, 無解析
+      // from the data, and the caveat from the note's first sentence.
+      const tags = [];
+      if ((bp.note || '').includes('自行編寫')) tags.push('自編');
+      if (!DATA[t].some(q => q.explanations)) tags.push('無解析');
+      if (tags.length) {
+        html += `<span class="tc-tags">${tags.map(x => `<span class="tc-tag">${x}</span>`).join('')}</span>`;
+      }
+      // Shown on the button only when it says something about *this* exam. The six
+      // 公務人員 banks share one blueprint note word for word, so per-button it printed the
+      // same paragraph six times; a note common to a whole family goes on the family bar
+      // instead (see famNote below).
+      const note = noteFor(t);
+      if (note && note !== FAM_NOTE.get(t)) {
+        html += `<span class="tc-note">${escapeHtml(note)}</span>`;
+      }
     }
-    el('meta-'+t).innerHTML = html;
+    // The buttons are static markup and this only fills them, so a topic added to
+    // TOPIC_NAMES without its <button> would throw here — and because that throw escapes
+    // renderHome, the whole home page stays blank and *every* bank looks broken, not just
+    // the new one. Skip it loudly instead. scripts/test_topics.py fails the build on it.
+    const meta = el('meta-'+t);
+    if (!meta) { console.warn(`no button markup for topic ${t} — add one to app.html`); continue; }
+    meta.innerHTML = html;
   }
+  updateFamCounts();
   const saved = loadSavedQuiz();
   if (saved && DATA && !DATA[saved.topic]) clearQuizState();
   const banner = el('resume-banner');
@@ -1039,6 +1213,68 @@ function escapeHtml(s) {
 }
 
 // ------- bootstrap -------
+// ------- home directory: family counts + search -------
+// The buttons are static markup (scripts/test_topics.py guards that); this only fills the
+// family summaries and filters. Search matches a bank's name and its blueprint 科目, so
+// "投資學" finds 證券商高級業務員 — people know the subject they must revise, not always
+// which exam it belongs to.
+function famTopics(fam) {
+  return [...new Set([...fam.querySelectorAll('[data-topic]')]
+    .map(b => b.dataset.topic).filter(t => DATA && DATA[t]))];
+}
+function updateFamCounts() {
+  document.querySelectorAll('details.fam').forEach(fam => {
+    const btns = [...fam.querySelectorAll('[data-topic]')].filter(b => DATA && DATA[b.dataset.topic]);
+    const n = famTopics(fam).reduce((sum, t) => sum + DATA[t].length, 0);
+    const el = fam.querySelector('.fcount');
+    if (el) { el.textContent = btns.length + ' 項 · ' + n.toLocaleString('en-US') + ' 題'; }
+  });
+}
+function initExamSearch() {
+  const mount = el('examsearch'), nohit = el('nohit');
+  if (!mount || !nohit) return;
+  mount.innerHTML =
+    '<label class="srch">'
+    + '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+    + ' stroke-width="2" stroke-linecap="round" aria-hidden="true">'
+    + '<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.6-3.6"></path></svg>'
+    + '<input type="search" id="examq" autocomplete="off" aria-label="搜尋考試或科目"'
+    + ' placeholder="搜尋考試或科目"></label>';
+  const input = el('examq');
+  const fams = [...document.querySelectorAll('details.fam')];
+  const btns = [...document.querySelectorAll('[data-topic]')];
+  btns.forEach(b => {
+    const bp = blueprintFor(b.dataset.topic);
+    const subs = bp ? bp.subjects.map(x => x.subject).join(' ') : '';
+    b.dataset.hay = (b.textContent + ' ' + subs).toLowerCase();
+  });
+  const restore = () => {
+    btns.forEach(b => { b.hidden = false; });
+    fams.forEach(f => { f.hidden = false; f.open = false; });
+    updateFamCounts();
+    nohit.hidden = true;
+  };
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { restore(); return; }
+    let hits = 0;
+    fams.forEach(fam => {
+      let n = 0;
+      [...fam.querySelectorAll('[data-topic]')].forEach(b => {
+        const hit = b.dataset.hay.indexOf(q) !== -1;
+        b.hidden = !hit;
+        if (hit) n++;
+      });
+      fam.hidden = n === 0;
+      fam.open = n > 0;
+      const c = fam.querySelector('.fcount');
+      if (c && n > 0) c.textContent = n + ' 項符合';
+      hits += n;
+    });
+    nohit.hidden = hits > 0;
+  });
+}
+
 async function boot() {
   try {
     const r = await fetch('questions.json');
@@ -1056,6 +1292,17 @@ async function boot() {
   document.querySelectorAll('[data-topic]').forEach(b => {
     b.onclick = () => startQuiz(b.dataset.topic);
   });
+  initExamSearch();
+  // Arriving from the landing page: open the family that was clicked, so the visitor
+  // lands on the exams they asked for rather than six closed bars.
+  (function () {
+    const want = new URLSearchParams(location.search).get('fam');
+    if (!want) return;
+    const fam = document.querySelector(`details.fam[data-fam="${CSS.escape(want)}"]`);
+    if (!fam) return;
+    fam.open = true;
+    fam.scrollIntoView({ block: 'start' });
+  })();
   el('btn-review').onclick = showReview;
   // Desktop top bar. Same handlers as the on-page buttons, so behaviour cannot diverge.
   document.querySelectorAll('.topbar .navlink').forEach(b => {
@@ -1070,7 +1317,7 @@ async function boot() {
   el('btn-submit-side').onclick = () => submitQuiz();
   el('btn-clear').onclick = () => {
     if (confirm('確定清除所有作答紀錄？此動作無法復原。')) {
-      localStorage.removeItem(LS_KEY);
+      try { localStorage.removeItem(LS_KEY); } catch { /* storage unavailable */ }
       renderHome();
     }
   };
@@ -1097,7 +1344,7 @@ async function boot() {
   el('btn-result-review').onclick = () => showHistoryDetail(0);
   el('btn-history-clear').onclick = () => {
     if (confirm('\u78ba\u5b9a\u6e05\u9664\u6240\u6709\u6e2c\u9a57\u7d00\u9304\uff1f\u6b64\u52d5\u4f5c\u7121\u6cd5\u5fa9\u539f\u3002')) {
-      localStorage.removeItem(LS_RESULTS_KEY);
+      try { localStorage.removeItem(LS_RESULTS_KEY); } catch { /* storage unavailable */ }
       showHistory();
     }
   };

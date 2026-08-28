@@ -1,13 +1,19 @@
 # certifications.courses
 
-Free practice papers for Taiwan financial certification exams — 證基會 證券／期貨／
-投信投顧 從業人員資格測驗, 金融市場常識與職業道德, 能力測驗, 防制洗錢, and CFA Levels I–III.
+Free practice papers for Taiwan certification and public examinations — 證基會 證券／期貨／
+投信投顧 從業人員資格測驗, 金融市場常識與職業道德, 能力測驗, 防制洗錢, CFA Levels I–III, and
+考選部's 公務人員初等考試, 地方特考五等, 高普考 共同科目 and 律師／司法官 第一試.
 
 **<https://certifications.courses/>**
 
 Each practice paper mirrors the real exam's subject composition rather than drawing at
-random, scores each subject the way that exam's 簡章 does, and shows a per-option
-explanation for every question — every question in every bank has one.
+random and scores each subject the way that exam's 簡章 does. Every question in the 證基會
+and CFA banks carries a per-option explanation; the 考選部 banks currently ship the official
+標準答案 without one, and each says so on the exam list.
+
+Only 測驗題 are included. 申論題 cannot be marked, so papers that are wholly or partly 申論 —
+高考三級 and 普考 專業科目, 律師／司法官 第二試 — are deliberately absent rather than
+half-represented.
 
 ## This repository
 

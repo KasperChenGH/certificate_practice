@@ -4,11 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1e3a5f">
-<title>金融證照練習 — 依正式考卷結構出題</title>
-<meta name="description" content="台灣證券、期貨、投信投顧從業人員資格測驗與 CFA 練習題庫。依正式考試的科目配比抽題，分科計分，附逐選項解析。免費、免註冊。">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>證照考試練習 — 依正式考卷結構出題</title>
+<meta name="description" content="台灣證照與國家考試練習題庫：證券、期貨、投信投顧從業人員資格測驗、CFA、公務人員初等考試、高普考共同科目、律師司法官第一試。依正式考試的科目配比抽題，分科計分。免費、免註冊。">
 <link rel="canonical" href="https://certifications.courses/">
-<meta property="og:title" content="金融證照練習 — 依正式考卷結構出題">
-<meta property="og:description" content="22 張金融證照，共 8,177 題，題題附逐選項解析。每份練習卷依正式考試的科目配比抽題，並分科計分。">
+<meta property="og:title" content="證照考試練習 — 依正式考卷結構出題">
+<meta property="og:description" content="29 種證照與國家考試，共 11,591 題，全部附官方標準答案。每份練習卷依正式考試的科目配比抽題，並分科計分。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://certifications.courses/">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7642249081069780"
@@ -72,44 +74,27 @@
     .sec-head h2 { margin: 0 0 12px; font-size: 32px; line-height: 1.35; font-weight: 700; letter-spacing: -0.2px; }
     .sec-head p { margin: 0; font-size: 16px; line-height: 1.75; color: var(--muted); }
 
-    /* ---- exam directory: families of rows, not a grid of cards ---- */
-    .fams { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
-    .col { display: flex; flex-direction: column; gap: 16px; }
-    .fam {
-      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-      padding: 8px 24px 20px;
+    /* ---- exam directory: six categories, one link each ----
+       The landing page and the app home were showing the same accordion over the same 29
+       exams, which left the app home with no reason to exist and no way to be found. The
+       landing page now stops at the category: picking one opens the app home on it, and
+       the exam list — with its per-exam disclosures — lives in exactly one place. */
+    .cats { list-style: none; margin: 0; padding: 0; display: flex;
+      flex-direction: column; gap: 12px; }
+    .catrow {
+      display: flex; align-items: center; gap: 22px; text-decoration: none;
+      color: inherit; background: var(--card); border: 1px solid var(--line);
+      border-radius: 12px; padding: 24px 26px;
+      transition: border-color .12s, box-shadow .12s;
     }
-    .fam h3 {
-      margin: 0; padding: 16px 0 12px; font-size: 13px; font-weight: 700;
-      letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase;
-    }
-    .fam ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-    .exam { border-top: 1px solid var(--line); }
-    .rowinner {
-      display: flex; align-items: baseline; gap: 14px;
-      padding: 13px 0; color: inherit; text-decoration: none;
-    }
-    a.rowinner:hover .nm { color: var(--navy); }
-    a.rowinner:hover .go { opacity: 1; transform: translateX(2px); }
-    .go {
-      flex-shrink: 0; color: var(--navy); font-size: 15px; opacity: 0;
-      transition: opacity .12s, transform .12s; margin-left: -4px;
-    }
-    span.rowinner .go { display: none; }
-    .exam .nm { flex: 1; min-width: 0; font-size: 15px; font-weight: 600; line-height: 1.5; }
-    .exam .depth {
-      display: block; font-size: 11.5px; font-weight: 500; margin-top: 4px;
-      line-height: 1.5; color: var(--warn, #9a5b00);
-    }
-    .exam .req { display: block; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 3px; line-height: 1.5; }
-    .exam .st { flex-shrink: 0; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--navy); font-weight: 700; }
-    .exam .st small { font-size: 12px; font-weight: 600; color: var(--muted); margin-left: 3px; }
-    .exam.soon .nm { font-weight: 500; color: var(--muted); }
-    .exam.soon .st {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted);
-      background: var(--ground); border: 1px solid var(--line);
-      border-radius: 999px; padding: 3px 10px;
-    }
+    .catrow:hover { border-color: var(--navy); box-shadow: 0 1px 3px rgba(0, 0, 0, .06); }
+    .catrow:hover .go { opacity: 1; transform: translateX(2px); }
+    .cat-main { flex: 1; min-width: 0; }
+    .cat-nm { display: block; font-size: 18px; font-weight: 700; line-height: 1.4; }
+    .cat-sub { display: block; margin-top: 6px; font-size: 13.5px; line-height: 1.6;
+      color: var(--muted); }
+    .cat-n { flex-shrink: 0; font-size: 14px; font-weight: 700; color: var(--navy);
+      font-variant-numeric: tabular-nums; white-space: nowrap; }
 
     .why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .point { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 28px; display: flex; gap: 18px; align-items: flex-start; }
@@ -136,15 +121,11 @@
       section { padding: 68px 0; }
       .sec-head { margin-bottom: 32px; }
       .sec-head h2 { font-size: 26px; }
-      .fams { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-      .col { gap: 20px; }
-      .fam { padding: 10px 20px 22px; }
-      .fam h3 { padding: 18px 0 12px; }
-      .rowinner { padding: 17px 0; gap: 12px; }
+      .catrow { padding: 20px; gap: 14px; flex-wrap: wrap; }
+      .cat-nm { font-size: 16px; }
+      .cat-n { width: 100%; }
       /* No hover on touch: show the affordance permanently instead. */
-      a.rowinner .go { opacity: 0.55; }
-      .exam .nm { font-size: 15.5px; }
-      .exam .req { margin-top: 6px; line-height: 1.65; }
+      .catrow .go { opacity: 0.55; }
       .why { grid-template-columns: minmax(0, 1fr); }
       .btn { padding: 15px 24px; }
       .cta-row .btn { flex: 1; text-align: center; }
@@ -157,16 +138,16 @@
     <div>
       <p class="eyebrow">CERTIFICATIONS.COURSES</p>
       <h1 class="serif">照真正的考卷<br>結構練習</h1>
-      <p>證基會證券、期貨、投信投顧從業人員資格測驗，金融市場常識與職業道德，以及 CFA。目前上線 8,177 題，每一份練習卷都依正式考試的科目配比抽題，並且分科計分——因為單科不及格就是不及格。</p>
+      <p>證基會證券、期貨、投信投顧從業人員資格測驗與 CFA，以及考選部的公務人員初等考試、地方特考五等、高普考共同科目與律師、司法官第一試。目前上線 11,591 題，每一份練習卷都依正式考試的科目配比抽題，並且分科計分——因為單科不及格就是不及格。只收錄測驗題：申論題無法批改，收了也只是讓你以為練過了。</p>
       <div class="cta-row">
         <a class="btn primary" href="/app.html">開始練習</a>
-        <a class="btn ghost" href="#exams">看證照清單</a>
+        <a class="btn ghost" href="#exams">看考試分類</a>
       </div>
       <p class="fineprint">免費 · 免註冊 · 作答紀錄只留在你自己的瀏覽器</p>
     </div>
 
     <div class="slab">
-      <div class="total">8,177</div>
+      <div class="total">11,591</div>
       <div class="total-lbl">題，目前已上線</div>
       <ul>
         <li><span>金融常識與職業道德</span><b>1,120</b></li>
@@ -183,61 +164,18 @@
 <section id="exams">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="serif">依證照分類，逐張補齊</h2>
-      <p>分類與名稱依證基會官方測驗列表。抽題不是把整個題庫打散隨機挑，而是照該張證照真實考卷的科目配比組卷。每張證照都已上線，點名稱即可開始練習。標示「自編練習題」者沒有公開的歷屆試題，題目是依官方簡章公布的測驗範圍自行編寫的。</p>
+      <h2 class="serif">依考試分類</h2>
+      <p>分類與名稱依證基會、考選部的官方測驗列表。選一個分類，進去挑要練的那一場考試——抽題不是把整個題庫打散隨機挑，而是照該場考試真實考卷的科目配比組卷，而且分科計分。每一場考試的組卷方式、及格標準，以及哪幾種是自編練習題、哪幾種還沒有逐選項解析，都標在該場考試上。</p>
     </div>
 
-    <div class="fams">
-      <div class="col">
-      <div class="fam">
-        <h3>證券、投信投顧暨期貨從業人員資格測驗</h3>
-        <ul>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=securities_analyst"><span class="nm">證券投資分析人員<span class="req">4 科；正式測驗每科為選擇題 70% ＋ 申論或計算題 30%，本站只收錄選擇題。個科及格制，每科 60 分</span><span class="depth">題庫 251 題，每回抽 119 題——連續兩回會重複到約 47%</span></span><span class="st">251<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=securities"><span class="nm">證券商高級業務員<span class="req">每回 150 題：投資學 50 ＋ 財務分析 50 ＋ 法規與實務 50</span><span class="depth">題庫 427 題，每回抽 150 題——連續兩回會重複到約 35%</span></span><span class="st">427<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=securities_sales"><span class="nm">證券商業務員<span class="req">每回 100 題：證券交易相關法規與實務 50 ＋ 證券投資與財務分析 50，兩科分別計分</span><span class="depth">題庫 286 題，每回抽 100 題——連續兩回會重複到約 35%</span></span><span class="st">286<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=securities_rep"><span class="nm">證券交易相關法規與實務乙科<span class="req">每回 50 題，只考上一列的第一科。乙科僅取得該科合格證明，不得換發為證券商業務員合格證明</span></span><span class="st">404<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=futures_analyst"><span class="nm">期貨交易分析人員<span class="req">4 科各 35 題；正式測驗另有申論或計算題 3 題，本站只收錄選擇題。個科及格制，每科 60 分</span><span class="depth">題庫 276 題，每回抽 140 題——連續兩回會重複到約 51%</span></span><span class="st">276<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=futures"><span class="nm">期貨商業務員<span class="req">每回 100 題：期貨交易法規 50 ＋ 期貨交易理論與實務 50</span></span><span class="st">873<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=futures_trust"><span class="nm">期貨信託基金銷售機構銷售人員<span class="req">每回 50 題：期貨信託法規及自律規範</span></span><span class="st">335<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=sitca_full"><span class="nm">投信投顧業務員（三科）<span class="req">每回 150 題：投信投顧相關法規 50 ＋ 證券投資與財務分析 50 ＋ 證券交易相關法規與實務 50，各科分別計分</span><span class="depth">題庫 426 題，每回抽 150 題——連續兩回會重複到約 35%</span></span><span class="st">426<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=sitca"><span class="nm">投信投顧業務員（一科）<span class="req">需高業 ＋ 效期內之金融常識與職業道德；只考投信投顧相關法規一科</span></span><span class="st">268<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=sitca_full"><span class="nm">投信投顧業務員（二科）<span class="req">需投信投顧相關法規乙科資格，免考該科；其餘兩科可在上方三科題庫中練習</span><span class="depth">題庫 426 題，每回抽 150 題——連續兩回會重複到約 35%</span></span><span class="st">426<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=sitca"><span class="nm">投信投顧相關法規（含自律規範）乙科<span class="req">每回 50 題。需信託或投資型保險業務員證書才能報考</span></span><span class="st">268<small>題</small></span><span class="go">→</span></a></li>
-        </ul>
-      </div>
-      </div>
-      <div class="col">
-      <div class="fam">
-        <h3>金融常識測驗 ／ 防制洗錢測驗</h3>
-        <ul>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=finance_ethics"><span class="nm">金融市場常識與職業道德<span class="req">每回 50 題：金融市場常識 22 ＋ 職業道德 28。證基會官方 1,120 題題庫</span></span><span class="st">1,120<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=aml"><span class="nm">防制洗錢與打擊資恐專業人員<span class="req">每回 60 題單選題；正式考卷另有第 61–80 題複選題，本站只收錄單選題</span><span class="depth">題庫 118 題，每回抽 60 題——連續兩回會重複到約 51%</span></span><span class="st">118<small>題</small></span><span class="go">→</span></a></li>
-        </ul>
-      </div>
-
-      <div class="fam">
-        <h3>CFA</h3>
-        <ul>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=cfa_fra"><span class="nm">Level I — Financial Reporting &amp; Analysis<span class="req">每回 90 題，涵蓋 13 個主題。英文，三選一</span></span><span class="st">514<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=cfa_l2"><span class="nm">Level II<span class="req">每回 88 題，涵蓋 10 個科目，題數依官方科目權重換算。英文，三選一</span><span class="depth">自編練習題，非歷屆試題——CFA Institute 未公布考古題</span></span><span class="st">264<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=cfa_l3"><span class="nm">Level III<span class="req">每回 44 題，僅收錄選擇題（申論題無法批改），涵蓋 5 個核心科目。英文，三選一</span><span class="depth">自編練習題，非歷屆試題——CFA Institute 未公布考古題</span></span><span class="st">132<small>題</small></span><span class="go">→</span></a></li>
-        </ul>
-      </div>
-
-      <div class="fam">
-        <h3>能力測驗</h3>
-        <ul>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=internal_control"><span class="nm">企業內部控制<span class="req">每回 80 題，每題 1.25 分</span></span><span class="st">610<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=sustainability"><span class="nm">永續發展基礎能力測驗<span class="req">每回 80 題，每題 1.25 分</span><span class="depth">題庫 223 題，每回抽 80 題——連續兩回會重複到約 36%</span></span><span class="st">223<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=bonds"><span class="nm">債券人員<span class="req">每回 100 題，債券市場理論與實務 75 ＋ 債券法規 25，總分 200 分制以 140 分為合格</span><span class="depth">自編練習題，非歷屆試題——證基會未公布本測驗考古題</span></span><span class="st">300<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=stock_affairs"><span class="nm">股務人員<span class="req">每回 100 題：股務作業法規 50 ＋ 股務作業實務 50，總分 200 分制以 140 分為合格</span><span class="depth">自編練習題，非歷屆試題——證基會未公布本測驗考古題</span></span><span class="st">300<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=biz_ethics"><span class="nm">工商倫理<span class="req">每回 50 題，總分 100 分，70 分合格。報考資格不限</span><span class="depth">自編練習題，非歷屆試題——證基會未公布本測驗考古題</span></span><span class="st">150<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=securitization"><span class="nm">資產證券化<span class="req">每回 100 題，理論與實務 75 ＋ 相關法規 25，總分 200 分制以 140 分為合格</span><span class="depth">自編練習題，非歷屆試題——證基會未公布本測驗考古題</span></span><span class="st">300<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=bills_finance"><span class="nm">票券商業務人員<span class="req">每回 100 題：票券金融法規 50 ＋ 票券金融實務 50。兩科合計 140 分且單科不得低於 60 分</span><span class="depth">自編練習題，非歷屆試題——證基會未公布本測驗考古題</span></span><span class="st">300<small>題</small></span><span class="go">→</span></a></li>
-        <li class="exam"><a class="rowinner" href="/app.html?topic=corp_gov"><span class="nm">公司治理<span class="req">每回 100 題：公司治理理論與基本規範 50 ＋ 股東會、董事會及功能委員會運作實務 50。2 科均須達 70 分</span><span class="depth">自編練習題，非歷屆試題——證基會未公布本測驗考古題</span></span><span class="st">300<small>題</small></span><span class="go">→</span></a></li>
-        </ul>
-      </div>
-      </div>
+    <ul class="cats">
+      <li class="cat"><a class="catrow" href="/app.html?fam=securities" data-topics="securities_analyst,securities,securities_sales,securities_rep,futures_analyst,futures,futures_trust,sitca_full,sitca"><span class="cat-main"><span class="cat-nm">證券、投信投顧暨期貨從業人員資格測驗</span><span class="cat-sub">證基會的證券、期貨、投信投顧從業人員資格測驗，含分析人員。</span></span><span class="cat-n">9 項 · 3,546 題</span><span class="go">→</span></a></li>
+      <li class="cat"><a class="catrow" href="/app.html?fam=ability" data-topics="internal_control,sustainability,bonds,stock_affairs,biz_ethics,securitization,bills_finance,corp_gov"><span class="cat-main"><span class="cat-nm">能力測驗</span><span class="cat-sub">證基會各項能力測驗；其中六項無公開歷屆試題，題目為自編。</span></span><span class="cat-n">8 項 · 2,483 題</span><span class="go">→</span></a></li>
+      <li class="cat"><a class="catrow" href="/app.html?fam=civil" data-topics="civil_law_basics,civil_civics_english,civil_admin,civil_local_gov,civil_chinese,civil_law_english"><span class="cat-main"><span class="cat-nm">公務人員考試（初等、地特五等、高普考）</span><span class="cat-sub">考選部初等考、地方特考五等，以及高普考的共同科目。全測驗題。</span></span><span class="cat-n">6 項 · 1,914 題</span><span class="go">→</span></a></li>
+      <li class="cat"><a class="catrow" href="/app.html?fam=cfa" data-topics="cfa_fra,cfa_l2,cfa_l3"><span class="cat-main"><span class="cat-nm">CFA</span><span class="cat-sub">CFA Level I–III，英文三選一。Level II、III 為自編練習題。</span></span><span class="cat-n">3 項 · 910 題</span><span class="go">→</span></a></li>
+      <li class="cat"><a class="catrow" href="/app.html?fam=finance" data-topics="finance_ethics,aml"><span class="cat-main"><span class="cat-nm">金融常識測驗 ／ 防制洗錢測驗</span><span class="cat-sub">金融市場常識與職業道德，以及防制洗錢與打擊資恐。</span></span><span class="cat-n">2 項 · 1,238 題</span><span class="go">→</span></a></li>
+      <li class="cat"><a class="catrow" href="/app.html?fam=bar" data-topics="bar_1"><span class="cat-main"><span class="cat-nm">律師、司法官</span><span class="cat-sub">律師與司法官第一試，綜合法學（一）（二）共 300 題，全測驗題。</span></span><span class="cat-n">1 項 · 1,500 題</span><span class="go">→</span></a></li>
+    </ul>
     </div>
   </div>
 </section>
@@ -272,8 +210,8 @@
       <div class="point">
         <svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg>
         <div>
-          <h3>8,177 題附逐選項解析</h3>
-          <p>不只告訴你正解，而是每個選項各自為什麼對、為什麼錯。答錯當下就展開，不必再去翻書。全站每一題都有，沒有例外。</p>
+          <h3>8,199 題附逐選項解析</h3>
+          <p>不只告訴你正解，而是每個選項各自為什麼對、為什麼錯。答錯當下就展開，不必再去翻書。證照類題庫每一題都有，沒有例外；考選部國家考試題庫目前附的是官方標準答案，解析還在寫，清單上會標明是哪幾種。</p>
         </div>
       </div>
     </div>
