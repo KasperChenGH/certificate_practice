@@ -7,9 +7,13 @@ Free practice papers for Taiwan certification and public examinations — 證基
 **<https://certifications.courses/>**
 
 Each practice paper mirrors the real exam's subject composition rather than drawing at
-random and scores each subject the way that exam's 簡章 does. Every question in the 證基會
-and CFA banks carries a per-option explanation; the 考選部 banks currently ship the official
-標準答案 without one, and each says so on the exam list.
+random and scores each subject the way that exam's 簡章 does.
+
+**Answers are official; explanations are not.** 證基會 and 考選部 publish the answer key and
+nothing else — no 解析 exists in any official source — so every per-option explanation here
+is written rather than published, and each one says so beneath it. Every question in the
+證基會 and CFA banks carries one; most 考選部 banks do not yet, and the exam list marks
+which.
 
 Only 測驗題 are included. 申論題 cannot be marked, so papers that are wholly or partly 申論 —
 高考三級 and 普考 專業科目, 律師／司法官 第二試 — are deliberately absent rather than

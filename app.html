@@ -102,6 +102,8 @@
   .expl-item .expl-letter { font-weight: 700; min-width: 26px; flex-shrink: 0; }
   .expl-item.expl-correct .expl-letter { color: var(--good); }
   .expl-item.expl-sel-wrong .expl-letter { color: var(--bad); }
+  .expl-src { margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(0,0,0,0.14);
+    font-size: 11.5px; line-height: 1.5; color: var(--muted); }
   .option.locked { cursor: default; }
   .result-summary {
     text-align: center; padding: 20px; background: var(--card);
@@ -936,6 +938,14 @@ function renderQuiz() {
         item.innerHTML = `<span class="expl-letter">(${letter})</span><span>${escapeHtml(expl)}</span>`;
         block.appendChild(item);
       }
+      // Every explanation on this site is written, not published: 證基會 and 考選部 release
+      // the answer key and nothing else, so no 解析 anywhere here comes from an official
+      // source. The answer letter above IS official; the reasoning below is not, and
+      // saying so once under each 解析 is the only honest way to show them together.
+      const src = document.createElement('div');
+      src.className = 'expl-src';
+      src.textContent = '答案為官方標準答案；以上解析由 AI 撰寫，非官方解析，僅供理解參考。';
+      block.appendChild(src);
       fb.appendChild(block);
     }
     el('q-options').parentElement.appendChild(fb);
@@ -1094,6 +1104,12 @@ function wrongQuestionCard(q, sel, n) {
         escapeHtml(expl) + '</span>';
       block.appendChild(item);
     }
+    // Same line as in the quiz: this is the wrong-answer review and history detail, where
+    // a candidate reads the 解析 most carefully, so it must carry the same provenance.
+    const src = document.createElement('div');
+    src.className = 'expl-src';
+    src.textContent = '答案為官方標準答案；以上解析由 AI 撰寫，非官方解析，僅供理解參考。';
+    block.appendChild(src);
     div.appendChild(block);
   }
   const meta = document.createElement('div');
