@@ -69,6 +69,19 @@
   .progress-label { font-size: 13px; color: var(--muted); margin-top: 4px;
     display: flex; justify-content: space-between; }
   .question { font-size: 16px; font-weight: 600; margin-bottom: 14px; line-height: 1.55; }
+  /* 閱讀測驗／克漏字 passage. Capped and scrollable so a 2,000-character passage cannot
+     push the options below the fold on a phone; the blanks are marked ＿＿(46)＿＿ in the
+     text so a cloze item can be answered against it. */
+  .passage {
+    font-size: 14px; font-weight: 400; line-height: 1.85; white-space: pre-wrap;
+    background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;
+    max-height: 42vh; overflow-y: auto; overflow-wrap: anywhere;
+  }
+  .passage-label {
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    letter-spacing: .04em; margin-bottom: 6px;
+  }
   .options { display: flex; flex-direction: column; gap: 8px; }
   .option {
     background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
@@ -442,6 +455,10 @@
       </div>
     </div>
     <div class="card">
+      <div id="q-passage-wrap" hidden>
+        <div class="passage-label">閱讀短文</div>
+        <div class="passage" id="q-passage"></div>
+      </div>
       <div class="question" id="q-stem"></div>
       <div class="options" id="q-options"></div>
     </div>
@@ -891,6 +908,10 @@ function renderQuiz() {
   const sel = STATE.answers[STATE.idx];
   const locked = sel !== null;  // already answered → show feedback, no more clicks
   el('q-stem').textContent = `${STATE.idx+1}. ${q.stem}`;
+  // A reading/cloze question is unanswerable without its passage, so this is not
+  // decoration: hide the block when there is none, fill it when there is.
+  el('q-passage').textContent = q.passage || '';
+  el('q-passage-wrap').hidden = !q.passage;
   const oc = el('q-options');
   oc.innerHTML = '';
   for (const letter of optionLetters(q)) {
@@ -1074,6 +1095,14 @@ function wrongQuestionCard(q, sel, n) {
   stem.className = 'stem';
   stem.textContent = n + '. ' + q.stem;
   div.appendChild(stem);
+  // Reviewing a reading question without its passage is the same dead end as answering
+  // one without it.
+  if (q.passage) {
+    const p = document.createElement('div');
+    p.className = 'passage';
+    p.textContent = q.passage;
+    div.appendChild(p);
+  }
   for (const letter of optionLetters(q)) {
     const line = document.createElement('div');
     line.style.fontSize = '14px';

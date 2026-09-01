@@ -1090,14 +1090,14 @@
    }
   ],
   "coverage": {
-   "pool": 500,
+   "pool": 480,
    "draw": 50,
-   "ratio": 10.0,
+   "ratio": 9.6,
    "subjects": {
     "法學知識與英文": {
-     "pool": 500,
+     "pool": 480,
      "draw": 50,
-     "ratio": 10.0
+     "ratio": 9.6
     }
    }
   }
