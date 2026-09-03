@@ -19,6 +19,13 @@
     --accent-soft: #2a4d7c;
     --good: #1f8a3e;
     --bad: #c63838;
+    /* Text-only variants of the two feedback colours. --good/--bad are unchanged and still
+       carry every border, fill and pill, so the palette reads the same; but used as *text*
+       on their own tints they measure 3.88:1 (green on #e6f4ea) and 4.49:1 (red on #fbeaea),
+       both under WCAG AA's 4.5:1 floor for body text -- and 答對／答錯 with its 解析 is the
+       most-read text in the app. These clear it at 5.97:1 and 5.40:1. */
+    --good-ink: #17692f;
+    --bad-ink: #b32e2e;
     --border: #d2d2d7;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -67,7 +74,7 @@
     height: 100%; background: var(--accent); transition: width 0.2s;
   }
   .progress-label { font-size: 13px; color: var(--muted); margin-top: 4px;
-    display: flex; justify-content: space-between; }
+    display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
   .question { font-size: 16px; font-weight: 600; margin-bottom: 14px; line-height: 1.55; }
   /* 閱讀測驗／克漏字 passage. Capped and scrollable so a 2,000-character passage cannot
      push the options below the fold on a phone; the blanks are marked ＿＿(46)＿＿ in the
@@ -87,6 +94,11 @@
     background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
     padding: 14px; cursor: pointer; display: flex; align-items: flex-start;
     gap: 10px; font-size: 15px; transition: background 0.1s, border-color 0.1s;
+    /* An unanswered option is rendered as a real <button> (see renderQuiz) so the paper
+       can be sat without a mouse; these reset the UA button styling so it stays
+       pixel-identical to the locked <div> that replaces it once answered. */
+    width: 100%; margin: 0; text-align: left; font-family: inherit; color: inherit;
+    line-height: inherit;
   }
   .option:active { background: #eef0f4; }
   .option.selected { border-color: var(--accent); background: #eaf0f9; }
@@ -95,8 +107,8 @@
   .option .letter {
     font-weight: 700; min-width: 22px; color: var(--accent);
   }
-  .option.correct .letter { color: var(--good); }
-  .option.wrong .letter { color: var(--bad); }
+  .option.correct .letter { color: var(--good-ink); }
+  .option.wrong .letter { color: var(--bad-ink); }
   .nav { display: flex; gap: 8px; margin-top: 16px; }
   .nav .btn { margin-bottom: 0; }
   .abort-row { margin-top: 36px; padding-top: 12px; border-top: 1px solid var(--border); }
@@ -105,16 +117,16 @@
     margin-top: 14px; padding: 10px 12px; border-radius: 8px;
     font-size: 14px; line-height: 1.5;
   }
-  .feedback.correct { background: #e6f4ea; color: var(--good); border-left: 4px solid var(--good); }
-  .feedback.wrong { background: #fbeaea; color: var(--bad); border-left: 4px solid var(--bad); }
+  .feedback.correct { background: #e6f4ea; color: var(--good-ink); border-left: 4px solid var(--good); }
+  .feedback.wrong { background: #fbeaea; color: var(--bad-ink); border-left: 4px solid var(--bad); }
   .feedback .answer-text { color: var(--text); font-weight: 600; margin-top: 4px; }
   .expl-block { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.12); }
   .expl-title { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
   .expl-item { font-size: 13px; line-height: 1.55; margin-bottom: 8px; color: var(--text); display: flex; gap: 6px; }
   .expl-item:last-child { margin-bottom: 0; }
   .expl-item .expl-letter { font-weight: 700; min-width: 26px; flex-shrink: 0; }
-  .expl-item.expl-correct .expl-letter { color: var(--good); }
-  .expl-item.expl-sel-wrong .expl-letter { color: var(--bad); }
+  .expl-item.expl-correct .expl-letter { color: var(--good-ink); }
+  .expl-item.expl-sel-wrong .expl-letter { color: var(--bad-ink); }
   .expl-src { margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(0,0,0,0.14);
     font-size: 11.5px; line-height: 1.5; color: var(--muted); }
   .option.locked { cursor: default; }
@@ -122,7 +134,8 @@
     text-align: center; padding: 20px; background: var(--card);
     border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;
   }
-  .result-summary .big { font-size: 36px; font-weight: 700; margin: 8px 0; }
+  .result-summary .big { font-size: 36px; font-weight: 700; margin: 8px 0;
+    font-variant-numeric: tabular-nums; }
   .result-summary .pct { color: var(--accent); }
   .result-q {
     border-left: 4px solid var(--bad);
@@ -130,8 +143,8 @@
     margin-bottom: 10px; border-radius: 4px 10px 10px 4px;
   }
   .result-q .stem { font-weight: 600; margin-bottom: 8px; }
-  .result-q .answer-line { color: var(--good); font-size: 14px; margin-top: 6px; }
-  .result-q .wrong-line { color: var(--bad); font-size: 14px; }
+  .result-q .answer-line { color: var(--good-ink); font-size: 14px; margin-top: 6px; }
+  .result-q .wrong-line { color: var(--bad-ink); font-size: 14px; }
   .result-q .origin { color: var(--muted); font-size: 12px; margin-top: 6px; }
   .review-q { border-left-color: var(--accent); }
   .empty-state {
@@ -142,7 +155,8 @@
     flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border);
     border-radius: 10px; padding: 10px 6px; text-align: center;
   }
-  .stat .num { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .stat .num { font-size: 20px; font-weight: 700; color: var(--accent);
+    font-variant-numeric: tabular-nums; }
   .stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; }
   .topic-meta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 400; }
   .topic-meta .tc-n { font-weight: 700; }
@@ -152,6 +166,25 @@
   /* Home directory: the same six collapsible families as the landing page, plus search.
      Twenty-nine cards at 190px each made this page a very long scroll before anyone could
      see what was on it, and on a phone it was twenty-nine stacked blocks. */
+  /* ===== paper length =====
+     A full 律師、司法官第一試 paper is 300 questions; 投信投顧業務員（三科） is 150. Those are
+     real sittings, not practice runs, so the length is a choice. The cut holds each
+     subject's share of the paper (see apportion), which is the point -- a short paper has
+     to exercise every subject, not whichever ones a shuffle happened to reach. */
+  .lenpick { display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+             margin-bottom: 10px; }
+  .lenpick .lenlabel { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .lenopts { display: inline-flex; background: var(--card); border: 1px solid var(--border);
+             border-radius: 9px; overflow: hidden; }
+  .lenopt {
+    font: inherit; font-size: 13.5px; font-weight: 600; padding: 7px 15px;
+    background: none; border: none; border-left: 1px solid var(--border);
+    color: var(--muted); cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .lenopt:first-child { border-left: none; }
+  .lenopt[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .lenhint { font-size: 12px; color: var(--muted); flex-basis: 100%; }
+  .lenhint:empty { display: none; }
   .finder { margin-bottom: 12px; }
   .srch { position: relative; display: block; }
   .srch input {
@@ -202,8 +235,8 @@
   .subject-table .row .nm { flex: 1; min-width: 0; text-align: left; }
   .subject-table .row .sc { font-variant-numeric: tabular-nums; font-weight: 600; }
   .subject-table .row .vd { font-size: 12px; padding: 2px 8px; border-radius: 999px; }
-  .subject-table .row .vd.pass { color: var(--good); background: rgba(31,138,62,0.12); }
-  .subject-table .row .vd.fail { color: var(--bad);  background: rgba(198,56,56,0.12); }
+  .subject-table .row .vd.pass { color: var(--good-ink); background: rgba(31,138,62,0.12); }
+  .subject-table .row .vd.fail { color: var(--bad-ink);  background: rgba(198,56,56,0.12); }
   .blueprint-note { color: var(--muted); font-size: 12px; margin-top: 10px; line-height: 1.5; }
 
   /* ===== Exam history ===== */
@@ -222,8 +255,8 @@
     font-weight: 700; font-size: 15px; padding: 4px 10px;
     border-radius: 999px; white-space: nowrap;
   }
-  .score-pill.pass { color: var(--good); background: rgba(31,138,62,0.12); }
-  .score-pill.fail { color: var(--bad);  background: rgba(198,56,56,0.12); }
+  .score-pill.pass { color: var(--good-ink); background: rgba(31,138,62,0.12); }
+  .score-pill.fail { color: var(--bad-ink);  background: rgba(198,56,56,0.12); }
   .hist-summary {
     background: var(--card); border: 1px solid var(--border);
     border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px;
@@ -231,7 +264,7 @@
   .hist-summary .name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
   .hist-summary .figs { color: var(--muted); }
   .hist-summary .figs b { color: var(--text); font-weight: 600; }
-  .your-line { color: var(--bad); font-size: 14px; margin-top: 6px; }
+  .your-line { color: var(--bad-ink); font-size: 14px; margin-top: 6px; }
 
 
 
@@ -251,6 +284,50 @@
   .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 12px; }
   .legend b { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
   .hist-row .subj-cell { display: none; }
+
+
+  /* ===== Interaction states =====
+     Two gaps, both app-wide rather than per-component. (1) Keyboard focus was invisible
+     everywhere except the search box, so a keyboard user could not see what they were on.
+     (2) Nothing answered the pointer on desktop -- the layout has a top bar, a 3-column
+     exam grid and a question navigator, and all of them were inert until clicked. Hover
+     sits behind (hover: hover) so a touch device never gets a state it has no way to
+     leave, the same guard design/Main.dc.html already uses. */
+  a:focus-visible, button:focus-visible, summary:focus-visible,
+  input:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  .srch input:focus-visible { outline-offset: -1px; }
+
+  @media (hover: hover) {
+    .btn:hover { background: var(--accent-soft); }
+    .btn.secondary:hover { background: #dcdce2; }
+    .btn.review:hover { background: #a44a18; }
+    .option:hover { border-color: var(--accent); background: #f2f5fa; }
+    /* An answered option is a record, not a control: it must not look clickable. */
+    .option.locked:hover { border-color: var(--border); background: var(--card); }
+    .option.locked.correct:hover { border-color: var(--good); background: #e6f4ea; }
+    .option.locked.wrong:hover { border-color: var(--bad); background: #fbeaea; }
+    details.fam > summary:hover { background: #f7f8fa; }
+    details.fam > summary:hover .fchev { background: var(--bg); border-color: var(--accent); }
+    .hist-row:hover { border-color: var(--accent); }
+    .qnav i:hover { border-color: var(--accent); color: var(--accent); }
+    .qnav i.done:hover { background: var(--accent-soft); color: #fff; }
+    .lenopt:hover { color: var(--accent); background: var(--bg); }
+    .lenopt[aria-pressed="true"]:hover { background: var(--accent-soft); color: #fff; }
+  }
+
+  /* The progress bar, the chevron and the button tints are all that animate here, and none
+     of them carries meaning through the motion itself, so honouring the preference costs
+     nothing. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+  }
 
   /* ================= DESKTOP ================= */
   @media (min-width: 1024px) {
@@ -276,24 +353,40 @@
     #page-home .stat .num { font-size: 26px; }
     #page-home .stat .lbl { font-size: 12px; }
     .topic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    /* Grid, not flex, for one reason: the title is a bare text node with no element of its
+       own, and as an anonymous GRID item it can be given a reserved two-line row that a flex
+       item cannot. Without it a title that wraps (cfa_fra is the only one at 1280px, more at
+       narrower widths) pushes its count and rule a line below its neighbours'. */
     .topic-grid .btn[data-topic] {
-      margin-bottom: 0; text-align: left; padding: 22px; min-height: 190px;
-      display: flex; flex-direction: column; justify-content: space-between; font-size: 17px;
+      margin-bottom: 0; text-align: left; padding: 18px; min-height: 190px;
+      display: grid; grid-template-rows: minmax(3.1em, auto) 1fr; font-size: 17px;
     }
     /* On desktop the button is a card: title at the top, the count as its anchor
        number, the paper composition on a rule at the foot. */
     .topic-grid .btn[data-topic] .topic-meta {
-      display: flex; flex-direction: column; opacity: 1; margin-top: 10px;
+      display: flex; flex-direction: column; opacity: 1; margin-top: 6px;
       padding-top: 0; border-top: none; flex: 1;
     }
     .topic-grid .topic-meta .tc-n { font-size: 34px; line-height: 1; font-weight: 700;
       font-variant-numeric: tabular-nums; }
     .topic-grid .topic-meta .tc-n small { font-size: 13px; }
+    /* The rule sits under the count, at the same height on every card. It was pinned with
+       `margin-top: auto`, which bottom-anchors this element AND everything after it, so the
+       rule landed at `card bottom - trailing content` -- and the trailing content varies
+       (5 cards carry one block below it, 9 carry two, 15 carry three, each wrapping to a
+       different depth). Three cards in a row showed three rules at three heights. Anchoring
+       to the count instead puts every rule on the same line and lets the slack fall to the
+       foot of the card, where a straight bottom edge absorbs it. */
     .topic-grid .topic-meta .tc-p {
-      font-size: 13px; line-height: 1.65; opacity: 0.78; margin-top: auto;
-      padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.18);
+      font-size: 13px; line-height: 1.65; opacity: 0.78; margin-top: 11px;
+      padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.18);
     }
     .topic-grid .topic-meta .tc-p::before { content: none; }
+    /* Desktop only -- the phone layout stacks one card per row, where the looser rhythm
+       costs nothing. Measured: this and the padding above take the median card from
+       293px to 254px and the whole exam directory from 3,234px of scroll to 2,996px,
+       with no text removed. */
+    .topic-grid .topic-meta .tc-note { margin-top: 6px; line-height: 1.5; }
     #page-home .btn.review, #page-home .btn.secondary { max-width: 260px; }
     #page-home .home-actions { display: flex; gap: 10px; margin-top: 22px; }
     #page-home .home-actions .btn { margin-bottom: 0; }
@@ -365,6 +458,15 @@
     </div>
 
     <h2>選擇測驗類別</h2>
+    <div class="lenpick" role="group" aria-label="每回題數">
+      <span class="lenlabel">每回題數</span>
+      <span class="lenopts" id="lenopts">
+        <button type="button" class="lenopt" data-len="50">50 題</button>
+        <button type="button" class="lenopt" data-len="100">100 題</button>
+        <button type="button" class="lenopt" data-len="0">全卷</button>
+      </span>
+      <span class="lenhint" id="lenhint"></span>
+    </div>
     <div class="finder">
       <div id="examsearch"></div>
       <p class="nohit" id="nohit" hidden>沒有符合的考試或科目。</p>
@@ -468,7 +570,7 @@
     </div>
     <div class="abort-row">
       <button class="btn secondary" id="btn-save-home">儲存並回到首頁</button>
-      <button class="btn secondary" id="btn-abort" style="margin-top:8px;color:var(--bad);">放棄並回首頁</button>
+      <button class="btn secondary" id="btn-abort" style="margin-top:8px;color:var(--bad-ink);">放棄並回首頁</button>
     </div>
     </div>
     <aside class="quiz-side">
@@ -512,7 +614,7 @@
     <div class="history-side">
       <div id="history-summary"></div>
       <button class="btn" id="btn-history-home" style="margin-top:12px;">回首頁</button>
-      <button class="btn secondary" id="btn-history-clear" style="color:var(--bad);">清除測驗紀錄</button>
+      <button class="btn secondary" id="btn-history-clear" style="color:var(--bad-ink);">清除測驗紀錄</button>
     </div>
     <div id="history-list"></div>
    </div>
@@ -590,10 +692,87 @@ let DATA = null;            // {topic: [{id, stem, options, answer, origin, subj
 // paper is composed so it mirrors the real exam. Missing or unreachable => random draw.
 let BLUEPRINTS = {};
 function blueprintFor(topic) { return BLUEPRINTS[topic] || null; }
-function quizSizeFor(topic) {
+
+// ------- paper length -------
+// 0 means 全卷 -- the blueprint's own length, i.e. exactly what this app did before the
+// picker existed, so the default changes nothing for anyone.
+const LS_LEN_KEY = 'quiz_len_v1';
+const LEN_CHOICES = [50, 100, 0];
+const LEN_HINT = '長卷會依各科比例縮短，每科都仍會出題；題數本來較少的考試不受影響。';
+let QUIZ_LEN = 0;
+function loadLen() {
+  try {
+    const v = parseInt(localStorage.getItem(LS_LEN_KEY) || '0', 10);
+    return LEN_CHOICES.indexOf(v) >= 0 ? v : 0;
+  } catch { return 0; }
+}
+function saveLen(v) {
+  try { localStorage.setItem(LS_LEN_KEY, String(v)); }
+  catch { console.warn('Could not save paper length (storage unavailable)'); }
+}
+
+// How many questions each subject has, counted once per bank.
+const POOL_BY_SUBJECT = {};
+function poolCounts(topic) {
+  if (POOL_BY_SUBJECT[topic]) return POOL_BY_SUBJECT[topic];
+  const m = {};
+  for (const q of (DATA && DATA[topic]) || []) {
+    const k = q.subject || '';
+    m[k] = (m[k] || 0) + 1;
+  }
+  return (POOL_BY_SUBJECT[topic] = m);
+}
+
+// Cut a blueprint's section counts down to `target` while holding their proportions.
+//
+// Largest-remainder apportionment, not rounding: rounding each subject's share on its own
+// does not add up to the target -- CFA Level I has 13 sections and drifts several questions
+// -- and flooring would send its smallest section (3 questions) to zero, which is precisely
+// the subject a shortened paper must not silently drop. So: floor every exact share, then
+// hand the leftover questions to the largest fractional parts, and never let a section fall
+// below one. That last rule means a paper can never be shorter than its own subject count.
+function apportion(subjects, target, poolOf) {
+  const counts = subjects.map(s => s.count);
+  const total = counts.reduce((a, b) => a + b, 0);
+  if (!target || target >= total) return counts.slice();   // 全卷, or a paper already shorter
+  target = Math.max(target, subjects.length);
+
+  const exact = counts.map(c => c * target / total);
+  const out = exact.map(x => Math.max(1, Math.floor(x)));
+  // Ties broken by the larger section, then by position, so the same request always
+  // produces the same paper shape.
+  const order = counts.map((_, i) => i).sort((a, b) =>
+    (exact[b] % 1) - (exact[a] % 1) || counts[b] - counts[a] || a - b);
+
+  let left = target - out.reduce((a, b) => a + b, 0);
+  for (let k = 0; left > 0; k = (k + 1) % order.length) { out[order[k]]++; left--; }
+  // The floor of one can overshoot a very short target; take the excess back from the
+  // largest sections, never below one.
+  while (left < 0) {
+    let big = -1;
+    for (const i of order) if (out[i] > 1 && (big < 0 || out[i] > out[big])) big = i;
+    if (big < 0) break;
+    out[big]--; left++;
+  }
+  // Never ask a subject for more questions than the bank actually holds.
+  if (poolOf) {
+    for (let i = 0; i < out.length; i++) out[i] = Math.min(out[i], poolOf(subjects[i].subject));
+  }
+  return out;
+}
+
+// Questions to draw per section for this bank at the current length, or null with no blueprint.
+function sectionPlan(topic) {
   const bp = blueprintFor(topic);
-  if (bp) return bp.subjects.reduce((a, sec) => a + sec.count, 0);
-  return Math.min(QUIZ_SIZE, (DATA && DATA[topic] ? DATA[topic].length : QUIZ_SIZE));
+  if (!bp) return null;
+  const have = poolCounts(topic);
+  return apportion(bp.subjects, QUIZ_LEN, sub => have[sub] || 0);
+}
+function quizSizeFor(topic) {
+  const plan = sectionPlan(topic);
+  if (plan) return plan.reduce((a, b) => a + b, 0);
+  const pool = DATA && DATA[topic] ? DATA[topic].length : QUIZ_SIZE;
+  return Math.min(QUIZ_LEN || QUIZ_SIZE, pool);
 }
 function currentSize() { return STATE ? STATE.questions.length : QUIZ_SIZE; }
 let STATE = null;           // current quiz state
@@ -803,13 +982,19 @@ function renderHome() {
     let html = `<span class="tc-n">${DATA[t].length.toLocaleString('en-US')}<small>\u984c</small></span>`;
     if (bp) {
       // Enumerating 13 sections would swamp the card, so summarise past a few.
+      // Counts are what this paper will actually draw, not the blueprint's, so the
+      // card tracks the length picker.
+      const plan = sectionPlan(t) || bp.subjects.map(sec => sec.count);
       const detail = bp.subjects.length <= 3
-        ? bp.subjects.map(sec => `${escapeHtml(sec.subject)} ${sec.count}`).join('\uff0b')
+        ? bp.subjects.map((sec, i) => `${escapeHtml(sec.subject)} ${plan[i]}`).join('\uff0b')
         : `${bp.subjects.length} \u500b\u4e3b\u984c`;
-      html += `<span class="tc-p">\u6bcf\u56de ${quizSizeFor(t)} \u984c\uff1a${detail}</span>`;
+      const drawn = quizSizeFor(t);
+      html += `<span class="tc-p">\u6bcf\u56de ${drawn} \u984c\uff1a${detail}</span>`;
       const cov = bp.coverage;
-      if (cov && cov.ratio < 3) {
-        const rep = Math.round(Math.min(cov.draw / cov.pool, 1) * 100);
+      // Recomputed against the chosen length rather than the blueprint's: a shorter
+      // paper draws less of the pool and so repeats less, and this disclosure must say so.
+      if (cov && cov.pool && cov.pool / drawn < 3) {
+        const rep = Math.round(Math.min(drawn / cov.pool, 1) * 100);
         html += `<span class="tc-thin">連續兩回會重複到約 ${rep}%</span>`;
       }
       // The landing page no longer lists exams, so these disclosures live here or
@@ -860,11 +1045,14 @@ function startQuiz(topic) {
   if (bp) {
     // Draw each subject's quota separately so the paper matches the real exam,
     // then shuffle so the sections are interleaved rather than blocked.
+    // The blueprint's own counts at full length, or their proportional cut when a shorter
+    // paper is chosen -- either way every subject is drawn from, at its real weight.
+    const want = sectionPlan(topic) || bp.subjects.map(sec => sec.count);
     picked = [];
-    for (const sec of bp.subjects) {
+    bp.subjects.forEach((sec, i) => {
       const sub = pool.filter(q => q.subject === sec.subject);
-      picked = picked.concat(shuffle(sub).slice(0, sec.count));
-    }
+      picked = picked.concat(shuffle(sub).slice(0, want[i]));
+    });
     picked = shuffle(picked);
   } else {
     picked = shuffle(pool).slice(0, quizSizeFor(topic));
@@ -898,7 +1086,17 @@ function renderNav() {
     cell.textContent = i + 1;
     if (i === STATE.idx) cell.className = 'now';
     else if (STATE.answers[i] !== null) cell.className = 'done';
-    cell.onclick = () => { STATE.idx = i; saveQuizState(); renderQuiz(); };
+    // Built as <i> for the grid styling, so it has to be given the role and key handling
+    // a <button> would have carried by itself.
+    cell.tabIndex = 0;
+    cell.setAttribute('role', 'button');
+    cell.setAttribute('aria-label', `第 ${i + 1} 題`);
+    if (i === STATE.idx) cell.setAttribute('aria-current', 'true');
+    const go = () => { STATE.idx = i; saveQuizState(); renderQuiz(); };
+    cell.onclick = go;
+    cell.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+    };
     nav.appendChild(cell);
   });
 }
@@ -915,12 +1113,18 @@ function renderQuiz() {
   const oc = el('q-options');
   oc.innerHTML = '';
   for (const letter of optionLetters(q)) {
-    const div = document.createElement('div');
+    // An answered option is a static record and stays a <div>; an unanswered one is a
+    // control, and a <div> with an onclick is not reachable by keyboard -- which meant the
+    // paper could not be sat at all without a mouse. A real <button> gets tab order, Enter
+    // and Space, and the right role for a screen reader, for free.
+    const div = document.createElement(locked ? 'div' : 'button');
     div.className = 'option';
     if (locked) {
       div.classList.add('locked');
       if (letter === q.answer) div.classList.add('correct');
       else if (letter === sel) div.classList.add('wrong');
+    } else {
+      div.type = 'button';   // otherwise a <button> in a form would submit it
     }
     div.innerHTML = `<span class="letter">(${letter})</span><span>${escapeHtml(q.options[letter] || '')}</span>`;
     if (!locked) {
@@ -1109,7 +1313,7 @@ function wrongQuestionCard(q, sel, n) {
     line.style.padding = '2px 0';
     const isAns = letter === q.answer, isSel = letter === sel;
     const mark = isAns ? '\u2713' : (isSel ? '\u2717' : '\u3000');
-    const color = isAns ? 'var(--good)' : (isSel ? 'var(--bad)' : 'var(--muted)');
+    const color = isAns ? 'var(--good-ink)' : (isSel ? 'var(--bad-ink)' : 'var(--muted)');
     const weight = (isAns || isSel) ? '600' : '400';
     line.innerHTML = '<span style="color:' + color + ';font-weight:' + weight + '">' +
       mark + ' (' + letter + ') ' + escapeHtml(q.options[letter] || '') + '</span>';
@@ -1208,7 +1412,15 @@ function showHistory() {
       '<span class="score-pill ' + (pct >= PASS_MARK * 100 ? 'pass' : 'fail') + '">' +
         r.c + '/' + r.n + '\u3000' + pct + '%</span>' +
       '<span class="chev">\u203a</span>';
-    row.onclick = () => showHistoryDetail(i);
+    // Same reason as the navigator cells: this row is the only way into an exam's
+    // detail, so it cannot be mouse-only.
+    row.tabIndex = 0;
+    row.setAttribute('role', 'button');
+    const open = () => showHistoryDetail(i);
+    row.onclick = open;
+    row.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    };
     cont.appendChild(row);
   });
   show('page-history');
@@ -1320,6 +1532,28 @@ function initExamSearch() {
   });
 }
 
+// The length picker. Changing it re-renders the home page, because every card's
+// per-paper line and repeat-rate disclosure is derived from the chosen length.
+function initLenPick() {
+  const wrap = el('lenopts'), hint = el('lenhint');
+  if (!wrap) return;
+  const opts = [...wrap.querySelectorAll('.lenopt')];
+  const paint = () => {
+    opts.forEach(b => b.setAttribute('aria-pressed',
+      String((Number(b.dataset.len) || 0) === QUIZ_LEN)));
+    if (hint) hint.textContent = QUIZ_LEN ? LEN_HINT : '';
+  };
+  opts.forEach(b => {
+    b.onclick = () => {
+      QUIZ_LEN = Number(b.dataset.len) || 0;
+      saveLen(QUIZ_LEN);
+      paint();
+      renderHome();
+    };
+  });
+  paint();
+}
+
 async function boot() {
   try {
     const r = await fetch('questions.json');
@@ -1334,10 +1568,15 @@ async function boot() {
     return;
   }
   // Wire buttons
+  QUIZ_LEN = loadLen();
+  // /app.html?topic=bar_1&n=100 -- a deep link may choose the length as well as the bank.
+  const wantLen = parseInt(new URLSearchParams(location.search).get('n') || '', 10);
+  if (LEN_CHOICES.indexOf(wantLen) >= 0) { QUIZ_LEN = wantLen; saveLen(QUIZ_LEN); }
   document.querySelectorAll('[data-topic]').forEach(b => {
     b.onclick = () => startQuiz(b.dataset.topic);
   });
   initExamSearch();
+  initLenPick();
   // Arriving from the landing page: open the family that was clicked, so the visitor
   // lands on the exams they asked for rather than six closed bars.
   (function () {
