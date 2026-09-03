@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /questions.json
+Disallow: /blueprints.json
+
+Sitemap: https://certifications.courses/sitemap.xml

@@ -11,9 +11,8 @@ random and scores each subject the way that exam's 簡章 does.
 
 **Answers are official; explanations are not.** 證基會 and 考選部 publish the answer key and
 nothing else — no 解析 exists in any official source — so every per-option explanation here
-is written rather than published, and each one says so beneath it. Every question in the
-證基會 and CFA banks carries one; most 考選部 banks do not yet, and the exam list marks
-which.
+is written rather than published, and each one says so beneath it. All 11,571 questions
+across all 29 banks now carry one.
 
 Only 測驗題 are included. 申論題 cannot be marked, so papers that are wholly or partly 申論 —
 高考三級 and 普考 專業科目, 律師／司法官 第二試 — are deliberately absent rather than
