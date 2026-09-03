@@ -1148,6 +1148,11 @@ function renderQuiz() {
         recordAttempt(q.id, letter === q.answer);
         saveQuizState();
         renderQuiz();
+        // The re-render just destroyed the button that had focus, which drops a keyboard
+        // user back to the top of the document after every answer. Put them on the one
+        // control they need next. Only a keyboard-shown ring carries over, so a mouse
+        // click does not suddenly paint a focus ring on 下一題.
+        el('btn-next').focus();
       };
     }
     oc.appendChild(div);
