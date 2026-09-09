@@ -70,6 +70,9 @@
   }
   .btn:active { background: var(--accent-soft); }
   .btn.secondary { background: #e8e8ed; color: var(--text); }
+  /* The exam a visitor arrived for via ?topic=: ringed so it can be found among its
+     siblings, but not started for them. */
+  .btn.hilite { box-shadow: 0 0 0 3px var(--card), 0 0 0 6px var(--accent); }
   .btn.secondary:active { background: #d2d2d7; }
   .btn.review { background: #b8551c; }
   .btn.review:active { background: #9a4717; }
@@ -1657,12 +1660,22 @@ async function boot() {
   renderHome();
   show('page-home');
 
-  // Deep link from the landing page: /app.html?topic=futures starts that paper.
-  // Not when a paper is already in progress — beginning a new one would discard it,
-  // and losing 60 answered questions to a stray click is not a fair trade. In that
-  // case the home page is already showing the resume banner, so the choice is theirs.
+  // Deep link from an exam page: /app.html?topic=futures opens that exam's family and
+  // rings the exam, and stops there. It used to start the paper outright, which dropped
+  // a visitor fresh from a search result into question 1 of 100 with no 每回題數 choice,
+  // no sight of the other exams, and none of the disclosures on this page — and it
+  // contradicted the rule that a paper is only ever started from here. One tap more,
+  // and it never discards a paper in progress either.
   const wanted = new URLSearchParams(location.search).get('topic');
-  if (wanted && DATA[wanted] && !loadSavedQuiz()) startQuiz(wanted);
+  const target = wanted && document.querySelector(`.btn[data-topic="${CSS.escape(wanted)}"]`);
+  if (target) {
+    const fam = target.closest('details.fam');
+    if (fam) fam.open = true;
+    target.classList.add('hilite');
+    target.scrollIntoView({ block: 'center' });
+  }
+  // For design/linktest.mjs, which waits on this instead of guessing how long boot takes.
+  document.documentElement.dataset.booted = '1';
 }
 boot();
 </script>
