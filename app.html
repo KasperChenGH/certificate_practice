@@ -296,9 +296,18 @@
     font-variant-numeric: tabular-nums; cursor: pointer;
   }
   .qnav i.done { background: var(--accent); color: #fff; border-color: var(--accent); }
+  /* 顯示對錯 on: an answered cell carries its verdict. Off, or not yet answered: as above. */
+  .qnav i.done.right { background: var(--good); border-color: var(--good); }
+  .qnav i.done.wrong { background: var(--bad); border-color: var(--bad); }
   .qnav i.now { background: var(--card); color: var(--accent); border-color: var(--accent); border-width: 2px; font-weight: 700; }
   .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 12px; }
   .legend b { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+  .navtoggle { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted);
+    margin-top: 10px; cursor: pointer; user-select: none; }
+  .navtoggle input { margin: 0; accent-color: var(--accent); }
+  /* A bank is fetched when its button is pressed; say so on the button itself. */
+  .btn[data-topic][aria-busy="true"] { opacity: 0.7; cursor: progress; }
+  .btn[data-topic][aria-busy="true"] .topic-meta::after { content: '題庫載入中…'; display: block; color: var(--accent); margin-top: 4px; }
   .hist-row .subj-cell { display: none; }
 
 
@@ -329,6 +338,8 @@
     .hist-row:hover { border-color: var(--accent); }
     .qnav i:hover { border-color: var(--accent); color: var(--accent); }
     .qnav i.done:hover { background: var(--accent-soft); color: #fff; }
+    .qnav i.done.right:hover { background: var(--good-ink); }
+    .qnav i.done.wrong:hover { background: var(--bad-ink); }
     .lenopt:hover { color: var(--accent); background: var(--bg); }
     .lenopt[aria-pressed="true"]:hover { background: var(--accent-soft); color: #fff; }
   }
@@ -601,10 +612,16 @@
         <div class="progress-bar" style="margin-top:10px;"><div class="progress-fill" id="qs-fill"></div></div>
         <div class="progress-label"><span id="qs-count">—</span></div>
         <div class="qnav" id="qs-nav"></div>
-        <div class="legend">
+        <div class="legend" id="legend-plain">
           <span><b style="background:var(--accent)"></b>已作答</span>
           <span><b style="background:var(--card);border:1px solid var(--border)"></b>未作答</span>
         </div>
+        <div class="legend hidden" id="legend-verdict">
+          <span><b style="background:var(--good)"></b>答對</span>
+          <span><b style="background:var(--bad)"></b>答錯</span>
+          <span><b style="background:var(--card);border:1px solid var(--border)"></b>未作答</span>
+        </div>
+        <label class="navtoggle"><input type="checkbox" id="nav-verdict">顯示對錯</label>
       </div>
       <button class="btn" id="btn-submit-side">交卷</button>
     </aside>
@@ -709,7 +726,42 @@ const RECENT_WINDOW = 10;   // last N attempts per question
 const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
 const WRONG_RATIO = 0.5;    // ≥50% wrong over recent attempts
 
-let DATA = null;            // {topic: [{id, stem, options, answer, origin, subject, topic}]}
+// The bank directory, data/banks.json: {topic: {n, expl, subjects: {subject: count}}}.
+// It is everything the home page needs and it is a few KB. The app used to fetch the
+// whole of questions.json (13 MB) before wiring a single button, so on a slow link the
+// home page sat painted and dead for the length of the download. Now a bank's questions
+// (data/<topic>.json) are fetched when a paper in it is started, or when 常錯題複習 /
+// 測驗紀錄 need to show a question that belongs to it.
+let BANKS = null;
+const DATA = {};            // banks fetched so far: {topic: [{id, stem, options, answer, origin, subject, topic}]}
+const BANK_IDS = {};        // {topic: Set(id)} for the banks in DATA
+const BANK_LOADING = {};    // in-flight fetches, so two clicks do not fetch twice
+function loadBank(topic) {
+  if (DATA[topic]) return Promise.resolve(DATA[topic]);
+  if (!BANKS || !BANKS[topic]) return Promise.reject(new Error('unknown bank ' + topic));
+  if (!BANK_LOADING[topic]) {
+    BANK_LOADING[topic] = fetch(`data/${topic}.json`)
+      .then(r => { if (!r.ok) throw new Error(`data/${topic}.json: HTTP ${r.status}`); return r.json(); })
+      .then(qs => {
+        DATA[topic] = qs;
+        BANK_IDS[topic] = new Set(qs.map(q => q.id));
+        return qs;
+      })
+      .finally(() => { delete BANK_LOADING[topic]; });
+  }
+  return BANK_LOADING[topic];
+}
+function loadBanks(topics) { return Promise.all([...new Set(topics)].map(loadBank)); }
+const LOAD_FAILED = '題庫載入失敗，請確認網路連線後再試一次。';
+// A question id is `<topic>-<paper>-<n>`; the longest bank key that prefixes it, dash
+// included, is its bank (`sitca-` and `sitca_full-` both exist).
+function bankOf(qid) {
+  let best = null;
+  if (BANKS) for (const t of Object.keys(BANKS)) {
+    if (qid.startsWith(t + '-') && (!best || t.length > best.length)) best = t;
+  }
+  return best;
+}
 // {topic: {exam, pass_mark, note, subjects:[{subject, count, points}]}} — how a practice
 // paper is composed so it mirrors the real exam. Missing or unreachable => random draw.
 let BLUEPRINTS = {};
@@ -733,15 +785,33 @@ function saveLen(v) {
   catch { console.warn('Could not save paper length (storage unavailable)'); }
 }
 
+// ------- navigator verdict -------
+// Whether the desktop question navigator colours answered cells 答對/答錯 rather than
+// plain 已作答. On by default; a person who wants the neutral grid turns it off once.
+const LS_NAV_KEY = 'quiz_nav_verdict_v1';
+let NAV_VERDICT = true;
+function loadNavVerdict() {
+  try { return localStorage.getItem(LS_NAV_KEY) !== '0'; } catch { return true; }
+}
+function saveNavVerdict(v) {
+  try { localStorage.setItem(LS_NAV_KEY, v ? '1' : '0'); }
+  catch { console.warn('Could not save navigator preference (storage unavailable)'); }
+}
+function initNavVerdict() {
+  const box = el('nav-verdict');
+  if (!box) return;
+  NAV_VERDICT = loadNavVerdict();
+  box.checked = NAV_VERDICT;
+  box.onchange = () => { NAV_VERDICT = box.checked; saveNavVerdict(NAV_VERDICT); renderNav(); };
+}
+
 // How many questions each subject has, counted once per bank.
 const POOL_BY_SUBJECT = {};
 function poolCounts(topic) {
   if (POOL_BY_SUBJECT[topic]) return POOL_BY_SUBJECT[topic];
-  const m = {};
-  for (const q of (DATA && DATA[topic]) || []) {
-    const k = q.subject || '';
-    m[k] = (m[k] || 0) + 1;
-  }
+  // Counted by build.py into banks.json, so a paper's composition is known before its
+  // questions are fetched. The empty-subject key is '' there too.
+  const m = Object.assign({}, (BANKS && BANKS[topic] && BANKS[topic].subjects) || {});
   return (POOL_BY_SUBJECT[topic] = m);
 }
 
@@ -793,7 +863,7 @@ function sectionPlan(topic) {
 function quizSizeFor(topic) {
   const plan = sectionPlan(topic);
   if (plan) return plan.reduce((a, b) => a + b, 0);
-  const pool = DATA && DATA[topic] ? DATA[topic].length : QUIZ_SIZE;
+  const pool = BANKS && BANKS[topic] ? BANKS[topic].n : QUIZ_SIZE;
   return Math.min(QUIZ_LEN || QUIZ_SIZE, pool);
 }
 function currentSize() { return STATE ? STATE.questions.length : QUIZ_SIZE; }
@@ -805,7 +875,7 @@ const LS_KEY = 'quiz_history_v1';
 const LS_QUIZ_KEY = 'quiz_state_v1';
 // One record per submitted exam, newest first:
 //   { t: topic, ts: epoch ms, n: questions asked, c: correct, w: [[questionId, picked|null], ...] }
-// Only wrong answers are stored; question text is looked up from DATA at render time.
+// Only wrong answers are stored; question text is looked up from its bank at render time.
 const LS_RESULTS_KEY = 'quiz_results_v1';
 const MAX_RESULTS = 50;
 const PASS_MARK = 0.7;      // 70% is the pass mark for these exams
@@ -842,17 +912,30 @@ function isOftenWrong(qid) {
 // Question IDs currently published. History for retired banks (e.g. the 金融市場常識
 // bank, removed once passed) stays in localStorage and would otherwise keep inflating
 // the totals and the often-wrong count forever.
-function liveIds() {
-  const ids = new Set();
-  if (DATA) for (const t of Object.keys(DATA)) for (const q of DATA[t]) ids.add(q.id);
-  return ids;
+// Exact for a bank that has been fetched; by id prefix for one that has not, which is
+// enough to drop a retired bank's history without downloading every bank to prove it.
+function isLive(qid) {
+  const t = bankOf(qid);
+  if (!t) return false;
+  return BANK_IDS[t] ? BANK_IDS[t].has(qid) : true;
+}
+// Parse history once and return the ids that qualify: isOftenWrong() re-reads storage
+// per call, which is fine for one question and not for a walk over the whole bank.
+function oftenWrongIds() {
+  const h = loadHistory();
+  const out = [];
+  for (const qid in h) {
+    const rec = h[qid];
+    if (!rec || rec.attempts.length < MIN_ATTEMPTS) continue;
+    if (rec.attempts.filter(x => !x).length / rec.attempts.length >= WRONG_RATIO) out.push(qid);
+  }
+  return out;
 }
 function overallStats() {
   const h = loadHistory();
-  const live = liveIds();
   let total = 0, correct = 0, wrongPool = 0;
   for (const qid in h) {
-    if (!live.has(qid)) continue;
+    if (!isLive(qid)) continue;
     const r = h[qid];
     total += r.attempts.length;
     correct += r.attempts.filter(x=>x).length;
@@ -919,9 +1002,11 @@ function loadSavedQuiz() {
   try { return JSON.parse(localStorage.getItem(LS_QUIZ_KEY) || 'null'); }
   catch { return null; }
 }
-function resumeQuiz(saved) {
-  const pool = DATA[saved.topic];
-  if (!pool) return;
+async function resumeQuiz(saved) {
+  if (!BANKS || !BANKS[saved.topic]) return;
+  let pool;
+  try { pool = await loadBank(saved.topic); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
   const byId = {};
   for (const q of pool) byId[q.id] = q;
   const questions = saved.questionIds.map(id => byId[id]).filter(Boolean);
@@ -971,7 +1056,7 @@ function computeFamNotes() {
   FAM_NOTE.clear();
   document.querySelectorAll('details.fam').forEach(fam => {
     const ts = [...fam.querySelectorAll('[data-topic]')]
-      .map(b => b.dataset.topic).filter(t => DATA && DATA[t]);
+      .map(b => b.dataset.topic).filter(t => BANKS && BANKS[t]);
     if (ts.length < 2) return;
     // The note shared by MOST of the family, not by all of it: five of the six 公務人員
     // banks share one paragraph and 法學知識與英文 has its own, so requiring unanimity
@@ -996,12 +1081,12 @@ function renderHome() {
   el('stat-accuracy').textContent = s.total ? (Math.round(100 * s.correct / s.total) + '%') : '—';
   el('stat-wrong-pool').textContent = s.wrongPool;
   for (const t of Object.keys(TOPIC_NAMES)) {
-    if (!DATA || !DATA[t]) continue;
+    if (!BANKS || !BANKS[t]) continue;
     const bp = blueprintFor(t);
     // Three tiers, matching the design: bank size, then how a paper is composed.
     // Built as markup rather than one string so the count can carry its own weight
     // on desktop, where the button becomes a card.
-    let html = `<span class="tc-n">${DATA[t].length.toLocaleString('en-US')}<small>\u984c</small></span>`;
+    let html = `<span class="tc-n">${BANKS[t].n.toLocaleString('en-US')}<small>\u984c</small></span>`;
     if (bp) {
       // Enumerating 13 sections would swamp the card, so summarise past a few.
       // Counts are what this paper will actually draw, not the blueprint's, so the
@@ -1024,7 +1109,7 @@ function renderHome() {
       // from the data, and the caveat from the note's first sentence.
       const tags = [];
       if ((bp.note || '').includes('自行編寫')) tags.push('自編');
-      if (!DATA[t].some(q => q.explanations)) tags.push('無解析');
+      if (!BANKS[t].expl) tags.push('無解析');
       if (tags.length) {
         html += `<span class="tc-tags">${tags.map(x => `<span class="tc-tag">${x}</span>`).join('')}</span>`;
       }
@@ -1047,9 +1132,9 @@ function renderHome() {
   }
   updateFamCounts();
   const saved = loadSavedQuiz();
-  if (saved && DATA && !DATA[saved.topic]) clearQuizState();
+  if (saved && BANKS && !BANKS[saved.topic]) clearQuizState();
   const banner = el('resume-banner');
-  if (saved && DATA && DATA[saved.topic]) {
+  if (saved && BANKS && BANKS[saved.topic]) {
     const answered = saved.answers.filter(a => a !== null).length;
     el('resume-meta').textContent = `${TOPIC_NAMES[saved.topic]}　已作答 ${answered} / ${saved.questionIds.length} 題`;
     banner.classList.remove('hidden');
@@ -1059,8 +1144,16 @@ function renderHome() {
 }
 
 // ------- quiz -------
-function startQuiz(topic) {
-  const pool = DATA[topic] || [];
+// `btn` is the home-page button that was pressed, if any: it shows 題庫載入中 while the
+// bank is fetched, and ignores a second press meanwhile.
+async function startQuiz(topic, btn) {
+  if (!BANKS || !BANKS[topic]) { alert('\u6b64\u984c\u5eab\u76ee\u524d\u6c92\u6709\u984c\u76ee\u3002'); return; }
+  if (btn && btn.getAttribute('aria-busy') === 'true') return;
+  let pool;
+  if (btn) btn.setAttribute('aria-busy', 'true');
+  try { pool = await loadBank(topic); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
+  finally { if (btn) btn.removeAttribute('aria-busy'); }
   if (!pool.length) { alert('\u6b64\u984c\u5eab\u76ee\u524d\u6c92\u6709\u984c\u76ee\u3002'); return; }
   const bp = blueprintFor(topic);
   let picked;
@@ -1098,6 +1191,9 @@ function startQuiz(topic) {
 function renderNav() {
   const nav = el('qs-nav');
   if (!nav || !STATE) return;
+  const verdict = NAV_VERDICT;
+  el('legend-plain').classList.toggle('hidden', verdict);
+  el('legend-verdict').classList.toggle('hidden', !verdict);
   const answered = STATE.answers.filter(a => a !== null).length;
   el('qs-topic').textContent = topicLabel(STATE.topic);
   el('qs-count').textContent = `已作答 ${answered} / ${currentSize()} 題`;
@@ -1106,13 +1202,20 @@ function renderNav() {
   STATE.questions.forEach((q, i) => {
     const cell = document.createElement('i');
     cell.textContent = i + 1;
+    // The verdict is already on the question itself the moment an option is picked, so
+    // showing it here reveals nothing new; the toggle is for people who would rather
+    // not be reminded of the score while they work through the paper.
+    const done = STATE.answers[i] !== null;
+    const right = done && STATE.answers[i] === q.answer;
+    let label = `第 ${i + 1} 題`;
     if (i === STATE.idx) cell.className = 'now';
-    else if (STATE.answers[i] !== null) cell.className = 'done';
+    else if (done) cell.className = verdict ? (right ? 'done right' : 'done wrong') : 'done';
+    if (done && verdict) label += right ? '，答對' : '，答錯';
     // Built as <i> for the grid styling, so it has to be given the role and key handling
     // a <button> would have carried by itself.
     cell.tabIndex = 0;
     cell.setAttribute('role', 'button');
-    cell.setAttribute('aria-label', `第 ${i + 1} 題`);
+    cell.setAttribute('aria-label', label);
     if (i === STATE.idx) cell.setAttribute('aria-current', 'true');
     const go = () => { STATE.idx = i; saveQuizState(); renderQuiz(); };
     cell.onclick = go;
@@ -1246,11 +1349,16 @@ function submitQuiz() {
 }
 
 // ------- review (often-wrong) -------
-function showReview() {
+async function showReview() {
+  // Fetch only the banks the often-wrong questions belong to, then list them in bank
+  // order, as before.
+  const wanted = new Set(oftenWrongIds());
+  try { await loadBanks([...wanted].map(bankOf).filter(Boolean)); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
   const list = [];
-  for (const t of Object.keys(DATA)) {
-    for (const q of DATA[t]) {
-      if (isOftenWrong(q.id)) list.push(q);
+  for (const t of Object.keys(BANKS)) {
+    for (const q of DATA[t] || []) {
+      if (wanted.has(q.id)) list.push(q);
     }
   }
   el('review-meta').textContent = `${list.length} 題（最近 ${RECENT_WINDOW} 次作答中答錯率 ≥ 50%、且至少作答 ${MIN_ATTEMPTS} 次）`;
@@ -1380,13 +1488,12 @@ function wrongQuestionCard(q, sel, n) {
 }
 
 // ------- history -------
+// Synchronous: the caller has already fetched the question's bank (loadBanks). A miss
+// is a question that belonged to a bank no longer published, or one dropped from its bank.
 function findQuestion(qid) {
-  if (!DATA) return null;
-  for (const t of Object.keys(DATA)) {
-    const hit = DATA[t].find(q => q.id === qid);
-    if (hit) return hit;
-  }
-  return null;   // question belonged to a bank that is no longer published
+  const t = bankOf(qid);
+  if (!t || !DATA[t]) return null;
+  return DATA[t].find(q => q.id === qid) || null;
 }
 
 function showHistory() {
@@ -1453,10 +1560,12 @@ function showHistory() {
   show('page-history');
 }
 
-function showHistoryDetail(i) {
+async function showHistoryDetail(i) {
   const list = loadResults();
   const r = list[i];
   if (!r) { showHistory(); return; }
+  try { await loadBanks(r.w.map(pair => bankOf(pair[0])).filter(Boolean)); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
   const pct = pctOf(r);
   el('hd-title').textContent = topicLabel(r.t);
   el('hd-meta').textContent = fmtWhen(r.ts) +
@@ -1504,12 +1613,12 @@ function escapeHtml(s) {
 // which exam it belongs to.
 function famTopics(fam) {
   return [...new Set([...fam.querySelectorAll('[data-topic]')]
-    .map(b => b.dataset.topic).filter(t => DATA && DATA[t]))];
+    .map(b => b.dataset.topic).filter(t => BANKS && BANKS[t]))];
 }
 function updateFamCounts() {
   document.querySelectorAll('details.fam').forEach(fam => {
-    const btns = [...fam.querySelectorAll('[data-topic]')].filter(b => DATA && DATA[b.dataset.topic]);
-    const n = famTopics(fam).reduce((sum, t) => sum + DATA[t].length, 0);
+    const btns = [...fam.querySelectorAll('[data-topic]')].filter(b => BANKS && BANKS[b.dataset.topic]);
+    const n = famTopics(fam).reduce((sum, t) => sum + BANKS[t].n, 0);
     const el = fam.querySelector('.fcount');
     if (el) { el.textContent = btns.length + ' 項 · ' + n.toLocaleString('en-US') + ' 題'; }
   });
@@ -1583,15 +1692,16 @@ function initLenPick() {
 
 async function boot() {
   try {
-    const r = await fetch('questions.json');
-    DATA = await r.json();
+    const r = await fetch('data/banks.json');
+    if (!r.ok) throw new Error(`data/banks.json: HTTP ${r.status}`);
+    BANKS = await r.json();
     // Optional: without it every bank falls back to a random QUIZ_SIZE draw.
     try {
       const b = await fetch('blueprints.json');
       if (b.ok) BLUEPRINTS = await b.json();
     } catch (e) { console.warn('No exam blueprints; drawing at random.', e); }
   } catch (e) {
-    document.body.innerHTML = '<div class="app"><h1>載入失敗</h1><p>無法讀取題庫檔（questions.json）。</p></div>';
+    document.body.innerHTML = '<div class="app"><h1>載入失敗</h1><p>無法讀取題庫目錄（data/banks.json）。</p></div>';
     return;
   }
   // Wire buttons
@@ -1600,10 +1710,11 @@ async function boot() {
   const wantLen = parseInt(new URLSearchParams(location.search).get('n') || '', 10);
   if (LEN_CHOICES.indexOf(wantLen) >= 0) { QUIZ_LEN = wantLen; saveLen(QUIZ_LEN); }
   document.querySelectorAll('[data-topic]').forEach(b => {
-    b.onclick = () => startQuiz(b.dataset.topic);
+    b.onclick = () => startQuiz(b.dataset.topic, b);
   });
   initExamSearch();
   initLenPick();
+  initNavVerdict();
   // Arriving from the landing page: open the family that was clicked, so the visitor
   // lands on the exams they asked for rather than six closed bars.
   (function () {

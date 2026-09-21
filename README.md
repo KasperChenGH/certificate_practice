@@ -28,7 +28,7 @@ in a private repository.
 |---|---|
 | `index.html` | landing page |
 | `app.html` | the quiz app |
-| `questions.json` | the question banks |
+| `data/` | the question banks — `banks.json` lists them, one `<topic>.json` per bank |
 | `blueprints.json` | per-exam paper composition and pass marks |
 
 Most questions come from 證基會's published past papers and official question banks, with
