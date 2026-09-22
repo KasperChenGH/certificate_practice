@@ -1027,6 +1027,31 @@ function shuffle(a) {
   }
   return a;
 }
+// Past papers reuse questions across sittings, so a bank holds the same item two or three
+// times under different ids -- often with a full-width bracket or a stray space as the only
+// difference, sometimes with one option reworded. Both belong in the bank (each paper is
+// complete on its exam page), but a paper drawn from it must not ask the same thing twice.
+// Twins: same stem after normalising width, spacing and punctuation, and at least two
+// options in common -- the option test keeps the cloze stems (依上文，選出第 45 格) and the
+// 下列敘述何者為非 stems apart, since those share a stem with unrelated options. The list
+// is already shuffled when this runs, so which twin survives is random.
+function normQ(s) {
+  return String(s).replace(/\s+/g, '')
+    .replace(/[\uFF01-\uFF5E]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .replace(/[。，、；：？！()「」『』:;,.?!'"“”‘’-]/g, '');
+}
+function dedupe(list) {
+  const seen = new Map();   // normalised stem -> [Set of normalised options] per kept twin
+  return list.filter(q => {
+    const key = normQ(q.stem);
+    const opts = new Set(Object.values(q.options).map(normQ));
+    const prev = seen.get(key) || [];
+    const twin = prev.some(p => { let n = 0; for (const o of opts) if (p.has(o)) n++; return n >= 2; });
+    if (twin) return false;
+    prev.push(opts); seen.set(key, prev);
+    return true;
+  });
+}
 function el(id) { return document.getElementById(id); }
 // Taiwan banks are 4-choice (A-D); the CFA bank follows the exam's 3-choice format (A-C).
 function optionLetters(q) {
@@ -1167,11 +1192,11 @@ async function startQuiz(topic, btn) {
     picked = [];
     bp.subjects.forEach((sec, i) => {
       const sub = pool.filter(q => q.subject === sec.subject);
-      picked = picked.concat(shuffle(sub).slice(0, want[i]));
+      picked = picked.concat(dedupe(shuffle(sub)).slice(0, want[i]));
     });
     picked = shuffle(picked);
   } else {
-    picked = shuffle(pool).slice(0, quizSizeFor(topic));
+    picked = dedupe(shuffle(pool)).slice(0, quizSizeFor(topic));
   }
   const size = picked.length;
   STATE = {
