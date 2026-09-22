@@ -366,7 +366,8 @@
       background: var(--card); border-bottom: 1px solid var(--border);
       position: sticky; top: 0; z-index: 20;
     }
-    .topbar .brand { font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
+    .topbar .brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
+    .topbar .brand .mark { width: 28px; height: 28px; flex-shrink: 0; }
     .topbar .spacer { flex: 1; }
     .topbar .navlink {
       background: none; border: none; font-family: inherit; font-size: 14px;
@@ -461,7 +462,7 @@
   <a href="/exams/">全部考試的考古題與解析</a>，或回到<a href="/">首頁</a>。
 </div></noscript>
 <div class="topbar">
-  <a class="brand" href="/">證照考試練習</a>
+  <a class="brand" href="/"><img class="mark" src="mark.png" alt="" width="28" height="28">證照考試練習</a>
   <button class="navlink" data-nav="home">題庫</button>
   <button class="navlink" data-nav="review">常錯題複習</button>
   <button class="navlink" data-nav="history">測驗紀錄</button>

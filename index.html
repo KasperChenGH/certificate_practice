@@ -51,7 +51,8 @@
     /* ---- hero ---- */
     .hero { background: var(--navy); color: #fff; padding: 96px 0 88px; }
     .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 64px; align-items: start; }
-    .eyebrow { font-size: 13px; letter-spacing: 3px; color: #9db4d0; margin: 0 0 20px; }
+    .eyebrow { display: flex; align-items: center; gap: 12px; font-size: 13px; letter-spacing: 3px; color: #9db4d0; margin: 0 0 20px; }
+    .eyebrow .mark { width: 48px; height: 48px; flex-shrink: 0; }
     .hero h1 { margin: 0 0 22px; font-size: 52px; line-height: 1.22; font-weight: 700; letter-spacing: -0.5px; }
     .hero p { margin: 0 0 32px; font-size: 18px; line-height: 1.75; color: #ccd8e6; max-width: 30em; }
     .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -149,7 +150,7 @@
 <div class="hero">
   <div class="wrap">
     <div>
-      <p class="eyebrow">CERTIFICATIONS.COURSES</p>
+      <p class="eyebrow"><img class="mark" src="mark.png" alt="" width="48" height="48">CERTIFICATIONS.COURSES</p>
       <h1 class="serif">照真正的考卷<br>結構練習</h1>
       <p>證基會證券、期貨、投信投顧從業人員資格測驗與 CFA，以及考選部的公務人員初等考試、地方特考五等、高普考共同科目與律師、司法官第一試。目前上線 11,571 題，每一份練習卷都依正式考試的科目配比抽題，並且分科計分——因為單科不及格就是不及格。只收錄測驗題：申論題無法批改，收了也只是讓你以為練過了。</p>
       <div class="cta-row">

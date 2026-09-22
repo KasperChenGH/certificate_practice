@@ -31,7 +31,9 @@ body{margin:0;background:#f5f5f7;color:#1d1d1f;font-size:16px;line-height:1.6;
 a{color:#1e3a5f}
 header.mast{display:flex;align-items:baseline;gap:4px 14px;flex-wrap:wrap;margin-bottom:22px;
  padding-bottom:14px;border-bottom:1px solid #d2d2d7;font-size:13.5px;color:#6e6e73}
-header.mast .brand{font-size:17px;font-weight:700;color:#1e3a5f;text-decoration:none}
+header.mast .brand{display:inline-flex;align-items:center;gap:8px;font-size:17px;font-weight:700;
+ color:#1e3a5f;text-decoration:none}
+header.mast .brand .mark{width:26px;height:26px;flex-shrink:0}
 header.mast .tag{flex:1 1 auto;min-width:0}
 header.mast nav{margin-left:auto;white-space:nowrap}
 header.mast nav a{color:#1e3a5f;text-decoration:none;font-weight:600;margin-left:14px}
@@ -99,7 +101,7 @@ footer a{color:#6e6e73}
 <body>
 <div class="wrap">
 
-<header class="mast"><a class="brand" href="/">證照考試練習</a><span class="tag">29 種考試 · 11,571 題 · 免費 · 免註冊</span><nav><a href="/exams/">全部考試</a><a href="/app.html">線上練習</a></nav></header>
+<header class="mast"><a class="brand" href="/"><img class="mark" src="/mark.png" alt="" width="26" height="26">證照考試練習</a><span class="tag">29 種考試 · 11,571 題 · 免費 · 免註冊</span><nav><a href="/exams/">全部考試</a><a href="/app.html">線上練習</a></nav></header>
 
 <nav class="crumb"><a href="/">首頁</a> › <a href="/exams/">全部考試</a> › 證券商業務員</nav>
 
