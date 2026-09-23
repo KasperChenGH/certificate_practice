@@ -1040,17 +1040,31 @@ function normQ(s) {
     .replace(/[\uFF01-\uFF5E]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
     .replace(/[。，、；：？！()「」『』:;,.?!'"“”‘’-]/g, '');
 }
-function dedupe(list) {
-  const seen = new Map();   // normalised stem -> [Set of normalised options] per kept twin
-  return list.filter(q => {
-    const key = normQ(q.stem);
-    const opts = new Set(Object.values(q.options).map(normQ));
-    const prev = seen.get(key) || [];
-    const twin = prev.some(p => { let n = 0; for (const o of opts) if (p.has(o)) n++; return n >= 2; });
-    if (twin) return false;
-    prev.push(opts); seen.set(key, prev);
-    return true;
-  });
+// `seen` maps a normalised stem -> [Set of normalised options] per twin kept so far.
+// Sharing one map across several draws is what keeps a twin from slipping through in
+// two different sections of the same paper.
+function twinSeen(q, seen) {
+  const key = normQ(q.stem);
+  const opts = new Set(Object.values(q.options).map(normQ));
+  const prev = seen.get(key) || [];
+  if (prev.some(p => { let n = 0; for (const o of opts) if (p.has(o)) n++; return n >= 2; })) return true;
+  prev.push(opts); seen.set(key, prev);
+  return false;
+}
+function dedupe(list, seen) {
+  const s = seen || new Map();
+  return list.filter(q => !twinSeen(q, s));
+}
+// Take at most n from list, skipping anything that twins a question already in `seen`.
+// A paper drawn subject by subject must not repeat a question across two sections, and
+// slicing after dedupe() would wrongly reserve the twins that got cut off.
+function takeDistinct(list, n, seen) {
+  const out = [];
+  for (const q of list) {
+    if (out.length >= n) break;
+    if (!twinSeen(q, seen)) out.push(q);
+  }
+  return out;
 }
 function el(id) { return document.getElementById(id); }
 // Taiwan banks are 4-choice (A-D); the CFA bank follows the exam's 3-choice format (A-C).
@@ -1190,9 +1204,10 @@ async function startQuiz(topic, btn) {
     // paper is chosen -- either way every subject is drawn from, at its real weight.
     const want = sectionPlan(topic) || bp.subjects.map(sec => sec.count);
     picked = [];
+    const seen = new Map();   // shared across sections: a twin must not span two of them
     bp.subjects.forEach((sec, i) => {
       const sub = pool.filter(q => q.subject === sec.subject);
-      picked = picked.concat(dedupe(shuffle(sub)).slice(0, want[i]));
+      picked = picked.concat(takeDistinct(shuffle(sub), want[i], seen));
     });
     picked = shuffle(picked);
   } else {
