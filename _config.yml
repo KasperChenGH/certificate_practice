@@ -1,0 +1,4 @@
+# Only the site is published from this repo; README is for GitHub, not the website.
+exclude:
+  - README.md
+plugins: []

@@ -1,0 +1,1158 @@
+{
+ "futures": {
+  "exam": "期貨商業務員",
+  "pass_mark": 70,
+  "subjects": [
+   {
+    "subject": "期貨交易法規",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "期貨交易理論與實務",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "note": "依簡章：第1節 期貨交易法規 50 題、第2節 期貨交易理論與實務 50 題，共 100 題。",
+  "coverage": {
+   "pool": 873,
+   "draw": 100,
+   "ratio": 8.73,
+   "subjects": {
+    "期貨交易法規": {
+     "pool": 421,
+     "draw": 50,
+     "ratio": 8.42
+    },
+    "期貨交易理論與實務": {
+     "pool": 452,
+     "draw": 50,
+     "ratio": 9.04
+    }
+   }
+  }
+ },
+ "securities": {
+  "exam": "證券商高級業務員",
+  "pass_mark": 70,
+  "note": "依簡章：第1節 投資學 50 題、第2節 財務分析 50 題、第3節 證券交易相關法規與實務 50 題，共 150 題。",
+  "subjects": [
+   {
+    "subject": "投資學",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "財務分析",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "法規與實務",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 427,
+   "draw": 150,
+   "ratio": 2.85,
+   "subjects": {
+    "投資學": {
+     "pool": 144,
+     "draw": 50,
+     "ratio": 2.88
+    },
+    "財務分析": {
+     "pool": 141,
+     "draw": 50,
+     "ratio": 2.82
+    },
+    "法規與實務": {
+     "pool": 142,
+     "draw": 50,
+     "ratio": 2.84
+    }
+   }
+  }
+ },
+ "securities_rep": {
+  "exam": "證券商業務員",
+  "pass_mark": 70,
+  "note": "正式的證券商業務員測驗為 100 題：證券交易相關法規與實務 50、證券投資與財務分析 50。本題庫目前只收錄前者，故此處等同「證券交易相關法規與實務乙科」測驗（50 題）。",
+  "subjects": [
+   {
+    "subject": "證券交易相關法規與實務",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 404,
+   "draw": 50,
+   "ratio": 8.08,
+   "subjects": {
+    "證券交易相關法規與實務": {
+     "pool": 404,
+     "draw": 50,
+     "ratio": 8.08
+    }
+   }
+  }
+ },
+ "sitca": {
+  "exam": "投信投顧業務員",
+  "pass_mark": 70,
+  "note": "正式的投信投顧業務員（三科）測驗為 150 題：投信投顧相關法規 50、證券投資與財務分析 50、證券交易相關法規與實務 50。本題庫目前只收錄「投信投顧相關法規」一科，故此處等同該科乙科測驗（50 題）。",
+  "subjects": [
+   {
+    "subject": "投信投顧相關法規",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 268,
+   "draw": 50,
+   "ratio": 5.36,
+   "subjects": {
+    "投信投顧相關法規": {
+     "pool": 268,
+     "draw": 50,
+     "ratio": 5.36
+    }
+   }
+  }
+ },
+ "cfa_fra": {
+  "exam": "CFA Level I — Financial Reporting & Analysis",
+  "note": "Full-length drill: 90 questions, the length of one CFA Level I exam session. Section sizes follow this bank's coverage of the Financial Statement Analysis curriculum, since CFA Institute publishes topic-area weights but not module-level ones. On the real exam, Financial Statement Analysis is roughly 11-14% of 180 questions — about 20-25 questions, not 90.",
+  "subjects": [
+   {
+    "subject": "Financial Analysis Techniques",
+    "count": 11,
+    "points": 1
+   },
+   {
+    "subject": "Statement of Cash Flows",
+    "count": 9,
+    "points": 1
+   },
+   {
+    "subject": "Income Statement",
+    "count": 9,
+    "points": 1
+   },
+   {
+    "subject": "Long-Lived Assets",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Balance Sheet",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Non-Current Liabilities",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Inventories",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Income Taxes",
+    "count": 7,
+    "points": 1
+   },
+   {
+    "subject": "Financial Reporting Quality",
+    "count": 6,
+    "points": 1
+   },
+   {
+    "subject": "Financial Reporting Standards",
+    "count": 5,
+    "points": 1
+   },
+   {
+    "subject": "Financial Statement Analysis Applications",
+    "count": 4,
+    "points": 1
+   },
+   {
+    "subject": "Introduction to Financial Statement Analysis",
+    "count": 4,
+    "points": 1
+   },
+   {
+    "subject": "Intercorporate Investments",
+    "count": 3,
+    "points": 1
+   }
+  ],
+  "coverage": {
+   "pool": 514,
+   "draw": 90,
+   "ratio": 5.71,
+   "subjects": {
+    "Financial Analysis Techniques": {
+     "pool": 64,
+     "draw": 11,
+     "ratio": 5.82
+    },
+    "Statement of Cash Flows": {
+     "pool": 54,
+     "draw": 9,
+     "ratio": 6.0
+    },
+    "Income Statement": {
+     "pool": 52,
+     "draw": 9,
+     "ratio": 5.78
+    },
+    "Long-Lived Assets": {
+     "pool": 48,
+     "draw": 8,
+     "ratio": 6.0
+    },
+    "Balance Sheet": {
+     "pool": 47,
+     "draw": 8,
+     "ratio": 5.88
+    },
+    "Non-Current Liabilities": {
+     "pool": 44,
+     "draw": 8,
+     "ratio": 5.5
+    },
+    "Inventories": {
+     "pool": 43,
+     "draw": 8,
+     "ratio": 5.38
+    },
+    "Income Taxes": {
+     "pool": 39,
+     "draw": 7,
+     "ratio": 5.57
+    },
+    "Financial Reporting Quality": {
+     "pool": 36,
+     "draw": 6,
+     "ratio": 6.0
+    },
+    "Financial Reporting Standards": {
+     "pool": 26,
+     "draw": 5,
+     "ratio": 5.2
+    },
+    "Financial Statement Analysis Applications": {
+     "pool": 24,
+     "draw": 4,
+     "ratio": 6.0
+    },
+    "Introduction to Financial Statement Analysis": {
+     "pool": 23,
+     "draw": 4,
+     "ratio": 5.75
+    },
+    "Intercorporate Investments": {
+     "pool": 14,
+     "draw": 3,
+     "ratio": 4.67
+    }
+   }
+  }
+ },
+ "finance_ethics": {
+  "exam": "金融市場常識與職業道德",
+  "pass_mark": 70,
+  "note": "證基會官方 1,120 題題庫（113 年 9 月 1 日起適用）。依簡章：每回 100 題單選題，每題 1 分，金融市場常識與職業道德各佔 50%，合格分數 70 分。本測驗為單科，故以總分計算及格與否，不分科判定。",
+  "subjects": [
+   {
+    "subject": "金融市場常識",
+    "count": 50,
+    "points": 1
+   },
+   {
+    "subject": "職業道德",
+    "count": 50,
+    "points": 1
+   }
+  ],
+  "scoring": "overall",
+  "coverage": {
+   "pool": 1120,
+   "draw": 100,
+   "ratio": 11.2,
+   "subjects": {
+    "金融市場常識": {
+     "pool": 504,
+     "draw": 50,
+     "ratio": 10.08
+    },
+    "職業道德": {
+     "pool": 616,
+     "draw": 50,
+     "ratio": 12.32
+    }
+   }
+  }
+ },
+ "futures_trust": {
+  "exam": "期貨信託基金銷售機構銷售人員",
+  "pass_mark": 70,
+  "note": "證基會歷屆試題。依簡章：一節，期貨信託法規及自律規範 50 題，測驗成績應達 70 分為合格。",
+  "subjects": [
+   {
+    "subject": "期貨信託法規及自律規範",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 335,
+   "draw": 50,
+   "ratio": 6.7,
+   "subjects": {
+    "期貨信託法規及自律規範": {
+     "pool": 335,
+     "draw": 50,
+     "ratio": 6.7
+    }
+   }
+  }
+ },
+ "internal_control": {
+  "exam": "企業內部控制基本能力測驗",
+  "pass_mark": 70,
+  "note": "證基會歷屆試題。依簡章：每回 80 題單選題，每題 1.25 分，合格 70 分。官方出題配比為「內部控制理論與實務」75%、「內部控制相關法規」25%（即 60：20），但答案卷只標示一個科目名稱，題目本身無從分辨屬於哪一部分，故此處以單一科目抽 80 題，不強制該配比。",
+  "subjects": [
+   {
+    "subject": "企業內部控制理論與實務(含相關法規)",
+    "count": 80,
+    "points": 1.25
+   }
+  ],
+  "coverage": {
+   "pool": 610,
+   "draw": 80,
+   "ratio": 7.62,
+   "subjects": {
+    "企業內部控制理論與實務(含相關法規)": {
+     "pool": 610,
+     "draw": 80,
+     "ratio": 7.62
+    }
+   }
+  }
+ },
+ "sustainability": {
+  "exam": "永續發展基礎能力測驗",
+  "pass_mark": 70,
+  "note": "證基會歷屆試題：115年第4次、114年第4次（含高雄考區）。依簡章：共一科，每回 80 題單選題，總分 100 分，以總分達 70 分為合格。",
+  "subjects": [
+   {
+    "subject": "永續發展基礎能力測驗",
+    "count": 80,
+    "points": 1.25
+   }
+  ],
+  "coverage": {
+   "pool": 223,
+   "draw": 80,
+   "ratio": 2.79,
+   "subjects": {
+    "永續發展基礎能力測驗": {
+     "pool": 223,
+     "draw": 80,
+     "ratio": 2.79
+    }
+   }
+  }
+ },
+ "securities_analyst": {
+  "exam": "證券投資分析人員",
+  "pass_mark": 60,
+  "note": "證基會歷屆試題：115年第2次、115年第1次。正式測驗每科為選擇題 70% ＋ 申論或計算題 30%，本站只收錄選擇題（申論題無法自動批改）。採個科及格制，每科滿分 60 分為及格，及格科目保留 2 年。",
+  "subjects": [
+   {
+    "subject": "證券交易相關法規與實務",
+    "count": 28,
+    "points": 2
+   },
+   {
+    "subject": "投資學",
+    "count": 28,
+    "points": 2.5
+   },
+   {
+    "subject": "會計及財務分析",
+    "count": 28,
+    "points": 2.5
+   },
+   {
+    "subject": "總體經濟及金融市場",
+    "count": 35,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 251,
+   "draw": 119,
+   "ratio": 2.11,
+   "subjects": {
+    "證券交易相關法規與實務": {
+     "pool": 63,
+     "draw": 28,
+     "ratio": 2.25
+    },
+    "投資學": {
+     "pool": 63,
+     "draw": 28,
+     "ratio": 2.25
+    },
+    "會計及財務分析": {
+     "pool": 56,
+     "draw": 28,
+     "ratio": 2.0
+    },
+    "總體經濟及金融市場": {
+     "pool": 69,
+     "draw": 35,
+     "ratio": 1.97
+    }
+   }
+  }
+ },
+ "futures_analyst": {
+  "exam": "期貨交易分析人員",
+  "pass_mark": 60,
+  "note": "證基會歷屆試題：115年第2次、115年第1次。正式測驗每科為選擇題 35 題（70 分）＋ 申論或計算題 3 題（30 分），本站只收錄選擇題。採個科及格制，每科滿分 60 分為及格，及格科目保留 2 年。",
+  "subjects": [
+   {
+    "subject": "期貨法規與自律規範",
+    "count": 35,
+    "points": 2
+   },
+   {
+    "subject": "衍生性商品之風險管理",
+    "count": 35,
+    "points": 2
+   },
+   {
+    "subject": "期貨、選擇權與其他衍生性商品",
+    "count": 35,
+    "points": 2
+   },
+   {
+    "subject": "總體經濟及金融市場",
+    "count": 35,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 276,
+   "draw": 140,
+   "ratio": 1.97,
+   "subjects": {
+    "期貨法規與自律規範": {
+     "pool": 70,
+     "draw": 35,
+     "ratio": 2.0
+    },
+    "衍生性商品之風險管理": {
+     "pool": 69,
+     "draw": 35,
+     "ratio": 1.97
+    },
+    "期貨、選擇權與其他衍生性商品": {
+     "pool": 68,
+     "draw": 35,
+     "ratio": 1.94
+    },
+    "總體經濟及金融市場": {
+     "pool": 69,
+     "draw": 35,
+     "ratio": 1.97
+    }
+   }
+  }
+ },
+ "aml": {
+  "exam": "防制洗錢與打擊資恐專業人員",
+  "pass_mark": 70,
+  "note": "證基會歷屆試題：114年第4次、113年第4次。正式考卷為 60 題單選題 ＋ 20 題複選題，本站只收錄單選題（複選題需全對才給分，目前不支援）。每題 1.25 分，合格 70 分。",
+  "subjects": [
+   {
+    "subject": "防制洗錢與打擊資恐",
+    "count": 60,
+    "points": 1.25
+   }
+  ],
+  "coverage": {
+   "pool": 118,
+   "draw": 60,
+   "ratio": 1.97,
+   "subjects": {
+    "防制洗錢與打擊資恐": {
+     "pool": 118,
+     "draw": 60,
+     "ratio": 1.97
+    }
+   }
+  }
+ },
+ "securities_sales": {
+  "exam": "證券商業務員",
+  "pass_mark": 70,
+  "note": "依簡章：第1節 證券交易相關法規與實務 50 題、第2節 證券投資與財務分析 50 題，共 100 題。各科分別計分，須均達 70 分。只想考單一科目者請改練「證券交易相關法規與實務乙科」。",
+  "subjects": [
+   {
+    "subject": "證券交易相關法規與實務",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "證券投資與財務分析",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 286,
+   "draw": 100,
+   "ratio": 2.86,
+   "subjects": {
+    "證券交易相關法規與實務": {
+     "pool": 146,
+     "draw": 50,
+     "ratio": 2.92
+    },
+    "證券投資與財務分析": {
+     "pool": 140,
+     "draw": 50,
+     "ratio": 2.8
+    }
+   }
+  }
+ },
+ "sitca_full": {
+  "exam": "投信投顧業務員（三科）",
+  "pass_mark": 70,
+  "note": "依簡章：第1節 投信投顧相關法規（含自律規範）50 題、第2節 證券投資與財務分析 50 題、第3節 證券交易相關法規與實務 50 題，共 150 題。各科分別計分。一科／二科應試者可依所需科目挑練，或改練「投信投顧相關法規乙科」。",
+  "subjects": [
+   {
+    "subject": "投信投顧相關法規",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "證券投資與財務分析",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "證券交易相關法規與實務",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 426,
+   "draw": 150,
+   "ratio": 2.84,
+   "subjects": {
+    "投信投顧相關法規": {
+     "pool": 141,
+     "draw": 50,
+     "ratio": 2.82
+    },
+    "證券投資與財務分析": {
+     "pool": 143,
+     "draw": 50,
+     "ratio": 2.86
+    },
+    "證券交易相關法規與實務": {
+     "pool": 142,
+     "draw": 50,
+     "ratio": 2.84
+    }
+   }
+  }
+ },
+ "corp_gov": {
+  "exam": "公司治理",
+  "pass_mark": 70,
+  "note": "證基會未公布本測驗歷屆試題（官方題庫為市售書籍），本站題目係依官方簡章公布之測驗範圍自行編寫，非歷屆考題。依簡章：第1節 公司治理理論與基本規範 50 題、第2節 股東會、董事會及功能委員會運作實務 50 題，每科 100 分，2 科均達 70 分者為合格。",
+  "subjects": [
+   {
+    "subject": "公司治理理論與基本規範",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "股東會、董事會及功能委員會運作實務",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 300,
+   "draw": 100,
+   "ratio": 3.0,
+   "subjects": {
+    "公司治理理論與基本規範": {
+     "pool": 150,
+     "draw": 50,
+     "ratio": 3.0
+    },
+    "股東會、董事會及功能委員會運作實務": {
+     "pool": 150,
+     "draw": 50,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "securitization": {
+  "exam": "資產證券化",
+  "pass_mark": 70,
+  "scoring": "overall",
+  "note": "證基會未公布本測驗歷屆試題（官方題庫為市售書籍），本站題目係依官方簡章公布之測驗範圍自行編寫，非歷屆考題。依簡章：第1、2 節各 50 題，每節 100 分，總分 200 分，總分達 140 分（70%）者為合格。兩節同屬一科，故以總分計，不分節判定及格。官方出題數配比為「資產證券化理論與實務」75%、「資產證券化相關法規」25%，本卷即依此配比抽題。",
+  "subjects": [
+   {
+    "subject": "資產證券化理論與實務",
+    "count": 75,
+    "points": 2
+   },
+   {
+    "subject": "資產證券化相關法規",
+    "count": 25,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 300,
+   "draw": 100,
+   "ratio": 3.0,
+   "subjects": {
+    "資產證券化理論與實務": {
+     "pool": 225,
+     "draw": 75,
+     "ratio": 3.0
+    },
+    "資產證券化相關法規": {
+     "pool": 75,
+     "draw": 25,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "bonds": {
+  "exam": "債券人員",
+  "pass_mark": 70,
+  "scoring": "overall",
+  "note": "證基會未公布本測驗歷屆試題（官方題庫為市售書籍），本站題目係依官方簡章公布之測驗範圍自行編寫，非歷屆考題。依簡章：第1、2 節各 50 題，科目為「債券市場理論與實務（含債券法規）」，每節 100 分，總分 200 分，總分達 140 分（70%）者為合格。兩節同屬一科，故以總分計，不分節判定及格。官方出題數配比為「債券市場理論與實務」75%、「債券法規」25%，本卷即依此配比抽題。",
+  "subjects": [
+   {
+    "subject": "債券市場理論與實務",
+    "count": 75,
+    "points": 2
+   },
+   {
+    "subject": "債券法規",
+    "count": 25,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 300,
+   "draw": 100,
+   "ratio": 3.0,
+   "subjects": {
+    "債券市場理論與實務": {
+     "pool": 225,
+     "draw": 75,
+     "ratio": 3.0
+    },
+    "債券法規": {
+     "pool": 75,
+     "draw": 25,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "stock_affairs": {
+  "exam": "股務人員",
+  "pass_mark": 70,
+  "scoring": "overall",
+  "note": "證基會未公布本測驗歷屆試題（官方題庫為市售書籍），本站題目係依官方簡章公布之測驗範圍自行編寫，非歷屆考題。依簡章：第1節 股務作業法規 50 題、第2節 股務作業實務 50 題，每節 100 分，總分 200 分，總分達 140 分（70%）者為合格。簡章未設各節最低分數門檻，故以總分計。",
+  "subjects": [
+   {
+    "subject": "股務作業法規",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "股務作業實務",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 300,
+   "draw": 100,
+   "ratio": 3.0,
+   "subjects": {
+    "股務作業法規": {
+     "pool": 150,
+     "draw": 50,
+     "ratio": 3.0
+    },
+    "股務作業實務": {
+     "pool": 150,
+     "draw": 50,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "biz_ethics": {
+  "exam": "工商倫理",
+  "pass_mark": 70,
+  "note": "證基會未公布本測驗歷屆試題（官方題庫為市售書籍），本站題目係依官方簡章公布之測驗範圍自行編寫，非歷屆考題。依簡章：共一科 50 題，總分 100 分，達 70 分者為合格。報考資格不限。",
+  "subjects": [
+   {
+    "subject": "工商倫理",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 150,
+   "draw": 50,
+   "ratio": 3.0,
+   "subjects": {
+    "工商倫理": {
+     "pool": 150,
+     "draw": 50,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "bills_finance": {
+  "exam": "票券商業務人員",
+  "pass_mark": 60,
+  "note": "證基會未公布本測驗歷屆試題（官方題庫為市售書籍），本站題目係依官方簡章公布之測驗範圍自行編寫，非歷屆考題。依簡章：第1節 票券金融法規 50 題、第2節 票券金融實務 50 題，每節 100 分，各 60 分鐘。合格標準為 2 科總分合計達 140 分，且任何 1 科不得低於 60 分。下表的及格標示是該 60 分單科門檻；總分 140 分請自行合計兩科分數判斷。",
+  "subjects": [
+   {
+    "subject": "票券金融法規",
+    "count": 50,
+    "points": 2
+   },
+   {
+    "subject": "票券金融實務",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 300,
+   "draw": 100,
+   "ratio": 3.0,
+   "subjects": {
+    "票券金融法規": {
+     "pool": 150,
+     "draw": 50,
+     "ratio": 3.0
+    },
+    "票券金融實務": {
+     "pool": 150,
+     "draw": 50,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "cfa_l2": {
+  "exam": "CFA Level II",
+  "note": "CFA Institute 不公布歷屆試題，本站題目係依其公布之課程大綱與科目權重自行編寫，非歷屆考題。全長 88 題，即一場 CFA Level II 測驗的題數；各科題數依 CFA Institute 公布之科目權重中位數換算。正式測驗以 item set（vignette）成組出題，本站會打散題序，故每題均為獨立可作答之題目。CFA Institute 不公布最低及格分數，因此不標示及格與否。",
+  "subjects": [
+   {
+    "subject": "Financial Statement Analysis",
+    "count": 12,
+    "points": 1
+   },
+   {
+    "subject": "Equity Valuation",
+    "count": 12,
+    "points": 1
+   },
+   {
+    "subject": "Fixed Income",
+    "count": 12,
+    "points": 1
+   },
+   {
+    "subject": "Ethical and Professional Standards",
+    "count": 11,
+    "points": 1
+   },
+   {
+    "subject": "Portfolio Management",
+    "count": 11,
+    "points": 1
+   },
+   {
+    "subject": "Quantitative Methods",
+    "count": 6,
+    "points": 1
+   },
+   {
+    "subject": "Economics",
+    "count": 6,
+    "points": 1
+   },
+   {
+    "subject": "Corporate Issuers",
+    "count": 6,
+    "points": 1
+   },
+   {
+    "subject": "Derivatives",
+    "count": 6,
+    "points": 1
+   },
+   {
+    "subject": "Alternative Investments",
+    "count": 6,
+    "points": 1
+   }
+  ],
+  "coverage": {
+   "pool": 264,
+   "draw": 88,
+   "ratio": 3.0,
+   "subjects": {
+    "Financial Statement Analysis": {
+     "pool": 36,
+     "draw": 12,
+     "ratio": 3.0
+    },
+    "Equity Valuation": {
+     "pool": 36,
+     "draw": 12,
+     "ratio": 3.0
+    },
+    "Fixed Income": {
+     "pool": 36,
+     "draw": 12,
+     "ratio": 3.0
+    },
+    "Ethical and Professional Standards": {
+     "pool": 33,
+     "draw": 11,
+     "ratio": 3.0
+    },
+    "Portfolio Management": {
+     "pool": 33,
+     "draw": 11,
+     "ratio": 3.0
+    },
+    "Quantitative Methods": {
+     "pool": 18,
+     "draw": 6,
+     "ratio": 3.0
+    },
+    "Economics": {
+     "pool": 18,
+     "draw": 6,
+     "ratio": 3.0
+    },
+    "Corporate Issuers": {
+     "pool": 18,
+     "draw": 6,
+     "ratio": 3.0
+    },
+    "Derivatives": {
+     "pool": 18,
+     "draw": 6,
+     "ratio": 3.0
+    },
+    "Alternative Investments": {
+     "pool": 18,
+     "draw": 6,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "cfa_l3": {
+  "exam": "CFA Level III",
+  "note": "CFA Institute 不公布歷屆試題，本站題目係依其公布之課程大綱與科目權重自行編寫，非歷屆考題。CFA Level III 有一半為申論題（constructed response），本站無法批改，故僅收錄選擇題部分，全長 44 題。Level III 另分為三種 pathway，此處只涵蓋所有考生共同必考的核心科目，各科題數依核心科目權重中位數重新換算。CFA Institute 不公布最低及格分數，因此不標示及格與否。",
+  "subjects": [
+   {
+    "subject": "Portfolio Construction",
+    "count": 12,
+    "points": 1
+   },
+   {
+    "subject": "Asset Allocation",
+    "count": 11,
+    "points": 1
+   },
+   {
+    "subject": "Derivatives and Risk Management",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Ethical and Professional Standards",
+    "count": 8,
+    "points": 1
+   },
+   {
+    "subject": "Performance Measurement",
+    "count": 5,
+    "points": 1
+   }
+  ],
+  "coverage": {
+   "pool": 132,
+   "draw": 44,
+   "ratio": 3.0,
+   "subjects": {
+    "Portfolio Construction": {
+     "pool": 36,
+     "draw": 12,
+     "ratio": 3.0
+    },
+    "Asset Allocation": {
+     "pool": 33,
+     "draw": 11,
+     "ratio": 3.0
+    },
+    "Derivatives and Risk Management": {
+     "pool": 24,
+     "draw": 8,
+     "ratio": 3.0
+    },
+    "Ethical and Professional Standards": {
+     "pool": 24,
+     "draw": 8,
+     "ratio": 3.0
+    },
+    "Performance Measurement": {
+     "pool": 15,
+     "draw": 5,
+     "ratio": 3.0
+    }
+   }
+  }
+ },
+ "civil_law_basics": {
+  "exam": "法學大意（公務人員初等考試、地方特考五等）",
+  "pass_mark": 60,
+  "note": "考選部歷屆試題。初等考與地方特考五等實際上以「總成績平均達 60 分且無科目為零分」及格，不是單科及格制；此處的 60 分是單科練習的參考線，不是考選部的及格標準。同一份試卷由多個類科共用，初等考與地特五等的科目結構相同，故合為一個題庫。",
+  "subjects": [
+   {
+    "subject": "法學大意",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 350,
+   "draw": 50,
+   "ratio": 7.0,
+   "subjects": {
+    "法學大意": {
+     "pool": 350,
+     "draw": 50,
+     "ratio": 7.0
+    }
+   }
+  }
+ },
+ "civil_civics_english": {
+  "exam": "公民與英文（公務人員初等考試、地方特考五等）",
+  "pass_mark": 60,
+  "note": "考選部歷屆試題。初等考與地方特考五等實際上以「總成績平均達 60 分且無科目為零分」及格，不是單科及格制；此處的 60 分是單科練習的參考線，不是考選部的及格標準。同一份試卷由多個類科共用，初等考與地特五等的科目結構相同，故合為一個題庫。",
+  "subjects": [
+   {
+    "subject": "公民與英文",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 345,
+   "draw": 50,
+   "ratio": 6.9,
+   "subjects": {
+    "公民與英文": {
+     "pool": 345,
+     "draw": 50,
+     "ratio": 6.9
+    }
+   }
+  }
+ },
+ "civil_admin": {
+  "exam": "行政學大意（公務人員初等考試、地方特考五等）",
+  "pass_mark": 60,
+  "note": "考選部歷屆試題。初等考與地方特考五等實際上以「總成績平均達 60 分且無科目為零分」及格，不是單科及格制；此處的 60 分是單科練習的參考線，不是考選部的及格標準。同一份試卷由多個類科共用，初等考與地特五等的科目結構相同，故合為一個題庫。",
+  "subjects": [
+   {
+    "subject": "行政學大意",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 350,
+   "draw": 50,
+   "ratio": 7.0,
+   "subjects": {
+    "行政學大意": {
+     "pool": 350,
+     "draw": 50,
+     "ratio": 7.0
+    }
+   }
+  }
+ },
+ "civil_local_gov": {
+  "exam": "地方自治大意（公務人員初等考試、地特五等一般民政）",
+  "pass_mark": 60,
+  "note": "考選部歷屆試題。初等考與地方特考五等實際上以「總成績平均達 60 分且無科目為零分」及格，不是單科及格制；此處的 60 分是單科練習的參考線，不是考選部的及格標準。同一份試卷由多個類科共用，初等考與地特五等的科目結構相同，故合為一個題庫。",
+  "subjects": [
+   {
+    "subject": "地方自治大意",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 200,
+   "draw": 50,
+   "ratio": 4.0,
+   "subjects": {
+    "地方自治大意": {
+     "pool": 200,
+     "draw": 50,
+     "ratio": 4.0
+    }
+   }
+  }
+ },
+ "civil_chinese": {
+  "exam": "國文（公務人員初等考試、地方特考五等）",
+  "pass_mark": 42,
+  "note": "考選部歷屆試題。初等考與地方特考五等實際上以「總成績平均達 60 分且無科目為零分」及格，不是單科及格制；此處的 60 分是單科練習的參考線，不是考選部的及格標準。同一份試卷由多個類科共用，初等考與地特五等的科目結構相同，故合為一個題庫。正式試卷 45 題，為單選 35 題（70 分）＋ 複選 10 題（30 分）；考選部公布的測驗式標準答案只涵蓋單選部分，本站因此只收錄該 35 題，滿分 70，參考線按同一比例取 42 分。",
+  "subjects": [
+   {
+    "subject": "國文",
+    "count": 35,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 169,
+   "draw": 35,
+   "ratio": 4.83,
+   "subjects": {
+    "國文": {
+     "pool": 169,
+     "draw": 35,
+     "ratio": 4.83
+    }
+   }
+  }
+ },
+ "civil_law_english": {
+  "exam": "法學知識與英文（公務人員高等考試三級考試、普通考試）",
+  "pass_mark": 60,
+  "note": "考選部歷屆試題。高考三級與普考的共同科目，每回 50 題單選，每題 2 分，滿分 100，全卷測驗題。高考三級與普考各自出一份試卷，兩者都收錄。兩項考試的專業科目為申論題，無法批改，本站不收錄；及格標準為總成績計算後擇優錄取，此處的 60 分是單科練習的參考線。",
+  "subjects": [
+   {
+    "subject": "法學知識與英文",
+    "count": 50,
+    "points": 2
+   }
+  ],
+  "coverage": {
+   "pool": 480,
+   "draw": 50,
+   "ratio": 9.6,
+   "subjects": {
+    "法學知識與英文": {
+     "pool": 480,
+     "draw": 50,
+     "ratio": 9.6
+    }
+   }
+  }
+ },
+ "bar_1": {
+  "exam": "律師、司法官考試第一試",
+  "note": "考選部歷屆試題。律師與司法官第一試共用同一份試卷，全卷測驗題，共 300 題：綜合法學（一）憲法、行政法、國際公法、國際私法 75 題 ＋ 刑法、刑事訴訟法、法律倫理 75 題；綜合法學（二）民法、民事訴訟法 80 題 ＋ 公司法、保險法、票據法、證券交易法、強制執行法、法學英文 70 題。第一試採相對標準——律師取全程到考人數前 33%，司法官依需用名額擇優錄取——沒有固定及格分數，故本卷不設及格線，只回報得分。第二試為申論題，無法批改，本站不收錄。",
+  "subjects": [
+   {
+    "subject": "綜合法學(一)憲法、行政法、國際公法、國際私法",
+    "count": 75,
+    "points": 1
+   },
+   {
+    "subject": "綜合法學(一)刑法、刑事訴訟法、法律倫理",
+    "count": 75,
+    "points": 1
+   },
+   {
+    "subject": "綜合法學(二)民法、民事訴訟法",
+    "count": 80,
+    "points": 1
+   },
+   {
+    "subject": "綜合法學(二)公司法、保險法、票據法、證券交易法、強制執行法、法學英文",
+    "count": 70,
+    "points": 1
+   }
+  ],
+  "coverage": {
+   "pool": 1500,
+   "draw": 300,
+   "ratio": 5.0,
+   "subjects": {
+    "綜合法學(一)憲法、行政法、國際公法、國際私法": {
+     "pool": 375,
+     "draw": 75,
+     "ratio": 5.0
+    },
+    "綜合法學(一)刑法、刑事訴訟法、法律倫理": {
+     "pool": 375,
+     "draw": 75,
+     "ratio": 5.0
+    },
+    "綜合法學(二)民法、民事訴訟法": {
+     "pool": 400,
+     "draw": 80,
+     "ratio": 5.0
+    },
+    "綜合法學(二)公司法、保險法、票據法、證券交易法、強制執行法、法學英文": {
+     "pool": 350,
+     "draw": 70,
+     "ratio": 5.0
+    }
+   }
+  }
+ }
+}

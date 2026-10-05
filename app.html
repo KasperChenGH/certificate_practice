@@ -1,0 +1,1840 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e3a5f">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>線上練習 — 證照考試練習</title>
+<meta name="description" content="台灣證照與國家考試線上練習：依正式考試的科目配比抽題、分科計分，每題附官方標準答案與逐選項解析。可選 50 題、100 題或全卷。免費、免註冊。">
+<link rel="canonical" href="https://certifications.courses/app.html">
+<meta property="og:title" content="線上練習 — 證照考試練習">
+<meta property="og:description" content="依正式考試的科目配比抽題、分科計分，每題附官方標準答案與逐選項解析。免費、免註冊。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://certifications.courses/app.html">
+<meta property="og:site_name" content="證照考試練習">
+<meta property="og:image" content="https://certifications.courses/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://certifications.courses/og/default.png">
+<meta property="og:locale" content="zh_TW">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7642249081069780"
+     crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --accent: #1e3a5f;
+    --accent-soft: #2a4d7c;
+    --good: #1f8a3e;
+    --bad: #c63838;
+    /* Text-only variants of the two feedback colours. --good/--bad are unchanged and still
+       carry every border, fill and pill, so the palette reads the same; but used as *text*
+       on their own tints they measure 3.88:1 (green on #e6f4ea) and 4.49:1 (red on #fbeaea),
+       both under WCAG AA's 4.5:1 floor for body text -- and 答對／答錯 with its 解析 is the
+       most-read text in the app. These clear it at 5.97:1 and 5.40:1. */
+    --good-ink: #17692f;
+    --bad-ink: #b32e2e;
+    --border: #d2d2d7;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "PingFang TC", "Noto Sans CJK TC", sans-serif;
+    background: var(--bg); color: var(--text);
+    font-size: 16px; line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+  .app { max-width: 720px; margin: 0 auto; padding: 16px 16px 48px; }
+  .hidden { display: none !important; }
+  /* The topic buttons set `display: flex` through a more specific selector than the
+     browser's own `[hidden] { display: none }`, so filtering them with the hidden
+     property silently did nothing on desktop — search showed the whole family. */
+  [hidden] { display: none !important; }
+  h1 { font-size: 22px; margin: 12px 0 16px; font-weight: 700; }
+  h2 { font-size: 18px; margin: 12px 0 8px; font-weight: 600; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px; margin-bottom: 12px;
+  }
+  .btn {
+    display: block; width: 100%;
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 16px; font-size: 17px; font-weight: 600; margin-bottom: 12px;
+    cursor: pointer; transition: background 0.15s;
+    text-align: center; font-family: inherit;
+  }
+  .btn:active { background: var(--accent-soft); }
+  .btn.secondary { background: #e8e8ed; color: var(--text); }
+  /* The exam a visitor arrived for via ?topic=: ringed so it can be found among its
+     siblings, but not started for them. */
+  .btn.hilite { box-shadow: 0 0 0 3px var(--card), 0 0 0 6px var(--accent); }
+  .btn.secondary:active { background: #d2d2d7; }
+  .btn.review { background: #b8551c; }
+  .btn.review:active { background: #9a4717; }
+  .btn-row { display: flex; gap: 8px; }
+  .btn-row .btn { flex: 1; }
+  .meta { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .progress-wrap {
+    position: sticky; top: 0; background: var(--bg); padding: 8px 0 4px;
+    z-index: 10;
+  }
+  .progress-bar {
+    height: 4px; background: #e0e0e5; border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--accent); transition: width 0.2s;
+  }
+  .progress-label { font-size: 13px; color: var(--muted); margin-top: 4px;
+    display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+  .question { font-size: 16px; font-weight: 600; margin-bottom: 14px; line-height: 1.55; }
+  /* 閱讀測驗／克漏字 passage. Capped and scrollable so a 2,000-character passage cannot
+     push the options below the fold on a phone; the blanks are marked ＿＿(46)＿＿ in the
+     text so a cloze item can be answered against it. */
+  .passage {
+    font-size: 14px; font-weight: 400; line-height: 1.85; white-space: pre-wrap;
+    background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;
+    max-height: 42vh; overflow-y: auto; overflow-wrap: anywhere;
+  }
+  .passage-label {
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    letter-spacing: .04em; margin-bottom: 6px;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 14px; cursor: pointer; display: flex; align-items: flex-start;
+    gap: 10px; font-size: 15px; transition: background 0.1s, border-color 0.1s;
+    /* An unanswered option is rendered as a real <button> (see renderQuiz) so the paper
+       can be sat without a mouse; these reset the UA button styling so it stays
+       pixel-identical to the locked <div> that replaces it once answered. */
+    width: 100%; margin: 0; text-align: left; font-family: inherit; color: inherit;
+    line-height: inherit;
+  }
+  .option:active { background: #eef0f4; }
+  .option.selected { border-color: var(--accent); background: #eaf0f9; }
+  .option.correct { border-color: var(--good); background: #e6f4ea; }
+  .option.wrong { border-color: var(--bad); background: #fbeaea; }
+  .option .letter {
+    font-weight: 700; min-width: 22px; color: var(--accent);
+  }
+  .option.correct .letter { color: var(--good-ink); }
+  .option.wrong .letter { color: var(--bad-ink); }
+  .nav { display: flex; gap: 8px; margin-top: 16px; }
+  .nav .btn { margin-bottom: 0; }
+  .abort-row { margin-top: 36px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .abort-row .btn { margin-bottom: 0; }
+  .feedback {
+    margin-top: 14px; padding: 10px 12px; border-radius: 8px;
+    font-size: 14px; line-height: 1.5;
+  }
+  .feedback.correct { background: #e6f4ea; color: var(--good-ink); border-left: 4px solid var(--good); }
+  .feedback.wrong { background: #fbeaea; color: var(--bad-ink); border-left: 4px solid var(--bad); }
+  .feedback .answer-text { color: var(--text); font-weight: 600; margin-top: 4px; }
+  .expl-block { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.12); }
+  .expl-title { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .expl-item { font-size: 13px; line-height: 1.55; margin-bottom: 8px; color: var(--text); display: flex; gap: 6px; }
+  .expl-item:last-child { margin-bottom: 0; }
+  .expl-item .expl-letter { font-weight: 700; min-width: 26px; flex-shrink: 0; }
+  .expl-item.expl-correct .expl-letter { color: var(--good-ink); }
+  .expl-item.expl-sel-wrong .expl-letter { color: var(--bad-ink); }
+  .expl-src { margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(0,0,0,0.14);
+    font-size: 11.5px; line-height: 1.5; color: var(--muted); }
+  .option.locked { cursor: default; }
+  .result-summary {
+    text-align: center; padding: 20px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;
+  }
+  .result-summary .big { font-size: 36px; font-weight: 700; margin: 8px 0;
+    font-variant-numeric: tabular-nums; }
+  .result-summary .pct { color: var(--accent); }
+  .result-q {
+    border-left: 4px solid var(--bad);
+    padding: 12px 14px; background: var(--card);
+    margin-bottom: 10px; border-radius: 4px 10px 10px 4px;
+  }
+  .result-q .stem { font-weight: 600; margin-bottom: 8px; }
+  .result-q .answer-line { color: var(--good-ink); font-size: 14px; margin-top: 6px; }
+  .result-q .wrong-line { color: var(--bad-ink); font-size: 14px; }
+  .result-q .origin { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .review-q { border-left-color: var(--accent); }
+  .empty-state {
+    text-align: center; color: var(--muted); padding: 40px 16px;
+  }
+  .stat-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .stat {
+    flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 6px; text-align: center;
+  }
+  .stat .num { font-size: 20px; font-weight: 700; color: var(--accent);
+    font-variant-numeric: tabular-nums; }
+  .stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; }
+  .topic-meta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 400; }
+  .topic-meta .tc-n { font-weight: 700; }
+  .topic-meta .tc-thin { display: block; margin-top: 4px; font-size: 11.5px; opacity: 0.85; }
+  .topic-meta .tc-n small { font-weight: 600; opacity: 0.8; margin-left: 2px; }
+  .topic-meta .tc-p::before { content: '\3000'; }
+  /* Home directory: the same six collapsible families as the landing page, plus search.
+     Twenty-nine cards at 190px each made this page a very long scroll before anyone could
+     see what was on it, and on a phone it was twenty-nine stacked blocks. */
+  /* ===== paper length =====
+     A full 律師、司法官第一試 paper is 300 questions; 投信投顧業務員（三科） is 150. Those are
+     real sittings, not practice runs, so the length is a choice. The cut holds each
+     subject's share of the paper (see apportion), which is the point -- a short paper has
+     to exercise every subject, not whichever ones a shuffle happened to reach. */
+  .lenpick { display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+             margin-bottom: 10px; }
+  .lenpick .lenlabel { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .lenopts { display: inline-flex; background: var(--card); border: 1px solid var(--border);
+             border-radius: 9px; overflow: hidden; }
+  .lenopt {
+    font: inherit; font-size: 13.5px; font-weight: 600; padding: 7px 15px;
+    background: none; border: none; border-left: 1px solid var(--border);
+    color: var(--muted); cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .lenopt:first-child { border-left: none; }
+  .lenopt[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .lenhint { font-size: 12px; color: var(--muted); flex-basis: 100%; }
+  .lenhint:empty { display: none; }
+  .finder { margin-bottom: 12px; }
+  .srch { position: relative; display: block; }
+  .srch input {
+    width: 100%; font: inherit; font-size: 16px; padding: 13px 14px 13px 42px;
+    border-radius: 10px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text);
+  }
+  .srch input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+  .srch svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+              color: var(--muted); pointer-events: none; }
+  .nohit { color: var(--muted); font-size: 14px; margin: 10px 2px; }
+  details.fam {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 10px;
+  }
+  details.fam > summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center;
+    gap: 12px; padding: 16px; border-radius: 12px;
+  }
+  details.fam > summary::-webkit-details-marker { display: none; }
+  details.fam > summary:active { background: #eef0f4; }
+  .fchev {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--border); display: inline-flex; align-items: center;
+    justify-content: center; font-size: 15px; line-height: 1; color: var(--accent);
+    transition: transform .15s, background .15s;
+  }
+  details.fam[open] .fchev { transform: rotate(180deg); background: var(--bg); }
+  .ftitle { flex: 1; min-width: 0; font-weight: 700; font-size: 15px; line-height: 1.4; }
+  .fcount { flex-shrink: 0; font-size: 12.5px; font-weight: 600; color: var(--muted);
+            font-variant-numeric: tabular-nums; }
+  details.fam .topic-grid { padding: 0 16px 16px; }
+  .topic-meta .tc-tags { display: flex; gap: 5px; margin-top: 8px; }
+  .topic-meta .tc-tag { font-size: 11px; font-weight: 700; padding: 2px 7px;
+    border-radius: 4px; background: rgba(255,255,255,0.16); }
+  .topic-meta .tc-note { display: block; margin-top: 8px; font-size: 11.5px;
+    line-height: 1.55; opacity: 0.8; }
+  .fnote:empty { display: none; }
+  .fnote { margin: -4px 16px 12px 56px; font-size: 12px; line-height: 1.6;
+    color: var(--muted); }
+  .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
+
+  .subject-table { margin: 12px 0 0; font-size: 14px; }
+  .subject-table .row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 0; border-top: 1px solid var(--border);
+  }
+  .subject-table .row .nm { flex: 1; min-width: 0; text-align: left; }
+  .subject-table .row .sc { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .subject-table .row .vd { font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .subject-table .row .vd.pass { color: var(--good-ink); background: rgba(31,138,62,0.12); }
+  .subject-table .row .vd.fail { color: var(--bad-ink);  background: rgba(198,56,56,0.12); }
+  .blueprint-note { color: var(--muted); font-size: 12px; margin-top: 10px; line-height: 1.5; }
+
+  /* ===== Exam history ===== */
+  .hist-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 8px; cursor: pointer;
+  }
+  .hist-row:active { background: #eef0f4; }
+  .hist-row .when { font-size: 13px; color: var(--muted); }
+  .hist-row .topic { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+  .hist-row .grow { flex: 1; min-width: 0; }
+  .hist-row .chev { color: var(--muted); font-size: 18px; }
+  .score-pill {
+    font-weight: 700; font-size: 15px; padding: 4px 10px;
+    border-radius: 999px; white-space: nowrap;
+  }
+  .score-pill.pass { color: var(--good-ink); background: rgba(31,138,62,0.12); }
+  .score-pill.fail { color: var(--bad-ink);  background: rgba(198,56,56,0.12); }
+  .hist-summary {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px;
+  }
+  .hist-summary .name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .hist-summary .figs { color: var(--muted); }
+  .hist-summary .figs b { color: var(--text); font-weight: 600; }
+  .your-line { color: var(--bad-ink); font-size: 14px; margin-top: 6px; }
+
+
+
+  /* ===== desktop top bar (hidden on phones, where buttons are the navigation) ===== */
+  .topbar { display: none; }
+
+  /* ===== desktop question navigator (built by renderNav) ===== */
+  .quiz-side { display: none; }
+  .qnav { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-top: 14px; }
+  .qnav i {
+    font-style: normal; font-size: 11px; text-align: center; padding: 5px 0; border-radius: 5px;
+    background: var(--bg); color: var(--muted); border: 1px solid var(--border);
+    font-variant-numeric: tabular-nums; cursor: pointer;
+  }
+  .qnav i.done { background: var(--accent); color: #fff; border-color: var(--accent); }
+  /* 顯示對錯 on: an answered cell carries its verdict. Off, or not yet answered: as above. */
+  .qnav i.done.right { background: var(--good); border-color: var(--good); }
+  .qnav i.done.wrong { background: var(--bad); border-color: var(--bad); }
+  .qnav i.now { background: var(--card); color: var(--accent); border-color: var(--accent); border-width: 2px; font-weight: 700; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .legend b { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+  .navtoggle { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted);
+    margin-top: 10px; cursor: pointer; user-select: none; }
+  .navtoggle input { margin: 0; accent-color: var(--accent); }
+  /* A bank is fetched when its button is pressed; say so on the button itself. */
+  .btn[data-topic][aria-busy="true"] { opacity: 0.7; cursor: progress; }
+  .btn[data-topic][aria-busy="true"] .topic-meta::after { content: '題庫載入中…'; display: block; color: var(--accent); margin-top: 4px; }
+  .hist-row .subj-cell { display: none; }
+
+
+  /* ===== Interaction states =====
+     Two gaps, both app-wide rather than per-component. (1) Keyboard focus was invisible
+     everywhere except the search box, so a keyboard user could not see what they were on.
+     (2) Nothing answered the pointer on desktop -- the layout has a top bar, a 3-column
+     exam grid and a question navigator, and all of them were inert until clicked. Hover
+     sits behind (hover: hover) so a touch device never gets a state it has no way to
+     leave, the same guard design/Main.dc.html already uses. */
+  a:focus-visible, button:focus-visible, summary:focus-visible,
+  input:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  .srch input:focus-visible { outline-offset: -1px; }
+
+  @media (hover: hover) {
+    .btn:hover { background: var(--accent-soft); }
+    .btn.secondary:hover { background: #dcdce2; }
+    .btn.review:hover { background: #a44a18; }
+    .option:hover { border-color: var(--accent); background: #f2f5fa; }
+    /* An answered option is a record, not a control: it must not look clickable. */
+    .option.locked:hover { border-color: var(--border); background: var(--card); }
+    .option.locked.correct:hover { border-color: var(--good); background: #e6f4ea; }
+    .option.locked.wrong:hover { border-color: var(--bad); background: #fbeaea; }
+    details.fam > summary:hover { background: #f7f8fa; }
+    details.fam > summary:hover .fchev { background: var(--bg); border-color: var(--accent); }
+    .hist-row:hover { border-color: var(--accent); }
+    .qnav i:hover { border-color: var(--accent); color: var(--accent); }
+    .qnav i.done:hover { background: var(--accent-soft); color: #fff; }
+    .qnav i.done.right:hover { background: var(--good-ink); }
+    .qnav i.done.wrong:hover { background: var(--bad-ink); }
+    .lenopt:hover { color: var(--accent); background: var(--bg); }
+    .lenopt[aria-pressed="true"]:hover { background: var(--accent-soft); color: #fff; }
+  }
+
+  /* The progress bar, the chevron and the button tints are all that animate here, and none
+     of them carries meaning through the motion itself, so honouring the preference costs
+     nothing. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ================= DESKTOP ================= */
+  @media (min-width: 1024px) {
+    .app { max-width: 1240px; padding: 28px 40px 56px; }
+    h1 { font-size: 26px; }
+
+    .topbar {
+      display: flex; align-items: center; gap: 26px; height: 60px; padding: 0 40px;
+      background: var(--card); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 20;
+    }
+    .topbar .brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
+    .topbar .brand .mark { width: 28px; height: 28px; flex-shrink: 0; }
+    .topbar .spacer { flex: 1; }
+    .topbar .navlink {
+      background: none; border: none; font-family: inherit; font-size: 14px;
+      color: var(--muted); cursor: pointer; padding: 0;
+    }
+    .topbar .navlink:hover { color: var(--accent); }
+
+    /* 首頁 — exams as a grid, all visible at once */
+    #page-home .stat-row { margin-bottom: 20px; }
+    #page-home .stat { padding: 16px 18px; text-align: left; }
+    #page-home .stat .num { font-size: 26px; }
+    #page-home .stat .lbl { font-size: 12px; }
+    .topic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    /* Grid, not flex, for one reason: the title is a bare text node with no element of its
+       own, and as an anonymous GRID item it can be given a reserved two-line row that a flex
+       item cannot. Without it a title that wraps (cfa_fra is the only one at 1280px, more at
+       narrower widths) pushes its count and rule a line below its neighbours'. */
+    .topic-grid .btn[data-topic] {
+      margin-bottom: 0; text-align: left; padding: 18px; min-height: 190px;
+      display: grid; grid-template-rows: minmax(3.1em, auto) 1fr; font-size: 17px;
+    }
+    /* On desktop the button is a card: title at the top, the count as its anchor
+       number, the paper composition on a rule at the foot. */
+    .topic-grid .btn[data-topic] .topic-meta {
+      display: flex; flex-direction: column; opacity: 1; margin-top: 6px;
+      padding-top: 0; border-top: none; flex: 1;
+    }
+    .topic-grid .topic-meta .tc-n { font-size: 34px; line-height: 1; font-weight: 700;
+      font-variant-numeric: tabular-nums; }
+    .topic-grid .topic-meta .tc-n small { font-size: 13px; }
+    /* The rule sits under the count, at the same height on every card. It was pinned with
+       `margin-top: auto`, which bottom-anchors this element AND everything after it, so the
+       rule landed at `card bottom - trailing content` -- and the trailing content varies
+       (5 cards carry one block below it, 9 carry two, 15 carry three, each wrapping to a
+       different depth). Three cards in a row showed three rules at three heights. Anchoring
+       to the count instead puts every rule on the same line and lets the slack fall to the
+       foot of the card, where a straight bottom edge absorbs it. */
+    .topic-grid .topic-meta .tc-p {
+      font-size: 13px; line-height: 1.65; opacity: 0.78; margin-top: 11px;
+      padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.18);
+    }
+    .topic-grid .topic-meta .tc-p::before { content: none; }
+    /* Desktop only -- the phone layout stacks one card per row, where the looser rhythm
+       costs nothing. Measured: this and the padding above take the median card from
+       293px to 254px and the whole exam directory from 3,234px of scroll to 2,996px,
+       with no text removed. */
+    .topic-grid .topic-meta .tc-note { margin-top: 6px; line-height: 1.5; }
+    #page-home .btn.review, #page-home .btn.secondary { max-width: 260px; }
+    #page-home .home-actions { display: flex; gap: 10px; margin-top: 22px; }
+    #page-home .home-actions .btn { margin-bottom: 0; }
+
+    /* 作答中 — two columns, navigator on the right */
+    .quiz-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
+    .quiz-side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 84px; }
+    .quiz-side .btn { margin-bottom: 0; }
+    #page-quiz .progress-wrap { position: static; }
+    #page-quiz .abort-row { display: flex; gap: 10px; }
+    #page-quiz .abort-row .btn { margin-top: 0 !important; }
+
+    /* 成績 — score and actions side by side */
+    .results-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
+    .results-grid .result-summary { margin-bottom: 0; text-align: left; padding: 28px; }
+    .results-grid .result-summary .big { font-size: 52px; }
+    .results-side { display: flex; flex-direction: column; gap: 12px; }
+    .results-side .btn { margin-bottom: 0; }
+
+    /* 測驗紀錄 — summaries beside a scannable list, with a per-subject column */
+    .history-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 28px; align-items: start; }
+    .history-grid .hist-row { margin-bottom: 0; border-radius: 0; border-left: none; border-right: none; border-top: none; }
+    .history-grid #history-list {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .history-grid .hist-row:first-child { border-top: 1px solid var(--border); }
+    .hist-row .subj-cell {
+      display: block; flex: 0 0 250px; font-size: 12.5px; line-height: 1.6;
+      color: var(--muted); font-variant-numeric: tabular-nums;
+    }
+
+    /* 常錯題複習 / 紀錄明細 — two columns of cards */
+    #review-list, #hd-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
+    #review-list .result-q, #hd-list .result-q { margin-bottom: 0; }
+    .detail-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 28px; align-items: start; }
+    .detail-grid .detail-side { position: sticky; top: 84px; }
+    .detail-grid .detail-side .btn { margin-bottom: 8px; }
+    .detail-grid #hd-list { margin-top: 0 !important; }
+  }
+</style>
+</head>
+<body>
+<noscript><div style="max-width:720px;margin:24px auto;padding:16px 18px;background:#fff;border:1px solid #d2d2d7;border-radius:10px;line-height:1.7">
+  線上練習需要啟用 JavaScript 才能作答。不開啟 JavaScript 也可以直接閱讀
+  <a href="/exams/">全部考試的考古題與解析</a>，或回到<a href="/">首頁</a>。
+</div></noscript>
+<div class="topbar">
+  <a class="brand" href="/"><img class="mark" src="mark.png" alt="" width="28" height="28">證照考試練習</a>
+  <button class="navlink" data-nav="home">題庫</button>
+  <button class="navlink" data-nav="review">常錯題複習</button>
+  <button class="navlink" data-nav="history">測驗紀錄</button>
+  <span class="spacer"></span>
+  <button class="navlink" data-nav="clear">清除作答紀錄</button>
+</div>
+<div class="app">
+
+  <!-- HOME -->
+  <div id="page-home">
+    <h1>證照考試練習</h1>
+    <div class="stat-row">
+      <div class="stat"><div class="num" id="stat-attempts">0</div><div class="lbl">總作答數</div></div>
+      <div class="stat"><div class="num" id="stat-accuracy">—</div><div class="lbl">整體正確率</div></div>
+      <div class="stat"><div class="num" id="stat-wrong-pool">0</div><div class="lbl">常錯題庫</div></div>
+    </div>
+
+    <div id="resume-banner" class="hidden card" style="border-left:4px solid var(--accent);margin-bottom:12px;">
+      <div style="font-weight:600;margin-bottom:4px;">繼續上次測驗</div>
+      <div class="meta" id="resume-meta">—</div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button class="btn" id="btn-resume" style="margin-bottom:0">繼續作答</button>
+        <button class="btn secondary" id="btn-discard" style="margin-bottom:0">捨棄</button>
+      </div>
+    </div>
+
+    <h2>選擇測驗類別</h2>
+    <div class="lenpick" role="group" aria-label="每回題數">
+      <span class="lenlabel">每回題數</span>
+      <span class="lenopts" id="lenopts">
+        <button type="button" class="lenopt" data-len="50">50 題</button>
+        <button type="button" class="lenopt" data-len="100">100 題</button>
+        <button type="button" class="lenopt" data-len="0">全卷</button>
+      </span>
+      <span class="lenhint" id="lenhint"></span>
+    </div>
+    <div class="finder">
+      <div id="examsearch"></div>
+      <p class="nohit" id="nohit" hidden>沒有符合的考試或科目。</p>
+    </div>
+    <details class="fam" data-fam="securities">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">證券、投信投顧暨期貨從業人員資格測驗</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="securities_analyst">證券投資分析人員<div class="topic-meta" id="meta-securities_analyst">—</div></button>
+      <button class="btn" data-topic="securities">證券商高級業務員<div class="topic-meta" id="meta-securities">—</div></button>
+      <button class="btn" data-topic="securities_sales">證券商業務員<div class="topic-meta" id="meta-securities_sales">—</div></button>
+      <button class="btn" data-topic="securities_rep">證券交易相關法規與實務乙科<div class="topic-meta" id="meta-securities_rep">—</div></button>
+      <button class="btn" data-topic="futures_analyst">期貨交易分析人員<div class="topic-meta" id="meta-futures_analyst">—</div></button>
+      <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
+      <button class="btn" data-topic="futures_trust">期貨信託基金銷售機構銷售人員<div class="topic-meta" id="meta-futures_trust">—</div></button>
+      <button class="btn" data-topic="sitca_full">投信投顧業務員（三科）<div class="topic-meta" id="meta-sitca_full">—</div></button>
+      <button class="btn" data-topic="sitca">投信投顧相關法規乙科<div class="topic-meta" id="meta-sitca">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="ability">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">能力測驗</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="internal_control">企業內部控制<div class="topic-meta" id="meta-internal_control">—</div></button>
+      <button class="btn" data-topic="sustainability">永續發展基礎能力測驗<div class="topic-meta" id="meta-sustainability">—</div></button>
+      <button class="btn" data-topic="bonds">債券人員<div class="topic-meta" id="meta-bonds">—</div></button>
+      <button class="btn" data-topic="stock_affairs">股務人員<div class="topic-meta" id="meta-stock_affairs">—</div></button>
+      <button class="btn" data-topic="biz_ethics">工商倫理<div class="topic-meta" id="meta-biz_ethics">—</div></button>
+      <button class="btn" data-topic="securitization">資產證券化<div class="topic-meta" id="meta-securitization">—</div></button>
+      <button class="btn" data-topic="bills_finance">票券商業務人員<div class="topic-meta" id="meta-bills_finance">—</div></button>
+      <button class="btn" data-topic="corp_gov">公司治理<div class="topic-meta" id="meta-corp_gov">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="civil">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">公務人員考試（初等、地特五等、高普考）</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="civil_law_basics">法學大意（初等考、地特五等）<div class="topic-meta" id="meta-civil_law_basics">—</div></button>
+      <button class="btn" data-topic="civil_civics_english">公民與英文（初等考、地特五等）<div class="topic-meta" id="meta-civil_civics_english">—</div></button>
+      <button class="btn" data-topic="civil_admin">行政學大意（初等考、地特五等）<div class="topic-meta" id="meta-civil_admin">—</div></button>
+      <button class="btn" data-topic="civil_local_gov">地方自治大意（初等考、地特五等）<div class="topic-meta" id="meta-civil_local_gov">—</div></button>
+      <button class="btn" data-topic="civil_chinese">國文（初等考、地特五等）<div class="topic-meta" id="meta-civil_chinese">—</div></button>
+      <button class="btn" data-topic="civil_law_english">法學知識與英文（高普考）<div class="topic-meta" id="meta-civil_law_english">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="cfa">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">CFA</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="cfa_fra">CFA Level I — Financial Reporting &amp; Analysis<div class="topic-meta" id="meta-cfa_fra">—</div></button>
+      <button class="btn" data-topic="cfa_l2">CFA Level II<div class="topic-meta" id="meta-cfa_l2">—</div></button>
+      <button class="btn" data-topic="cfa_l3">CFA Level III<div class="topic-meta" id="meta-cfa_l3">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="finance">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">金融常識測驗 ／ 防制洗錢測驗</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="finance_ethics">金融市場常識與職業道德<div class="topic-meta" id="meta-finance_ethics">—</div></button>
+      <button class="btn" data-topic="aml">防制洗錢與打擊資恐專業人員<div class="topic-meta" id="meta-aml">—</div></button>
+      </div>
+    </details>
+    <details class="fam" data-fam="bar">
+      <summary><span class="fchev" aria-hidden="true">▾</span><span class="ftitle">律師、司法官</span><span class="fcount"></span></summary>
+      <p class="fnote"></p>
+      <div class="topic-grid">
+      <button class="btn" data-topic="bar_1">律師、司法官第一試<div class="topic-meta" id="meta-bar_1">—</div></button>
+      </div>
+    </details>
+    <div class="home-actions">
+      <button class="btn review" id="btn-review">常錯題複習</button>
+      <button class="btn secondary" id="btn-history">測驗紀錄</button>
+      <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
+    </div>
+
+    <p class="footer-note">作答紀錄存於本機瀏覽器（localStorage），不會上傳。<br>
+      <a href="/exams/">全部考試題庫與考古題解析</a><br>
+      <a href="/about/">關於本站</a> · <a href="/privacy/">隱私權政策</a> · <a href="/contact/">聯絡方式</a> · <a href="/terms/">使用條款</a></p>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="page-quiz" class="hidden">
+   <div class="quiz-grid">
+    <div class="quiz-main">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label">
+        <span id="quiz-label">—</span>
+        <span id="quiz-counter">—</span>
+      </div>
+    </div>
+    <div class="card">
+      <div id="q-passage-wrap" hidden>
+        <div class="passage-label">閱讀短文</div>
+        <div class="passage" id="q-passage"></div>
+      </div>
+      <div class="question" id="q-stem"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+    <div class="nav">
+      <button class="btn secondary" id="btn-prev">上一題</button>
+      <button class="btn" id="btn-next">下一題</button>
+    </div>
+    <div class="abort-row">
+      <button class="btn secondary" id="btn-save-home">儲存並回到首頁</button>
+      <button class="btn secondary" id="btn-abort" style="margin-top:8px;color:var(--bad-ink);">放棄並回首頁</button>
+    </div>
+    </div>
+    <aside class="quiz-side">
+      <div class="card">
+        <div style="font-weight:600;font-size:15px;" id="qs-topic">—</div>
+        <div class="progress-bar" style="margin-top:10px;"><div class="progress-fill" id="qs-fill"></div></div>
+        <div class="progress-label"><span id="qs-count">—</span></div>
+        <div class="qnav" id="qs-nav"></div>
+        <div class="legend" id="legend-plain">
+          <span><b style="background:var(--accent)"></b>已作答</span>
+          <span><b style="background:var(--card);border:1px solid var(--border)"></b>未作答</span>
+        </div>
+        <div class="legend hidden" id="legend-verdict">
+          <span><b style="background:var(--good)"></b>答對</span>
+          <span><b style="background:var(--bad)"></b>答錯</span>
+          <span><b style="background:var(--card);border:1px solid var(--border)"></b>未作答</span>
+        </div>
+        <label class="navtoggle"><input type="checkbox" id="nav-verdict">顯示對錯</label>
+      </div>
+      <button class="btn" id="btn-submit-side">交卷</button>
+    </aside>
+   </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="page-results" class="hidden">
+   <div class="results-grid">
+    <div class="result-summary">
+      <div>本次得分</div>
+      <div class="big"><span class="pct" id="result-score">0</span> / <span id="result-total">100</span></div>
+      <div class="meta" id="result-detail">—</div>
+      <div class="subject-table" id="result-subjects"></div>
+      <div class="blueprint-note" id="result-note"></div>
+    </div>
+    <div class="results-side">
+      <button class="btn" id="btn-result-review">檢視本次錯題</button>
+      <button class="btn secondary" id="btn-home">回首頁</button>
+    </div>
+   </div>
+  </div>
+
+  <!-- HISTORY (past exams) -->
+  <div id="page-history" class="hidden">
+    <h1>測驗紀錄</h1>
+    <p class="meta" id="history-meta">—</p>
+   <div class="history-grid">
+    <div class="history-side">
+      <div id="history-summary"></div>
+      <button class="btn" id="btn-history-home" style="margin-top:12px;">回首頁</button>
+      <button class="btn secondary" id="btn-history-clear" style="color:var(--bad-ink);">清除測驗紀錄</button>
+    </div>
+    <div id="history-list"></div>
+   </div>
+  </div>
+
+  <!-- HISTORY DETAIL (one exam's wrong questions) -->
+  <div id="page-history-detail" class="hidden">
+    <h1 id="hd-title">—</h1>
+    <p class="meta" id="hd-meta">—</p>
+   <div class="detail-grid">
+    <div class="detail-side">
+      <div class="subject-table" id="hd-subjects"></div>
+      <button class="btn" id="btn-hd-back" style="margin-top:16px;">← 測驗紀錄</button>
+      <button class="btn secondary" id="btn-hd-home">回首頁</button>
+    </div>
+    <div id="hd-list" style="margin-top:16px;"></div>
+   </div>
+  </div>
+
+  <!-- REVIEW (often-wrong) -->
+  <div id="page-review" class="hidden">
+    <h1>常錯題複習</h1>
+    <p class="meta" id="review-meta">—</p>
+    <div id="review-list"></div>
+    <button class="btn" id="btn-review-home" style="margin-top:16px;">回首頁</button>
+  </div>
+
+</div>
+
+<script>
+const TOPIC_NAMES = {
+  futures: '期貨商業務員',
+  securities: '證券商高級業務員',
+  securities_sales: '證券商業務員',
+  securities_rep: '證券交易相關法規與實務乙科',
+  sitca_full: '投信投顧業務員（三科）',
+  sitca: '投信投顧相關法規乙科',
+  securities_analyst: '證券投資分析人員',
+  futures_analyst: '期貨交易分析人員',
+  futures_trust: '期貨信託基金銷售機構銷售人員',
+  internal_control: '企業內部控制',
+  sustainability: '永續發展基礎能力測驗',
+  aml: '防制洗錢與打擊資恐專業人員',
+  finance_ethics: '金融市場常識與職業道德',
+  cfa_fra: 'CFA Level I \u2014 Financial Reporting & Analysis',
+  corp_gov: '公司治理',
+  securitization: '資產證券化',
+  bonds: '債券人員',
+  stock_affairs: '股務人員',
+  biz_ethics: '工商倫理',
+  bills_finance: '票券商業務人員',
+  cfa_l2: 'CFA Level II',
+  cfa_l3: 'CFA Level III',
+  // 考選部 banks. One per 科目, not per 類科 — 法學大意 is one printing sat by seven of
+  // 初等考's 類科, and 法學知識與英文 by most of 高考三級's, so the 科目 is what a bank is.
+  civil_law_basics: '法學大意（初等考、地特五等）',
+  civil_civics_english: '公民與英文（初等考、地特五等）',
+  civil_chinese: '國文（初等考、地特五等）',
+  civil_admin: '行政學大意（初等考、地特五等）',
+  civil_local_gov: '地方自治大意（初等考、地特五等）',
+  civil_law_english: '法學知識與英文（高普考）',
+  bar_1: '律師、司法官第一試',
+};
+// Banks no longer published. Exam history recorded before a bank is retired still
+// needs a readable name, so labels outlive the questions. Empty today.
+const RETIRED_TOPIC_NAMES = {};
+function topicLabel(t) { return TOPIC_NAMES[t] || RETIRED_TOPIC_NAMES[t] || t; }
+const QUIZ_SIZE = 100;      // target length; a smaller bank uses its whole pool
+const RECENT_WINDOW = 10;   // last N attempts per question
+const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
+const WRONG_RATIO = 0.5;    // ≥50% wrong over recent attempts
+
+// The bank directory, data/banks.json: {topic: {n, expl, subjects: {subject: count}}}.
+// It is everything the home page needs and it is a few KB. The app used to fetch the
+// whole of questions.json (13 MB) before wiring a single button, so on a slow link the
+// home page sat painted and dead for the length of the download. Now a bank's questions
+// (data/<topic>.json) are fetched when a paper in it is started, or when 常錯題複習 /
+// 測驗紀錄 need to show a question that belongs to it.
+let BANKS = null;
+const DATA = {};            // banks fetched so far: {topic: [{id, stem, options, answer, origin, subject, topic}]}
+const BANK_IDS = {};        // {topic: Set(id)} for the banks in DATA
+const BANK_LOADING = {};    // in-flight fetches, so two clicks do not fetch twice
+function loadBank(topic) {
+  if (DATA[topic]) return Promise.resolve(DATA[topic]);
+  if (!BANKS || !BANKS[topic]) return Promise.reject(new Error('unknown bank ' + topic));
+  if (!BANK_LOADING[topic]) {
+    BANK_LOADING[topic] = fetch(`data/${topic}.json`)
+      .then(r => { if (!r.ok) throw new Error(`data/${topic}.json: HTTP ${r.status}`); return r.json(); })
+      .then(qs => {
+        DATA[topic] = qs;
+        BANK_IDS[topic] = new Set(qs.map(q => q.id));
+        return qs;
+      })
+      .finally(() => { delete BANK_LOADING[topic]; });
+  }
+  return BANK_LOADING[topic];
+}
+function loadBanks(topics) { return Promise.all([...new Set(topics)].map(loadBank)); }
+const LOAD_FAILED = '題庫載入失敗，請確認網路連線後再試一次。';
+// A question id is `<topic>-<paper>-<n>`; the longest bank key that prefixes it, dash
+// included, is its bank (`sitca-` and `sitca_full-` both exist).
+function bankOf(qid) {
+  let best = null;
+  if (BANKS) for (const t of Object.keys(BANKS)) {
+    if (qid.startsWith(t + '-') && (!best || t.length > best.length)) best = t;
+  }
+  return best;
+}
+// {topic: {exam, pass_mark, note, subjects:[{subject, count, points}]}} — how a practice
+// paper is composed so it mirrors the real exam. Missing or unreachable => random draw.
+let BLUEPRINTS = {};
+function blueprintFor(topic) { return BLUEPRINTS[topic] || null; }
+
+// ------- paper length -------
+// 0 means 全卷 -- the blueprint's own length, i.e. exactly what this app did before the
+// picker existed, so the default changes nothing for anyone.
+const LS_LEN_KEY = 'quiz_len_v1';
+const LEN_CHOICES = [50, 100, 0];
+const LEN_HINT = '長卷會依各科比例縮短，每科都仍會出題；題數本來較少的考試不受影響。';
+let QUIZ_LEN = 0;
+function loadLen() {
+  try {
+    const v = parseInt(localStorage.getItem(LS_LEN_KEY) || '0', 10);
+    return LEN_CHOICES.indexOf(v) >= 0 ? v : 0;
+  } catch { return 0; }
+}
+function saveLen(v) {
+  try { localStorage.setItem(LS_LEN_KEY, String(v)); }
+  catch { console.warn('Could not save paper length (storage unavailable)'); }
+}
+
+// ------- navigator verdict -------
+// Whether the desktop question navigator colours answered cells 答對/答錯 rather than
+// plain 已作答. On by default; a person who wants the neutral grid turns it off once.
+const LS_NAV_KEY = 'quiz_nav_verdict_v1';
+let NAV_VERDICT = true;
+function loadNavVerdict() {
+  try { return localStorage.getItem(LS_NAV_KEY) !== '0'; } catch { return true; }
+}
+function saveNavVerdict(v) {
+  try { localStorage.setItem(LS_NAV_KEY, v ? '1' : '0'); }
+  catch { console.warn('Could not save navigator preference (storage unavailable)'); }
+}
+function initNavVerdict() {
+  const box = el('nav-verdict');
+  if (!box) return;
+  NAV_VERDICT = loadNavVerdict();
+  box.checked = NAV_VERDICT;
+  box.onchange = () => { NAV_VERDICT = box.checked; saveNavVerdict(NAV_VERDICT); renderNav(); };
+}
+
+// How many questions each subject has, counted once per bank.
+const POOL_BY_SUBJECT = {};
+function poolCounts(topic) {
+  if (POOL_BY_SUBJECT[topic]) return POOL_BY_SUBJECT[topic];
+  // Counted by build.py into banks.json, so a paper's composition is known before its
+  // questions are fetched. The empty-subject key is '' there too.
+  const m = Object.assign({}, (BANKS && BANKS[topic] && BANKS[topic].subjects) || {});
+  return (POOL_BY_SUBJECT[topic] = m);
+}
+
+// Cut a blueprint's section counts down to `target` while holding their proportions.
+//
+// Largest-remainder apportionment, not rounding: rounding each subject's share on its own
+// does not add up to the target -- CFA Level I has 13 sections and drifts several questions
+// -- and flooring would send its smallest section (3 questions) to zero, which is precisely
+// the subject a shortened paper must not silently drop. So: floor every exact share, then
+// hand the leftover questions to the largest fractional parts, and never let a section fall
+// below one. That last rule means a paper can never be shorter than its own subject count.
+function apportion(subjects, target, poolOf) {
+  const counts = subjects.map(s => s.count);
+  const total = counts.reduce((a, b) => a + b, 0);
+  if (!target || target >= total) return counts.slice();   // 全卷, or a paper already shorter
+  target = Math.max(target, subjects.length);
+
+  const exact = counts.map(c => c * target / total);
+  const out = exact.map(x => Math.max(1, Math.floor(x)));
+  // Ties broken by the larger section, then by position, so the same request always
+  // produces the same paper shape.
+  const order = counts.map((_, i) => i).sort((a, b) =>
+    (exact[b] % 1) - (exact[a] % 1) || counts[b] - counts[a] || a - b);
+
+  let left = target - out.reduce((a, b) => a + b, 0);
+  for (let k = 0; left > 0; k = (k + 1) % order.length) { out[order[k]]++; left--; }
+  // The floor of one can overshoot a very short target; take the excess back from the
+  // largest sections, never below one.
+  while (left < 0) {
+    let big = -1;
+    for (const i of order) if (out[i] > 1 && (big < 0 || out[i] > out[big])) big = i;
+    if (big < 0) break;
+    out[big]--; left++;
+  }
+  // Never ask a subject for more questions than the bank actually holds.
+  if (poolOf) {
+    for (let i = 0; i < out.length; i++) out[i] = Math.min(out[i], poolOf(subjects[i].subject));
+  }
+  return out;
+}
+
+// Questions to draw per section for this bank at the current length, or null with no blueprint.
+function sectionPlan(topic) {
+  const bp = blueprintFor(topic);
+  if (!bp) return null;
+  const have = poolCounts(topic);
+  return apportion(bp.subjects, QUIZ_LEN, sub => have[sub] || 0);
+}
+function quizSizeFor(topic) {
+  const plan = sectionPlan(topic);
+  if (plan) return plan.reduce((a, b) => a + b, 0);
+  const pool = BANKS && BANKS[topic] ? BANKS[topic].n : QUIZ_SIZE;
+  return Math.min(QUIZ_LEN || QUIZ_SIZE, pool);
+}
+function currentSize() { return STATE ? STATE.questions.length : QUIZ_SIZE; }
+let STATE = null;           // current quiz state
+
+// ------- localStorage history -------
+// Schema: { [questionId]: { attempts: [true|false], ... last RECENT_WINDOW kept } }
+const LS_KEY = 'quiz_history_v1';
+const LS_QUIZ_KEY = 'quiz_state_v1';
+// One record per submitted exam, newest first:
+//   { t: topic, ts: epoch ms, n: questions asked, c: correct, w: [[questionId, picked|null], ...] }
+// Only wrong answers are stored; question text is looked up from its bank at render time.
+const LS_RESULTS_KEY = 'quiz_results_v1';
+const MAX_RESULTS = 50;
+const PASS_MARK = 0.7;      // 70% is the pass mark for these exams
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+  catch { return {}; }
+}
+// Persistence is a convenience; answering is the product. This write was unguarded and
+// sits on the answer-click path (recordAttempt -> saveHistory), so on a browser with
+// storage blocked it threw and aborted the handler before renderQuiz() — every option tap
+// did nothing at all, while the page looked perfectly healthy. Every read is already
+// inside a try/catch; the writes now match.
+function saveHistory(h) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(h)); }
+  catch { console.warn('Could not save attempt history (storage unavailable)'); }
+}
+function recordAttempt(qid, correct) {
+  const h = loadHistory();
+  const rec = h[qid] || { attempts: [] };
+  rec.attempts.push(correct);
+  if (rec.attempts.length > RECENT_WINDOW) {
+    rec.attempts = rec.attempts.slice(-RECENT_WINDOW);
+  }
+  h[qid] = rec;
+  saveHistory(h);
+}
+function isOftenWrong(qid) {
+  const h = loadHistory();
+  const rec = h[qid];
+  if (!rec || rec.attempts.length < MIN_ATTEMPTS) return false;
+  const wrong = rec.attempts.filter(x => !x).length;
+  return wrong / rec.attempts.length >= WRONG_RATIO;
+}
+// Question IDs currently published. History for retired banks (e.g. the 金融市場常識
+// bank, removed once passed) stays in localStorage and would otherwise keep inflating
+// the totals and the often-wrong count forever.
+// Exact for a bank that has been fetched; by id prefix for one that has not, which is
+// enough to drop a retired bank's history without downloading every bank to prove it.
+function isLive(qid) {
+  const t = bankOf(qid);
+  if (!t) return false;
+  return BANK_IDS[t] ? BANK_IDS[t].has(qid) : true;
+}
+// Parse history once and return the ids that qualify: isOftenWrong() re-reads storage
+// per call, which is fine for one question and not for a walk over the whole bank.
+function oftenWrongIds() {
+  const h = loadHistory();
+  const out = [];
+  for (const qid in h) {
+    const rec = h[qid];
+    if (!rec || rec.attempts.length < MIN_ATTEMPTS) continue;
+    if (rec.attempts.filter(x => !x).length / rec.attempts.length >= WRONG_RATIO) out.push(qid);
+  }
+  return out;
+}
+function overallStats() {
+  const h = loadHistory();
+  let total = 0, correct = 0, wrongPool = 0;
+  for (const qid in h) {
+    if (!isLive(qid)) continue;
+    const r = h[qid];
+    total += r.attempts.length;
+    correct += r.attempts.filter(x=>x).length;
+    if (isOftenWrong(qid)) wrongPool++;
+  }
+  return { total, correct, wrongPool };
+}
+
+// ------- exam history -------
+function loadResults() {
+  try {
+    const r = JSON.parse(localStorage.getItem(LS_RESULTS_KEY) || '[]');
+    return Array.isArray(r) ? r : [];
+  } catch { return []; }
+}
+function saveResults(list) {
+  // Drop the oldest records and retry if the browser rejects the write on quota.
+  let out = list.slice(0, MAX_RESULTS);
+  while (out.length) {
+    try { localStorage.setItem(LS_RESULTS_KEY, JSON.stringify(out)); return true; }
+    catch (e) { out = out.slice(0, out.length - 1); }
+  }
+  console.warn('Could not save exam history (storage full)');
+  return false;
+}
+function recordResult(correct, breakdown) {
+  const wrong = [];
+  STATE.questions.forEach((q, i) => {
+    if (STATE.answers[i] !== q.answer) wrong.push([q.id, STATE.answers[i]]);
+  });
+  const list = loadResults();
+  // `s` holds the per-subject split: the record stores only wrong answers, so the
+  // per-subject totals could not be recomputed from it later.
+  list.unshift({ t: STATE.topic, ts: Date.now(), n: STATE.questions.length,
+                 c: correct, w: wrong, s: breakdown || {} });
+  saveResults(list);
+}
+function fmtWhen(ts) {
+  const d = new Date(ts), pad = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate()) +
+         ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+function pctOf(r) { return r.n ? Math.round(100 * r.c / r.n) : 0; }
+
+// ------- quiz state persistence -------
+function saveQuizState() {
+  if (!STATE) return;
+  // Same reason as saveHistory: losing the resume point is survivable, losing the tap is not.
+  try {
+    localStorage.setItem(LS_QUIZ_KEY, JSON.stringify({
+      topic: STATE.topic,
+      questionIds: STATE.questions.map(q => q.id),
+      answers: STATE.answers,
+      idx: STATE.idx,
+    }));
+  } catch { console.warn('Could not save quiz progress (storage unavailable)'); }
+}
+function clearQuizState() {
+  // renderHome() calls this during boot, so an unguarded throw here takes the home page
+  // down with it — the same failure as the writes above.
+  try { localStorage.removeItem(LS_QUIZ_KEY); } catch { /* storage unavailable */ }
+}
+function loadSavedQuiz() {
+  try { return JSON.parse(localStorage.getItem(LS_QUIZ_KEY) || 'null'); }
+  catch { return null; }
+}
+async function resumeQuiz(saved) {
+  if (!BANKS || !BANKS[saved.topic]) return;
+  let pool;
+  try { pool = await loadBank(saved.topic); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
+  const byId = {};
+  for (const q of pool) byId[q.id] = q;
+  const questions = saved.questionIds.map(id => byId[id]).filter(Boolean);
+  if (questions.length !== saved.questionIds.length) { clearQuizState(); return; }
+  STATE = { topic: saved.topic, questions, answers: saved.answers, idx: saved.idx, submitted: false };
+  el('quiz-label').textContent = TOPIC_NAMES[saved.topic];
+  renderQuiz();
+  show('page-quiz');
+}
+
+// ------- helpers -------
+function shuffle(a) {
+  a = a.slice();
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+// Past papers reuse questions across sittings, so a bank holds the same item two or three
+// times under different ids -- often with a full-width bracket or a stray space as the only
+// difference, sometimes with one option reworded. Both belong in the bank (each paper is
+// complete on its exam page), but a paper drawn from it must not ask the same thing twice.
+// Twins: same stem after normalising width, spacing and punctuation, and at least two
+// options in common -- the option test keeps the cloze stems (依上文，選出第 45 格) and the
+// 下列敘述何者為非 stems apart, since those share a stem with unrelated options. The list
+// is already shuffled when this runs, so which twin survives is random.
+function normQ(s) {
+  return String(s).replace(/\s+/g, '')
+    .replace(/[\uFF01-\uFF5E]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .replace(/[。，、；：？！()「」『』:;,.?!'"“”‘’-]/g, '');
+}
+// `seen` maps a normalised stem -> [Set of normalised options] per twin kept so far.
+// Sharing one map across several draws is what keeps a twin from slipping through in
+// two different sections of the same paper.
+function twinSeen(q, seen) {
+  const key = normQ(q.stem);
+  const opts = new Set(Object.values(q.options).map(normQ));
+  const prev = seen.get(key) || [];
+  if (prev.some(p => { let n = 0; for (const o of opts) if (p.has(o)) n++; return n >= 2; })) return true;
+  prev.push(opts); seen.set(key, prev);
+  return false;
+}
+function dedupe(list, seen) {
+  const s = seen || new Map();
+  return list.filter(q => !twinSeen(q, s));
+}
+// Take at most n from list, skipping anything that twins a question already in `seen`.
+// A paper drawn subject by subject must not repeat a question across two sections, and
+// slicing after dedupe() would wrongly reserve the twins that got cut off.
+function takeDistinct(list, n, seen) {
+  const out = [];
+  for (const q of list) {
+    if (out.length >= n) break;
+    if (!twinSeen(q, seen)) out.push(q);
+  }
+  return out;
+}
+function el(id) { return document.getElementById(id); }
+// Taiwan banks are 4-choice (A-D); the CFA bank follows the exam's 3-choice format (A-C).
+function optionLetters(q) {
+  return ['A','B','C','D'].filter(L => (q.options[L] || '').trim() !== '');
+}
+function show(pageId) {
+  document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review,#page-history,#page-history-detail')
+    .forEach(p => p.classList.add('hidden'));
+  el(pageId).classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+
+// ------- home -------
+// Two sentences, not one: 證券交易相關法規與實務乙科's whole point — that it covers only one
+// subject of the full 證券商業務員 exam — is in its note's *second* sentence, so a
+// one-sentence cut silently dropped the caveat. These notes are the only place the exam's
+// own caveats appear now that the landing page lists categories rather than exams.
+function noteFor(t) {
+  const bp = blueprintFor(t);
+  if (!bp || !bp.note) return '';
+  const sents = bp.note.split('。').filter(x => x.trim());
+  const n = sents.slice(0, 2).join('。');
+  return n.length > 120 ? n.slice(0, 120) + '…' : n + '。';
+}
+// topic -> the note its whole family shares, when every bank in it has the same one.
+const FAM_NOTE = new Map();
+function computeFamNotes() {
+  FAM_NOTE.clear();
+  document.querySelectorAll('details.fam').forEach(fam => {
+    const ts = [...fam.querySelectorAll('[data-topic]')]
+      .map(b => b.dataset.topic).filter(t => BANKS && BANKS[t]);
+    if (ts.length < 2) return;
+    // The note shared by MOST of the family, not by all of it: five of the six 公務人員
+    // banks share one paragraph and 法學知識與英文 has its own, so requiring unanimity
+    // hoisted nothing and the same text still printed five times.
+    const counts = new Map();
+    ts.forEach(t => { const n = noteFor(t); if (n) counts.set(n, (counts.get(n) || 0) + 1); });
+    let shared = '', best = 1;
+    counts.forEach((c, n) => { if (c > best) { best = c; shared = n; } });
+    if (!shared) return;
+    ts.forEach(t => { if (noteFor(t) === shared) FAM_NOTE.set(t, shared); });
+    const slot = fam.querySelector('.fnote');
+    if (slot) slot.textContent = shared;
+  });
+}
+
+function renderHome() {
+  // Must run before the button loop below: it decides which notes are family-wide,
+  // and each button consults that so the same paragraph is not printed on every card.
+  computeFamNotes();
+  const s = overallStats();
+  el('stat-attempts').textContent = s.total;
+  el('stat-accuracy').textContent = s.total ? (Math.round(100 * s.correct / s.total) + '%') : '—';
+  el('stat-wrong-pool').textContent = s.wrongPool;
+  for (const t of Object.keys(TOPIC_NAMES)) {
+    if (!BANKS || !BANKS[t]) continue;
+    const bp = blueprintFor(t);
+    // Three tiers, matching the design: bank size, then how a paper is composed.
+    // Built as markup rather than one string so the count can carry its own weight
+    // on desktop, where the button becomes a card.
+    let html = `<span class="tc-n">${BANKS[t].n.toLocaleString('en-US')}<small>\u984c</small></span>`;
+    if (bp) {
+      // Enumerating 13 sections would swamp the card, so summarise past a few.
+      // Counts are what this paper will actually draw, not the blueprint's, so the
+      // card tracks the length picker.
+      const plan = sectionPlan(t) || bp.subjects.map(sec => sec.count);
+      const detail = bp.subjects.length <= 3
+        ? bp.subjects.map((sec, i) => `${escapeHtml(sec.subject)} ${plan[i]}`).join('\uff0b')
+        : `${bp.subjects.length} \u500b\u4e3b\u984c`;
+      const drawn = quizSizeFor(t);
+      html += `<span class="tc-p">\u6bcf\u56de ${drawn} \u984c\uff1a${detail}</span>`;
+      const cov = bp.coverage;
+      // Recomputed against the chosen length rather than the blueprint's: a shorter
+      // paper draws less of the pool and so repeats less, and this disclosure must say so.
+      if (cov && cov.pool && cov.pool / drawn < 3) {
+        const rep = Math.round(Math.min(drawn / cov.pool, 1) * 100);
+        html += `<span class="tc-thin">連續兩回會重複到約 ${rep}%</span>`;
+      }
+      // The landing page no longer lists exams, so these disclosures live here or
+      // nowhere. All three are derived: 自編 from the blueprint's own wording, 無解析
+      // from the data, and the caveat from the note's first sentence.
+      const tags = [];
+      if ((bp.note || '').includes('自行編寫')) tags.push('自編');
+      if (!BANKS[t].expl) tags.push('無解析');
+      if (tags.length) {
+        html += `<span class="tc-tags">${tags.map(x => `<span class="tc-tag">${x}</span>`).join('')}</span>`;
+      }
+      // Shown on the button only when it says something about *this* exam. The six
+      // 公務人員 banks share one blueprint note word for word, so per-button it printed the
+      // same paragraph six times; a note common to a whole family goes on the family bar
+      // instead (see famNote below).
+      const note = noteFor(t);
+      if (note && note !== FAM_NOTE.get(t)) {
+        html += `<span class="tc-note">${escapeHtml(note)}</span>`;
+      }
+    }
+    // The buttons are static markup and this only fills them, so a topic added to
+    // TOPIC_NAMES without its <button> would throw here — and because that throw escapes
+    // renderHome, the whole home page stays blank and *every* bank looks broken, not just
+    // the new one. Skip it loudly instead. scripts/test_topics.py fails the build on it.
+    const meta = el('meta-'+t);
+    if (!meta) { console.warn(`no button markup for topic ${t} — add one to app.html`); continue; }
+    meta.innerHTML = html;
+  }
+  updateFamCounts();
+  const saved = loadSavedQuiz();
+  if (saved && BANKS && !BANKS[saved.topic]) clearQuizState();
+  const banner = el('resume-banner');
+  if (saved && BANKS && BANKS[saved.topic]) {
+    const answered = saved.answers.filter(a => a !== null).length;
+    el('resume-meta').textContent = `${TOPIC_NAMES[saved.topic]}　已作答 ${answered} / ${saved.questionIds.length} 題`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+
+// ------- quiz -------
+// `btn` is the home-page button that was pressed, if any: it shows 題庫載入中 while the
+// bank is fetched, and ignores a second press meanwhile.
+async function startQuiz(topic, btn) {
+  if (!BANKS || !BANKS[topic]) { alert('\u6b64\u984c\u5eab\u76ee\u524d\u6c92\u6709\u984c\u76ee\u3002'); return; }
+  if (btn && btn.getAttribute('aria-busy') === 'true') return;
+  let pool;
+  if (btn) btn.setAttribute('aria-busy', 'true');
+  try { pool = await loadBank(topic); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
+  finally { if (btn) btn.removeAttribute('aria-busy'); }
+  if (!pool.length) { alert('\u6b64\u984c\u5eab\u76ee\u524d\u6c92\u6709\u984c\u76ee\u3002'); return; }
+  const bp = blueprintFor(topic);
+  let picked;
+  if (bp) {
+    // Draw each subject's quota separately so the paper matches the real exam,
+    // then shuffle so the sections are interleaved rather than blocked.
+    // The blueprint's own counts at full length, or their proportional cut when a shorter
+    // paper is chosen -- either way every subject is drawn from, at its real weight.
+    const want = sectionPlan(topic) || bp.subjects.map(sec => sec.count);
+    picked = [];
+    const seen = new Map();   // shared across sections: a twin must not span two of them
+    bp.subjects.forEach((sec, i) => {
+      const sub = pool.filter(q => q.subject === sec.subject);
+      picked = picked.concat(takeDistinct(shuffle(sub), want[i], seen));
+    });
+    picked = shuffle(picked);
+  } else {
+    picked = dedupe(shuffle(pool)).slice(0, quizSizeFor(topic));
+  }
+  const size = picked.length;
+  STATE = {
+    topic,
+    questions: picked,
+    answers: new Array(size).fill(null),  // 'A'/'B'/'C'/'D' or null
+    idx: 0,
+    submitted: false,
+  };
+  el('quiz-label').textContent = TOPIC_NAMES[topic];
+  renderQuiz();
+  show('page-quiz');
+}
+// The desktop side panel: a cell per question, filled when answered, outlined on the
+// current one, click to jump. On a 100-question paper this is the difference between
+// scrolling blind and seeing your coverage at a glance. Hidden on phones by CSS, but
+// built either way — cheap, and it keeps one code path.
+function renderNav() {
+  const nav = el('qs-nav');
+  if (!nav || !STATE) return;
+  const verdict = NAV_VERDICT;
+  el('legend-plain').classList.toggle('hidden', verdict);
+  el('legend-verdict').classList.toggle('hidden', !verdict);
+  const answered = STATE.answers.filter(a => a !== null).length;
+  el('qs-topic').textContent = topicLabel(STATE.topic);
+  el('qs-count').textContent = `已作答 ${answered} / ${currentSize()} 題`;
+  el('qs-fill').style.width = (answered / currentSize() * 100) + '%';
+  nav.innerHTML = '';
+  STATE.questions.forEach((q, i) => {
+    const cell = document.createElement('i');
+    cell.textContent = i + 1;
+    // The verdict is already on the question itself the moment an option is picked, so
+    // showing it here reveals nothing new; the toggle is for people who would rather
+    // not be reminded of the score while they work through the paper.
+    const done = STATE.answers[i] !== null;
+    const right = done && STATE.answers[i] === q.answer;
+    let label = `第 ${i + 1} 題`;
+    if (i === STATE.idx) cell.className = 'now';
+    else if (done) cell.className = verdict ? (right ? 'done right' : 'done wrong') : 'done';
+    if (done && verdict) label += right ? '，答對' : '，答錯';
+    // Built as <i> for the grid styling, so it has to be given the role and key handling
+    // a <button> would have carried by itself.
+    cell.tabIndex = 0;
+    cell.setAttribute('role', 'button');
+    cell.setAttribute('aria-label', label);
+    if (i === STATE.idx) cell.setAttribute('aria-current', 'true');
+    const go = () => { STATE.idx = i; saveQuizState(); renderQuiz(); };
+    cell.onclick = go;
+    cell.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+    };
+    nav.appendChild(cell);
+  });
+}
+
+function renderQuiz() {
+  const q = STATE.questions[STATE.idx];
+  const sel = STATE.answers[STATE.idx];
+  const locked = sel !== null;  // already answered → show feedback, no more clicks
+  el('q-stem').textContent = `${STATE.idx+1}. ${q.stem}`;
+  // A reading/cloze question is unanswerable without its passage, so this is not
+  // decoration: hide the block when there is none, fill it when there is.
+  el('q-passage').textContent = q.passage || '';
+  el('q-passage-wrap').hidden = !q.passage;
+  const oc = el('q-options');
+  oc.innerHTML = '';
+  for (const letter of optionLetters(q)) {
+    // An answered option is a static record and stays a <div>; an unanswered one is a
+    // control, and a <div> with an onclick is not reachable by keyboard -- which meant the
+    // paper could not be sat at all without a mouse. A real <button> gets tab order, Enter
+    // and Space, and the right role for a screen reader, for free.
+    const div = document.createElement(locked ? 'div' : 'button');
+    div.className = 'option';
+    if (locked) {
+      div.classList.add('locked');
+      if (letter === q.answer) div.classList.add('correct');
+      else if (letter === sel) div.classList.add('wrong');
+    } else {
+      div.type = 'button';   // otherwise a <button> in a form would submit it
+    }
+    div.innerHTML = `<span class="letter">(${letter})</span><span>${escapeHtml(q.options[letter] || '')}</span>`;
+    if (!locked) {
+      div.onclick = () => {
+        STATE.answers[STATE.idx] = letter;
+        // Record this attempt immediately (so the wrong-pool stays accurate even if user aborts)
+        recordAttempt(q.id, letter === q.answer);
+        saveQuizState();
+        renderQuiz();
+        // The re-render just destroyed the button that had focus, which drops a keyboard
+        // user back to the top of the document after every answer. Put them on the one
+        // control they need next. Only a keyboard-shown ring carries over, so a mouse
+        // click does not suddenly paint a focus ring on 下一題.
+        el('btn-next').focus();
+      };
+    }
+    oc.appendChild(div);
+  }
+  // Feedback block under options
+  const existing = document.querySelector('.feedback');
+  if (existing) existing.remove();
+  if (locked) {
+    const fb = document.createElement('div');
+    const ok = sel === q.answer;
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+    if (ok) {
+      fb.innerHTML = `✓ 答對了`;
+    } else {
+      fb.innerHTML = `✗ 答錯了<div class="answer-text">正解：(${q.answer}) ${escapeHtml(q.options[q.answer] || '')}</div>`;
+    }
+    if (q.explanations) {
+      const block = document.createElement('div');
+      block.className = 'expl-block';
+      block.innerHTML = '<div class="expl-title">解析</div>';
+      for (const letter of optionLetters(q)) {
+        const expl = q.explanations[letter];
+        if (!expl) continue;
+        const item = document.createElement('div');
+        item.className = 'expl-item' +
+          (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
+        item.innerHTML = `<span class="expl-letter">(${letter})</span><span>${escapeHtml(expl)}</span>`;
+        block.appendChild(item);
+      }
+      // Every explanation on this site is written, not published: 證基會 and 考選部 release
+      // the answer key and nothing else, so no 解析 anywhere here comes from an official
+      // source. The answer letter above IS official; the reasoning below is not, and
+      // saying so once under each 解析 is the only honest way to show them together.
+      const src = document.createElement('div');
+      src.className = 'expl-src';
+      src.textContent = '答案為官方標準答案；以上解析由 AI 撰寫，非官方解析，僅供理解參考。';
+      block.appendChild(src);
+      fb.appendChild(block);
+    }
+    el('q-options').parentElement.appendChild(fb);
+  }
+  el('progress-fill').style.width = ((STATE.idx+1)/currentSize() * 100) + '%';
+  el('quiz-counter').textContent = `${STATE.idx+1} / ${currentSize()}`;
+  el('btn-prev').disabled = STATE.idx === 0;
+  el('btn-prev').style.opacity = STATE.idx === 0 ? 0.4 : 1;
+  el('btn-next').textContent = STATE.idx === currentSize()-1 ? '交卷' : '下一題';
+  renderNav();
+}
+function nextQ() {
+  if (STATE.idx === currentSize()-1) {
+    submitQuiz();
+  } else {
+    STATE.idx++;
+    saveQuizState();
+    renderQuiz();
+  }
+}
+function prevQ() {
+  if (STATE.idx > 0) { STATE.idx--; saveQuizState(); renderQuiz(); }
+}
+
+function submitQuiz() {
+  // Inline feedback was already shown after each answer; just compute & show score.
+  // (Attempts are already recorded immediately on selection — see renderQuiz.)
+  const unanswered = STATE.answers.filter(a => a === null).length;
+  if (unanswered > 0) {
+    if (!confirm(`還有 ${unanswered} 題未作答，確定交卷？（未作答視為錯誤）`)) return;
+  }
+  let correct = 0;
+  for (let i = 0; i < currentSize(); i++) {
+    if (STATE.answers[i] === STATE.questions[i].answer) correct++;
+  }
+  clearQuizState();
+  const breakdown = subjectBreakdown(STATE.questions, STATE.answers);
+  const bp = blueprintFor(STATE.topic);
+  recordResult(correct, breakdown);
+  renderSubjectTable(el('result-subjects'), breakdown, sectionPassMark(bp));
+  el('result-note').textContent = bp && bp.note ? bp.note : '';
+  el('result-score').textContent = correct;
+  el('result-total').textContent = currentSize();
+  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${currentSize()-correct} 題`;
+  show('page-results');
+}
+
+// ------- review (often-wrong) -------
+async function showReview() {
+  // Fetch only the banks the often-wrong questions belong to, then list them in bank
+  // order, as before.
+  const wanted = new Set(oftenWrongIds());
+  try { await loadBanks([...wanted].map(bankOf).filter(Boolean)); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
+  const list = [];
+  for (const t of Object.keys(BANKS)) {
+    for (const q of DATA[t] || []) {
+      if (wanted.has(q.id)) list.push(q);
+    }
+  }
+  el('review-meta').textContent = `${list.length} 題（最近 ${RECENT_WINDOW} 次作答中答錯率 ≥ 50%、且至少作答 ${MIN_ATTEMPTS} 次）`;
+  const cont = el('review-list');
+  cont.innerHTML = '';
+  if (list.length === 0) {
+    cont.innerHTML = '<div class="empty-state">目前還沒有常錯題。<br>多做幾次測驗就會累積。</div>';
+  } else {
+    list.forEach((q, i) => {
+      const h = loadHistory()[q.id];
+      const ratio = h.attempts.filter(x => !x).length + '/' + h.attempts.length;
+      const div = wrongQuestionCard(q, null, i + 1);
+      div.classList.add('review-q');
+      // No single "your answer" here — this view aggregates across attempts.
+      div.querySelector('.your-line').remove();
+      div.querySelector('.origin').textContent =
+        '\u6b63\u89e3\uff1a(' + q.answer + ')\u3000\u8fd1\u671f\u932f\u8aa4 ' + ratio +
+        '\u3000' + (q.origin || '');
+      cont.appendChild(div);
+    });
+  }
+  show('page-review');
+}
+
+// ------- per-subject scoring -------
+// The real exams are graded per subject: passing overall while failing one subject is
+// still a fail, so a combined score alone would be misleading.
+function subjectBreakdown(questions, answers) {
+  const acc = {};
+  questions.forEach((q, i) => {
+    const key = q.subject || '';
+    if (!key) return;
+    const row = acc[key] || (acc[key] = { correct: 0, total: 0 });
+    row.total++;
+    if (answers[i] === q.answer) row.correct++;
+  });
+  return acc;
+}
+
+// A blueprint's sections are separate 科 unless it says otherwise: 金融市場常識與
+// 職業道德 is one 科 whose two halves are content weighting, so its 70 is an overall
+// bar. Stamping each half 及格/未及格 would fail a 75% candidate who scored 65% in one.
+function sectionPassMark(bp) {
+  if (!bp || bp.scoring === 'overall') return null;
+  return bp.pass_mark || null;
+}
+
+function renderSubjectTable(el_, breakdown, passMark) {
+  el_.innerHTML = '';
+  const names = Object.keys(breakdown);
+  if (names.length < 2 && !passMark) return;   // nothing useful to add
+  for (const name of names) {
+    const { correct, total } = breakdown[name];
+    const pct = total ? Math.round(100 * correct / total) : 0;
+    const row = document.createElement('div');
+    row.className = 'row';
+    const verdict = passMark
+      ? `<span class="vd ${pct >= passMark ? 'pass' : 'fail'}">` +
+        `${pct >= passMark ? '\u53ca\u683c' : '\u672a\u53ca\u683c'}</span>`
+      : '';
+    row.innerHTML = `<span class="nm">${escapeHtml(name)}</span>` +
+      `<span class="sc">${correct}/${total}\u3000${pct}%</span>${verdict}`;
+    el_.appendChild(row);
+  }
+}
+
+// ------- shared: one wrong-question card -------
+// `sel` is the letter the user picked, or null when the question was left blank.
+function wrongQuestionCard(q, sel, n) {
+  const div = document.createElement('div');
+  div.className = 'result-q';
+  const stem = document.createElement('div');
+  stem.className = 'stem';
+  stem.textContent = n + '. ' + q.stem;
+  div.appendChild(stem);
+  // Reviewing a reading question without its passage is the same dead end as answering
+  // one without it.
+  if (q.passage) {
+    const p = document.createElement('div');
+    p.className = 'passage';
+    p.textContent = q.passage;
+    div.appendChild(p);
+  }
+  for (const letter of optionLetters(q)) {
+    const line = document.createElement('div');
+    line.style.fontSize = '14px';
+    line.style.padding = '2px 0';
+    const isAns = letter === q.answer, isSel = letter === sel;
+    const mark = isAns ? '\u2713' : (isSel ? '\u2717' : '\u3000');
+    const color = isAns ? 'var(--good-ink)' : (isSel ? 'var(--bad-ink)' : 'var(--muted)');
+    const weight = (isAns || isSel) ? '600' : '400';
+    line.innerHTML = '<span style="color:' + color + ';font-weight:' + weight + '">' +
+      mark + ' (' + letter + ') ' + escapeHtml(q.options[letter] || '') + '</span>';
+    div.appendChild(line);
+  }
+  const your = document.createElement('div');
+  your.className = 'your-line';
+  your.textContent = sel ? ('\u4f60\u7684\u7b54\u6848\uff1a(' + sel + ')') : '\u672a\u4f5c\u7b54';
+  div.appendChild(your);
+  if (q.explanations) {
+    const block = document.createElement('div');
+    block.className = 'expl-block';
+    block.innerHTML = '<div class="expl-title">\u89e3\u6790</div>';
+    for (const letter of optionLetters(q)) {
+      const expl = q.explanations[letter];
+      if (!expl) continue;
+      const item = document.createElement('div');
+      item.className = 'expl-item' +
+        (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
+      item.innerHTML = '<span class="expl-letter">(' + letter + ')</span><span>' +
+        escapeHtml(expl) + '</span>';
+      block.appendChild(item);
+    }
+    // Same line as in the quiz: this is the wrong-answer review and history detail, where
+    // a candidate reads the 解析 most carefully, so it must carry the same provenance.
+    const src = document.createElement('div');
+    src.className = 'expl-src';
+    src.textContent = '答案為官方標準答案；以上解析由 AI 撰寫，非官方解析，僅供理解參考。';
+    block.appendChild(src);
+    div.appendChild(block);
+  }
+  const meta = document.createElement('div');
+  meta.className = 'origin';
+  meta.textContent = q.origin || '';
+  div.appendChild(meta);
+  return div;
+}
+
+// ------- history -------
+// Synchronous: the caller has already fetched the question's bank (loadBanks). A miss
+// is a question that belonged to a bank no longer published, or one dropped from its bank.
+function findQuestion(qid) {
+  const t = bankOf(qid);
+  if (!t || !DATA[t]) return null;
+  return DATA[t].find(q => q.id === qid) || null;
+}
+
+function showHistory() {
+  const list = loadResults();
+  el('history-meta').textContent = list.length
+    ? ('\u5171 ' + list.length + ' \u6b21\u6e2c\u9a57\u7d00\u9304\uff08\u6700\u591a\u4fdd\u7559 ' + MAX_RESULTS + ' \u6b21\uff09')
+    : '';
+
+  // Per-topic summary: attempts, best, average, most recent.
+  const summary = el('history-summary');
+  summary.innerHTML = '';
+  const byTopic = {};
+  for (const r of list) (byTopic[r.t] = byTopic[r.t] || []).push(r);
+  for (const t of Object.keys(byTopic)) {
+    const rs = byTopic[t];
+    const pcts = rs.map(pctOf);
+    const avg = Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length);
+    const div = document.createElement('div');
+    div.className = 'hist-summary';
+    div.innerHTML =
+      '<div class="name">' + escapeHtml(topicLabel(t)) + '</div>' +
+      '<div class="figs">\u4f5c\u7b54 <b>' + rs.length + '</b> \u6b21\u3000' +
+      '\u6700\u4f73 <b>' + Math.max.apply(null, pcts) + '%</b>\u3000' +
+      '\u5e73\u5747 <b>' + avg + '%</b>\u3000' +
+      '\u6700\u8fd1 <b>' + pcts[0] + '%</b></div>';
+    summary.appendChild(div);
+  }
+
+  const cont = el('history-list');
+  cont.innerHTML = '';
+  if (!list.length) {
+    cont.innerHTML = '<div class="empty-state">\u9084\u6c92\u6709\u6e2c\u9a57\u7d00\u9304\u3002<br>' +
+      '\u5b8c\u6210\u4e00\u6b21\u6e2c\u9a57\u4e26\u4ea4\u5377\u5f8c\u5c31\u6703\u51fa\u73fe\u5728\u9019\u88e1\u3002</div>';
+  }
+  list.forEach((r, i) => {
+    const pct = pctOf(r);
+    const row = document.createElement('div');
+    row.className = 'hist-row';
+    // Per-subject breakdown as its own column. The phone layout has no room for it,
+    // so CSS hides it below 1024px rather than the markup differing between widths.
+    const subj = Object.entries(r.s || {})
+      .map(([nm, v]) => escapeHtml(nm) + ' ' + (v.total ? Math.round(100 * v.correct / v.total) : 0) + '%')
+      .join('<br>');
+    row.innerHTML =
+      '<div class="grow">' +
+        '<div class="topic">' + escapeHtml(topicLabel(r.t)) + '</div>' +
+        '<div class="when">' + fmtWhen(r.ts) + '\u3000\u7b54\u932f ' + r.w.length + ' \u984c</div>' +
+      '</div>' +
+      '<span class="subj-cell">' + subj + '</span>' +
+      '<span class="score-pill ' + (pct >= PASS_MARK * 100 ? 'pass' : 'fail') + '">' +
+        r.c + '/' + r.n + '\u3000' + pct + '%</span>' +
+      '<span class="chev">\u203a</span>';
+    // Same reason as the navigator cells: this row is the only way into an exam's
+    // detail, so it cannot be mouse-only.
+    row.tabIndex = 0;
+    row.setAttribute('role', 'button');
+    const open = () => showHistoryDetail(i);
+    row.onclick = open;
+    row.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    };
+    cont.appendChild(row);
+  });
+  show('page-history');
+}
+
+async function showHistoryDetail(i) {
+  const list = loadResults();
+  const r = list[i];
+  if (!r) { showHistory(); return; }
+  try { await loadBanks(r.w.map(pair => bankOf(pair[0])).filter(Boolean)); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
+  const pct = pctOf(r);
+  el('hd-title').textContent = topicLabel(r.t);
+  el('hd-meta').textContent = fmtWhen(r.ts) +
+    '\u3000\u5f97\u5206 ' + r.c + ' / ' + r.n + '\uff08' + pct + '%\uff09' +
+    '\u3000\u7b54\u932f ' + r.w.length + ' \u984c';
+
+  const bp = blueprintFor(r.t);
+  renderSubjectTable(el('hd-subjects'), r.s || {}, sectionPassMark(bp));
+
+  const cont = el('hd-list');
+  cont.innerHTML = '';
+  if (!r.w.length) {
+    cont.innerHTML = '<div class="empty-state">\u9019\u6b21\u5168\u5c0d\uff0c\u6c92\u6709\u932f\u984c\u3002</div>';
+    show('page-history-detail');
+    return;
+  }
+  let n = 0, missing = 0;
+  for (const pair of r.w) {
+    const q = findQuestion(pair[0]);
+    if (!q) { missing++; continue; }
+    cont.appendChild(wrongQuestionCard(q, pair[1], ++n));
+  }
+  if (missing) {
+    const note = document.createElement('div');
+    note.className = 'empty-state';
+    note.textContent = '\u53e6\u6709 ' + missing +
+      ' \u984c\u5df2\u4e0d\u5728\u76ee\u524d\u984c\u5eab\u4e2d\uff0c\u7121\u6cd5\u986f\u793a\u3002';
+    cont.appendChild(note);
+  }
+  show('page-history-detail');
+}
+
+// ------- escape -------
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+// ------- bootstrap -------
+// ------- home directory: family counts + search -------
+// The buttons are static markup (scripts/test_topics.py guards that); this only fills the
+// family summaries and filters. Search matches a bank's name and its blueprint 科目, so
+// "投資學" finds 證券商高級業務員 — people know the subject they must revise, not always
+// which exam it belongs to.
+function famTopics(fam) {
+  return [...new Set([...fam.querySelectorAll('[data-topic]')]
+    .map(b => b.dataset.topic).filter(t => BANKS && BANKS[t]))];
+}
+function updateFamCounts() {
+  document.querySelectorAll('details.fam').forEach(fam => {
+    const btns = [...fam.querySelectorAll('[data-topic]')].filter(b => BANKS && BANKS[b.dataset.topic]);
+    const n = famTopics(fam).reduce((sum, t) => sum + BANKS[t].n, 0);
+    const el = fam.querySelector('.fcount');
+    if (el) { el.textContent = btns.length + ' 項 · ' + n.toLocaleString('en-US') + ' 題'; }
+  });
+}
+function initExamSearch() {
+  const mount = el('examsearch'), nohit = el('nohit');
+  if (!mount || !nohit) return;
+  mount.innerHTML =
+    '<label class="srch">'
+    + '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+    + ' stroke-width="2" stroke-linecap="round" aria-hidden="true">'
+    + '<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.6-3.6"></path></svg>'
+    + '<input type="search" id="examq" autocomplete="off" aria-label="搜尋考試或科目"'
+    + ' placeholder="搜尋考試或科目"></label>';
+  const input = el('examq');
+  const fams = [...document.querySelectorAll('details.fam')];
+  const btns = [...document.querySelectorAll('[data-topic]')];
+  btns.forEach(b => {
+    const bp = blueprintFor(b.dataset.topic);
+    const subs = bp ? bp.subjects.map(x => x.subject).join(' ') : '';
+    b.dataset.hay = (b.textContent + ' ' + subs).toLowerCase();
+  });
+  const restore = () => {
+    btns.forEach(b => { b.hidden = false; });
+    fams.forEach(f => { f.hidden = false; f.open = false; });
+    updateFamCounts();
+    nohit.hidden = true;
+  };
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { restore(); return; }
+    let hits = 0;
+    fams.forEach(fam => {
+      let n = 0;
+      [...fam.querySelectorAll('[data-topic]')].forEach(b => {
+        const hit = b.dataset.hay.indexOf(q) !== -1;
+        b.hidden = !hit;
+        if (hit) n++;
+      });
+      fam.hidden = n === 0;
+      fam.open = n > 0;
+      const c = fam.querySelector('.fcount');
+      if (c && n > 0) c.textContent = n + ' 項符合';
+      hits += n;
+    });
+    nohit.hidden = hits > 0;
+  });
+}
+
+// The length picker. Changing it re-renders the home page, because every card's
+// per-paper line and repeat-rate disclosure is derived from the chosen length.
+function initLenPick() {
+  const wrap = el('lenopts'), hint = el('lenhint');
+  if (!wrap) return;
+  const opts = [...wrap.querySelectorAll('.lenopt')];
+  const paint = () => {
+    opts.forEach(b => b.setAttribute('aria-pressed',
+      String((Number(b.dataset.len) || 0) === QUIZ_LEN)));
+    if (hint) hint.textContent = QUIZ_LEN ? LEN_HINT : '';
+  };
+  opts.forEach(b => {
+    b.onclick = () => {
+      QUIZ_LEN = Number(b.dataset.len) || 0;
+      saveLen(QUIZ_LEN);
+      paint();
+      renderHome();
+    };
+  });
+  paint();
+}
+
+async function boot() {
+  try {
+    const r = await fetch('data/banks.json');
+    if (!r.ok) throw new Error(`data/banks.json: HTTP ${r.status}`);
+    BANKS = await r.json();
+    // Optional: without it every bank falls back to a random QUIZ_SIZE draw.
+    try {
+      const b = await fetch('blueprints.json');
+      if (b.ok) BLUEPRINTS = await b.json();
+    } catch (e) { console.warn('No exam blueprints; drawing at random.', e); }
+  } catch (e) {
+    document.body.innerHTML = '<div class="app"><h1>載入失敗</h1><p>無法讀取題庫目錄（data/banks.json）。</p></div>';
+    return;
+  }
+  // Wire buttons
+  QUIZ_LEN = loadLen();
+  // /app.html?topic=bar_1&n=100 -- a deep link may choose the length as well as the bank.
+  const wantLen = parseInt(new URLSearchParams(location.search).get('n') || '', 10);
+  if (LEN_CHOICES.indexOf(wantLen) >= 0) { QUIZ_LEN = wantLen; saveLen(QUIZ_LEN); }
+  document.querySelectorAll('[data-topic]').forEach(b => {
+    b.onclick = () => startQuiz(b.dataset.topic, b);
+  });
+  initExamSearch();
+  initLenPick();
+  initNavVerdict();
+  // Arriving from the landing page: open the family that was clicked, so the visitor
+  // lands on the exams they asked for rather than six closed bars.
+  (function () {
+    const want = new URLSearchParams(location.search).get('fam');
+    if (!want) return;
+    const fam = document.querySelector(`details.fam[data-fam="${CSS.escape(want)}"]`);
+    if (!fam) return;
+    fam.open = true;
+    fam.scrollIntoView({ block: 'start' });
+  })();
+  el('btn-review').onclick = showReview;
+  // Desktop top bar. Same handlers as the on-page buttons, so behaviour cannot diverge.
+  document.querySelectorAll('.topbar .navlink').forEach(b => {
+    b.onclick = () => {
+      const to = b.dataset.nav;
+      if (to === 'home') { show('page-home'); renderHome(); }
+      else if (to === 'review') showReview();
+      else if (to === 'history') showHistory();
+      else if (to === 'clear') el('btn-clear').click();
+    };
+  });
+  el('btn-submit-side').onclick = () => submitQuiz();
+  el('btn-clear').onclick = () => {
+    if (confirm('確定清除所有作答紀錄？此動作無法復原。')) {
+      try { localStorage.removeItem(LS_KEY); } catch { /* storage unavailable */ }
+      renderHome();
+    }
+  };
+  el('btn-prev').onclick = prevQ;
+  el('btn-next').onclick = nextQ;
+  el('btn-save-home').onclick = () => {
+    saveQuizState();
+    show('page-home');
+    renderHome();
+  };
+  el('btn-abort').onclick = () => {
+    if (confirm('放棄本次測驗並回首頁？（進度將清除）')) {
+      clearQuizState();
+      show('page-home');
+      renderHome();
+    }
+  };
+  el('btn-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-history').onclick = showHistory;
+  el('btn-history-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-hd-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-hd-back').onclick = showHistory;
+  // The just-submitted exam is always record 0.
+  el('btn-result-review').onclick = () => showHistoryDetail(0);
+  el('btn-history-clear').onclick = () => {
+    if (confirm('\u78ba\u5b9a\u6e05\u9664\u6240\u6709\u6e2c\u9a57\u7d00\u9304\uff1f\u6b64\u52d5\u4f5c\u7121\u6cd5\u5fa9\u539f\u3002')) {
+      try { localStorage.removeItem(LS_RESULTS_KEY); } catch { /* storage unavailable */ }
+      showHistory();
+    }
+  };
+  el('btn-review-home').onclick = () => { show('page-home'); renderHome(); };
+  el('btn-resume').onclick = () => { const s = loadSavedQuiz(); if (s) resumeQuiz(s); };
+  el('btn-discard').onclick = () => { clearQuizState(); el('resume-banner').classList.add('hidden'); };
+  renderHome();
+  show('page-home');
+
+  // Deep link from an exam page: /app.html?topic=futures opens that exam's family and
+  // rings the exam, and stops there. It used to start the paper outright, which dropped
+  // a visitor fresh from a search result into question 1 of 100 with no 每回題數 choice,
+  // no sight of the other exams, and none of the disclosures on this page — and it
+  // contradicted the rule that a paper is only ever started from here. One tap more,
+  // and it never discards a paper in progress either.
+  const wanted = new URLSearchParams(location.search).get('topic');
+  const target = wanted && document.querySelector(`.btn[data-topic="${CSS.escape(wanted)}"]`);
+  if (target) {
+    const fam = target.closest('details.fam');
+    if (fam) fam.open = true;
+    target.classList.add('hilite');
+    target.scrollIntoView({ block: 'center' });
+  }
+  // For design/linktest.mjs, which waits on this instead of guessing how long boot takes.
+  document.documentElement.dataset.booted = '1';
+}
+boot();
+</script>
+</body>
+</html>
