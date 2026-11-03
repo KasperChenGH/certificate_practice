@@ -242,6 +242,8 @@
   .fnote { margin: -4px 16px 12px 56px; font-size: 12px; line-height: 1.6;
     color: var(--muted); }
   .footer-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
+  .backup { margin-top: 22px; }
+  .backup .meta { margin-bottom: 8px; line-height: 1.6; }
 
   .subject-table { margin: 12px 0 0; font-size: 14px; }
   .subject-table .row {
@@ -418,6 +420,7 @@
     #page-home .btn.review, #page-home .btn.secondary { max-width: 260px; }
     #page-home .home-actions { display: flex; gap: 10px; margin-top: 22px; }
     #page-home .home-actions .btn { margin-bottom: 0; }
+    #page-home .backup .home-actions { margin-top: 8px; }
 
     /* 作答中 — two columns, navigator on the right */
     .quiz-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
@@ -573,8 +576,16 @@
       <button class="btn secondary" id="btn-history">測驗紀錄</button>
       <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
     </div>
+    <div class="backup">
+      <p class="meta">作答紀錄只存在這個瀏覽器裡，換瀏覽器、裝置或 Google 帳號就看不到。要搬過去，先在這裡匯出成檔案，再到新的地方匯入。</p>
+      <div class="home-actions">
+        <button class="btn secondary" id="btn-export">匯出紀錄</button>
+        <button class="btn secondary" id="btn-import">匯入紀錄</button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+      </div>
+    </div>
 
-    <p class="footer-note">作答紀錄存於本機瀏覽器（localStorage），不會上傳。<br>
+    <p class="footer-note">作答紀錄存於本機瀏覽器（localStorage），不會上傳；匯出的檔案也只存在你自己的裝置上。<br>
       <a href="/exams/">全部考試題庫與考古題解析</a><br>
       <a href="/about/">關於本站</a> · <a href="/privacy/">隱私權政策</a> · <a href="/contact/">聯絡方式</a> · <a href="/terms/">使用條款</a></p>
   </div>
@@ -980,6 +991,73 @@ function fmtWhen(ts) {
          ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
 }
 function pctOf(r) { return r.n ? Math.round(100 * r.c / r.n) : 0; }
+
+// ------- backup -------
+// localStorage belongs to one browser profile, so switching Chrome to another Google
+// account, or to another browser or device, shows an empty history. There is no server
+// to sync through; a file the person carries over is the whole mechanism.
+const BACKUP_KIND = 'certifications.courses/quiz-backup';
+function backupPayload() {
+  return { kind: BACKUP_KIND, v: 1, at: Date.now(),
+           history: loadHistory(), results: loadResults(), quiz: loadSavedQuiz() };
+}
+function exportBackup() {
+  const d = new Date(), pad = n => String(n).padStart(2, '0');
+  const name = `證照考試練習-紀錄-${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}.json`;
+  const url = URL.createObjectURL(new Blob([JSON.stringify(backupPayload())], { type: 'application/json' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+// Merge, never replace: the person may already have practised in this browser too.
+// Attempts carry no timestamps, so two histories of one question cannot be interleaved;
+// the longer one wins and a tie keeps what is here. That also makes importing the same
+// file twice a no-op. Exam records are keyed by topic + timestamp. A paper in progress
+// is taken only when there is none here, so an import never discards one.
+function mergeBackup(b) {
+  if (!b || b.kind !== BACKUP_KIND || typeof b.history !== 'object' || !b.history ||
+      !Array.isArray(b.results)) throw new Error('not a backup file');
+  const h = loadHistory();
+  let questions = 0;
+  for (const [qid, rec] of Object.entries(b.history)) {
+    if (!rec || !Array.isArray(rec.attempts)) continue;
+    const att = rec.attempts.filter(x => typeof x === 'boolean').slice(-RECENT_WINDOW);
+    if (att.length && (!h[qid] || att.length > h[qid].attempts.length)) {
+      h[qid] = { attempts: att }; questions++;
+    }
+  }
+  saveHistory(h);
+  const list = loadResults();
+  const have = new Set(list.map(r => r.t + '|' + r.ts));
+  let exams = 0;
+  for (const r of b.results) {
+    if (!r || typeof r.t !== 'string' || typeof r.ts !== 'number' || have.has(r.t + '|' + r.ts)) continue;
+    list.push(r); have.add(r.t + '|' + r.ts); exams++;
+  }
+  list.sort((x, y) => y.ts - x.ts);
+  saveResults(list);
+  const q = b.quiz;
+  let quiz = false;
+  if (q && typeof q.topic === 'string' && Array.isArray(q.questionIds) && !loadSavedQuiz()) {
+    try { localStorage.setItem(LS_QUIZ_KEY, JSON.stringify(q)); quiz = true; }
+    catch { console.warn('Could not save imported quiz progress (storage unavailable)'); }
+  }
+  return { questions, exams, quiz };
+}
+function importBackup(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    let got;
+    try { got = mergeBackup(JSON.parse(reader.result)); }
+    catch { alert('無法讀取這個檔案：請選擇由「匯出紀錄」產生的 .json 檔。'); return; }
+    renderHome();
+    alert(`匯入完成：更新 ${got.questions} 題的作答紀錄、新增 ${got.exams} 次測驗紀錄` +
+          (got.quiz ? '，並帶入一份未完成的測驗' : '') + '。');
+  };
+  reader.onerror = () => alert('無法讀取這個檔案。');
+  reader.readAsText(file);
+}
 
 // ------- quiz state persistence -------
 function saveQuizState() {
@@ -1783,6 +1861,13 @@ async function boot() {
       try { localStorage.removeItem(LS_KEY); } catch { /* storage unavailable */ }
       renderHome();
     }
+  };
+  el('btn-export').onclick = exportBackup;
+  el('btn-import').onclick = () => el('import-file').click();
+  el('import-file').onchange = (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = '';   // so choosing the same file again still fires
+    if (f) importBackup(f);
   };
   el('btn-prev').onclick = prevQ;
   el('btn-next').onclick = nextQ;
