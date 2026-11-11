@@ -573,6 +573,7 @@
     </details>
     <div class="home-actions">
       <button class="btn review" id="btn-review">常錯題複習</button>
+      <button class="btn review" id="btn-wrong-quiz">常錯題測驗</button>
       <button class="btn secondary" id="btn-history">測驗紀錄</button>
       <button class="btn secondary" id="btn-clear">清除作答紀錄</button>
     </div>
@@ -689,6 +690,7 @@
   <div id="page-review" class="hidden">
     <h1>常錯題複習</h1>
     <p class="meta" id="review-meta">—</p>
+    <button class="btn review" id="btn-review-quiz" style="margin-top:12px;max-width:320px;">把這些題目做成測驗</button>
     <div id="review-list"></div>
     <button class="btn" id="btn-review-home" style="margin-top:16px;">回首頁</button>
   </div>
@@ -732,7 +734,12 @@ const TOPIC_NAMES = {
 // Banks no longer published. Exam history recorded before a bank is retired still
 // needs a readable name, so labels outlive the questions. Empty today.
 const RETIRED_TOPIC_NAMES = {};
-function topicLabel(t) { return TOPIC_NAMES[t] || RETIRED_TOPIC_NAMES[t] || t; }
+// 常錯題測驗 is not a bank: its paper is drawn from every bank's often-wrong questions, so
+// it gets a topic key of its own that no bank uses (bank keys are lower_snake exam names).
+const WRONG_TOPIC = 'wrong';
+const WRONG_LABEL = '常錯題測驗';
+const WRONG_MAX = 100;
+function topicLabel(t) { return t === WRONG_TOPIC ? WRONG_LABEL : (TOPIC_NAMES[t] || RETIRED_TOPIC_NAMES[t] || t); }
 const QUIZ_SIZE = 100;      // target length; a smaller bank uses its whole pool
 const RECENT_WINDOW = 10;   // last N attempts per question
 const MIN_ATTEMPTS = 3;     // min attempts before counting as "often wrong"
@@ -1081,17 +1088,24 @@ function loadSavedQuiz() {
   try { return JSON.parse(localStorage.getItem(LS_QUIZ_KEY) || 'null'); }
   catch { return null; }
 }
+// A saved paper can be resumed while every bank it draws from is still published: one bank
+// for an exam paper, several for a 常錯題測驗.
+function resumable(saved) {
+  if (!saved || !BANKS || !Array.isArray(saved.questionIds)) return false;
+  if (saved.topic !== WRONG_TOPIC) return !!BANKS[saved.topic];
+  return saved.questionIds.length > 0 && saved.questionIds.every(id => bankOf(id));
+}
 async function resumeQuiz(saved) {
-  if (!BANKS || !BANKS[saved.topic]) return;
-  let pool;
-  try { pool = await loadBank(saved.topic); }
+  if (!resumable(saved)) return;
+  const banks = saved.topic === WRONG_TOPIC ? saved.questionIds.map(bankOf) : [saved.topic];
+  try { await loadBanks(banks); }
   catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
   const byId = {};
-  for (const q of pool) byId[q.id] = q;
+  for (const t of new Set(banks)) for (const q of DATA[t]) byId[q.id] = q;
   const questions = saved.questionIds.map(id => byId[id]).filter(Boolean);
   if (questions.length !== saved.questionIds.length) { clearQuizState(); return; }
   STATE = { topic: saved.topic, questions, answers: saved.answers, idx: saved.idx, submitted: false };
-  el('quiz-label').textContent = TOPIC_NAMES[saved.topic];
+  el('quiz-label').textContent = topicLabel(saved.topic);
   renderQuiz();
   show('page-quiz');
 }
@@ -1250,11 +1264,11 @@ function renderHome() {
   }
   updateFamCounts();
   const saved = loadSavedQuiz();
-  if (saved && BANKS && !BANKS[saved.topic]) clearQuizState();
+  if (saved && BANKS && !resumable(saved)) clearQuizState();
   const banner = el('resume-banner');
-  if (saved && BANKS && BANKS[saved.topic]) {
+  if (saved && resumable(saved)) {
     const answered = saved.answers.filter(a => a !== null).length;
-    el('resume-meta').textContent = `${TOPIC_NAMES[saved.topic]}　已作答 ${answered} / ${saved.questionIds.length} 題`;
+    el('resume-meta').textContent = `${topicLabel(saved.topic)}　已作答 ${answered} / ${saved.questionIds.length} 題`;
     banner.classList.remove('hidden');
   } else {
     banner.classList.add('hidden');
@@ -1291,17 +1305,30 @@ async function startQuiz(topic, btn) {
   } else {
     picked = dedupe(shuffle(pool)).slice(0, quizSizeFor(topic));
   }
-  const size = picked.length;
+  beginPaper(topic, picked);
+}
+function beginPaper(topic, picked) {
   STATE = {
     topic,
     questions: picked,
-    answers: new Array(size).fill(null),  // 'A'/'B'/'C'/'D' or null
+    answers: new Array(picked.length).fill(null),  // 'A'/'B'/'C'/'D' or null
     idx: 0,
     submitted: false,
   };
-  el('quiz-label').textContent = TOPIC_NAMES[topic];
+  el('quiz-label').textContent = topicLabel(topic);
   renderQuiz();
   show('page-quiz');
+}
+// 常錯題測驗: every often-wrong question across all banks, shuffled, twins dropped, at most
+// WRONG_MAX of them -- fewer when fewer qualify. Answering one records an attempt like any
+// other paper, so a question answered right enough times leaves the pool by itself.
+async function startWrongQuiz() {
+  const ids = oftenWrongIds();
+  try { await loadBanks(ids.map(bankOf).filter(Boolean)); }
+  catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
+  const qs = ids.map(findQuestion).filter(Boolean);
+  if (!qs.length) { alert('目前還沒有常錯題。多做幾次測驗就會累積。'); return; }
+  beginPaper(WRONG_TOPIC, dedupe(shuffle(qs)).slice(0, WRONG_MAX));
 }
 // The desktop side panel: a cell per question, filled when answered, outlined on the
 // current one, click to jump. On a 100-question paper this is the difference between
@@ -1456,14 +1483,17 @@ function submitQuiz() {
     if (STATE.answers[i] === STATE.questions[i].answer) correct++;
   }
   clearQuizState();
-  const breakdown = subjectBreakdown(STATE.questions, STATE.answers);
+  // A 常錯題測驗 mixes exams, so it is broken down by exam rather than by subject.
+  const breakdown = STATE.topic === WRONG_TOPIC
+    ? subjectBreakdown(STATE.questions, STATE.answers, q => topicLabel(bankOf(q.id)))
+    : subjectBreakdown(STATE.questions, STATE.answers);
   const bp = blueprintFor(STATE.topic);
   recordResult(correct, breakdown);
   renderSubjectTable(el('result-subjects'), breakdown, sectionPassMark(bp));
   el('result-note').textContent = bp && bp.note ? bp.note : '';
   el('result-score').textContent = correct;
   el('result-total').textContent = currentSize();
-  el('result-detail').textContent = `${TOPIC_NAMES[STATE.topic]}　答錯 ${currentSize()-correct} 題`;
+  el('result-detail').textContent = `${topicLabel(STATE.topic)}　答錯 ${currentSize()-correct} 題`;
   show('page-results');
 }
 
@@ -1483,6 +1513,10 @@ async function showReview() {
   el('review-meta').textContent = `${list.length} 題（最近 ${RECENT_WINDOW} 次作答中答錯率 ≥ 50%、且至少作答 ${MIN_ATTEMPTS} 次）`;
   const cont = el('review-list');
   cont.innerHTML = '';
+  const quizBtn = el('btn-review-quiz');
+  quizBtn.classList.toggle('hidden', list.length === 0);
+  quizBtn.textContent = list.length > WRONG_MAX
+    ? `從中隨機抽 ${WRONG_MAX} 題做測驗` : `把這 ${list.length} 題做成測驗`;
   if (list.length === 0) {
     cont.innerHTML = '<div class="empty-state">目前還沒有常錯題。<br>多做幾次測驗就會累積。</div>';
   } else {
@@ -1505,10 +1539,10 @@ async function showReview() {
 // ------- per-subject scoring -------
 // The real exams are graded per subject: passing overall while failing one subject is
 // still a fail, so a combined score alone would be misleading.
-function subjectBreakdown(questions, answers) {
+function subjectBreakdown(questions, answers, keyOf) {
   const acc = {};
   questions.forEach((q, i) => {
-    const key = q.subject || '';
+    const key = keyOf ? keyOf(q) : (q.subject || '');
     if (!key) return;
     const row = acc[key] || (acc[key] = { correct: 0, total: 0 });
     row.total++;
@@ -1845,6 +1879,8 @@ async function boot() {
     fam.scrollIntoView({ block: 'start' });
   })();
   el('btn-review').onclick = showReview;
+  el('btn-wrong-quiz').onclick = startWrongQuiz;
+  el('btn-review-quiz').onclick = startWrongQuiz;
   // Desktop top bar. Same handlers as the on-page buttons, so behaviour cannot diverge.
   document.querySelectorAll('.topbar .navlink').forEach(b => {
     b.onclick = () => {
