@@ -781,7 +781,7 @@ function bankOf(qid) {
   }
   return best;
 }
-// {topic: {exam, pass_mark, note, subjects:[{subject, count, points}]}} — how a practice
+// {topic: {exam, pass_mark, pass_total?, note, subjects:[{subject, count, points}]}} — how a practice
 // paper is composed so it mirrors the real exam. Missing or unreachable => random draw.
 let BLUEPRINTS = {};
 function blueprintFor(topic) { return BLUEPRINTS[topic] || null; }
@@ -1489,7 +1489,7 @@ function submitQuiz() {
     : subjectBreakdown(STATE.questions, STATE.answers);
   const bp = blueprintFor(STATE.topic);
   recordResult(correct, breakdown);
-  renderSubjectTable(el('result-subjects'), breakdown, sectionPassMark(bp));
+  renderSubjectTable(el('result-subjects'), breakdown, bp);
   el('result-note').textContent = bp && bp.note ? bp.note : '';
   el('result-score').textContent = correct;
   el('result-total').textContent = currentSize();
@@ -1559,22 +1559,68 @@ function sectionPassMark(bp) {
   return bp.pass_mark || null;
 }
 
-function renderSubjectTable(el_, breakdown, passMark) {
+// The fourth shape: \u671f\u8ca8\u5546\u696d\u52d9\u54e1, \u8b49\u5238\u5546(\u9ad8\u7d1a)\u696d\u52d9\u54e1, \u6295\u4fe1\u6295\u9867\u696d\u52d9\u54e1 and \u7968\u5238\u5546 pass on the
+// subjects' combined score (each out of 100, as on the real paper), with `pass_mark` as a
+// floor no single subject may fall under. Stamping each subject against a 70 bar failed
+// 65 + 80 on \u671f\u8ca8, which the \u7c21\u7ae0 passes. A shortened paper is judged on the same scale:
+// each subject's percentage stands in for its score out of 100.
+// Returns null when the blueprint has no combined bar, or the record lacks a subject.
+function combinedVerdict(bp, breakdown) {
+  if (!bp || !bp.pass_total) return null;
+  const scores = bp.subjects.map(s => {
+    const r = breakdown[s.subject];
+    return r && r.total ? Math.round(100 * r.correct / r.total) : null;
+  });
+  if (scores.some(x => x === null)) return null;
+  const sum = scores.reduce((a, b) => a + b, 0);
+  const low = scores.filter(x => x < bp.pass_mark).length;
+  return { sum, max: 100 * scores.length, pass: sum >= bp.pass_total && !low };
+}
+// Whether a submitted exam passed, for the pill on \u6e2c\u9a57\u7d00\u9304: the combined rule where the
+// exam has one, else the overall 70%.
+function recordPassed(r) {
+  const v = combinedVerdict(blueprintFor(r.t), r.s || {});
+  return v ? v.pass : pctOf(r) >= PASS_MARK * 100;
+}
+
+function renderSubjectTable(el_, breakdown, bp) {
   el_.innerHTML = '';
-  const names = Object.keys(breakdown);
+  // In the paper's own subject order, not whichever subject the shuffle asked first.
+  const order = bp ? bp.subjects.map(s => s.subject) : [];
+  const names = Object.keys(breakdown)
+    .sort((x, y) => (order.indexOf(x) + 1 || 1e9) - (order.indexOf(y) + 1 || 1e9));
+  const passMark = sectionPassMark(bp);
   if (names.length < 2 && !passMark) return;   // nothing useful to add
+  const combined = combinedVerdict(bp, breakdown);
+  const tag = (ok, text) => `<span class="vd ${ok ? 'pass' : 'fail'}">${text}</span>`;
+  const addRow = (name, score, verdict) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<span class="nm">${escapeHtml(name)}</span><span class="sc">${score}</span>${verdict}`;
+    el_.appendChild(row);
+  };
   for (const name of names) {
     const { correct, total } = breakdown[name];
     const pct = total ? Math.round(100 * correct / total) : 0;
-    const row = document.createElement('div');
-    row.className = 'row';
-    const verdict = passMark
-      ? `<span class="vd ${pct >= passMark ? 'pass' : 'fail'}">` +
-        `${pct >= passMark ? '\u53ca\u683c' : '\u672a\u53ca\u683c'}</span>`
-      : '';
-    row.innerHTML = `<span class="nm">${escapeHtml(name)}</span>` +
-      `<span class="sc">${correct}/${total}\u3000${pct}%</span>${verdict}`;
-    el_.appendChild(row);
+    // Under a combined bar the subject has no pass of its own, only a floor to stay above.
+    const verdict = !passMark ? ''
+      : bp.pass_total ? (pct < passMark ? tag(false, `\u4f4e\u65bc ${passMark}`) : '')
+      : tag(pct >= passMark, pct >= passMark ? '\u53ca\u683c' : '\u672a\u53ca\u683c');
+    addRow(name, `${correct}/${total}\u3000${pct}%`, verdict);
+  }
+  // One 科 split into content halves (金融常識, 資產證券化, 債券, 股務): no section has a bar
+  // of its own, but the paper as a whole does, and it was the one verdict not shown.
+  if (bp && bp.scoring === 'overall' && bp.pass_mark) {
+    let c = 0, n = 0;
+    for (const name of names) { c += breakdown[name].correct; n += breakdown[name].total; }
+    const pct = n ? Math.round(100 * c / n) : 0;
+    addRow(`總分（合格 ${bp.pass_mark}%）`, `${c}/${n}　${pct}%`,
+           tag(pct >= bp.pass_mark, pct >= bp.pass_mark ? '及格' : '未及格'));
+  }
+  if (combined) {
+    addRow(`\u7e3d\u5206\uff08\u5408\u683c ${bp.pass_total} \u5206\u3001\u6bcf\u79d1\u4e0d\u4f4e\u65bc ${bp.pass_mark} \u5206\uff09`,
+           `${combined.sum} / ${combined.max}`,
+           tag(combined.pass, combined.pass ? '\u53ca\u683c' : '\u672a\u53ca\u683c'));
   }
 }
 
@@ -1696,7 +1742,7 @@ function showHistory() {
         '<div class="when">' + fmtWhen(r.ts) + '\u3000\u7b54\u932f ' + r.w.length + ' \u984c</div>' +
       '</div>' +
       '<span class="subj-cell">' + subj + '</span>' +
-      '<span class="score-pill ' + (pct >= PASS_MARK * 100 ? 'pass' : 'fail') + '">' +
+      '<span class="score-pill ' + (recordPassed(r) ? 'pass' : 'fail') + '">' +
         r.c + '/' + r.n + '\u3000' + pct + '%</span>' +
       '<span class="chev">\u203a</span>';
     // Same reason as the navigator cells: this row is the only way into an exam's
@@ -1726,7 +1772,7 @@ async function showHistoryDetail(i) {
     '\u3000\u7b54\u932f ' + r.w.length + ' \u984c';
 
   const bp = blueprintFor(r.t);
-  renderSubjectTable(el('hd-subjects'), r.s || {}, sectionPassMark(bp));
+  renderSubjectTable(el('hd-subjects'), r.s || {}, bp);
 
   const cont = el('hd-list');
   cont.innerHTML = '';
