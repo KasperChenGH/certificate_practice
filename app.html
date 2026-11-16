@@ -983,7 +983,9 @@ function saveResults(list) {
 function recordResult(correct, breakdown) {
   const wrong = [];
   STATE.questions.forEach((q, i) => {
-    if (STATE.answers[i] !== q.answer) wrong.push([q.id, STATE.answers[i]]);
+    // the third field is the order the options were shown in, so the history page shows them
+    // the same way; older records have only two fields and display in the bank's order
+    if (STATE.answers[i] !== q.answer) wrong.push([q.id, STATE.answers[i], (STATE.orders || [])[i] || '']);
   });
   const list = loadResults();
   // `s` holds the per-subject split: the record stores only wrong answers, so the
@@ -1075,6 +1077,7 @@ function saveQuizState() {
       topic: STATE.topic,
       questionIds: STATE.questions.map(q => q.id),
       answers: STATE.answers,
+      orders: STATE.orders,
       idx: STATE.idx,
     }));
   } catch { console.warn('Could not save quiz progress (storage unavailable)'); }
@@ -1104,7 +1107,10 @@ async function resumeQuiz(saved) {
   for (const t of new Set(banks)) for (const q of DATA[t]) byId[q.id] = q;
   const questions = saved.questionIds.map(id => byId[id]).filter(Boolean);
   if (questions.length !== saved.questionIds.length) { clearQuizState(); return; }
-  STATE = { topic: saved.topic, questions, answers: saved.answers, idx: saved.idx, submitted: false };
+  // A paper saved before options were shuffled has no `orders`; displayOrder() falls back to
+  // the bank's order for it, so it resumes as it was shown.
+  const orders = Array.isArray(saved.orders) ? saved.orders : [];
+  STATE = { topic: saved.topic, questions, answers: saved.answers, orders, idx: saved.idx, submitted: false };
   el('quiz-label').textContent = topicLabel(saved.topic);
   renderQuiz();
   show('page-quiz');
@@ -1135,12 +1141,58 @@ function normQ(s) {
 // `seen` maps a normalised stem -> [Set of normalised options] per twin kept so far.
 // Sharing one map across several draws is what keeps a twin from slipping through in
 // two different sections of the same paper.
+//
+// Near-twins: a later sitting sometimes rewords a reused item -- 投資人 becomes 交易人 in the
+// stem and every option, 台 becomes 臺, a 下列 is dropped, 15000 becomes 15,000. Those are
+// twins when the stems are >= 85% alike (LCS), every option has a >= 85% partner, and the
+// keyed answers read the same -- or differ only in characters the stems also differ in
+// (投資人/交易人). That last test is what keeps 買單/賣單, 10%/8%, 何者為/何者非 apart:
+// near-identical stems and options, but the key moves to a different text.
+function lcsSim(a, b) {
+  if (a === b) return 1;
+  if (!a || !b || Math.min(a.length, b.length) / Math.max(a.length, b.length) < 0.7) return 0;
+  let prev = new Array(b.length + 1).fill(0);
+  for (let i = 0; i < a.length; i++) {
+    const cur = [0];
+    for (let j = 0; j < b.length; j++)
+      cur.push(a[i] === b[j] ? prev[j] + 1 : Math.max(prev[j + 1], cur[j]));
+    prev = cur;
+  }
+  return 2 * prev[b.length] / (a.length + b.length);
+}
+function charBag(s) { const m = new Map(); for (const c of s) m.set(c, (m.get(c) || 0) + 1); return m; }
+// Characters x has more of than y.
+function bagMinus(x, y) { const out = new Set(); for (const [c, n] of x) if (n > (y.get(c) || 0)) out.add(c); return out; }
+function twinEntry(q) {
+  const s = normQ(q.stem), o = Object.values(q.options).map(normQ);
+  return { s, o, opts: new Set(o), bag: charBag(s), a: normQ(q.options[q.answer] || '') };
+}
+function nearTwin(x, y) {
+  if (x.o.length !== y.o.length) return false;
+  // the bag overlap bounds the LCS from above, so it rejects nearly every pair cheaply
+  let common = 0;
+  for (const [c, n] of x.bag) common += Math.min(n, y.bag.get(c) || 0);
+  if (2 * common / (x.s.length + y.s.length) < 0.85) return false;
+  if (lcsSim(x.s, y.s) < 0.85) return false;
+  const left = y.o.slice();
+  for (const o of x.o) {
+    let best = -1, bs = 0;
+    left.forEach((p, k) => { const v = lcsSim(o, p); if (v > bs) { bs = v; best = k; } });
+    if (bs < 0.85) return false;
+    left.splice(best, 1);
+  }
+  if (x.a === y.a) return true;
+  const ax = charBag(x.a), ay = charBag(y.a), sx = bagMinus(x.bag, y.bag), sy = bagMinus(y.bag, x.bag);
+  for (const c of bagMinus(ax, ay)) if (!sx.has(c)) return false;
+  for (const c of bagMinus(ay, ax)) if (!sy.has(c)) return false;
+  return true;
+}
 function twinSeen(q, seen) {
-  const key = normQ(q.stem);
-  const opts = new Set(Object.values(q.options).map(normQ));
-  const prev = seen.get(key) || [];
-  if (prev.some(p => { let n = 0; for (const o of opts) if (p.has(o)) n++; return n >= 2; })) return true;
-  prev.push(opts); seen.set(key, prev);
+  const e = twinEntry(q);
+  const prev = seen.get(e.s) || [];
+  if (prev.some(p => { let n = 0; for (const o of e.opts) if (p.opts.has(o)) n++; return n >= 2; })) return true;
+  for (const [k, list] of seen) if (k !== e.s && list.some(p => nearTwin(e, p))) return true;
+  prev.push(e); seen.set(e.s, prev);
   return false;
 }
 function dedupe(list, seen) {
@@ -1162,6 +1214,34 @@ function el(id) { return document.getElementById(id); }
 // Taiwan banks are 4-choice (A-D); the CFA bank follows the exam's 3-choice format (A-C).
 function optionLetters(q) {
   return ['A','B','C','D'].filter(L => (q.options[L] || '').trim() !== '');
+}
+// Every paper shows a question's options in a fresh order, so the key is learnt by its
+// content and not by its slot. Answers, history and the wrong-pool all stay in the bank's own
+// letters; only what is on screen is relabelled, A-D by position.
+// Not shuffled: a question whose options or 解析 name an option by letter -- 「(A)(B)皆是」,
+// 「與選項B相同」 -- since a moved option would make that text point at the wrong one (~400 of
+// ~11,600). Pinned in its slot: an option that speaks about the others by position --
+// 以上皆是, 以上皆非, 上述, 前述, 兩者 -- the rest are shuffled around it.
+const LETTER_REF = /[（(]\s*[A-Da-d]\s*[)）]|(?<![A-Za-z])[A-D]\s*[、與和及或,，&]\s*[A-D](?![A-Za-z])|選項\s*[（(]?[A-D]|(?<![A-Za-z])[A-D]\s*(選項|項)|^\s*[A-D]\s*$/;
+const POSITION_REF = /^\s*(以上|上述|前述|前[二三四兩]|[二三四兩]者|皆|均|都|全部|所有選項|其他選項)/;
+function optionOrder(q) {
+  const letters = optionLetters(q);
+  const texts = letters.map(L => q.options[L] || '')
+    .concat(Object.values(q.explanations || {}));
+  if (texts.some(t => LETTER_REF.test(t))) return letters.join('');
+  const free = letters.filter(L => !POSITION_REF.test(q.options[L]));
+  const moved = shuffle(free.slice());
+  return letters.map(L => free.includes(L) ? moved.shift() : L).join('');
+}
+// `order` is the bank letters in display order ('CADB'); missing or stale -> the bank's order.
+function displayOrder(q, order) {
+  const letters = optionLetters(q);
+  const ok = typeof order === 'string' && order.length === letters.length &&
+    letters.every(L => order.includes(L));
+  const shown = ok ? order.split('') : letters;
+  const label = {};
+  shown.forEach((L, i) => { label[L] = 'ABCD'[i]; });
+  return { shown, label };
 }
 function show(pageId) {
   document.querySelectorAll('#page-home,#page-quiz,#page-results,#page-review,#page-history,#page-history-detail')
@@ -1303,7 +1383,7 @@ async function startQuiz(topic, btn) {
     });
     picked = shuffle(picked);
   } else {
-    picked = dedupe(shuffle(pool)).slice(0, quizSizeFor(topic));
+    picked = takeDistinct(shuffle(pool), quizSizeFor(topic), new Map());
   }
   beginPaper(topic, picked);
 }
@@ -1311,7 +1391,8 @@ function beginPaper(topic, picked) {
   STATE = {
     topic,
     questions: picked,
-    answers: new Array(picked.length).fill(null),  // 'A'/'B'/'C'/'D' or null
+    answers: new Array(picked.length).fill(null),  // bank letter 'A'-'D' or null
+    orders: picked.map(optionOrder),               // per question, bank letters in display order
     idx: 0,
     submitted: false,
   };
@@ -1328,7 +1409,7 @@ async function startWrongQuiz() {
   catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
   const qs = ids.map(findQuestion).filter(Boolean);
   if (!qs.length) { alert('目前還沒有常錯題。多做幾次測驗就會累積。'); return; }
-  beginPaper(WRONG_TOPIC, dedupe(shuffle(qs)).slice(0, WRONG_MAX));
+  beginPaper(WRONG_TOPIC, takeDistinct(shuffle(qs), WRONG_MAX, new Map()));
 }
 // The desktop side panel: a cell per question, filled when answered, outlined on the
 // current one, click to jump. On a 100-question paper this is the difference between
@@ -1383,7 +1464,8 @@ function renderQuiz() {
   el('q-passage-wrap').hidden = !q.passage;
   const oc = el('q-options');
   oc.innerHTML = '';
-  for (const letter of optionLetters(q)) {
+  const { shown, label } = displayOrder(q, (STATE.orders || [])[STATE.idx]);
+  for (const letter of shown) {
     // An answered option is a static record and stays a <div>; an unanswered one is a
     // control, and a <div> with an onclick is not reachable by keyboard -- which meant the
     // paper could not be sat at all without a mouse. A real <button> gets tab order, Enter
@@ -1397,7 +1479,7 @@ function renderQuiz() {
     } else {
       div.type = 'button';   // otherwise a <button> in a form would submit it
     }
-    div.innerHTML = `<span class="letter">(${letter})</span><span>${escapeHtml(q.options[letter] || '')}</span>`;
+    div.innerHTML = `<span class="letter">(${label[letter]})</span><span>${escapeHtml(q.options[letter] || '')}</span>`;
     if (!locked) {
       div.onclick = () => {
         STATE.answers[STATE.idx] = letter;
@@ -1424,19 +1506,19 @@ function renderQuiz() {
     if (ok) {
       fb.innerHTML = `✓ 答對了`;
     } else {
-      fb.innerHTML = `✗ 答錯了<div class="answer-text">正解：(${q.answer}) ${escapeHtml(q.options[q.answer] || '')}</div>`;
+      fb.innerHTML = `✗ 答錯了<div class="answer-text">正解：(${label[q.answer]}) ${escapeHtml(q.options[q.answer] || '')}</div>`;
     }
     if (q.explanations) {
       const block = document.createElement('div');
       block.className = 'expl-block';
       block.innerHTML = '<div class="expl-title">解析</div>';
-      for (const letter of optionLetters(q)) {
+      for (const letter of shown) {
         const expl = q.explanations[letter];
         if (!expl) continue;
         const item = document.createElement('div');
         item.className = 'expl-item' +
           (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
-        item.innerHTML = `<span class="expl-letter">(${letter})</span><span>${escapeHtml(expl)}</span>`;
+        item.innerHTML = `<span class="expl-letter">(${label[letter]})</span><span>${escapeHtml(expl)}</span>`;
         block.appendChild(item);
       }
       // Every explanation on this site is written, not published: 證基會 and 考選部 release
@@ -1626,7 +1708,8 @@ function renderSubjectTable(el_, breakdown, bp) {
 
 // ------- shared: one wrong-question card -------
 // `sel` is the letter the user picked, or null when the question was left blank.
-function wrongQuestionCard(q, sel, n) {
+function wrongQuestionCard(q, sel, n, order) {
+  const { shown, label } = displayOrder(q, order);
   const div = document.createElement('div');
   div.className = 'result-q';
   const stem = document.createElement('div');
@@ -1641,7 +1724,7 @@ function wrongQuestionCard(q, sel, n) {
     p.textContent = q.passage;
     div.appendChild(p);
   }
-  for (const letter of optionLetters(q)) {
+  for (const letter of shown) {
     const line = document.createElement('div');
     line.style.fontSize = '14px';
     line.style.padding = '2px 0';
@@ -1650,24 +1733,24 @@ function wrongQuestionCard(q, sel, n) {
     const color = isAns ? 'var(--good-ink)' : (isSel ? 'var(--bad-ink)' : 'var(--muted)');
     const weight = (isAns || isSel) ? '600' : '400';
     line.innerHTML = '<span style="color:' + color + ';font-weight:' + weight + '">' +
-      mark + ' (' + letter + ') ' + escapeHtml(q.options[letter] || '') + '</span>';
+      mark + ' (' + label[letter] + ') ' + escapeHtml(q.options[letter] || '') + '</span>';
     div.appendChild(line);
   }
   const your = document.createElement('div');
   your.className = 'your-line';
-  your.textContent = sel ? ('\u4f60\u7684\u7b54\u6848\uff1a(' + sel + ')') : '\u672a\u4f5c\u7b54';
+  your.textContent = sel ? ('\u4f60\u7684\u7b54\u6848\uff1a(' + (label[sel] || sel) + ')') : '\u672a\u4f5c\u7b54';
   div.appendChild(your);
   if (q.explanations) {
     const block = document.createElement('div');
     block.className = 'expl-block';
     block.innerHTML = '<div class="expl-title">\u89e3\u6790</div>';
-    for (const letter of optionLetters(q)) {
+    for (const letter of shown) {
       const expl = q.explanations[letter];
       if (!expl) continue;
       const item = document.createElement('div');
       item.className = 'expl-item' +
         (letter === q.answer ? ' expl-correct' : (letter === sel ? ' expl-sel-wrong' : ''));
-      item.innerHTML = '<span class="expl-letter">(' + letter + ')</span><span>' +
+      item.innerHTML = '<span class="expl-letter">(' + label[letter] + ')</span><span>' +
         escapeHtml(expl) + '</span>';
       block.appendChild(item);
     }
@@ -1785,7 +1868,7 @@ async function showHistoryDetail(i) {
   for (const pair of r.w) {
     const q = findQuestion(pair[0]);
     if (!q) { missing++; continue; }
-    cont.appendChild(wrongQuestionCard(q, pair[1], ++n));
+    cont.appendChild(wrongQuestionCard(q, pair[1], ++n, pair[2]));
   }
   if (missing) {
     const note = document.createElement('div');
