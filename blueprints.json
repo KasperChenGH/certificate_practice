@@ -129,7 +129,7 @@
  },
  "cfa_fra": {
   "exam": "CFA Level I — Financial Reporting & Analysis",
-  "note": "Full-length drill: 90 questions, the length of one CFA Level I exam session. Section sizes follow this bank's coverage of the Financial Statement Analysis curriculum, since CFA Institute publishes topic-area weights but not module-level ones. On the real exam, Financial Statement Analysis is roughly 11-14% of 180 questions — about 20-25 questions, not 90.",
+  "note": "CFA Institute 不公布歷屆試題，本站題目係依其公布之課程大綱自行編寫，非歷屆考題。全長 90 題，即一場 CFA Level I 測驗一節（session）的題數；各節題數依本題庫對財務報表分析（Financial Statement Analysis）課程的涵蓋比例分配，因 CFA Institute 只公布科目權重、未公布單元權重。正式測驗中財務報表分析約占 180 題的 11–14%，約 20–25 題，而非 90 題。CFA Institute 不公布最低及格分數，因此不標示及格與否。",
   "subjects": [
    {
     "subject": "Financial Analysis Techniques",

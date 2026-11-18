@@ -9,7 +9,7 @@ Free practice papers for Taiwan certification and public examinations — 證基
 Each practice paper mirrors the real exam's subject composition rather than drawing at
 random and scores each subject the way that exam's 簡章 does.
 
-**Answers are official; explanations are not.** 證基會 and 考選部 publish the answer key and
+**Past-paper answers are official; explanations are not.** 證基會 and 考選部 publish the answer key and
 nothing else — no 解析 exists in any official source — so every per-option explanation here
 is written rather than published, and each one says so beneath it. All 11,571 questions
 across all 29 banks now carry one.

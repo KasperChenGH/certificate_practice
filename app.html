@@ -7,10 +7,10 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>線上練習 — 證照考試練習</title>
-<meta name="description" content="台灣證照與國家考試線上練習：依正式考試的科目配比抽題、分科計分，每題附官方標準答案與逐選項解析。可選 50 題、100 題或全卷。免費、免註冊。">
+<meta name="description" content="台灣證照與國家考試線上練習：依正式考試的科目配比抽題、分科計分，每題附逐選項解析，歷屆試題附官方標準答案。可選 50 題、100 題或全卷。免費、免註冊。">
 <link rel="canonical" href="https://certifications.courses/app.html">
 <meta property="og:title" content="線上練習 — 證照考試練習">
-<meta property="og:description" content="依正式考試的科目配比抽題、分科計分，每題附官方標準答案與逐選項解析。免費、免註冊。">
+<meta property="og:description" content="依正式考試的科目配比抽題、分科計分，每題附逐選項解析，歷屆試題附官方標準答案。免費、免註冊。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://certifications.courses/app.html">
 <meta property="og:site_name" content="證照考試練習">
@@ -1241,6 +1241,18 @@ function takeDistinct(list, n, seen) {
   }
   return out;
 }
+// The line under every 解析. Only a question from an official sitting (origin 「115年第2次｜…」
+// or the 「113年9月版」 bank) has an official answer; the 自編練習題 and CFA banks are written
+// here against the 測驗範圍, so their key is ours too and must not be called 官方.
+function isOfficialQ(q) {
+  const head = String(q.origin || '').split('｜')[0].trim();
+  return /｜/.test(q.origin || '') && head !== '' && !head.startsWith('自編') && !head.startsWith('CFA');
+}
+function provenanceLine(q) {
+  return isOfficialQ(q)
+    ? '答案為官方標準答案；以上解析由 AI 撰寫，非官方解析，僅供理解參考。'
+    : '本題為自編練習題，題目、答案與解析皆非官方，僅供練習參考。';
+}
 function el(id) { return document.getElementById(id); }
 // Taiwan banks are 4-choice (A-D); the CFA bank follows the exam's 3-choice format (A-C).
 function optionLetters(q) {
@@ -1558,7 +1570,7 @@ function renderQuiz() {
       // saying so once under each 解析 is the only honest way to show them together.
       const src = document.createElement('div');
       src.className = 'expl-src';
-      src.textContent = '答案為官方標準答案；以上解析由 AI 撰寫，非官方解析，僅供理解參考。';
+      src.textContent = provenanceLine(q);
       block.appendChild(src);
       fb.appendChild(block);
     }
@@ -1789,7 +1801,7 @@ function wrongQuestionCard(q, sel, n, order) {
     // a candidate reads the 解析 most carefully, so it must carry the same provenance.
     const src = document.createElement('div');
     src.className = 'expl-src';
-    src.textContent = '答案為官方標準答案；以上解析由 AI 撰寫，非官方解析，僅供理解參考。';
+    src.textContent = provenanceLine(q);
     block.appendChild(src);
     div.appendChild(block);
   }
