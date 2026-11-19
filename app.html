@@ -1233,6 +1233,9 @@ function nearTwin(x, y) {
   return true;
 }
 function twinSeen(q, seen) {
+  // hand-confirmed twins reworded past the tests below (sources/twin_pairs.json)
+  const tk = q.twin ? '\u0000twin:' + q.twin : null;
+  if (tk && seen.has(tk)) return true;
   const e = twinEntry(q);
   const prev = seen.get(e.s) || [];
   if (prev.some(p => { let n = 0; for (const o of e.opts) if (p.opts.has(o)) n++; return n >= 2; })) return true;
@@ -1242,6 +1245,7 @@ function twinSeen(q, seen) {
   if (e.s.length >= 20 && !POSITION_REF.test(e.a) && prev.some(p => p.a === e.a)) return true;
   for (const [k, list] of seen) if (k !== e.s && list.some(p => nearTwin(e, p))) return true;
   prev.push(e); seen.set(e.s, prev);
+  if (tk) seen.set(tk, []);
   return false;
 }
 function dedupe(list, seen) {
