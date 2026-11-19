@@ -198,6 +198,14 @@
     color: var(--muted); cursor: pointer; font-variant-numeric: tabular-nums;
   }
   .lenopt:first-child { border-left: none; }
+  /* 常錯題複習's filter: which exam, which subject. The pool mixes every bank the visitor
+     has sat, and a candidate revising for one exam has no use for the others. */
+  .rvpick { display: flex; gap: 10px 16px; flex-wrap: wrap; margin: 12px 0 10px; }
+  .rvpick label { display: flex; align-items: center; gap: 8px; font-size: 13px;
+                  font-weight: 600; color: var(--muted); }
+  .rvpick select { font: inherit; font-size: 14px; font-weight: 500; color: var(--text);
+                   background: var(--card); border: 1px solid var(--border); border-radius: 9px;
+                   padding: 6px 10px; max-width: 72vw; }
   .lenopt[aria-pressed="true"] { background: var(--accent); color: #fff; }
   .lenhint { font-size: 12px; color: var(--muted); flex-basis: 100%; }
   .lenhint:empty { display: none; }
@@ -517,6 +525,7 @@
       <button class="btn" data-topic="futures_analyst">期貨交易分析人員<div class="topic-meta" id="meta-futures_analyst">—</div></button>
       <button class="btn" data-topic="futures">期貨商業務員<div class="topic-meta" id="meta-futures">—</div></button>
       <button class="btn" data-topic="futures_trust">期貨信託基金銷售機構銷售人員<div class="topic-meta" id="meta-futures_trust">—</div></button>
+      <button class="btn" data-topic="futures_training">期貨業務員在職訓練<div class="topic-meta" id="meta-futures_training">—</div></button>
       <button class="btn" data-topic="sitca_full">投信投顧業務員（三科）<div class="topic-meta" id="meta-sitca_full">—</div></button>
       <button class="btn" data-topic="sitca">投信投顧相關法規乙科<div class="topic-meta" id="meta-sitca">—</div></button>
       </div>
@@ -690,6 +699,14 @@
   <div id="page-review" class="hidden">
     <h1>常錯題複習</h1>
     <p class="meta" id="review-meta">—</p>
+    <div class="rvpick" id="rv-pick">
+      <label>考試<select id="rv-topic"></select></label>
+      <label id="rv-subject-wrap">科目<select id="rv-subject"></select></label>
+    </div>
+    <div class="lenpick" role="group" aria-label="測驗題數" id="rv-len-wrap">
+      <span class="lenlabel">測驗題數</span>
+      <span class="lenopts" id="rv-len"></span>
+    </div>
     <button class="btn review" id="btn-review-quiz" style="margin-top:12px;max-width:320px;">把這些題目做成測驗</button>
     <div id="review-list"></div>
     <button class="btn" id="btn-review-home" style="margin-top:16px;">回首頁</button>
@@ -708,6 +725,7 @@ const TOPIC_NAMES = {
   securities_analyst: '證券投資分析人員',
   futures_analyst: '期貨交易分析人員',
   futures_trust: '期貨信託基金銷售機構銷售人員',
+  futures_training: '期貨業務員在職訓練',
   internal_control: '企業內部控制',
   sustainability: '永續發展基礎能力測驗',
   aml: '防制洗錢與打擊資恐專業人員',
@@ -1261,11 +1279,11 @@ function optionLetters(q) {
 // Every paper shows a question's options in a fresh order, so the key is learnt by its
 // content and not by its slot. Answers, history and the wrong-pool all stay in the bank's own
 // letters; only what is on screen is relabelled, A-D by position.
-// Not shuffled: a question whose options or 解析 name an option by letter -- 「(A)(B)皆是」,
-// 「與選項B相同」 -- since a moved option would make that text point at the wrong one (~400 of
+// Not shuffled: a question whose options or 解析 name an option by letter or number --
+// 「(A)(B)皆是」, 「與選項B相同」, the ethics bank's 「(1)、(2)皆是」 -- since a moved option would make that text point at the wrong one (~400 of
 // ~11,600). Pinned in its slot: an option that speaks about the others by position --
 // 以上皆是, 以上皆非, 上述, 前述, 兩者 -- the rest are shuffled around it.
-const LETTER_REF = /[（(]\s*[A-Da-d]\s*[)）]|(?<![A-Za-z])[A-D]\s*[、與和及或,，&]\s*[A-D](?![A-Za-z])|選項\s*[（(]?[A-D]|(?<![A-Za-z])[A-D]\s*(選項|項)|^\s*[A-D]\s*$/;
+const LETTER_REF = /[（(]\s*[A-Da-d1-4]\s*[)）]|(?<![A-Za-z])[A-D]\s*[、與和及或,，&]\s*[A-D](?![A-Za-z])|選項\s*[（(]?[A-D]|(?<![A-Za-z])[A-D]\s*(選項|項)|^\s*[A-D]\s*$/;
 const POSITION_REF = /^\s*(以上|上述|前述|前[二三四兩]|[二三四兩]者|皆|均|都|全部|所有選項|其他選項)/;
 function optionOrder(q) {
   const letters = optionLetters(q);
@@ -1446,13 +1464,12 @@ function beginPaper(topic, picked) {
 // 常錯題測驗: every often-wrong question across all banks, shuffled, twins dropped, at most
 // WRONG_MAX of them -- fewer when fewer qualify. Answering one records an attempt like any
 // other paper, so a question answered right enough times leaves the pool by itself.
-async function startWrongQuiz() {
-  const ids = oftenWrongIds();
+async function startWrongQuiz(ids = oftenWrongIds(), n = WRONG_MAX) {
   try { await loadBanks(ids.map(bankOf).filter(Boolean)); }
   catch (e) { console.warn(e); alert(LOAD_FAILED); return; }
   const qs = ids.map(findQuestion).filter(Boolean);
   if (!qs.length) { alert('目前還沒有常錯題。多做幾次測驗就會累積。'); return; }
-  beginPaper(WRONG_TOPIC, takeDistinct(shuffle(qs), WRONG_MAX, new Map()));
+  beginPaper(WRONG_TOPIC, takeDistinct(shuffle(qs), n, new Map()));
 }
 // The desktop side panel: a cell per question, filled when answered, outlined on the
 // current one, click to jump. On a 100-question paper this is the difference between
@@ -1609,7 +1626,9 @@ function submitQuiz() {
   }
   clearQuizState();
   // A 常錯題測驗 mixes exams, so it is broken down by exam rather than by subject.
+  // One drawn from a single exam (the 常錯題複習 filter) is broken down by subject again.
   const breakdown = STATE.topic === WRONG_TOPIC
+      && new Set(STATE.questions.map(q => bankOf(q.id))).size > 1
     ? subjectBreakdown(STATE.questions, STATE.answers, q => topicLabel(bankOf(q.id)))
     : subjectBreakdown(STATE.questions, STATE.answers);
   const bp = blueprintFor(STATE.topic);
@@ -1623,6 +1642,10 @@ function submitQuiz() {
 }
 
 // ------- review (often-wrong) -------
+// The pool spans every bank the visitor has sat, so the page filters it by exam and, within
+// an exam, by subject; the quiz button takes the filtered list and the chosen length.
+const REVIEW = { all: [], topic: '', subject: '', len: 20 };
+const REVIEW_LENS = [10, 20, 50, 100];
 async function showReview() {
   // Fetch only the banks the often-wrong questions belong to, then list them in bank
   // order, as before.
@@ -1635,30 +1658,102 @@ async function showReview() {
       if (wanted.has(q.id)) list.push(q);
     }
   }
-  el('review-meta').textContent = `${list.length} 題（最近 ${RECENT_WINDOW} 次作答中答錯率 ≥ 50%、且至少作答 ${MIN_ATTEMPTS} 次）`;
-  const cont = el('review-list');
-  cont.innerHTML = '';
+  REVIEW.all = list;
+  const topics = [...new Set(list.map(q => bankOf(q.id)))];
+  // A filter left on an exam that no longer has an often-wrong question would show nothing.
+  if (!topics.includes(REVIEW.topic)) {
+    REVIEW.topic = topics.length === 1 ? topics[0] : '';
+    REVIEW.subject = '';
+  }
+  const sel = el('rv-topic');
+  sel.innerHTML = '';
+  if (topics.length > 1) addOption(sel, '', `全部考試（${list.length} 題）`);
+  for (const t of topics) {
+    addOption(sel, t, `${topicLabel(t)}（${list.filter(q => bankOf(q.id) === t).length} 題）`);
+  }
+  sel.value = REVIEW.topic;
+  sel.onchange = () => { REVIEW.topic = sel.value; REVIEW.subject = ''; renderReview(); };
+  el('rv-subject').onchange = () => { REVIEW.subject = el('rv-subject').value; renderReview(); };
+  el('rv-pick').classList.toggle('hidden', list.length === 0);
+  renderReview();
+  show('page-review');
+}
+function addOption(node, value, text) {
+  const o = document.createElement('option');
+  o.value = value;
+  o.textContent = text;
+  node.appendChild(o);
+}
+function reviewFiltered() {
+  return REVIEW.all.filter(q => (!REVIEW.topic || bankOf(q.id) === REVIEW.topic)
+    && (!REVIEW.subject || q.subject === REVIEW.subject));
+}
+function renderReview() {
+  // Subjects only mean something inside one exam; across exams the list would mix every
+  // bank's subject names.
+  const subSel = el('rv-subject');
+  const inTopic = REVIEW.topic ? REVIEW.all.filter(q => bankOf(q.id) === REVIEW.topic) : [];
+  const subjects = [...new Set(inTopic.map(q => q.subject).filter(Boolean))];
+  el('rv-subject-wrap').classList.toggle('hidden', subjects.length < 2);
+  if (!subjects.includes(REVIEW.subject)) REVIEW.subject = '';
+  subSel.innerHTML = '';
+  if (subjects.length >= 2) {
+    addOption(subSel, '', `全部科目（${inTopic.length} 題）`);
+    for (const sj of subjects) {
+      addOption(subSel, sj, `${sj}（${inTopic.filter(q => q.subject === sj).length} 題）`);
+    }
+    subSel.value = REVIEW.subject;
+  }
+
+  const list = reviewFiltered();
+  const total = REVIEW.all.length;
+  el('review-meta').textContent =
+    (list.length === total ? `${total} 題` : `${list.length} 題（常錯題共 ${total} 題）`) +
+    ` · 最近 ${RECENT_WINDOW} 次作答中答錯率 ≥ 50%、且至少作答 ${MIN_ATTEMPTS} 次`;
+
+  // Length: the fixed steps below the pool size, then 全部 (0). A choice the pool has
+  // shrunk under falls to 全部 rather than to nothing.
+  const lens = [...REVIEW_LENS.filter(n => n < list.length), 0];
+  if (!lens.includes(REVIEW.len)) REVIEW.len = 0;
+  const lw = el('rv-len');
+  lw.innerHTML = '';
+  for (const n of lens) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lenopt';
+    b.textContent = n ? `${n} 題` : `全部 ${list.length} 題`;
+    b.setAttribute('aria-pressed', String(n === REVIEW.len));
+    b.onclick = () => { REVIEW.len = n; renderReview(); };
+    lw.appendChild(b);
+  }
+  el('rv-len-wrap').classList.toggle('hidden', list.length === 0);
+
   const quizBtn = el('btn-review-quiz');
   quizBtn.classList.toggle('hidden', list.length === 0);
-  quizBtn.textContent = list.length > WRONG_MAX
-    ? `從中隨機抽 ${WRONG_MAX} 題做測驗` : `把這 ${list.length} 題做成測驗`;
+  const take = REVIEW.len || list.length;
+  quizBtn.textContent = take < list.length
+    ? `從中隨機抽 ${take} 題做測驗` : `把這 ${list.length} 題做成測驗`;
+  quizBtn.onclick = () => startWrongQuiz(list.map(q => q.id), take);
+
+  const cont = el('review-list');
+  cont.innerHTML = '';
   if (list.length === 0) {
     cont.innerHTML = '<div class="empty-state">目前還沒有常錯題。<br>多做幾次測驗就會累積。</div>';
-  } else {
-    list.forEach((q, i) => {
-      const h = loadHistory()[q.id];
-      const ratio = h.attempts.filter(x => !x).length + '/' + h.attempts.length;
-      const div = wrongQuestionCard(q, null, i + 1);
-      div.classList.add('review-q');
-      // No single "your answer" here — this view aggregates across attempts.
-      div.querySelector('.your-line').remove();
-      div.querySelector('.origin').textContent =
-        '\u6b63\u89e3\uff1a(' + q.answer + ')\u3000\u8fd1\u671f\u932f\u8aa4 ' + ratio +
-        '\u3000' + (q.origin || '');
-      cont.appendChild(div);
-    });
+    return;
   }
-  show('page-review');
+  const h = loadHistory();
+  list.forEach((q, i) => {
+    const rec = h[q.id];
+    const ratio = rec.attempts.filter(x => !x).length + '/' + rec.attempts.length;
+    const div = wrongQuestionCard(q, null, i + 1);
+    div.classList.add('review-q');
+    // No single "your answer" here — this view aggregates across attempts.
+    div.querySelector('.your-line').remove();
+    div.querySelector('.origin').textContent =
+      '正解：(' + q.answer + ')　近期錯誤 ' + ratio +
+      '　' + (q.origin || '');
+    cont.appendChild(div);
+  });
 }
 
 // ------- per-subject scoring -------
@@ -2051,8 +2146,7 @@ async function boot() {
     fam.scrollIntoView({ block: 'start' });
   })();
   el('btn-review').onclick = showReview;
-  el('btn-wrong-quiz').onclick = startWrongQuiz;
-  el('btn-review-quiz').onclick = startWrongQuiz;
+  el('btn-wrong-quiz').onclick = () => startWrongQuiz();
   // Desktop top bar. Same handlers as the on-page buttons, so behaviour cannot diverge.
   document.querySelectorAll('.topbar .navlink').forEach(b => {
     b.onclick = () => {
